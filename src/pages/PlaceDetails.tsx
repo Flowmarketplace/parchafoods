@@ -1,9 +1,13 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, MapPin, Phone, Star } from 'lucide-react';
+import { ArrowLeft, MapPin, Phone, Star, UtensilsCrossed } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { mockPlaces } from '@/data/places';
+import PlaceChat from '@/components/PlaceChat';
+import PlaceMap from '@/components/PlaceMap';
+import PlaceMenu from '@/components/PlaceMenu';
 import {
   Carousel,
   CarouselContent,
@@ -30,6 +34,13 @@ const PlaceDetails = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      {/* AI Chat Widget */}
+      <PlaceChat
+        placeName={place.name}
+        placeCategory={place.category}
+        placeDescription={place.description}
+      />
+      
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         <Button
           variant="ghost"
@@ -127,42 +138,66 @@ const PlaceDetails = () => {
                 )}
               </div>
 
-              {/* Map Preview */}
-              <div className="rounded-lg overflow-hidden border border-border mb-6">
-                <div className="bg-muted h-64 flex items-center justify-center">
-                  <p className="text-muted-foreground">
-                    Ubicación: {place.neighborhood}
-                  </p>
-                </div>
-              </div>
+              {/* Tabs Section */}
+              <Tabs defaultValue="ubicacion" className="w-full">
+                <TabsList className="grid w-full grid-cols-3">
+                  <TabsTrigger value="ubicacion">Ubicación</TabsTrigger>
+                  {place.hasMenu && (
+                    <TabsTrigger value="menu">
+                      <UtensilsCrossed className="h-4 w-4 mr-2" />
+                      Menú
+                    </TabsTrigger>
+                  )}
+                  <TabsTrigger value="resenas">Reseñas</TabsTrigger>
+                </TabsList>
 
-              {/* Reviews */}
-              {place.reviews && place.reviews.length > 0 && (
-                <div>
-                  <h2 className="text-xl font-bold mb-4">Reseñas</h2>
-                  <div className="space-y-4">
-                    {place.reviews.map((review) => (
-                      <Card key={review.id}>
-                        <CardContent className="p-4">
-                          <div className="flex items-start justify-between mb-2">
-                            <div>
-                              <p className="font-semibold">{review.author}</p>
-                              <p className="text-sm text-muted-foreground">
-                                {new Date(review.date).toLocaleDateString('es-CO')}
-                              </p>
-                            </div>
-                            <div className="flex items-center gap-1">
-                              <Star className="h-4 w-4 fill-secondary text-secondary" />
-                              <span className="font-medium">{review.rating}</span>
-                            </div>
-                          </div>
-                          <p className="text-muted-foreground">{review.comment}</p>
-                        </CardContent>
-                      </Card>
-                    ))}
+                <TabsContent value="ubicacion" className="mt-6">
+                  <div className="rounded-lg overflow-hidden border border-border h-[400px]">
+                    <PlaceMap
+                      latitude={place.latitude}
+                      longitude={place.longitude}
+                      placeName={place.name}
+                      category={place.category}
+                    />
                   </div>
-                </div>
-              )}
+                </TabsContent>
+
+                {place.hasMenu && place.menu && (
+                  <TabsContent value="menu" className="mt-6">
+                    <PlaceMenu menu={place.menu} />
+                  </TabsContent>
+                )}
+
+                <TabsContent value="resenas" className="mt-6">
+                  {place.reviews && place.reviews.length > 0 ? (
+                    <div className="space-y-4">
+                      {place.reviews.map((review) => (
+                        <Card key={review.id}>
+                          <CardContent className="p-4">
+                            <div className="flex items-start justify-between mb-2">
+                              <div>
+                                <p className="font-semibold">{review.author}</p>
+                                <p className="text-sm text-muted-foreground">
+                                  {new Date(review.date).toLocaleDateString('es-CO')}
+                                </p>
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <Star className="h-4 w-4 fill-secondary text-secondary" />
+                                <span className="font-medium">{review.rating}</span>
+                              </div>
+                            </div>
+                            <p className="text-muted-foreground">{review.comment}</p>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-center text-muted-foreground py-8">
+                      Aún no hay reseñas para este lugar
+                    </p>
+                  )}
+                </TabsContent>
+              </Tabs>
             </div>
           </CardContent>
         </Card>
