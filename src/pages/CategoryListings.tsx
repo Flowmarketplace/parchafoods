@@ -121,10 +121,10 @@ const CategoryListings = () => {
             </div>
 
             {/* Main Content */}
-            <div className="flex gap-6">
+            <div className="flex flex-col lg:flex-row gap-6">
               {/* Filters Sidebar */}
-              <div className="hidden lg:block w-80 flex-shrink-0">
-                <div className="sticky top-24">
+              <div className="w-full lg:w-80 flex-shrink-0">
+                <div className="lg:sticky lg:top-24">
                   <AdvancedFilters
                     filters={filters}
                     onFiltersChange={setFilters}
@@ -135,11 +135,11 @@ const CategoryListings = () => {
 
               {/* Content Area */}
               <div className="flex-1 min-w-0">
-                <div className={showMap ? 'grid grid-cols-1 lg:grid-cols-2 gap-6' : ''}>
+                <div className={showMap ? 'grid grid-cols-1 xl:grid-cols-2 gap-6' : ''}>
                   {/* Places List */}
                   <div className={viewMode === 'grid' ? 'space-y-6' : 'space-y-4'}>
                     {filteredPlaces.length === 0 ? (
-                      <div className="text-center py-12">
+                      <div className="text-center py-12 bg-card rounded-lg border">
                         <p className="text-muted-foreground mb-4">
                           No se encontraron lugares con estos filtros
                         </p>
@@ -150,7 +150,7 @@ const CategoryListings = () => {
                     ) : (
                       <div className={
                         viewMode === 'grid'
-                          ? 'grid grid-cols-1 md:grid-cols-2 gap-6'
+                          ? 'grid grid-cols-1 sm:grid-cols-2 gap-6'
                           : 'flex flex-col gap-4'
                       }>
                         {filteredPlaces.map((place) => (
@@ -162,8 +162,8 @@ const CategoryListings = () => {
 
                   {/* Map */}
                   {showMap && (
-                    <div className="hidden lg:block">
-                      <div className="sticky top-24 h-[calc(100vh-120px)] rounded-lg overflow-hidden border">
+                    <div className="hidden xl:block">
+                      <div className="sticky top-24 h-[calc(100vh-120px)] rounded-lg overflow-hidden border shadow-lg">
                         <MapComponent
                           selectedCategory={category}
                           selectedNeighborhood={filters.neighborhood}
