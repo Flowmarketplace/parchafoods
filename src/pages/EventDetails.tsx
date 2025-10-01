@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { mockEvents } from '@/data/events';
 import { useState } from 'react';
-// import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import {
   Carousel,
   CarouselContent,
@@ -28,7 +28,7 @@ import {
 const EventDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  // const { toast } = useToast();
+  const { toast } = useToast();
   const event = mockEvents.find((e) => e.id === id);
   const [ticketQuantity, setTicketQuantity] = useState(1);
   const [buyerName, setBuyerName] = useState('');
@@ -73,21 +73,19 @@ const EventDetails = () => {
     e.preventDefault();
     
     if (!buyerName || !buyerEmail || !buyerPhone) {
-      // toast({
-      //   title: "Error",
-      //   description: "Por favor completa todos los campos",
-      //   variant: "destructive",
-      // });
-      alert("Por favor completa todos los campos");
+      toast({
+        title: "Error",
+        description: "Por favor completa todos los campos",
+        variant: "destructive",
+      });
       return;
     }
 
     // Aquí iría la lógica de compra real
-    // toast({
-    //   title: "¡Compra exitosa!",
-    //   description: `Has adquirido ${ticketQuantity} boleta(s) para ${event.name}. Te enviaremos los detalles a ${buyerEmail}`,
-    // });
-    alert(`¡Compra exitosa! Has adquirido ${ticketQuantity} boleta(s) para ${event.name}.`);
+    toast({
+      title: "¡Compra exitosa!",
+      description: `Has adquirido ${ticketQuantity} boleta(s) para ${event.name}. Te enviaremos los detalles a ${buyerEmail}`,
+    });
 
     // Reset form
     setBuyerName('');

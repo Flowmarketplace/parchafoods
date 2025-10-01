@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Toaster } from "@/components/ui/toaster";
 import Index from "./pages/Index";
 import PlaceDetails from "./pages/PlaceDetails";
 import EventDetails from "./pages/EventDetails";
@@ -25,6 +26,7 @@ function App() {
         <Route path="/settings" element={<Settings />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
+      <Toaster />
     </BrowserRouter>
   );
 }
