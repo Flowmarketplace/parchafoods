@@ -88,7 +88,7 @@ const Index = () => {
                 <div className="flex items-center justify-between mb-3 sm:mb-4 md:mb-6">
                   <div className="flex items-center gap-2 sm:gap-3">
                     <Star className="h-5 w-5 sm:h-6 sm:w-6 text-secondary" />
-                    <h2 className="text-lg sm:text-xl md:text-2xl font-bold">Lugares Destacados</h2>
+                    <h2 className="text-lg sm:text-xl md:text-2xl font-bold">Lugares Encontrados</h2>
                   </div>
                   <Button 
                     variant="ghost" 
