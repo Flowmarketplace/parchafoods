@@ -52,9 +52,15 @@ const Index = () => {
 
   return (
     <div className="min-h-screen w-full flex flex-col">
-      <Navbar onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
+      <Navbar 
+        onMenuClick={() => setSidebarOpen(!sidebarOpen)}
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
+        selectedNeighborhood={selectedNeighborhood}
+        onNeighborhoodChange={setSelectedNeighborhood}
+      />
       
-      <div className="flex flex-1 pt-14 sm:pt-16 md:pt-20">
+      <div className="flex flex-1 pt-28 sm:pt-32">
         <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
         
         <main className="flex-1 lg:ml-64">
@@ -70,14 +76,6 @@ const Index = () => {
           <CategoryBar 
             selectedCategory={selectedCategory}
             onCategoryChange={setSelectedCategory}
-          />
-
-          {/* Filter Bar */}
-          <FilterBar
-            searchQuery={searchQuery}
-            onSearchChange={setSearchQuery}
-            selectedNeighborhood={selectedNeighborhood}
-            onNeighborhoodChange={setSelectedNeighborhood}
           />
 
           {/* Content Sections */}

@@ -1,15 +1,21 @@
 import { Menu, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import SearchBar from './SearchBar';
+import FilterBar from './FilterBar';
 
 interface NavbarProps {
   onMenuClick: () => void;
+  searchQuery?: string;
+  onSearchChange?: (query: string) => void;
+  selectedNeighborhood?: string;
+  onNeighborhoodChange?: (neighborhood: string) => void;
 }
 
-const Navbar = ({ onMenuClick }: NavbarProps) => {
+const Navbar = ({ onMenuClick, searchQuery, onSearchChange, selectedNeighborhood, onNeighborhoodChange }: NavbarProps) => {
+  const showFilter = searchQuery !== undefined && onSearchChange && selectedNeighborhood !== undefined && onNeighborhoodChange;
+  
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
-      <div className="w-full max-w-screen-2xl mx-auto px-3 sm:px-4 md:px-6">
+      <div className="w-full max-w-screen-2xl mx-auto px-4 sm:px-4 md:px-6">
         <div className="flex items-center justify-between h-14 sm:h-16">
           <div className="flex items-center gap-3">
             <Button
@@ -30,15 +36,19 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
               </h1>
             </div>
           </div>
-
-          <div className="hidden md:block flex-1 max-w-md mx-4">
-            <SearchBar />
-          </div>
         </div>
         
-        <div className="md:hidden pb-3">
-          <SearchBar />
-        </div>
+        {/* Filter Bar below logo - only show on home page */}
+        {showFilter && (
+          <div className="pb-3">
+            <FilterBar
+              searchQuery={searchQuery}
+              onSearchChange={onSearchChange}
+              selectedNeighborhood={selectedNeighborhood}
+              onNeighborhoodChange={onNeighborhoodChange}
+            />
+          </div>
+        )}
       </div>
     </header>
   );
