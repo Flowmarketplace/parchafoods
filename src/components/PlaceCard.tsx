@@ -13,7 +13,7 @@ const PlaceCard = ({ place }: PlaceCardProps) => {
   const navigate = useNavigate();
 
   return (
-    <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer group">
+    <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer group active:scale-[0.98] touch-manipulation">
       <div 
         className="relative h-40 sm:h-48 overflow-hidden"
         onClick={() => navigate(`/place/${place.id}`)}
@@ -93,7 +93,7 @@ const PlaceCard = ({ place }: PlaceCardProps) => {
         )}
         
         <Button 
-          className="w-full h-9 sm:h-10 text-sm"
+          className="w-full h-9 sm:h-10 text-sm active:scale-95 transition-transform touch-manipulation"
           onClick={() => navigate(`/place/${place.id}`)}
         >
           Ver más detalles

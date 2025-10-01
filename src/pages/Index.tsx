@@ -58,8 +58,8 @@ const Index = () => {
         <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
         
         <main className="flex-1 lg:ml-64">
-          {/* Map Section */}
-          <div className="h-[35vh] sm:h-[40vh] md:h-[50vh] lg:h-[70vh]">
+          {/* Map Section - Reduced height on mobile */}
+          <div className="h-[25vh] sm:h-[30vh] md:h-[40vh] lg:h-[60vh]">
             <MapComponent 
               selectedNeighborhood={selectedNeighborhood}
               selectedCategory={selectedCategory}

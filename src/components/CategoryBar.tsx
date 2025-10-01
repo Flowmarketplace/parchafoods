@@ -54,7 +54,7 @@ const CategoryBar = ({ selectedCategory, onCategoryChange }: CategoryBarProps) =
                 variant={isActive ? 'default' : 'outline'}
                 onClick={() => onCategoryChange(category.id)}
                 className={cn(
-                  'flex flex-col items-center justify-center gap-0.5 sm:gap-1 min-w-[70px] sm:min-w-[80px] h-auto py-2 sm:py-3 px-2 sm:px-4 whitespace-nowrap flex-shrink-0',
+                  'flex flex-col items-center justify-center gap-0.5 sm:gap-1 min-w-[70px] sm:min-w-[80px] h-auto py-2 sm:py-3 px-2 sm:px-4 whitespace-nowrap flex-shrink-0 active:scale-95 transition-transform touch-manipulation',
                   isActive && 'shadow-md'
                 )}
               >

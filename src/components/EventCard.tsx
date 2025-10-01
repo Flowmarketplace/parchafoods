@@ -22,7 +22,7 @@ const EventCard = ({ event }: EventCardProps) => {
 
   return (
     <Card 
-      className="overflow-hidden hover:shadow-lg transition-all cursor-pointer group"
+      className="overflow-hidden hover:shadow-lg transition-all cursor-pointer group active:scale-[0.98] touch-manipulation"
       onClick={() => navigate(`/event/${event.id}`)}
     >
       <div className="relative h-36 sm:h-40 md:h-48 overflow-hidden">

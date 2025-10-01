@@ -1,24 +1,55 @@
 {
-  "name": "Guía Cali",
+  "name": "Guía Cali - Descubre tu ciudad",
   "short_name": "Guía Cali",
-  "description": "Descubre los mejores lugares de Cali",
+  "description": "Descubre los mejores lugares de Cali: restaurantes, parques, eventos y más",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#007bff",
   "orientation": "portrait-primary",
+  "categories": ["travel", "lifestyle", "navigation"],
+  "lang": "es-CO",
+  "dir": "ltr",
   "icons": [
     {
-      "src": "/placeholder.svg",
+      "src": "/icon-192.png",
       "sizes": "192x192",
-      "type": "image/svg+xml",
+      "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/placeholder.svg",
+      "src": "/icon-512.png",
       "sizes": "512x512",
-      "type": "image/svg+xml",
+      "type": "image/png",
       "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Ver mapa",
+      "short_name": "Mapa",
+      "description": "Abre el mapa de lugares",
+      "url": "/",
+      "icons": [
+        {
+          "src": "/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Eventos",
+      "short_name": "Eventos",
+      "description": "Ver eventos en Cali",
+      "url": "/events-all",
+      "icons": [
+        {
+          "src": "/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
     }
   ]
 }

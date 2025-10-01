@@ -34,13 +34,13 @@ const FilterBar = ({
             <label className="text-[10px] sm:text-xs font-medium text-muted-foreground mb-1 sm:mb-1.5 block">
               Escribe el nombre o categoría
             </label>
-            <Search className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
+            <Search className="absolute left-2 sm:left-3 top-[26px] sm:top-7 h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground pointer-events-none" />
             <Input
               type="search"
               placeholder="Buscar lugares..."
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
-              className="pl-8 sm:pl-10 h-9 sm:h-11 text-sm"
+              className="pl-8 sm:pl-10 h-9 sm:h-11 text-sm touch-manipulation"
             />
           </div>
 
@@ -68,7 +68,7 @@ const FilterBar = ({
           <Button
             variant="outline"
             onClick={onAdvancedFilters}
-            className="w-full md:w-auto h-9 sm:h-11 text-sm"
+            className="w-full md:w-auto h-9 sm:h-11 text-sm touch-manipulation active:scale-95 transition-transform"
           >
             <SlidersHorizontal className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1.5 sm:mr-2" />
             Filtros

@@ -16,7 +16,7 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
               variant="ghost"
               size="icon"
               onClick={onMenuClick}
-              className="lg:hidden"
+              className="lg:hidden active:scale-95 transition-transform touch-manipulation"
             >
               <Menu className="h-6 w-6" />
             </Button>
