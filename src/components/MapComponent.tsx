@@ -26,64 +26,74 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
   const navigate = useNavigate();
 
   const createMarker = (place: Place) => {
-    const iconSvg = getCategoryIcon(place.category);
-    const color = getCategoryColor(place.category);
-    
-    const el = document.createElement('div');
-    el.className = 'marker';
-    el.style.width = '40px';
-    el.style.height = '40px';
-    el.style.cursor = 'pointer';
-    el.innerHTML = `
-      <div style="
-        width: 40px;
-        height: 40px;
-        background: ${color};
-        border-radius: 50% 50% 50% 0;
-        transform: rotate(-45deg);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        border: 3px solid white;
-        transition: transform 0.2s;
-      "
-      onmouseover="this.style.transform='rotate(-45deg) scale(1.1)'"
-      onmouseout="this.style.transform='rotate(-45deg) scale(1)'"
-      >
-        <svg 
-          style="transform: rotate(45deg); width: 20px; height: 20px;" 
-          fill="white" 
-          viewBox="0 0 24 24"
+    if (!map.current) {
+      console.error('Map not initialized, cannot create marker');
+      return null;
+    }
+
+    try {
+      const iconSvg = getCategoryIcon(place.category);
+      const color = getCategoryColor(place.category);
+      
+      const el = document.createElement('div');
+      el.className = 'marker';
+      el.style.width = '40px';
+      el.style.height = '40px';
+      el.style.cursor = 'pointer';
+      el.innerHTML = `
+        <div style="
+          width: 40px;
+          height: 40px;
+          background: ${color};
+          border-radius: 50% 50% 50% 0;
+          transform: rotate(-45deg);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+          border: 3px solid white;
+          transition: transform 0.2s;
+        "
+        onmouseover="this.style.transform='rotate(-45deg) scale(1.1)'"
+        onmouseout="this.style.transform='rotate(-45deg) scale(1)'"
         >
-          ${iconSvg}
-        </svg>
-      </div>
-    `;
-
-    const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
-      <div style="padding: 12px; min-width: 200px;">
-        <h3 style="font-weight: 600; margin-bottom: 6px; font-size: 15px; color: #333;">${place.name}</h3>
-        <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
-          <span style="background: ${color}; color: white; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 500;">
-            ${place.category}
-          </span>
+          <svg 
+            style="transform: rotate(45deg); width: 20px; height: 20px;" 
+            fill="white" 
+            viewBox="0 0 24 24"
+          >
+            ${iconSvg}
+          </svg>
         </div>
-        <p style="color: #666; font-size: 12px; margin-bottom: 4px;">📍 ${place.address}</p>
-        ${place.rating ? `<p style="color: #ff5722; font-size: 12px; font-weight: 500;">⭐ ${place.rating}/5</p>` : ''}
-      </div>
-    `);
+      `;
 
-    const marker = new mapboxgl.Marker(el)
-      .setLngLat([place.longitude, place.latitude])
-      .setPopup(popup)
-      .addTo(map.current!);
+      const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
+        <div style="padding: 12px; min-width: 200px;">
+          <h3 style="font-weight: 600; margin-bottom: 6px; font-size: 15px; color: #333;">${place.name}</h3>
+          <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
+            <span style="background: ${color}; color: white; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 500;">
+              ${place.category}
+            </span>
+          </div>
+          <p style="color: #666; font-size: 12px; margin-bottom: 4px;">📍 ${place.address}</p>
+          ${place.rating ? `<p style="color: #ff5722; font-size: 12px; font-weight: 500;">⭐ ${place.rating}/5</p>` : ''}
+        </div>
+      `);
 
-    el.addEventListener('click', () => {
-      navigate(`/place/${place.id}`);
-    });
+      const marker = new mapboxgl.Marker(el)
+        .setLngLat([place.longitude, place.latitude])
+        .setPopup(popup)
+        .addTo(map.current);
 
-    return marker;
+      el.addEventListener('click', () => {
+        navigate(`/place/${place.id}`);
+      });
+
+      return marker;
+    } catch (error) {
+      console.error('Error creating marker for place:', place.name, error);
+      return null;
+    }
   };
 
   const updateMarkers = () => {
@@ -104,7 +114,9 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
     // Add new markers
     filteredPlaces.forEach((place: Place) => {
       const marker = createMarker(place);
-      markers.current.push(marker);
+      if (marker) {
+        markers.current.push(marker);
+      }
     });
   };
 
