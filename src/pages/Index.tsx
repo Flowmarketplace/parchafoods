@@ -40,10 +40,16 @@ const Index = () => {
     return mockPlaces.filter((place) => {
       const categoryMatch = selectedCategory === 'Todos' || place.category === selectedCategory;
       const neighborhoodMatch = selectedNeighborhood === 'Todos' || place.neighborhood === selectedNeighborhood;
+      
+      // Enhanced search: search in name, category, address, neighborhood, and foodType
+      const searchLower = searchQuery.toLowerCase();
       const searchMatch = searchQuery === '' || 
-        place.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        place.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        place.address.toLowerCase().includes(searchQuery.toLowerCase());
+        place.name.toLowerCase().includes(searchLower) ||
+        place.category.toLowerCase().includes(searchLower) ||
+        place.address.toLowerCase().includes(searchLower) ||
+        place.neighborhood.toLowerCase().includes(searchLower) ||
+        (place.foodType && place.foodType.some(type => type.toLowerCase().includes(searchLower))) ||
+        (place.description && place.description.toLowerCase().includes(searchLower));
       
       return categoryMatch && neighborhoodMatch && searchMatch;
     });
