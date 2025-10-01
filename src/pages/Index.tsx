@@ -93,7 +93,7 @@ const Index = () => {
                   <Button 
                     variant="ghost" 
                     className="gap-2"
-                    onClick={() => setSelectedCategory('Todos')}
+                    onClick={() => navigate('/listings')}
                   >
                     Ver todos
                     <ChevronRight className="h-4 w-4" />
@@ -142,7 +142,27 @@ const Index = () => {
             </div>
           ) : (
             /* Filtered Results */
-            <PlacesList places={filteredPlaces} />
+            <div className="px-4 py-8">
+              {selectedCategory !== 'Todos' && (
+                <div className="mb-6 flex items-center justify-between bg-card border rounded-lg p-4">
+                  <div>
+                    <h2 className="text-2xl font-bold mb-1">{selectedCategory}</h2>
+                    <p className="text-sm text-muted-foreground">
+                      {filteredPlaces.length} {filteredPlaces.length === 1 ? 'resultado' : 'resultados'} encontrados
+                    </p>
+                  </div>
+                  <Button
+                    size="lg"
+                    onClick={() => navigate(`/listings?category=${selectedCategory}`)}
+                    className="gap-2"
+                  >
+                    Ver todas con filtros avanzados
+                    <ChevronRight className="h-5 w-5" />
+                  </Button>
+                </div>
+              )}
+              <PlacesList places={filteredPlaces} />
+            </div>
           )}
         </main>
       </div>

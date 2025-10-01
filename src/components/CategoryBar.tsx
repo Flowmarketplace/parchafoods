@@ -12,7 +12,6 @@ import {
   GraduationCap,
   Film
 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
@@ -41,16 +40,6 @@ const categories: CategoryItem[] = [
 ];
 
 const CategoryBar = ({ selectedCategory, onCategoryChange }: CategoryBarProps) => {
-  const navigate = useNavigate();
-
-  const handleCategoryClick = (categoryId: string) => {
-    onCategoryChange(categoryId);
-    if (categoryId !== 'Todos') {
-      // Navigate to listings page with category filter
-      navigate(`/listings?category=${categoryId}`);
-    }
-  };
-
   return (
     <div className="w-full bg-card border-y border-border shadow-sm">
       <div className="container mx-auto px-4 py-3">
@@ -63,7 +52,7 @@ const CategoryBar = ({ selectedCategory, onCategoryChange }: CategoryBarProps) =
               <Button
                 key={category.id}
                 variant={isActive ? 'default' : 'outline'}
-                onClick={() => handleCategoryClick(category.id)}
+                onClick={() => onCategoryChange(category.id)}
                 className={cn(
                   'flex flex-col items-center justify-center gap-1 min-w-[80px] h-auto py-3 px-4 whitespace-nowrap',
                   isActive && 'shadow-md'
