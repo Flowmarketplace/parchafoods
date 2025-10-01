@@ -2,3 +2,6 @@ project_id = "rxlcdhztshvsfokfskfu"
 
 [functions.place-chat]
 verify_jwt = false
+
+[functions.ai-assistant]
+verify_jwt = false
