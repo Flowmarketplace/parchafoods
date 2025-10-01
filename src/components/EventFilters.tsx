@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Filter, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -10,9 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ScrollArea } from '@/components/ui/scroll-area';
 
 export interface EventFilters {
   type: string;
@@ -85,137 +82,135 @@ const EventFiltersComponent = ({ filters, onFiltersChange, onClearFilters }: Eve
       </CardHeader>
 
       <CardContent className="space-y-6">
-        <ScrollArea className="h-[calc(100vh-300px)] pr-4">
-          {/* Tipo de Evento */}
-          <div className="space-y-2 mb-6">
-            <Label>Tipo de Evento</Label>
-            <Select
-              value={filters.type}
-              onValueChange={(value) => updateFilter('type', value)}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Seleccionar tipo" />
-              </SelectTrigger>
-              <SelectContent>
-                {eventTypes.map((type) => (
-                  <SelectItem key={type} value={type}>
-                    {type}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          {/* Rango de Precio */}
-          <div className="space-y-3 mb-6">
-            <Label>Rango de Precio</Label>
-            <div className="flex flex-wrap gap-2">
-              {priceRanges.map((range) => (
-                <Button
-                  key={range}
-                  variant={filters.priceRange === range ? 'default' : 'outline'}
-                  size="sm"
-                  onClick={() => updateFilter('priceRange', range)}
-                  className="flex-1 min-w-[70px]"
-                >
-                  {range}
-                </Button>
+        {/* Tipo de Evento */}
+        <div className="space-y-2 mb-6">
+          <Label>Tipo de Evento</Label>
+          <Select
+            value={filters.type}
+            onValueChange={(value) => updateFilter('type', value)}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Seleccionar tipo" />
+            </SelectTrigger>
+            <SelectContent>
+              {eventTypes.map((type) => (
+                <SelectItem key={type} value={type}>
+                  {type}
+                </SelectItem>
               ))}
-            </div>
+            </SelectContent>
+          </Select>
+        </div>
+
+        {/* Rango de Precio */}
+        <div className="space-y-3 mb-6">
+          <Label>Rango de Precio</Label>
+          <div className="flex flex-wrap gap-2">
+            {priceRanges.map((range) => (
+              <Button
+                key={range}
+                variant={filters.priceRange === range ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => updateFilter('priceRange', range)}
+                className="flex-1 min-w-[70px]"
+              >
+                {range}
+              </Button>
+            ))}
           </div>
+        </div>
 
-          {/* Características Especiales */}
-          <div className="space-y-3 mb-6">
-            <Label>Características Especiales</Label>
-            <div className="space-y-3">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="isFree"
-                  checked={filters.isFree}
-                  onCheckedChange={(checked) =>
-                    updateFilter('isFree', checked)
-                  }
-                />
-                <label
-                  htmlFor="isFree"
-                  className="text-sm font-medium leading-none cursor-pointer"
-                >
-                  🎟️ Gratis / Entrada Libre
-                </label>
-              </div>
-
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="isNew"
-                  checked={filters.isNew}
-                  onCheckedChange={(checked) =>
-                    updateFilter('isNew', checked)
-                  }
-                />
-                <label
-                  htmlFor="isNew"
-                  className="text-sm font-medium leading-none cursor-pointer"
-                >
-                  ✨ Nuevo / Próximamente
-                </label>
-              </div>
-
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="hasPromotion"
-                  checked={filters.hasPromotion}
-                  onCheckedChange={(checked) =>
-                    updateFilter('hasPromotion', checked)
-                  }
-                />
-                <label
-                  htmlFor="hasPromotion"
-                  className="text-sm font-medium leading-none cursor-pointer"
-                >
-                  🎁 En Promoción
-                </label>
-              </div>
-            </div>
-          </div>
-
-          {/* Ideal Para */}
+        {/* Características Especiales */}
+        <div className="space-y-3 mb-6">
+          <Label>Características Especiales</Label>
           <div className="space-y-3">
-            <Label>Ideal Para</Label>
-            <div className="space-y-3">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="familyFriendly"
-                  checked={filters.familyFriendly}
-                  onCheckedChange={(checked) =>
-                    updateFilter('familyFriendly', checked)
-                  }
-                />
-                <label
-                  htmlFor="familyFriendly"
-                  className="text-sm font-medium leading-none cursor-pointer"
-                >
-                  👨‍👩‍👧‍👦 Plan Familiar
-                </label>
-              </div>
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="isFree"
+                checked={filters.isFree}
+                onCheckedChange={(checked) =>
+                  updateFilter('isFree', checked)
+                }
+              />
+              <label
+                htmlFor="isFree"
+                className="text-sm font-medium leading-none cursor-pointer"
+              >
+                🎟️ Gratis / Entrada Libre
+              </label>
+            </div>
 
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="goodForCouples"
-                  checked={filters.goodForCouples}
-                  onCheckedChange={(checked) =>
-                    updateFilter('goodForCouples', checked)
-                  }
-                />
-                <label
-                  htmlFor="goodForCouples"
-                  className="text-sm font-medium leading-none cursor-pointer"
-                >
-                  💑 Plan en Pareja
-                </label>
-              </div>
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="isNew"
+                checked={filters.isNew}
+                onCheckedChange={(checked) =>
+                  updateFilter('isNew', checked)
+                }
+              />
+              <label
+                htmlFor="isNew"
+                className="text-sm font-medium leading-none cursor-pointer"
+              >
+                ✨ Nuevo / Próximamente
+              </label>
+            </div>
+
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="hasPromotion"
+                checked={filters.hasPromotion}
+                onCheckedChange={(checked) =>
+                  updateFilter('hasPromotion', checked)
+                }
+              />
+              <label
+                htmlFor="hasPromotion"
+                className="text-sm font-medium leading-none cursor-pointer"
+              >
+                🎁 En Promoción
+              </label>
             </div>
           </div>
-        </ScrollArea>
+        </div>
+
+        {/* Ideal Para */}
+        <div className="space-y-3">
+          <Label>Ideal Para</Label>
+          <div className="space-y-3">
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="familyFriendly"
+                checked={filters.familyFriendly}
+                onCheckedChange={(checked) =>
+                  updateFilter('familyFriendly', checked)
+                }
+              />
+              <label
+                htmlFor="familyFriendly"
+                className="text-sm font-medium leading-none cursor-pointer"
+              >
+                👨‍👩‍👧‍👦 Plan Familiar
+              </label>
+            </div>
+
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="goodForCouples"
+                checked={filters.goodForCouples}
+                onCheckedChange={(checked) =>
+                  updateFilter('goodForCouples', checked)
+                }
+              />
+              <label
+                htmlFor="goodForCouples"
+                className="text-sm font-medium leading-none cursor-pointer"
+              >
+                💑 Plan en Pareja
+              </label>
+            </div>
+          </div>
+        </div>
       </CardContent>
     </Card>
   );
