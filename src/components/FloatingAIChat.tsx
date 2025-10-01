@@ -134,16 +134,16 @@ const FloatingAIChat = () => {
       {!isOpen && (
         <Button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-8 right-8 h-16 w-16 rounded-full shadow-2xl z-[100] bg-[#25D366] hover:bg-[#20bd5a] text-white transition-all hover:scale-110"
-          size="icon"
+          className="fixed bottom-20 right-20 h-20 px-6 rounded-2xl shadow-2xl z-[100] bg-[#25D366] hover:bg-[#20bd5a] text-white transition-all hover:scale-105 animate-bounce flex items-center gap-3"
         >
-          <Bot className="h-8 w-8" />
+          <Bot className="h-10 w-10 animate-pulse" />
+          <span className="font-semibold text-sm">¿Necesitas ayuda?</span>
         </Button>
       )}
 
       {/* Chat Window */}
       {isOpen && (
-        <Card className="fixed bottom-8 right-8 w-96 h-[32rem] shadow-2xl z-[100] flex flex-col border-[#25D366] border-2">
+        <Card className="fixed bottom-20 right-20 w-96 h-[32rem] shadow-2xl z-[100] flex flex-col border-[#25D366] border-2">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 bg-[#25D366] text-white rounded-t-lg">
             <div className="flex items-center gap-2">
               <Bot className="h-5 w-5" />
