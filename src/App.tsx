@@ -1,20 +1,32 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
-function TestPage() {
-  return (
-    <div style={{ padding: "20px", textAlign: "center" }}>
-      <h1>🎉 ¡React funciona!</h1>
-      <p>La aplicación está cargando correctamente</p>
-    </div>
-  );
-}
+import { Toaster } from "@/components/ui/toaster";
+import Index from "./pages/Index";
+import PlaceDetails from "./pages/PlaceDetails";
+import EventDetails from "./pages/EventDetails";
+import Events from "./pages/Events";
+import EventsListings from "./pages/EventsListings";
+import Listings from "./pages/Listings";
+import CategoryListings from "./pages/CategoryListings";
+import Favorites from "./pages/Favorites";
+import Settings from "./pages/Settings";
+import NotFound from "./pages/NotFound";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="*" element={<TestPage />} />
+        <Route path="/" element={<Index />} />
+        <Route path="/place/:id" element={<PlaceDetails />} />
+        <Route path="/event/:id" element={<EventDetails />} />
+        <Route path="/events" element={<Events />} />
+        <Route path="/events-all" element={<EventsListings />} />
+        <Route path="/listings" element={<CategoryListings />} />
+        <Route path="/neighborhoods" element={<Listings />} />
+        <Route path="/favorites" element={<Favorites />} />
+        <Route path="/settings" element={<Settings />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
+      <Toaster />
     </BrowserRouter>
   );
 }
