@@ -58,8 +58,15 @@ const EventDetails = () => {
 
   const getTotalPrice = () => {
     if (event.price === 'Gratis') return 'Gratis';
-    const priceNumber = parseInt(event.price.replace(/[^0-9]/g, ''));
-    return `$${(priceNumber * ticketQuantity).toLocaleString('es-CO')}`;
+    
+    // Handle price ranges (e.g., "$50.000 - $80.000")
+    const priceMatch = event.price.match(/\$?([\d.,]+)/);
+    if (!priceMatch) return event.price;
+    
+    const priceNumber = parseInt(priceMatch[1].replace(/[.,]/g, ''));
+    const total = priceNumber * ticketQuantity;
+    
+    return `$${total.toLocaleString('es-CO')}`;
   };
 
   const handlePurchase = (e: React.FormEvent) => {
