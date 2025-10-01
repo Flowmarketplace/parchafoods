@@ -7,6 +7,7 @@ export const mockPlaces: Place[] = [
     category: 'Restaurante',
     address: 'Calle 45 #20-15, Barrio Compartir',
     neighborhood: 'Compartir',
+    zone: 'Oriente',
     phone: '+57 2 555 1234',
     description: 'Deliciosa comida típica caleña con el sazón de casa. Especialidad en sancocho de gallina y bandeja paisa. Horario: Lunes a Sábado 11:00 AM - 9:00 PM, Domingos 11:00 AM - 5:00 PM. Aceptamos efectivo y tarjetas.',
     images: [
@@ -86,6 +87,7 @@ export const mockPlaces: Place[] = [
     category: 'Parque',
     address: 'Carrera 30 #80-50, Barrio Vallegrande',
     neighborhood: 'Vallegrande',
+    zone: 'Norte',
     phone: '+57 2 555 5678',
     description: 'Amplio parque con zonas verdes, juegos infantiles y canchas deportivas. Ideal para pasar el día en familia.',
     images: [
@@ -127,6 +129,7 @@ export const mockPlaces: Place[] = [
     category: 'Restaurante',
     address: 'Calle 50 #22-30, Barrio Decepaz',
     neighborhood: 'Decepaz',
+    zone: 'Sur',
     phone: '+57 2 555 2345',
     description: 'Especialistas en carnes a la parrilla y platos típicos del Valle del Cauca. Ambiente familiar y acogedor.',
     images: [
@@ -179,6 +182,7 @@ export const mockPlaces: Place[] = [
     category: 'Café',
     address: 'Carrera 28 #45-12, Barrio Compartir',
     neighborhood: 'Compartir',
+    zone: 'Oriente',
     phone: '+57 2 555 3456',
     description: 'Café de especialidad con granos 100% colombianos. Ofrecemos desayunos, repostería artesanal y Wi-Fi gratis.',
     images: [

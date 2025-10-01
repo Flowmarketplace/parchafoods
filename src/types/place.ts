@@ -30,6 +30,7 @@ export interface Place {
   category: string;
   address: string;
   neighborhood: string;
+  zone?: string; // 'Norte', 'Sur', 'Oriente', 'Occidente', 'Centro'
   phone?: string;
   description?: string;
   images: string[];

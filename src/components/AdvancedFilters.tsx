@@ -17,6 +17,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { neighborhoods } from '@/data/places';
 
 export interface Filters {
+  zone: string;
   neighborhood: string;
   priceRange: [number, number];
   rating: number;
@@ -32,6 +33,8 @@ interface AdvancedFiltersProps {
   onFiltersChange: (filters: Filters) => void;
   onClearFilters: () => void;
 }
+
+const zones = ['Todos', 'Norte', 'Sur', 'Oriente', 'Occidente', 'Centro'];
 
 const foodTypes = [
   'Colombiana',
@@ -61,6 +64,7 @@ const AdvancedFilters = ({ filters, onFiltersChange, onClearFilters }: AdvancedF
   };
 
   const hasActiveFilters = 
+    filters.zone !== 'Todos' ||
     filters.neighborhood !== 'Todos' ||
     filters.priceRange[0] > 0 ||
     filters.priceRange[1] < 4 ||
@@ -94,9 +98,29 @@ const AdvancedFilters = ({ filters, onFiltersChange, onClearFilters }: AdvancedF
 
       <CardContent className="space-y-6">
         <ScrollArea className="h-[calc(100vh-300px)] pr-4">
+          {/* Zona */}
+          <div className="space-y-2 mb-6">
+            <Label>Zona</Label>
+            <Select
+              value={filters.zone}
+              onValueChange={(value) => updateFilter('zone', value)}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Seleccionar zona" />
+              </SelectTrigger>
+              <SelectContent>
+                {zones.map((zone) => (
+                  <SelectItem key={zone} value={zone}>
+                    {zone}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
           {/* Barrio */}
           <div className="space-y-2 mb-6">
-            <Label>Barrio / Zona</Label>
+            <Label>Barrio</Label>
             <Select
               value={filters.neighborhood}
               onValueChange={(value) => updateFilter('neighborhood', value)}

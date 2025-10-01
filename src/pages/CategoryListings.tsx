@@ -20,6 +20,7 @@ const CategoryListings = () => {
   const [showMap, setShowMap] = useState(true);
   
   const [filters, setFilters] = useState<Filters>({
+    zone: 'Todos',
     neighborhood: 'Todos',
     priceRange: [0, 4],
     rating: 0,
@@ -34,6 +35,9 @@ const CategoryListings = () => {
     return mockPlaces.filter((place: Place) => {
       // Category filter
       if (category !== 'Todos' && place.category !== category) return false;
+      
+      // Zone filter
+      if (filters.zone !== 'Todos' && place.zone !== filters.zone) return false;
       
       // Neighborhood filter
       if (filters.neighborhood !== 'Todos' && place.neighborhood !== filters.neighborhood) return false;
@@ -64,6 +68,7 @@ const CategoryListings = () => {
 
   const handleClearFilters = () => {
     setFilters({
+      zone: 'Todos',
       neighborhood: 'Todos',
       priceRange: [0, 4],
       rating: 0,
