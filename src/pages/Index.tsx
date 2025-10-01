@@ -6,6 +6,7 @@ import CategoryBar from '@/components/CategoryBar';
 import FilterBar from '@/components/FilterBar';
 import PlacesList from '@/components/PlacesList';
 import EventCard from '@/components/EventCard';
+import BottomNav from '@/components/BottomNav';
 import { mockPlaces } from '@/data/places';
 import { mockEvents } from '@/data/events';
 import { Button } from '@/components/ui/button';
@@ -99,7 +100,7 @@ const Index = () => {
 
           {/* Content Sections */}
           {!showFilters ? (
-            <div className="w-full max-w-screen-2xl mx-auto px-4 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8 space-y-6 sm:space-y-8 md:space-y-12">
+            <div className="w-full max-w-screen-2xl mx-auto px-4 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8 space-y-6 sm:space-y-8 md:space-y-12 pb-20 md:pb-8">
               {/* Events Section - Now first */}
               <section className="bg-gradient-to-br from-primary/5 to-secondary/5 -mx-4 sm:-mx-4 md:-mx-6 px-4 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8 rounded-lg border-t-2 border-primary/20">
                 <div className="flex items-center justify-between mb-3 sm:mb-4 md:mb-6">
@@ -151,7 +152,7 @@ const Index = () => {
             </div>
           ) : (
             /* Filtered Results */
-            <div className="w-full max-w-screen-2xl mx-auto px-4 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
+            <div className="w-full max-w-screen-2xl mx-auto px-4 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8 pb-20 md:pb-8">
               {selectedCategory !== 'Todos' && (
                 <div className="mb-4 sm:mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between bg-card border rounded-lg p-3 sm:p-4 gap-3">
                   <p className="text-sm sm:text-base text-muted-foreground font-normal">
@@ -172,6 +173,9 @@ const Index = () => {
           )}
         </main>
       </div>
+      
+      {/* Bottom Navigation for mobile */}
+      <BottomNav />
     </div>
   );
 };
