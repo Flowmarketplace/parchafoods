@@ -101,10 +101,12 @@ const Index = () => {
           {!showFilters ? (
             <div className="w-full max-w-screen-2xl mx-auto px-4 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8 space-y-6 sm:space-y-8 md:space-y-12">
               {/* Events Section - Now first */}
-              <section className="bg-muted/30 -mx-4 sm:-mx-4 md:-mx-6 px-4 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
+              <section className="bg-gradient-to-br from-primary/5 to-secondary/5 -mx-4 sm:-mx-4 md:-mx-6 px-4 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8 rounded-lg border-t-2 border-primary/20">
                 <div className="flex items-center justify-between mb-3 sm:mb-4 md:mb-6">
                   <div className="flex items-center gap-2 sm:gap-3">
-                    <Calendar className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+                    <div className="p-2 bg-primary/10 rounded-lg">
+                      <Calendar className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+                    </div>
                     <div>
                       <h2 className="text-lg sm:text-xl md:text-2xl font-bold">¿Qué hay para hacer?</h2>
                       <p className="text-xs sm:text-sm text-muted-foreground hidden sm:block">Eventos, conciertos, teatro, cine y más</p>
@@ -127,10 +129,12 @@ const Index = () => {
               </section>
 
               {/* Featured/Popular Places Section */}
-              <section>
+              <section className="py-2">
                 <div className="flex items-center justify-between mb-3 sm:mb-4 md:mb-6">
                   <div className="flex items-center gap-2 sm:gap-3">
-                    <Star className="h-5 w-5 sm:h-6 sm:w-6 text-secondary" />
+                    <div className="p-2 bg-secondary/10 rounded-lg">
+                      <Star className="h-5 w-5 sm:h-6 sm:w-6 text-secondary" />
+                    </div>
                     <h2 className="text-lg sm:text-xl md:text-2xl font-bold">Lugares Destacados</h2>
                   </div>
                   <Button 
