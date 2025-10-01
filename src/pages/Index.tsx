@@ -5,9 +5,11 @@ import MapComponent from '@/components/MapComponent';
 import CategoryBar from '@/components/CategoryBar';
 import FilterBar from '@/components/FilterBar';
 import PlacesList from '@/components/PlacesList';
+import EventCard from '@/components/EventCard';
 import { mockPlaces } from '@/data/places';
+import { mockEvents } from '@/data/events';
 import { Button } from '@/components/ui/button';
-import { ChevronRight, Home, Star, Building2 } from 'lucide-react';
+import { ChevronRight, Home, Star, Calendar } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const Index = () => {
@@ -17,19 +19,19 @@ const Index = () => {
   const [selectedNeighborhood, setSelectedNeighborhood] = useState('Todos');
   const navigate = useNavigate();
 
-  // Get featured/top rated places (non real estate)
+  // Get featured/top rated places
   const featuredPlaces = useMemo(() => {
     return mockPlaces
-      .filter(place => place.category !== 'Inmobiliaria' && (place.featured || (place.rating && place.rating >= 4.5)))
+      .filter(place => place.featured || (place.rating && place.rating >= 4.5))
       .sort((a, b) => (b.rating || 0) - (a.rating || 0))
       .slice(0, 6);
   }, []);
 
-  // Get real estate properties
-  const realEstatePlaces = useMemo(() => {
-    return mockPlaces
-      .filter(place => place.category === 'Inmobiliaria')
-      .sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
+  // Get featured events
+  const featuredEvents = useMemo(() => {
+    return mockEvents
+      .filter(event => event.featured)
+      .slice(0, 4);
   }, []);
 
   // Filter places based on all criteria (for the filtered view)
@@ -104,22 +106,26 @@ const Index = () => {
               <section className="bg-muted/30 -mx-4 px-4 py-8">
                 <div className="flex items-center justify-between mb-6">
                   <div className="flex items-center gap-3">
-                    <Building2 className="h-6 w-6 text-primary" />
+                    <Calendar className="h-6 w-6 text-primary" />
                     <div>
-                      <h2 className="text-2xl font-bold">Inmobiliaria</h2>
-                      <p className="text-sm text-muted-foreground">Casas y apartamentos en arriendo o venta</p>
+                      <h2 className="text-2xl font-bold">¿Qué hay para hacer?</h2>
+                      <p className="text-sm text-muted-foreground">Eventos, conciertos, teatro, cine y más</p>
                     </div>
                   </div>
                   <Button 
                     variant="ghost" 
                     className="gap-2"
-                    onClick={() => setSelectedCategory('Inmobiliaria')}
+                    onClick={() => navigate('/events')}
                   >
-                    Ver todas
+                    Ver todos
                     <ChevronRight className="h-4 w-4" />
                   </Button>
                 </div>
-                <PlacesList places={realEstatePlaces} />
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                  {featuredEvents.map(event => (
+                    <EventCard key={event.id} event={event} />
+                  ))}
+                </div>
               </section>
 
               {/* CTA to view all */}

@@ -45,5 +45,4 @@ export type Category =
   | 'Hotel'
   | 'Entretenimiento'
   | 'Servicios'
-  | 'Inmobiliaria'
   | 'Otro';
