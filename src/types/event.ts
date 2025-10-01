@@ -14,6 +14,13 @@ export interface Event {
   longitude: number;
   organizer?: string;
   featured?: boolean;
+  // Filtros
+  isFree?: boolean;
+  isNew?: boolean; // Eventos recientes o próximos
+  hasPromotion?: boolean;
+  familyFriendly?: boolean;
+  goodForCouples?: boolean;
+  priceRange?: string; // 'Gratis', '$', '$$', '$$$'
 }
 
 export type EventType = 

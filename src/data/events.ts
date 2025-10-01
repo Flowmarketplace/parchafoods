@@ -11,6 +11,7 @@ export const mockEvents: Event[] = [
     date: '2025-03-15',
     time: '6:00 PM - 11:00 PM',
     price: 'Gratis',
+    priceRange: 'Gratis',
     description: 'Gran festival de salsa con orquestas en vivo, presentaciones de baile y gastronomía caleña. ¡No te lo pierdas!',
     images: [
       'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800&q=80',
@@ -20,7 +21,12 @@ export const mockEvents: Event[] = [
     latitude: 3.4372,
     longitude: -76.5225,
     organizer: 'Alcaldía de Cali',
-    featured: true
+    featured: true,
+    isFree: true,
+    isNew: true,
+    hasPromotion: false,
+    familyFriendly: true,
+    goodForCouples: true
   },
   {
     id: 'e2',
@@ -32,6 +38,7 @@ export const mockEvents: Event[] = [
     date: '2025-03-08',
     time: '8:00 PM',
     price: '$50.000 - $80.000',
+    priceRange: '$$',
     description: 'Noche de rock con bandas locales emergentes. Entrada general y VIP disponible.',
     images: [
       'https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=800&q=80',
@@ -41,7 +48,12 @@ export const mockEvents: Event[] = [
     latitude: 3.4378,
     longitude: -76.5225,
     organizer: 'Rock Cali Producciones',
-    featured: true
+    featured: true,
+    isFree: false,
+    isNew: false,
+    hasPromotion: true,
+    familyFriendly: false,
+    goodForCouples: true
   },
   {
     id: 'e3',

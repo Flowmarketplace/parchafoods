@@ -5,6 +5,7 @@ import Index from "./pages/Index";
 import PlaceDetails from "./pages/PlaceDetails";
 import EventDetails from "./pages/EventDetails";
 import Events from "./pages/Events";
+import EventsListings from "./pages/EventsListings";
 import Listings from "./pages/Listings";
 import CategoryListings from "./pages/CategoryListings";
 import Favorites from "./pages/Favorites";
@@ -20,6 +21,7 @@ const App = () => {
         <Route path="/place/:id" element={<PlaceDetails />} />
         <Route path="/event/:id" element={<EventDetails />} />
         <Route path="/events" element={<Events />} />
+        <Route path="/events-all" element={<EventsListings />} />
         <Route path="/listings" element={<CategoryListings />} />
         <Route path="/neighborhoods" element={<Listings />} />
         <Route path="/favorites" element={<Favorites />} />

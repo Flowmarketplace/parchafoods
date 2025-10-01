@@ -47,6 +47,35 @@ const EventCard = ({ event }: EventCardProps) => {
         <h3 className="font-bold text-lg mb-2 line-clamp-2 group-hover:text-primary transition-colors">
           {event.name}
         </h3>
+
+        {/* Event Tags */}
+        <div className="flex flex-wrap gap-1 mb-3">
+          {event.isFree && (
+            <Badge variant="secondary" className="text-xs">
+              🎟️ Gratis
+            </Badge>
+          )}
+          {event.isNew && (
+            <Badge variant="secondary" className="text-xs">
+              ✨ Nuevo
+            </Badge>
+          )}
+          {event.hasPromotion && (
+            <Badge variant="secondary" className="text-xs bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100">
+              🎁 Promoción
+            </Badge>
+          )}
+          {event.familyFriendly && (
+            <Badge variant="outline" className="text-xs">
+              👨‍👩‍👧‍👦
+            </Badge>
+          )}
+          {event.goodForCouples && (
+            <Badge variant="outline" className="text-xs">
+              💑
+            </Badge>
+          )}
+        </div>
         
         <div className="space-y-2 text-sm text-muted-foreground">
           <div className="flex items-start gap-2">

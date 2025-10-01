@@ -115,7 +115,7 @@ const Index = () => {
                   <Button 
                     variant="ghost" 
                     className="gap-2"
-                    onClick={() => navigate('/events')}
+                    onClick={() => navigate('/events-all')}
                   >
                     Ver todos
                     <ChevronRight className="h-4 w-4" />
@@ -126,18 +126,6 @@ const Index = () => {
                     <EventCard key={event.id} event={event} />
                   ))}
                 </div>
-              </section>
-
-              {/* CTA to view all */}
-              <section className="text-center py-8">
-                <Button 
-                  size="lg" 
-                  onClick={() => navigate('/listings')}
-                  className="gap-2"
-                >
-                  <Home className="h-5 w-5" />
-                  Explorar Todos los Lugares
-                </Button>
               </section>
             </div>
           ) : (
