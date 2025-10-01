@@ -13,7 +13,6 @@ import {
 } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { neighborhoods } from '@/data/places';
 
 export interface Filters {
@@ -97,8 +96,7 @@ const AdvancedFilters = ({ filters, onFiltersChange, onClearFilters }: AdvancedF
       </CardHeader>
 
       <CardContent className="space-y-6">
-        <ScrollArea className="h-[calc(100vh-300px)] pr-4">
-          {/* Zona */}
+        {/* Zona */}
           <div className="space-y-2 mb-6">
             <Label>Zona</Label>
             <Select
@@ -273,7 +271,6 @@ const AdvancedFilters = ({ filters, onFiltersChange, onClearFilters }: AdvancedF
               </div>
             </div>
           </div>
-        </ScrollArea>
       </CardContent>
     </Card>
   );
