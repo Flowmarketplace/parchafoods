@@ -100,26 +100,7 @@ const Index = () => {
           {/* Content Sections */}
           {!showFilters ? (
             <div className="w-full max-w-screen-2xl mx-auto px-4 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8 space-y-6 sm:space-y-8 md:space-y-12">
-              {/* Featured/Popular Places Section */}
-              <section>
-                <div className="flex items-center justify-between mb-3 sm:mb-4 md:mb-6">
-                  <div className="flex items-center gap-2 sm:gap-3">
-                    <Star className="h-5 w-5 sm:h-6 sm:w-6 text-secondary" />
-                    <h2 className="text-lg sm:text-xl md:text-2xl font-bold">Lugares Destacados</h2>
-                  </div>
-                  <Button 
-                    variant="ghost" 
-                    className="gap-1 sm:gap-2 h-8 sm:h-10 text-xs sm:text-sm"
-                    onClick={() => navigate('/listings')}
-                  >
-                    Ver todos
-                    <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4" />
-                  </Button>
-                </div>
-                <PlacesList places={featuredPlaces} />
-              </section>
-
-              {/* Real Estate Section */}
+              {/* Events Section - Now first */}
               <section className="bg-muted/30 -mx-4 sm:-mx-4 md:-mx-6 px-4 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
                 <div className="flex items-center justify-between mb-3 sm:mb-4 md:mb-6">
                   <div className="flex items-center gap-2 sm:gap-3">
@@ -143,6 +124,25 @@ const Index = () => {
                     <EventCard key={event.id} event={event} />
                   ))}
                 </div>
+              </section>
+
+              {/* Featured/Popular Places Section */}
+              <section>
+                <div className="flex items-center justify-between mb-3 sm:mb-4 md:mb-6">
+                  <div className="flex items-center gap-2 sm:gap-3">
+                    <Star className="h-5 w-5 sm:h-6 sm:w-6 text-secondary" />
+                    <h2 className="text-lg sm:text-xl md:text-2xl font-bold">Lugares Destacados</h2>
+                  </div>
+                  <Button 
+                    variant="ghost" 
+                    className="gap-1 sm:gap-2 h-8 sm:h-10 text-xs sm:text-sm"
+                    onClick={() => navigate('/listings')}
+                  >
+                    Ver todos
+                    <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4" />
+                  </Button>
+                </div>
+                <PlacesList places={featuredPlaces} />
               </section>
             </div>
           ) : (
