@@ -7,14 +7,102 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { MapPin } from 'lucide-react';
+import { getCategoryIcon, getCategoryColor } from '@/utils/categoryIcons';
+import { neighborhoodLocations } from '@/data/neighborhoods';
 
-const MapComponent = () => {
+interface MapComponentProps {
+  selectedNeighborhood?: string;
+  selectedCategory?: string;
+}
+
+const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todos' }: MapComponentProps) => {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
+  const markers = useRef<mapboxgl.Marker[]>([]);
   const [mapboxToken, setMapboxToken] = useState('');
   const [showTokenInput, setShowTokenInput] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+
+  const createMarker = (place: Place) => {
+    const iconSvg = getCategoryIcon(place.category);
+    const color = getCategoryColor(place.category);
+    
+    const el = document.createElement('div');
+    el.className = 'marker';
+    el.style.width = '40px';
+    el.style.height = '40px';
+    el.style.cursor = 'pointer';
+    el.innerHTML = `
+      <div style="
+        width: 40px;
+        height: 40px;
+        background: ${color};
+        border-radius: 50% 50% 50% 0;
+        transform: rotate(-45deg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        border: 3px solid white;
+        transition: transform 0.2s;
+      "
+      onmouseover="this.style.transform='rotate(-45deg) scale(1.1)'"
+      onmouseout="this.style.transform='rotate(-45deg) scale(1)'"
+      >
+        <svg 
+          style="transform: rotate(45deg); width: 20px; height: 20px;" 
+          fill="white" 
+          viewBox="0 0 24 24"
+        >
+          ${iconSvg}
+        </svg>
+      </div>
+    `;
+
+    const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
+      <div style="padding: 12px; min-width: 200px;">
+        <h3 style="font-weight: 600; margin-bottom: 6px; font-size: 15px; color: #333;">${place.name}</h3>
+        <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
+          <span style="background: ${color}; color: white; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 500;">
+            ${place.category}
+          </span>
+        </div>
+        <p style="color: #666; font-size: 12px; margin-bottom: 4px;">📍 ${place.address}</p>
+        ${place.rating ? `<p style="color: #ff5722; font-size: 12px; font-weight: 500;">⭐ ${place.rating}/5</p>` : ''}
+      </div>
+    `);
+
+    const marker = new mapboxgl.Marker(el)
+      .setLngLat([place.longitude, place.latitude])
+      .setPopup(popup)
+      .addTo(map.current!);
+
+    el.addEventListener('click', () => {
+      navigate(`/place/${place.id}`);
+    });
+
+    return marker;
+  };
+
+  const updateMarkers = () => {
+    // Remove existing markers
+    markers.current.forEach(marker => marker.remove());
+    markers.current = [];
+
+    if (!map.current) return;
+
+    // Filter places based on category
+    const filteredPlaces = selectedCategory === 'Todos' 
+      ? mockPlaces 
+      : mockPlaces.filter(place => place.category === selectedCategory);
+
+    // Add new markers
+    filteredPlaces.forEach((place: Place) => {
+      const marker = createMarker(place);
+      markers.current.push(marker);
+    });
+  };
 
   const initializeMap = (token: string) => {
     if (!mapContainer.current) {
@@ -38,62 +126,38 @@ const MapComponent = () => {
       map.current.on('load', () => {
         console.log('Map loaded successfully');
         setIsLoading(false);
+        updateMarkers();
       });
 
       map.current.addControl(new mapboxgl.NavigationControl(), 'top-right');
 
-    // Add markers for places
-    mockPlaces.forEach((place: Place) => {
-      const el = document.createElement('div');
-      el.className = 'marker';
-      el.style.width = '40px';
-      el.style.height = '40px';
-      el.style.cursor = 'pointer';
-      el.innerHTML = `
-        <div style="
-          width: 40px;
-          height: 40px;
-          background: linear-gradient(135deg, #007bff, #ff5722);
-          border-radius: 50% 50% 50% 0;
-          transform: rotate(-45deg);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
-          border: 3px solid white;
-        ">
-          <svg 
-            style="transform: rotate(45deg); width: 20px; height: 20px;" 
-            fill="white" 
-            viewBox="0 0 24 24"
-          >
-            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-          </svg>
-        </div>
-      `;
-
-      const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
-        <div style="padding: 8px;">
-          <h3 style="font-weight: 600; margin-bottom: 4px; font-size: 14px;">${place.name}</h3>
-          <p style="color: #666; margin-bottom: 4px; font-size: 12px;">${place.category}</p>
-          <p style="color: #888; font-size: 11px;">${place.address}</p>
-        </div>
-      `);
-
-      const marker = new mapboxgl.Marker(el)
-        .setLngLat([place.longitude, place.latitude])
-        .setPopup(popup)
-        .addTo(map.current!);
-
-      el.addEventListener('click', () => {
-        navigate(`/place/${place.id}`);
-      });
-    });
     } catch (error) {
       console.error('Error initializing map:', error);
       setIsLoading(false);
     }
   };
+
+  // Effect to update markers when category changes
+  useEffect(() => {
+    if (map.current && !showTokenInput) {
+      updateMarkers();
+    }
+  }, [selectedCategory]);
+
+  // Effect to center map on selected neighborhood
+  useEffect(() => {
+    if (map.current && selectedNeighborhood && !showTokenInput) {
+      const location = neighborhoodLocations[selectedNeighborhood];
+      if (location) {
+        map.current.flyTo({
+          center: location.coordinates,
+          zoom: location.zoom,
+          duration: 1500,
+          essential: true
+        });
+      }
+    }
+  }, [selectedNeighborhood]);
 
   const handleTokenSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -123,6 +187,7 @@ const MapComponent = () => {
     return () => {
       if (map.current) {
         console.log('Cleaning up map');
+        markers.current.forEach(marker => marker.remove());
         map.current.remove();
       }
     };
