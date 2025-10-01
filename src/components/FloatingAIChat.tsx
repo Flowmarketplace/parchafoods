@@ -134,17 +134,17 @@ const FloatingAIChat = () => {
       {!isOpen && (
         <Button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-20 right-20 h-20 px-6 rounded-2xl shadow-2xl z-[100] bg-[#25D366] hover:bg-[#20bd5a] text-white transition-all hover:scale-105 animate-bounce flex items-center gap-3"
+          className="fixed bottom-6 right-4 h-16 px-6 rounded-2xl shadow-2xl z-[9999] bg-primary hover:bg-primary/90 text-primary-foreground transition-all hover:scale-105 animate-bounce flex items-center gap-3"
         >
-          <Bot className="h-10 w-10 animate-pulse" />
+          <Bot className="h-8 w-8 animate-pulse" />
           <span className="font-semibold text-sm">¿Necesitas ayuda?</span>
         </Button>
       )}
 
       {/* Chat Window */}
       {isOpen && (
-        <Card className="fixed bottom-20 right-20 w-96 h-[32rem] shadow-2xl z-[100] flex flex-col border-[#25D366] border-2">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 bg-[#25D366] text-white rounded-t-lg">
+        <Card className="fixed bottom-6 right-4 w-96 h-[32rem] shadow-2xl z-[9999] flex flex-col border-primary border-2 bg-background">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 bg-primary text-primary-foreground rounded-t-lg">
             <div className="flex items-center gap-2">
               <Bot className="h-5 w-5" />
               <CardTitle className="text-lg font-semibold">
@@ -155,9 +155,9 @@ const FloatingAIChat = () => {
               variant="ghost"
               size="icon"
               onClick={() => setIsOpen(false)}
-              className="h-8 w-8 hover:bg-white/20 text-white"
+              className="h-8 w-8 hover:bg-white/20 text-primary-foreground shrink-0"
             >
-              <X className="h-4 w-4" />
+              <X className="h-5 w-5" />
             </Button>
           </CardHeader>
 
@@ -174,8 +174,8 @@ const FloatingAIChat = () => {
                     <div
                       className={`max-w-[80%] rounded-lg px-4 py-2 ${
                         message.role === 'user'
-                          ? 'bg-[#DCF8C6] text-gray-800'
-                          : 'bg-white border border-gray-200'
+                          ? 'bg-primary text-primary-foreground'
+                          : 'bg-muted'
                       }`}
                     >
                       <p className="text-sm whitespace-pre-wrap break-words">
@@ -186,15 +186,15 @@ const FloatingAIChat = () => {
                 ))}
                 {isLoading && messages[messages.length - 1]?.content === '' && (
                   <div className="flex justify-start">
-                    <div className="bg-white border border-gray-200 rounded-lg px-4 py-2">
-                      <Loader2 className="h-4 w-4 animate-spin text-[#25D366]" />
+                    <div className="bg-muted rounded-lg px-4 py-2">
+                      <Loader2 className="h-4 w-4 animate-spin text-primary" />
                     </div>
                   </div>
                 )}
               </div>
             </ScrollArea>
 
-            <div className="p-4 border-t bg-gray-50">
+            <div className="p-4 border-t bg-background">
               <div className="flex gap-2">
                 <Input
                   value={input}
@@ -202,13 +202,13 @@ const FloatingAIChat = () => {
                   onKeyPress={handleKeyPress}
                   placeholder="Escribe tu mensaje..."
                   disabled={isLoading}
-                  className="flex-1 bg-white"
+                  className="flex-1"
                 />
                 <Button
                   onClick={handleSend}
                   disabled={!input.trim() || isLoading}
                   size="icon"
-                  className="bg-[#25D366] hover:bg-[#20bd5a] text-white"
+                  className="bg-primary hover:bg-primary/90"
                 >
                   {isLoading ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
