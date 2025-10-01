@@ -107,11 +107,12 @@ const CategoryListings = () => {
                 </div>
               </div>
 
-              <div className="flex gap-2">
+              <div className="flex flex-wrap gap-2">
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={() => setShowMap(!showMap)}
+                  className="hidden md:flex"
                 >
                   {showMap ? 'Ocultar' : 'Mostrar'} Mapa
                 </Button>
@@ -119,6 +120,7 @@ const CategoryListings = () => {
                   variant={viewMode === 'grid' ? 'default' : 'outline'}
                   size="icon"
                   onClick={() => setViewMode('grid')}
+                  className="h-9 w-9"
                 >
                   <Grid className="h-4 w-4" />
                 </Button>
@@ -126,6 +128,7 @@ const CategoryListings = () => {
                   variant={viewMode === 'list' ? 'default' : 'outline'}
                   size="icon"
                   onClick={() => setViewMode('list')}
+                  className="h-9 w-9"
                 >
                   <ListIcon className="h-4 w-4" />
                 </Button>
@@ -133,7 +136,7 @@ const CategoryListings = () => {
             </div>
 
             {/* Main Content */}
-            <div className="flex flex-col lg:flex-row gap-6">
+            <div className="flex flex-col lg:flex-row gap-4 md:gap-6">
               {/* Filters Sidebar */}
               <div className="w-full lg:w-80 flex-shrink-0">
                 <div className="lg:sticky lg:top-24">
@@ -147,23 +150,23 @@ const CategoryListings = () => {
 
               {/* Content Area */}
               <div className="flex-1 min-w-0">
-                <div className={showMap ? 'grid grid-cols-1 xl:grid-cols-2 gap-6' : ''}>
+                <div className={showMap ? 'grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6' : ''}>
                   {/* Places List */}
-                  <div className={viewMode === 'grid' ? 'space-y-6' : 'space-y-4'}>
+                  <div className={viewMode === 'grid' ? 'space-y-4 md:space-y-6' : 'space-y-3 md:space-y-4'}>
                     {filteredPlaces.length === 0 ? (
-                      <div className="text-center py-12 bg-card rounded-lg border">
-                        <p className="text-muted-foreground mb-4">
+                      <div className="text-center py-8 md:py-12 bg-card rounded-lg border">
+                        <p className="text-sm md:text-base text-muted-foreground mb-4">
                           No se encontraron lugares con estos filtros
                         </p>
-                        <Button variant="outline" onClick={handleClearFilters}>
+                        <Button variant="outline" onClick={handleClearFilters} size="sm">
                           Limpiar filtros
                         </Button>
                       </div>
                     ) : (
                       <div className={
                         viewMode === 'grid'
-                          ? 'grid grid-cols-1 sm:grid-cols-2 gap-6'
-                          : 'flex flex-col gap-4'
+                          ? 'grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6'
+                          : 'flex flex-col gap-3 md:gap-4'
                       }>
                         {filteredPlaces.map((place) => (
                           <PlaceCard key={place.id} place={place} />
@@ -174,7 +177,7 @@ const CategoryListings = () => {
 
                   {/* Map */}
                   {showMap && (
-                    <div className="hidden xl:block">
+                    <div className="hidden lg:block">
                       <div className="sticky top-24 h-[calc(100vh-120px)] rounded-lg overflow-hidden border shadow-lg">
                         <MapComponent
                           selectedCategory={category}

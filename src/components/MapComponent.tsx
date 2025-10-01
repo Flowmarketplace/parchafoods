@@ -214,23 +214,23 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
 
   if (showTokenInput) {
     return (
-      <div className="flex items-center justify-center h-full bg-muted/30">
-        <Card className="p-6 max-w-md w-full mx-4">
-          <div className="flex items-center gap-2 mb-4">
-            <MapPin className="h-6 w-6 text-primary" />
-            <h2 className="text-xl font-semibold">Configurar Mapa</h2>
+      <div className="flex items-center justify-center h-full bg-muted/30 p-4">
+        <Card className="p-4 sm:p-6 max-w-md w-full">
+          <div className="flex items-center gap-2 mb-3 sm:mb-4">
+            <MapPin className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+            <h2 className="text-lg sm:text-xl font-semibold">Configurar Mapa</h2>
           </div>
-          <p className="text-sm text-muted-foreground mb-4">
+          <p className="text-xs sm:text-sm text-muted-foreground mb-3 sm:mb-4">
             Para mostrar el mapa interactivo, necesitas un token público de Mapbox.
           </p>
-          <form onSubmit={handleTokenSubmit} className="space-y-4">
+          <form onSubmit={handleTokenSubmit} className="space-y-3 sm:space-y-4">
             <div>
               <Input
                 type="text"
-                placeholder="Ingresa tu token público de Mapbox"
+                placeholder="Token de Mapbox"
                 value={mapboxToken}
                 onChange={(e) => setMapboxToken(e.target.value)}
-                className="w-full"
+                className="w-full text-sm"
               />
               <p className="text-xs text-muted-foreground mt-2">
                 Obtén tu token en{' '}
@@ -244,7 +244,7 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
                 </a>
               </p>
             </div>
-            <Button type="submit" className="w-full">
+            <Button type="submit" className="w-full text-sm">
               Cargar Mapa
             </Button>
           </form>
