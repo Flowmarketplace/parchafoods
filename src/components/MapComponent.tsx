@@ -5,7 +5,9 @@ import { mockPlaces } from '@/data/places';
 import { useNavigate } from 'react-router-dom';
 import { getCategoryIcon, getCategoryColor } from '@/utils/categoryIcons';
 import { neighborhoodLocations } from '@/data/neighborhoods';
-import { useMapboxToken } from '@/hooks/useMapboxToken';
+
+// Mapbox public token (safe to expose in frontend)
+const MAPBOX_TOKEN = 'pk.eyJ1IjoiaGFuZGNpdHkiLCJhIjoiY2syNmp3ZjUxMzJkMzNtcGl6dXR6ZTV0diJ9.0xE-C5rlwWBM80gUY1POzw';
 
 interface MapComponentProps {
   selectedNeighborhood?: string;
@@ -19,7 +21,6 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
   const [isLoading, setIsLoading] = useState(true);
   const [mapLoaded, setMapLoaded] = useState(false);
   const navigate = useNavigate();
-  const { token: mapboxToken, isLoading: tokenLoading, error: tokenError } = useMapboxToken();
 
   const createMarker = (place: Place) => {
     if (!map.current) {
@@ -117,8 +118,8 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
   };
 
   const initializeMap = () => {
-    if (!mapContainer.current || !mapboxToken) {
-      console.log('Map container or token not ready');
+    if (!mapContainer.current) {
+      console.log('Map container not ready');
       return;
     }
 
@@ -126,7 +127,7 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
     setIsLoading(true);
     
     try {
-      mapboxgl.accessToken = mapboxToken;
+      mapboxgl.accessToken = MAPBOX_TOKEN;
 
       // Check if mobile
       const isMobile = window.innerWidth < 768;
@@ -191,7 +192,7 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
 
   // Initialize map on mount
   useEffect(() => {
-    if (!mapContainer.current || !mapboxToken) return;
+    if (!mapContainer.current) return;
     
     console.log('Initializing map on mount');
     initializeMap();
@@ -204,23 +205,12 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
         setMapLoaded(false);
       }
     };
-  }, [mapboxToken]);
-
-  if (tokenError) {
-    return (
-      <div className="relative w-full h-full bg-background flex items-center justify-center">
-        <div className="text-center p-6">
-          <p className="text-muted-foreground">Error al cargar el mapa</p>
-          <p className="text-sm text-muted-foreground mt-2">{tokenError}</p>
-        </div>
-      </div>
-    );
-  }
+  }, []);
 
   return (
     <div className="relative w-full h-full bg-background">
       <div ref={mapContainer} className="absolute inset-0 w-full h-full" />
-      {(isLoading || tokenLoading) && (
+      {isLoading && (
         <div className="absolute inset-0 flex items-center justify-center bg-background/80 z-10">
           <div className="flex flex-col items-center gap-3">
             <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent" />

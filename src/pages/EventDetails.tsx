@@ -339,10 +339,7 @@ const EventDetails = () => {
                       height="100%"
                       style={{ border: 0 }}
                       loading="lazy"
-                      allowFullScreen
-                      referrerPolicy="no-referrer-when-downgrade"
-                      src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=${event.latitude},${event.longitude}&zoom=15`}
-                      title={`Mapa de ubicación de ${event.name}`}
+                      src={`https://www.google.com/maps?q=${event.latitude},${event.longitude}&output=embed`}
                     />
                   </div>
                   <p className="text-sm text-muted-foreground mt-4">
