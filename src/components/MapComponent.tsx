@@ -13,21 +13,34 @@ const MapComponent = () => {
   const map = useRef<mapboxgl.Map | null>(null);
   const [mapboxToken, setMapboxToken] = useState('');
   const [showTokenInput, setShowTokenInput] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const initializeMap = (token: string) => {
-    if (!mapContainer.current) return;
+    if (!mapContainer.current) {
+      console.log('Map container not ready');
+      return;
+    }
 
-    mapboxgl.accessToken = token;
+    console.log('Initializing map with token');
+    setIsLoading(true);
+    
+    try {
+      mapboxgl.accessToken = token;
 
-    map.current = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/streets-v12',
-      center: [-76.5225, 3.4516], // Cali, Colombia
-      zoom: 12,
-    });
+      map.current = new mapboxgl.Map({
+        container: mapContainer.current,
+        style: 'mapbox://styles/mapbox/streets-v12',
+        center: [-76.5225, 3.4516], // Cali, Colombia
+        zoom: 12,
+      });
 
-    map.current.addControl(new mapboxgl.NavigationControl(), 'top-right');
+      map.current.on('load', () => {
+        console.log('Map loaded successfully');
+        setIsLoading(false);
+      });
+
+      map.current.addControl(new mapboxgl.NavigationControl(), 'top-right');
 
     // Add markers for places
     mockPlaces.forEach((place: Place) => {
@@ -76,27 +89,42 @@ const MapComponent = () => {
         navigate(`/place/${place.id}`);
       });
     });
+    } catch (error) {
+      console.error('Error initializing map:', error);
+      setIsLoading(false);
+    }
   };
 
   const handleTokenSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (mapboxToken.trim()) {
+      console.log('Saving token and initializing map');
       localStorage.setItem('mapbox_token', mapboxToken);
       setShowTokenInput(false);
-      initializeMap(mapboxToken);
+      // Delay to ensure DOM is ready
+      setTimeout(() => {
+        initializeMap(mapboxToken);
+      }, 100);
     }
   };
 
   useEffect(() => {
     const savedToken = localStorage.getItem('mapbox_token');
     if (savedToken) {
+      console.log('Found saved token, initializing map');
       setMapboxToken(savedToken);
       setShowTokenInput(false);
-      initializeMap(savedToken);
+      // Delay to ensure DOM is ready
+      setTimeout(() => {
+        initializeMap(savedToken);
+      }, 100);
     }
 
     return () => {
-      map.current?.remove();
+      if (map.current) {
+        console.log('Cleaning up map');
+        map.current.remove();
+      }
     };
   }, []);
 
@@ -142,8 +170,16 @@ const MapComponent = () => {
   }
 
   return (
-    <div className="relative w-full h-full">
-      <div ref={mapContainer} className="absolute inset-0" />
+    <div className="relative w-full h-full bg-background">
+      <div ref={mapContainer} className="absolute inset-0 w-full h-full" />
+      {isLoading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-background/80 z-10">
+          <div className="flex flex-col items-center gap-3">
+            <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent" />
+            <p className="text-sm text-muted-foreground">Cargando mapa...</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
