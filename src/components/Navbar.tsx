@@ -1,6 +1,6 @@
-import { Menu, MapPin } from 'lucide-react';
+import { Menu, MapPin, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import FilterBar from './FilterBar';
+import { Input } from '@/components/ui/input';
 
 interface NavbarProps {
   onMenuClick: () => void;
@@ -14,7 +14,7 @@ const Navbar = ({ onMenuClick, searchQuery, onSearchChange, selectedNeighborhood
   const showFilter = searchQuery !== undefined && onSearchChange && selectedNeighborhood !== undefined && onNeighborhoodChange;
   
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
+    <header className="bg-background border-b border-border">
       <div className="w-full max-w-screen-2xl mx-auto px-4 sm:px-4 md:px-6">
         <div className="flex items-center justify-between h-14 sm:h-16">
           <div className="flex items-center gap-3">
@@ -38,15 +38,19 @@ const Navbar = ({ onMenuClick, searchQuery, onSearchChange, selectedNeighborhood
           </div>
         </div>
         
-        {/* Filter Bar below logo - only show on home page */}
-        {showFilter && (
+        {/* Search Bar only - no neighborhood selector */}
+        {showFilter && onSearchChange && (
           <div className="pb-3">
-            <FilterBar
-              searchQuery={searchQuery}
-              onSearchChange={onSearchChange}
-              selectedNeighborhood={selectedNeighborhood}
-              onNeighborhoodChange={onNeighborhoodChange}
-            />
+            <div className="relative">
+              <Search className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
+              <Input
+                type="search"
+                placeholder="Buscar lugares..."
+                value={searchQuery}
+                onChange={(e) => onSearchChange(e.target.value)}
+                className="pl-8 sm:pl-10 bg-muted/50 h-9 sm:h-10 text-sm"
+              />
+            </div>
           </div>
         )}
       </div>

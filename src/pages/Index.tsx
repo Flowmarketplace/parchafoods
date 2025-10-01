@@ -60,16 +60,35 @@ const Index = () => {
         onNeighborhoodChange={setSelectedNeighborhood}
       />
       
-      <div className="flex flex-1 pt-28 sm:pt-32">
+      <div className="flex flex-1">
         <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
         
         <main className="flex-1 lg:ml-64">
-          {/* Map Section - Reduced height on mobile */}
+          {/* Map Section */}
           <div className="h-[35vh] sm:h-[35vh] md:h-[40vh] lg:h-[60vh] w-full">
             <MapComponent 
               selectedNeighborhood={selectedNeighborhood}
               selectedCategory={selectedCategory}
             />
+          </div>
+
+          {/* Neighborhood Selector below map */}
+          <div className="w-full bg-card border-b border-border">
+            <div className="w-full max-w-screen-2xl mx-auto px-4 sm:px-4 md:px-6 py-3">
+              <select
+                value={selectedNeighborhood}
+                onChange={(e) => setSelectedNeighborhood(e.target.value)}
+                className="w-full sm:w-auto px-3 py-2 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+              >
+                <option value="Todos">Todos los barrios</option>
+                <option value="Granada">Granada</option>
+                <option value="San Antonio">San Antonio</option>
+                <option value="El Peñón">El Peñón</option>
+                <option value="San Fernando">San Fernando</option>
+                <option value="Ciudad Jardín">Ciudad Jardín</option>
+                <option value="Juanchito">Juanchito</option>
+              </select>
+            </div>
           </div>
 
           {/* Category Bar */}
