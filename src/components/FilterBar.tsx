@@ -31,6 +31,9 @@ const FilterBar = ({
         <div className="flex flex-col md:flex-row gap-3">
           {/* Search Input */}
           <div className="relative flex-1">
+            <label className="text-xs font-medium text-muted-foreground mb-1.5 block">
+              Escribe el nombre o categoría
+            </label>
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               type="search"
