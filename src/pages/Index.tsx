@@ -88,7 +88,7 @@ const Index = () => {
                 <div className="flex items-center justify-between mb-3 sm:mb-4 md:mb-6">
                   <div className="flex items-center gap-2 sm:gap-3">
                     <Star className="h-5 w-5 sm:h-6 sm:w-6 text-secondary" />
-                    <h2 className="text-lg sm:text-xl md:text-2xl font-bold">Lugares Encontrados</h2>
+                    <h2 className="text-lg sm:text-xl md:text-2xl font-bold">Lugares Destacados</h2>
                   </div>
                   <Button 
                     variant="ghost" 
@@ -134,7 +134,6 @@ const Index = () => {
               {selectedCategory !== 'Todos' && (
                 <div className="mb-4 sm:mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between bg-card border rounded-lg p-3 sm:p-4 gap-3">
                   <div>
-                    <h2 className="text-xl sm:text-2xl font-bold mb-1">{ selectedCategory}</h2>
                     <p className="text-xs sm:text-sm text-muted-foreground">
                       {filteredPlaces.length} {filteredPlaces.length === 1 ? 'resultado' : 'resultados'} encontrados
                     </p>
