@@ -25,7 +25,7 @@ const FloatingAIChat = () => {
   const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
-
+  
   // Only show on home page
   if (location.pathname !== '/') {
     return null;
