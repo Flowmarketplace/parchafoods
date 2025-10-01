@@ -16,6 +16,7 @@ const EventsListings = () => {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   
   const [filters, setFilters] = useState<EventFilters>({
+    date: undefined,
     type: 'Todos',
     priceRange: 'Todos',
     isFree: false,
@@ -27,6 +28,16 @@ const EventsListings = () => {
 
   const filteredEvents = useMemo(() => {
     return mockEvents.filter((event: Event) => {
+      // Date filter - compare only the date part
+      if (filters.date) {
+        const eventDate = new Date(event.date);
+        const filterDate = new Date(filters.date);
+        // Reset time to compare only dates
+        eventDate.setHours(0, 0, 0, 0);
+        filterDate.setHours(0, 0, 0, 0);
+        if (eventDate.getTime() !== filterDate.getTime()) return false;
+      }
+      
       // Type filter
       if (filters.type !== 'Todos' && event.type !== filters.type) return false;
       
@@ -49,6 +60,7 @@ const EventsListings = () => {
 
   const handleClearFilters = () => {
     setFilters({
+      date: undefined,
       type: 'Todos',
       priceRange: 'Todos',
       isFree: false,
