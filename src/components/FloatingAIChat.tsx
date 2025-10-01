@@ -26,10 +26,7 @@ const FloatingAIChat = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
   
-  // Only show on home page
-  if (location.pathname !== '/') {
-    return null;
-  }
+  const isHomePage = location.pathname === '/';
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -134,6 +131,11 @@ const FloatingAIChat = () => {
       handleSend();
     }
   };
+
+  // Don't render anything if not on home page
+  if (!isHomePage) {
+    return null;
+  }
 
   return (
     <>
