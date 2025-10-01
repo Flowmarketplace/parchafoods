@@ -129,12 +129,28 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
     try {
       mapboxgl.accessToken = MAPBOX_TOKEN;
 
+      // Check if mobile
+      const isMobile = window.innerWidth < 768;
+      
       map.current = new mapboxgl.Map({
         container: mapContainer.current,
         style: 'mapbox://styles/mapbox/streets-v12',
         center: [-76.5225, 3.4516], // Cali, Colombia
-        zoom: 12,
+        zoom: isMobile ? 13.5 : 12,
+        pitch: isMobile ? 0 : 0,
+        maxBounds: isMobile ? [
+          [-76.6, 3.35], // Southwest coordinates
+          [-76.45, 3.55]  // Northeast coordinates
+        ] : undefined,
       });
+      
+      // Disable interactions on mobile
+      if (isMobile) {
+        map.current.dragPan.disable();
+        map.current.scrollZoom.disable();
+        map.current.doubleClickZoom.disable();
+        map.current.touchZoomRotate.disable();
+      }
 
       map.current.on('load', () => {
         console.log('Map loaded successfully');

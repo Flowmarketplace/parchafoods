@@ -25,18 +25,18 @@ const EventCard = ({ event }: EventCardProps) => {
       className="overflow-hidden hover:shadow-lg transition-all cursor-pointer group active:scale-[0.98] touch-manipulation"
       onClick={() => navigate(`/event/${event.id}`)}
     >
-      <div className="relative h-36 sm:h-40 md:h-48 overflow-hidden">
+      <div className="relative h-40 sm:h-48 overflow-hidden">
         <img
           src={event.images[0]}
           alt={event.name}
-          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
         />
         {event.featured && (
-          <Badge className="absolute top-2 sm:top-3 right-2 sm:right-3 bg-secondary text-xs">
+          <Badge className="absolute top-2 right-2 bg-secondary text-xs">
             Destacado
           </Badge>
         )}
-        <div className="absolute top-2 sm:top-3 left-2 sm:left-3">
+        <div className="absolute top-2 left-2">
           <Badge variant="outline" className="bg-background/90 backdrop-blur-sm text-xs">
             {event.type}
           </Badge>
