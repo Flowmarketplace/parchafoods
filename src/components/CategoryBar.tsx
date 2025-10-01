@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import { 
   Grid, 
   Utensils, 
@@ -41,7 +41,7 @@ const categories: CategoryItem[] = [
 ];
 
 const CategoryBar = ({ selectedCategory, onCategoryChange }: CategoryBarProps) => {
-  const [showAll, setShowAll] = React.useState(false);
+  const [showAll, setShowAll] = useState(false);
   
   // Show only first 7 categories on mobile when not expanded
   const visibleCategories = showAll ? categories : categories.slice(0, 7);
