@@ -44,6 +44,41 @@ const PlaceCard = ({ place }: PlaceCardProps) => {
         <Badge variant="outline" className="mb-2">
           {place.category}
         </Badge>
+
+        {/* Food Types - Only for Restaurants */}
+        {place.foodType && place.foodType.length > 0 && (
+          <div className="flex flex-wrap gap-1 mb-2">
+            {place.foodType.slice(0, 2).map((type) => (
+              <Badge key={type} variant="secondary" className="text-xs">
+                🍽️ {type}
+              </Badge>
+            ))}
+          </div>
+        )}
+
+        {/* Características */}
+        <div className="flex flex-wrap gap-1 mb-3">
+          {place.familyFriendly && (
+            <Badge variant="outline" className="text-xs">
+              👨‍👩‍👧‍👦
+            </Badge>
+          )}
+          {place.petFriendly && (
+            <Badge variant="outline" className="text-xs">
+              🐕
+            </Badge>
+          )}
+          {place.goodForCouples && (
+            <Badge variant="outline" className="text-xs">
+              💑
+            </Badge>
+          )}
+          {place.goodForKids && (
+            <Badge variant="outline" className="text-xs">
+              👶
+            </Badge>
+          )}
+        </div>
         
         <div className="flex items-start gap-2 text-sm text-muted-foreground mb-2">
           <MapPin className="h-4 w-4 mt-0.5 flex-shrink-0" />

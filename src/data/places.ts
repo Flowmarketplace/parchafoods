@@ -20,6 +20,12 @@ export const mockPlaces: Place[] = [
     priceRange: '$$',
     featured: true,
     hasMenu: true,
+    foodType: ['Colombiana'],
+    familyFriendly: true,
+    petFriendly: false,
+    goodForCouples: true,
+    goodForKids: true,
+    attributes: ['WiFi', 'Estacionamiento', 'Terraza'],
     menu: [
       {
         id: 'm1',
@@ -92,6 +98,11 @@ export const mockPlaces: Place[] = [
     rating: 4.2,
     priceRange: 'Gratis',
     featured: true,
+    familyFriendly: true,
+    petFriendly: true,
+    goodForKids: true,
+    goodForCouples: false,
+    attributes: ['Juegos Infantiles', 'Canchas Deportivas', 'Zona Verde'],
     reviews: [
       {
         id: '3',
@@ -129,6 +140,12 @@ export const mockPlaces: Place[] = [
     priceRange: '$$',
     featured: false,
     hasMenu: true,
+    foodType: ['Colombiana', 'Parrilla'],
+    familyFriendly: true,
+    petFriendly: false,
+    goodForCouples: true,
+    goodForKids: true,
+    attributes: ['Estacionamiento', 'Terraza', 'Aire Acondicionado'],
     menu: [
       {
         id: 'm6',
@@ -175,6 +192,12 @@ export const mockPlaces: Place[] = [
     priceRange: '$',
     featured: true,
     hasMenu: true,
+    foodType: ['Café', 'Repostería'],
+    familyFriendly: true,
+    petFriendly: true,
+    goodForCouples: true,
+    goodForKids: false,
+    attributes: ['WiFi', 'Aire Acondicionado', 'Música en Vivo'],
     menu: [
       {
         id: 'm8',

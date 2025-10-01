@@ -47,9 +47,16 @@ const CategoryListings = () => {
       
       // Food type filter (only for restaurants)
       if (filters.foodType.length > 0 && place.category === 'Restaurante') {
-        // This would need a foodType field in the Place interface
-        // For now, we'll pass all restaurants
+        if (!place.foodType || !filters.foodType.some(type => place.foodType?.includes(type))) {
+          return false;
+        }
       }
+      
+      // Characteristics filters
+      if (filters.familyFriendly && !place.familyFriendly) return false;
+      if (filters.petFriendly && !place.petFriendly) return false;
+      if (filters.couples && !place.goodForCouples) return false;
+      if (filters.kids && !place.goodForKids) return false;
       
       return true;
     });

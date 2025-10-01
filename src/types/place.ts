@@ -46,6 +46,13 @@ export interface Place {
   services?: Service[];
   hasServices?: boolean;
   airbnbUrl?: string;
+  // Características y filtros
+  foodType?: string[]; // Para restaurantes: ['Colombiana', 'Internacional', etc.]
+  familyFriendly?: boolean;
+  petFriendly?: boolean;
+  goodForCouples?: boolean;
+  goodForKids?: boolean;
+  attributes?: string[]; // Otros atributos específicos: ['WiFi', 'Parking', 'Terraza', etc.]
 }
 
 export interface Review {
