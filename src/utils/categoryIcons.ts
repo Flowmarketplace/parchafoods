@@ -10,6 +10,7 @@ export const categoryIcons: Record<string, string> = {
   'Hotel': `<path d="M7 13c1.66 0 3-1.34 3-3S8.66 7 7 7s-3 1.34-3 3 1.34 3 3 3zm12-6h-8v7H3V5H1v15h2v-3h18v3h2v-9c0-2.21-1.79-4-4-4z"/>`,
   'Entretenimiento': `<path d="M18 3v2h-2V3H8v2H6V3H4v18h2v-2h2v2h8v-2h2v2h2V3h-2zM8 17H6v-2h2v2zm0-4H6v-2h2v2zm0-4H6V7h2v2zm10 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2z"/>`,
   'Servicios': `<path d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4z"/>`,
+  'Inmobiliaria': `<path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>`,
   'Otro': `<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>`
 };
 
@@ -29,6 +30,7 @@ export const getCategoryColor = (category: string): string => {
     'Hotel': '#3f51b5',
     'Entretenimiento': '#e91e63',
     'Servicios': '#607d8b',
+    'Inmobiliaria': '#2196f3',
     'Otro': '#9e9e9e'
   };
   
