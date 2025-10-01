@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Bot, X, Send, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -12,6 +13,7 @@ interface Message {
 }
 
 const FloatingAIChat = () => {
+  const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -23,6 +25,11 @@ const FloatingAIChat = () => {
   const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
+
+  // Only show on home page
+  if (location.pathname !== '/') {
+    return null;
+  }
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -134,7 +141,7 @@ const FloatingAIChat = () => {
       {!isOpen && (
         <Button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 left-6 h-16 px-6 rounded-2xl shadow-2xl z-[9999] bg-primary hover:bg-primary/90 text-primary-foreground transition-all hover:scale-105 animate-bounce flex items-center gap-3"
+          className="fixed bottom-6 right-6 h-16 px-6 rounded-2xl shadow-2xl z-[9999] bg-primary hover:bg-primary/90 text-primary-foreground transition-all hover:scale-105 animate-bounce flex items-center gap-3"
         >
           <Bot className="h-8 w-8 animate-pulse" />
           <span className="font-semibold text-sm">¿Necesitas ayuda?</span>
@@ -143,7 +150,7 @@ const FloatingAIChat = () => {
 
       {/* Chat Window */}
       {isOpen && (
-        <Card className="fixed bottom-6 left-6 w-96 h-[32rem] shadow-2xl z-[9999] flex flex-col border-primary border-2 bg-background">
+        <Card className="fixed bottom-6 right-6 w-96 h-[32rem] shadow-2xl z-[9999] flex flex-col border-primary border-2 bg-background">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 bg-primary text-primary-foreground rounded-t-lg">
             <div className="flex items-center gap-2">
               <Bot className="h-5 w-5" />
