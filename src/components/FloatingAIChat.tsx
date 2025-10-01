@@ -1,10 +1,10 @@
 import { useState, useRef, useEffect } from 'react';
-import { MessageCircle, X, Send, Loader2 } from 'lucide-react';
+import { Bot, X, Send, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Input } from '@/components/ui/input';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -134,25 +134,28 @@ const FloatingAIChat = () => {
       {!isOpen && (
         <Button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 h-14 w-14 rounded-full shadow-lg z-50"
+          className="fixed bottom-8 right-8 h-16 w-16 rounded-full shadow-2xl z-[100] bg-[#25D366] hover:bg-[#20bd5a] text-white transition-all hover:scale-110"
           size="icon"
         >
-          <MessageCircle className="h-6 w-6" />
+          <Bot className="h-8 w-8" />
         </Button>
       )}
 
       {/* Chat Window */}
       {isOpen && (
-        <Card className="fixed bottom-6 right-6 w-96 h-[32rem] shadow-2xl z-50 flex flex-col">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 border-b">
-            <CardTitle className="text-lg font-semibold">
-              Asistente Virtual
-            </CardTitle>
+        <Card className="fixed bottom-8 right-8 w-96 h-[32rem] shadow-2xl z-[100] flex flex-col border-[#25D366] border-2">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 bg-[#25D366] text-white rounded-t-lg">
+            <div className="flex items-center gap-2">
+              <Bot className="h-5 w-5" />
+              <CardTitle className="text-lg font-semibold">
+                Asistente Virtual
+              </CardTitle>
+            </div>
             <Button
               variant="ghost"
               size="icon"
               onClick={() => setIsOpen(false)}
-              className="h-8 w-8"
+              className="h-8 w-8 hover:bg-white/20 text-white"
             >
               <X className="h-4 w-4" />
             </Button>
@@ -171,8 +174,8 @@ const FloatingAIChat = () => {
                     <div
                       className={`max-w-[80%] rounded-lg px-4 py-2 ${
                         message.role === 'user'
-                          ? 'bg-primary text-primary-foreground'
-                          : 'bg-muted'
+                          ? 'bg-[#DCF8C6] text-gray-800'
+                          : 'bg-white border border-gray-200'
                       }`}
                     >
                       <p className="text-sm whitespace-pre-wrap break-words">
@@ -183,15 +186,15 @@ const FloatingAIChat = () => {
                 ))}
                 {isLoading && messages[messages.length - 1]?.content === '' && (
                   <div className="flex justify-start">
-                    <div className="bg-muted rounded-lg px-4 py-2">
-                      <Loader2 className="h-4 w-4 animate-spin" />
+                    <div className="bg-white border border-gray-200 rounded-lg px-4 py-2">
+                      <Loader2 className="h-4 w-4 animate-spin text-[#25D366]" />
                     </div>
                   </div>
                 )}
               </div>
             </ScrollArea>
 
-            <div className="p-4 border-t">
+            <div className="p-4 border-t bg-gray-50">
               <div className="flex gap-2">
                 <Input
                   value={input}
@@ -199,12 +202,13 @@ const FloatingAIChat = () => {
                   onKeyPress={handleKeyPress}
                   placeholder="Escribe tu mensaje..."
                   disabled={isLoading}
-                  className="flex-1"
+                  className="flex-1 bg-white"
                 />
                 <Button
                   onClick={handleSend}
                   disabled={!input.trim() || isLoading}
                   size="icon"
+                  className="bg-[#25D366] hover:bg-[#20bd5a] text-white"
                 >
                   {isLoading ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
