@@ -97,51 +97,52 @@ const PlaceDetails = () => {
                 )}
               </div>
 
+              {/* Redes Sociales */}
+              <div className="flex gap-3 mb-6">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="rounded-full hover:bg-[#1877F2] hover:text-white hover:border-[#1877F2] transition-colors"
+                  onClick={() => window.open('https://facebook.com', '_blank')}
+                  aria-label="Facebook"
+                >
+                  <Facebook className="h-5 w-5" />
+                </Button>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="rounded-full hover:bg-[#E4405F] hover:text-white hover:border-[#E4405F] transition-colors"
+                  onClick={() => window.open('https://instagram.com', '_blank')}
+                  aria-label="Instagram"
+                >
+                  <Instagram className="h-5 w-5" />
+                </Button>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="rounded-full hover:bg-[#1DA1F2] hover:text-white hover:border-[#1DA1F2] transition-colors"
+                  onClick={() => window.open('https://twitter.com', '_blank')}
+                  aria-label="Twitter"
+                >
+                  <Twitter className="h-5 w-5" />
+                </Button>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="rounded-full hover:bg-[#25D366] hover:text-white hover:border-[#25D366] transition-colors"
+                  onClick={() => {
+                    const phone = place.phone?.replace(/\D/g, '') || '';
+                    window.open(`https://wa.me/${phone}`, '_blank');
+                  }}
+                  aria-label="WhatsApp"
+                >
+                  <Share2 className="h-5 w-5" />
+                </Button>
+              </div>
+
               {place.description && (
                 <p className="text-muted-foreground mb-6">{place.description}</p>
               )}
-
-              {/* Redes Sociales */}
-              <div className="mb-6">
-                <h3 className="font-semibold mb-3">Síguenos en redes sociales</h3>
-                <div className="flex gap-3">
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    className="rounded-full hover:bg-[#1877F2] hover:text-white hover:border-[#1877F2] transition-colors"
-                    onClick={() => window.open('https://facebook.com', '_blank')}
-                  >
-                    <Facebook className="h-5 w-5" />
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    className="rounded-full hover:bg-[#E4405F] hover:text-white hover:border-[#E4405F] transition-colors"
-                    onClick={() => window.open('https://instagram.com', '_blank')}
-                  >
-                    <Instagram className="h-5 w-5" />
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    className="rounded-full hover:bg-[#1DA1F2] hover:text-white hover:border-[#1DA1F2] transition-colors"
-                    onClick={() => window.open('https://twitter.com', '_blank')}
-                  >
-                    <Twitter className="h-5 w-5" />
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    className="rounded-full hover:bg-[#25D366] hover:text-white hover:border-[#25D366] transition-colors"
-                    onClick={() => {
-                      const phone = place.phone?.replace(/\D/g, '') || '';
-                      window.open(`https://wa.me/${phone}`, '_blank');
-                    }}
-                  >
-                    <Share2 className="h-5 w-5" />
-                  </Button>
-                </div>
-              </div>
 
               <div className="space-y-4 mb-6">
                 <div className="flex items-start gap-3">
