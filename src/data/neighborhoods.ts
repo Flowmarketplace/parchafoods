@@ -20,6 +20,11 @@ export const neighborhoodLocations: Record<string, NeighborhoodLocation> = {
     coordinates: [-76.5225, 3.4372],
     zoom: 14
   },
+  'Decepaz': {
+    name: 'Decepaz',
+    coordinates: [-76.5180, 3.4100],
+    zoom: 14
+  },
   'Ciudad Jardín': {
     name: 'Ciudad Jardín',
     coordinates: [-76.5355, 3.3762],
