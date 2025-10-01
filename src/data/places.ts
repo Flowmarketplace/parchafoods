@@ -624,6 +624,279 @@ export const mockPlaces: Place[] = [
         date: '2024-02-13'
       }
     ]
+  },
+  // Ciudad Jardín
+  {
+    id: '21',
+    name: 'Pizzería Napolitana',
+    category: 'Restaurante',
+    address: 'Calle 18 #100-45, Barrio Ciudad Jardín',
+    neighborhood: 'Ciudad Jardín',
+    phone: '+57 2 555 4123',
+    description: 'Auténtica pizza napolitana con ingredientes importados. Horno de leña tradicional y ambiente italiano.',
+    images: [
+      'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=800&q=80',
+      'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800&q=80',
+      'https://images.unsplash.com/photo-1571407970349-bc81e7e96c47?w=800&q=80'
+    ],
+    latitude: 3.3783,
+    longitude: -76.5317,
+    rating: 4.8,
+    priceRange: '$$',
+    featured: true,
+    hasMenu: true,
+    menu: [
+      {
+        id: 'm13',
+        name: 'Pizza Margherita',
+        description: 'Tomate San Marzano, mozzarella di bufala, albahaca fresca',
+        price: '$32.000',
+        category: 'Pizzas'
+      },
+      {
+        id: 'm14',
+        name: 'Pizza Quattro Formaggi',
+        description: 'Mozzarella, gorgonzola, parmesano y provolone',
+        price: '$35.000',
+        category: 'Pizzas'
+      }
+    ],
+    reviews: []
+  },
+  {
+    id: '22',
+    name: 'Gimnasio FitZone',
+    category: 'Servicios',
+    address: 'Carrera 102 #19-30, Barrio Ciudad Jardín',
+    neighborhood: 'Ciudad Jardín',
+    phone: '+57 2 555 4234',
+    description: 'Gimnasio completo con equipos de última generación, clases grupales, entrenadores personales y zona de crossfit.',
+    images: [
+      'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80',
+      'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=800&q=80',
+      'https://images.unsplash.com/photo-1623874514711-0f321325f318?w=800&q=80'
+    ],
+    latitude: 3.3790,
+    longitude: -76.5320,
+    rating: 4.6,
+    priceRange: '$$',
+    featured: true,
+    reviews: []
+  },
+  // San Fernando
+  {
+    id: '23',
+    name: 'Cafetería Artesanal Origen',
+    category: 'Café',
+    address: 'Calle 5 #38-20, Barrio San Fernando',
+    neighborhood: 'San Fernando',
+    phone: '+57 2 555 5345',
+    description: 'Café de especialidad con métodos de extracción manuales. Barista certificado y granos de origen único.',
+    images: [
+      'https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=800&q=80',
+      'https://images.unsplash.com/photo-1453614512568-c4024d13c247?w=800&q=80',
+      'https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=800&q=80'
+    ],
+    latitude: 3.4210,
+    longitude: -76.5380,
+    rating: 4.9,
+    priceRange: '$$',
+    featured: true,
+    hasMenu: true,
+    menu: [
+      {
+        id: 'm15',
+        name: 'V60 Pour Over',
+        description: 'Café de origen único con método manual',
+        price: '$8.000',
+        category: 'Métodos de Extracción'
+      },
+      {
+        id: 'm16',
+        name: 'Cold Brew',
+        description: 'Café en frío extraído por 16 horas',
+        price: '$9.000',
+        category: 'Bebidas Frías'
+      }
+    ],
+    reviews: []
+  },
+  {
+    id: '24',
+    name: 'Panadería La Espiga Dorada',
+    category: 'Restaurante',
+    address: 'Carrera 39 #6-15, Barrio San Fernando',
+    neighborhood: 'San Fernando',
+    phone: '+57 2 555 5456',
+    description: 'Panadería tradicional con pan recién horneado todos los días. Especialidad en pan francés y pastelería.',
+    images: [
+      'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800&q=80',
+      'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=800&q=80',
+      'https://images.unsplash.com/photo-1550617931-e17a7b70dce2?w=800&q=80'
+    ],
+    latitude: 3.4215,
+    longitude: -76.5375,
+    rating: 4.7,
+    priceRange: '$',
+    featured: true,
+    reviews: []
+  },
+  // Granada
+  {
+    id: '25',
+    name: 'Restaurante Vegetariano Raíces',
+    category: 'Restaurante',
+    address: 'Calle 8 #50-25, Barrio Granada',
+    neighborhood: 'Granada',
+    phone: '+57 2 555 6567',
+    description: 'Cocina vegetariana y vegana con ingredientes orgánicos locales. Opciones sin gluten disponibles.',
+    images: [
+      'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=800&q=80',
+      'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&q=80',
+      'https://images.unsplash.com/photo-1540914124281-342587941389?w=800&q=80'
+    ],
+    latitude: 3.4320,
+    longitude: -76.5410,
+    rating: 4.6,
+    priceRange: '$$',
+    featured: true,
+    hasMenu: true,
+    menu: [
+      {
+        id: 'm17',
+        name: 'Bowl Buddha',
+        description: 'Quinoa, vegetales asados, hummus y tahini',
+        price: '$22.000',
+        category: 'Platos Principales'
+      },
+      {
+        id: 'm18',
+        name: 'Hamburguesa Vegana',
+        description: 'Hamburguesa de lentejas con aguacate y chips',
+        price: '$19.000',
+        category: 'Platos Principales'
+      }
+    ],
+    reviews: []
+  },
+  {
+    id: '26',
+    name: 'Librería Café Páginas',
+    category: 'Café',
+    address: 'Carrera 51 #9-40, Barrio Granada',
+    neighborhood: 'Granada',
+    phone: '+57 2 555 6678',
+    description: 'Librería independiente con cafetería. Eventos literarios, clubes de lectura y música en vivo los fines de semana.',
+    images: [
+      'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&q=80',
+      'https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=800&q=80',
+      'https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=800&q=80'
+    ],
+    latitude: 3.4325,
+    longitude: -76.5405,
+    rating: 4.8,
+    priceRange: '$$',
+    featured: false,
+    reviews: []
+  },
+  // El Peñón
+  {
+    id: '27',
+    name: 'Mercado Campesino El Peñón',
+    category: 'Centro Comercial',
+    address: 'Calle 70 #8A-50, Barrio El Peñón',
+    neighborhood: 'El Peñón',
+    phone: '+57 2 555 7789',
+    description: 'Mercado local con productos frescos del campo. Frutas, verduras, lácteos y carnes de productores locales.',
+    images: [
+      'https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=800&q=80',
+      'https://images.unsplash.com/photo-1542838132-92c53300491e?w=800&q=80',
+      'https://images.unsplash.com/photo-1506617564039-2f3b650b7010?w=800&q=80'
+    ],
+    latitude: 3.4520,
+    longitude: -76.5280,
+    rating: 4.3,
+    priceRange: '$',
+    featured: false,
+    reviews: []
+  },
+  {
+    id: '28',
+    name: 'Clínica Dental Sonrisa Perfecta',
+    category: 'Hospital',
+    address: 'Carrera 9 #71-15, Barrio El Peñón',
+    neighborhood: 'El Peñón',
+    phone: '+57 2 555 7890',
+    description: 'Clínica odontológica especializada en tratamientos estéticos y ortodoncia. Tecnología de punta.',
+    images: [
+      'https://images.unsplash.com/photo-1588776814546-daab30f310ce?w=800&q=80',
+      'https://images.unsplash.com/photo-1606811971618-4486d14f3f99?w=800&q=80',
+      'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=800&q=80'
+    ],
+    latitude: 3.4525,
+    longitude: -76.5275,
+    rating: 4.5,
+    priceRange: '$$',
+    featured: false,
+    reviews: []
+  },
+  // Versalles
+  {
+    id: '29',
+    name: 'Sushi Bar Tokio',
+    category: 'Restaurante',
+    address: 'Calle 23N #5N-63, Barrio Versalles',
+    neighborhood: 'Versalles',
+    phone: '+57 2 555 8901',
+    description: 'Restaurante japonés con sushi fresco y cocina nikkei. Chef con experiencia internacional.',
+    images: [
+      'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=800&q=80',
+      'https://images.unsplash.com/photo-1583623025817-d180a2221d0a?w=800&q=80',
+      'https://images.unsplash.com/photo-1617196034796-73dfa7b1fd56?w=800&q=80'
+    ],
+    latitude: 3.4580,
+    longitude: -76.5360,
+    rating: 4.7,
+    priceRange: '$$$',
+    featured: true,
+    hasMenu: true,
+    menu: [
+      {
+        id: 'm19',
+        name: 'Sushi Roll California',
+        description: 'Cangrejo, aguacate, pepino y sésamo',
+        price: '$28.000',
+        category: 'Rolls'
+      },
+      {
+        id: 'm20',
+        name: 'Sashimi Variado',
+        description: 'Selección de pescado fresco del día',
+        price: '$42.000',
+        category: 'Sashimi'
+      }
+    ],
+    reviews: []
+  },
+  {
+    id: '30',
+    name: 'Parque de los Poetas',
+    category: 'Parque',
+    address: 'Avenida 4N con Calle 24N, Barrio Versalles',
+    neighborhood: 'Versalles',
+    phone: '+57 2 555 9012',
+    description: 'Hermoso parque urbano con esculturas, zonas verdes y senderos para caminar. Perfecto para ejercicio matutino.',
+    images: [
+      'https://images.unsplash.com/photo-1519331379826-f10be5486c6f?w=800&q=80',
+      'https://images.unsplash.com/photo-1572198166687-ea769c66c1aa?w=800&q=80',
+      'https://images.unsplash.com/photo-1516302752625-fcc3c50ae61f?w=800&q=80'
+    ],
+    latitude: 3.4585,
+    longitude: -76.5365,
+    rating: 4.4,
+    priceRange: 'Gratis',
+    featured: false,
+    reviews: []
   }
 ];
 
