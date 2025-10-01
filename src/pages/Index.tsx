@@ -133,11 +133,9 @@ const Index = () => {
             <div className="w-full max-w-screen-2xl mx-auto px-4 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
               {selectedCategory !== 'Todos' && (
                 <div className="mb-4 sm:mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between bg-card border rounded-lg p-3 sm:p-4 gap-3">
-                  <div>
-                    <p className="text-xs sm:text-sm text-muted-foreground">
-                      {filteredPlaces.length} {filteredPlaces.length === 1 ? 'resultado' : 'resultados'} encontrados
-                    </p>
-                  </div>
+                  <p className="text-sm sm:text-base text-muted-foreground font-normal">
+                    {filteredPlaces.length} {filteredPlaces.length === 1 ? 'lugar encontrado' : 'lugares encontrados'}
+                  </p>
                   <Button
                     size="sm"
                     onClick={() => navigate(`/listings?category=${selectedCategory}`)}
