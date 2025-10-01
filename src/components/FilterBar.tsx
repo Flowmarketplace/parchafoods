@@ -42,19 +42,24 @@ const FilterBar = ({
           </div>
 
           {/* Neighborhood Select */}
-          <Select value={selectedNeighborhood} onValueChange={onNeighborhoodChange}>
-            <SelectTrigger className="w-full md:w-[200px] h-11">
-              <MapPin className="h-4 w-4 mr-2" />
-              <SelectValue placeholder="Barrio" />
-            </SelectTrigger>
-            <SelectContent className="bg-popover z-50">
-              {neighborhoods.map((neighborhood) => (
-                <SelectItem key={neighborhood} value={neighborhood}>
-                  {neighborhood}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <div className="w-full md:w-[200px]">
+            <label className="text-xs font-medium text-muted-foreground mb-1.5 block">
+              Escoge el barrio
+            </label>
+            <Select value={selectedNeighborhood} onValueChange={onNeighborhoodChange}>
+              <SelectTrigger className="w-full h-11">
+                <MapPin className="h-4 w-4 mr-2" />
+                <SelectValue placeholder="Barrio" />
+              </SelectTrigger>
+              <SelectContent className="bg-popover z-50">
+                {neighborhoods.map((neighborhood) => (
+                  <SelectItem key={neighborhood} value={neighborhood}>
+                    {neighborhood}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
 
           {/* Advanced Filters Button */}
           <Button
