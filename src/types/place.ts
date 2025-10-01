@@ -7,6 +7,23 @@ export interface MenuItem {
   image?: string;
 }
 
+export interface Product {
+  id: string;
+  name: string;
+  description?: string;
+  price: string;
+  category?: string;
+  image?: string;
+}
+
+export interface Service {
+  id: string;
+  name: string;
+  description: string;
+  price: string;
+  duration?: string;
+}
+
 export interface Place {
   id: string;
   name: string;
@@ -24,6 +41,11 @@ export interface Place {
   featured?: boolean;
   menu?: MenuItem[];
   hasMenu?: boolean;
+  products?: Product[];
+  hasProducts?: boolean;
+  services?: Service[];
+  hasServices?: boolean;
+  airbnbUrl?: string;
 }
 
 export interface Review {

@@ -293,6 +293,30 @@ export const mockPlaces: Place[] = [
     rating: 4.4,
     priceRange: '$$',
     featured: false,
+    hasProducts: true,
+    products: [
+      {
+        id: 'p4',
+        name: 'Acetaminofén 500mg',
+        description: 'Caja x 10 tabletas - Analgésico y antipirético',
+        price: '$3.500',
+        category: 'Medicamentos'
+      },
+      {
+        id: 'p5',
+        name: 'Alcohol Antiséptico',
+        description: 'Frasco de 250ml al 70%',
+        price: '$8.000',
+        category: 'Cuidado Personal'
+      },
+      {
+        id: 'p6',
+        name: 'Vitamina C 1000mg',
+        description: 'Frasco x 30 cápsulas',
+        price: '$25.000',
+        category: 'Suplementos'
+      }
+    ],
     reviews: [
       {
         id: '8',
@@ -321,6 +345,30 @@ export const mockPlaces: Place[] = [
     rating: 4.1,
     priceRange: '$',
     featured: false,
+    hasProducts: true,
+    products: [
+      {
+        id: 'p7',
+        name: 'Ibuprofeno 400mg',
+        description: 'Caja x 20 tabletas - Antiinflamatorio',
+        price: '$6.000',
+        category: 'Medicamentos'
+      },
+      {
+        id: 'p8',
+        name: 'Crema Dental',
+        description: 'Tubo de 150ml con flúor',
+        price: '$9.500',
+        category: 'Cuidado Personal'
+      },
+      {
+        id: 'p9',
+        name: 'Termómetro Digital',
+        description: 'Lectura rápida en 60 segundos',
+        price: '$18.000',
+        category: 'Equipos Médicos'
+      }
+    ],
     reviews: []
   },
   // Bancos
@@ -419,6 +467,30 @@ export const mockPlaces: Place[] = [
     rating: 3.8,
     priceRange: '$',
     featured: false,
+    hasProducts: true,
+    products: [
+      {
+        id: 'p1',
+        name: 'Kit de Herramientas Básicas',
+        description: 'Set completo con martillo, destornilladores, alicates y llave inglesa',
+        price: '$85.000',
+        category: 'Ferretería'
+      },
+      {
+        id: 'p2',
+        name: 'Camiseta Deportiva',
+        description: 'Tela transpirable, varios colores disponibles',
+        price: '$35.000',
+        category: 'Ropa'
+      },
+      {
+        id: 'p3',
+        name: 'Aceite de Cocina (1L)',
+        description: 'Aceite vegetal premium',
+        price: '$12.000',
+        category: 'Supermercado'
+      }
+    ],
     reviews: []
   },
   // Hospitales
@@ -489,6 +561,28 @@ export const mockPlaces: Place[] = [
     rating: 4.1,
     priceRange: '$$',
     featured: false,
+    hasServices: true,
+    services: [
+      {
+        id: 'h1',
+        name: 'Habitación Sencilla',
+        description: 'Cama doble, baño privado, TV, Wi-Fi, desayuno incluido',
+        price: '$120.000/noche'
+      },
+      {
+        id: 'h2',
+        name: 'Habitación Doble',
+        description: 'Dos camas, baño privado, TV, Wi-Fi, desayuno incluido',
+        price: '$150.000/noche'
+      },
+      {
+        id: 'h3',
+        name: 'Suite Ejecutiva',
+        description: 'Cama king, sala de estar, baño con jacuzzi, desayuno y cena incluidos',
+        price: '$250.000/noche'
+      }
+    ],
+    airbnbUrl: 'https://www.airbnb.com',
     reviews: [
       {
         id: '12',
@@ -517,6 +611,29 @@ export const mockPlaces: Place[] = [
     rating: 4.6,
     priceRange: '$$$',
     featured: true,
+    hasServices: true,
+    services: [
+      {
+        id: 'h4',
+        name: 'Habitación Ejecutiva',
+        description: 'Cama queen, escritorio de trabajo, Wi-Fi de alta velocidad, desayuno buffet',
+        price: '$180.000/noche'
+      },
+      {
+        id: 'h5',
+        name: 'Suite Junior',
+        description: 'Cama king, sala de estar, minibar, desayuno y acceso al lounge ejecutivo',
+        price: '$280.000/noche'
+      },
+      {
+        id: 'h6',
+        name: 'Alquiler de Sala de Reuniones',
+        description: 'Sala con capacidad para 12 personas, proyector, Wi-Fi, servicio de café',
+        price: '$100.000/hora',
+        duration: 'Por hora'
+      }
+    ],
+    airbnbUrl: 'https://www.airbnb.com',
     reviews: []
   },
   // Entretenimiento
@@ -587,6 +704,30 @@ export const mockPlaces: Place[] = [
     rating: 4.4,
     priceRange: '$$',
     featured: false,
+    hasServices: true,
+    services: [
+      {
+        id: 's1',
+        name: 'Cambio de Aceite',
+        description: 'Cambio de aceite y filtro, incluye revisión de niveles',
+        price: '$80.000',
+        duration: '30 min'
+      },
+      {
+        id: 's2',
+        name: 'Diagnóstico Computarizado',
+        description: 'Escaneo completo del sistema electrónico del vehículo',
+        price: '$50.000',
+        duration: '45 min'
+      },
+      {
+        id: 's3',
+        name: 'Cambio de Frenos',
+        description: 'Cambio de pastillas y discos de freno',
+        price: '$250.000',
+        duration: '2 horas'
+      }
+    ],
     reviews: [
       {
         id: '14',

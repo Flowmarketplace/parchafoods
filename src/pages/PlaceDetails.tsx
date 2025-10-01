@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, MapPin, Phone, Star, UtensilsCrossed, Facebook, Instagram, Twitter, Share2 } from 'lucide-react';
+import { ArrowLeft, MapPin, Phone, Star, UtensilsCrossed, Facebook, Instagram, Twitter, Share2, ShoppingBag, Briefcase, Home as HomeIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -138,6 +138,17 @@ const PlaceDetails = () => {
                 >
                   <Share2 className="h-5 w-5" />
                 </Button>
+                {place.airbnbUrl && (
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="rounded-full hover:bg-[#FF5A5F] hover:text-white hover:border-[#FF5A5F] transition-colors"
+                    onClick={() => window.open(place.airbnbUrl, '_blank')}
+                    aria-label="Airbnb"
+                  >
+                    <HomeIcon className="h-5 w-5" />
+                  </Button>
+                )}
               </div>
 
               {place.description && (
@@ -191,6 +202,18 @@ const PlaceDetails = () => {
                       Menú
                     </TabsTrigger>
                   )}
+                  {place.hasProducts && (
+                    <TabsTrigger value="productos">
+                      <ShoppingBag className="h-4 w-4 mr-2" />
+                      Productos
+                    </TabsTrigger>
+                  )}
+                  {place.hasServices && (
+                    <TabsTrigger value="servicios">
+                      <Briefcase className="h-4 w-4 mr-2" />
+                      Servicios
+                    </TabsTrigger>
+                  )}
                   <TabsTrigger value="resenas">Reseñas</TabsTrigger>
                 </TabsList>
 
@@ -208,6 +231,54 @@ const PlaceDetails = () => {
                 {place.hasMenu && place.menu && (
                   <TabsContent value="menu" className="mt-6">
                     <PlaceMenu menu={place.menu} />
+                  </TabsContent>
+                )}
+
+                {place.hasProducts && place.products && (
+                  <TabsContent value="productos" className="mt-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {place.products.map((product) => (
+                        <Card key={product.id}>
+                          <CardContent className="p-4">
+                            <div className="flex justify-between items-start mb-2">
+                              <h3 className="font-semibold text-lg">{product.name}</h3>
+                              <span className="font-bold text-primary">{product.price}</span>
+                            </div>
+                            {product.description && (
+                              <p className="text-sm text-muted-foreground mb-2">{product.description}</p>
+                            )}
+                            {product.category && (
+                              <Badge variant="outline">{product.category}</Badge>
+                            )}
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  </TabsContent>
+                )}
+
+                {place.hasServices && place.services && (
+                  <TabsContent value="servicios" className="mt-6">
+                    <div className="space-y-4">
+                      {place.services.map((service) => (
+                        <Card key={service.id}>
+                          <CardContent className="p-4">
+                            <div className="flex justify-between items-start mb-2">
+                              <div className="flex-1">
+                                <h3 className="font-semibold text-lg mb-1">{service.name}</h3>
+                                <p className="text-sm text-muted-foreground">{service.description}</p>
+                              </div>
+                              <div className="text-right ml-4">
+                                <span className="font-bold text-primary block">{service.price}</span>
+                                {service.duration && (
+                                  <span className="text-xs text-muted-foreground">{service.duration}</span>
+                                )}
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
                   </TabsContent>
                 )}
 
