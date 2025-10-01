@@ -42,8 +42,8 @@ const categories: CategoryItem[] = [
 const CategoryBar = ({ selectedCategory, onCategoryChange }: CategoryBarProps) => {
   return (
     <div className="w-full bg-card border-y border-border shadow-sm">
-      <div className="container mx-auto px-4 py-3">
-        <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-2">
+      <div className="container mx-auto px-2 sm:px-4 py-2 sm:py-3">
+        <div className="flex gap-1.5 sm:gap-2 overflow-x-auto scrollbar-hide pb-1 sm:pb-2 -mx-2 px-2">
           {categories.map((category) => {
             const Icon = category.icon;
             const isActive = selectedCategory === category.id;
@@ -54,12 +54,12 @@ const CategoryBar = ({ selectedCategory, onCategoryChange }: CategoryBarProps) =
                 variant={isActive ? 'default' : 'outline'}
                 onClick={() => onCategoryChange(category.id)}
                 className={cn(
-                  'flex flex-col items-center justify-center gap-1 min-w-[80px] h-auto py-3 px-4 whitespace-nowrap',
+                  'flex flex-col items-center justify-center gap-0.5 sm:gap-1 min-w-[70px] sm:min-w-[80px] h-auto py-2 sm:py-3 px-2 sm:px-4 whitespace-nowrap flex-shrink-0',
                   isActive && 'shadow-md'
                 )}
               >
-                <Icon className="h-5 w-5" />
-                <span className="text-xs font-medium">{category.name}</span>
+                <Icon className="h-4 w-4 sm:h-5 sm:w-5" />
+                <span className="text-[10px] sm:text-xs font-medium">{category.name}</span>
               </Button>
             );
           })}

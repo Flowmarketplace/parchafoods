@@ -54,12 +54,12 @@ const Index = () => {
     <div className="min-h-screen w-full flex flex-col">
       <Navbar onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
       
-      <div className="flex flex-1 pt-16 md:pt-28">
+      <div className="flex flex-1 pt-14 sm:pt-16 md:pt-20">
         <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
         
         <main className="flex-1 lg:ml-64">
           {/* Map Section */}
-          <div className="h-[40vh] sm:h-[50vh] md:h-[60vh] lg:h-[70vh]">
+          <div className="h-[35vh] sm:h-[40vh] md:h-[50vh] lg:h-[70vh]">
             <MapComponent 
               selectedNeighborhood={selectedNeighborhood}
               selectedCategory={selectedCategory}
@@ -82,46 +82,46 @@ const Index = () => {
 
           {/* Content Sections */}
           {!showFilters ? (
-            <div className="px-4 py-8 space-y-12">
+            <div className="px-2 sm:px-4 py-4 sm:py-6 md:py-8 space-y-6 sm:space-y-8 md:space-y-12">
               {/* Featured/Popular Places Section */}
               <section>
-                <div className="flex items-center justify-between mb-6">
-                  <div className="flex items-center gap-3">
-                    <Star className="h-6 w-6 text-secondary" />
-                    <h2 className="text-2xl font-bold">Lugares Destacados</h2>
+                <div className="flex items-center justify-between mb-3 sm:mb-4 md:mb-6">
+                  <div className="flex items-center gap-2 sm:gap-3">
+                    <Star className="h-5 w-5 sm:h-6 sm:w-6 text-secondary" />
+                    <h2 className="text-lg sm:text-xl md:text-2xl font-bold">Lugares Destacados</h2>
                   </div>
                   <Button 
                     variant="ghost" 
-                    className="gap-2"
+                    className="gap-1 sm:gap-2 h-8 sm:h-10 text-xs sm:text-sm"
                     onClick={() => navigate('/listings')}
                   >
                     Ver todos
-                    <ChevronRight className="h-4 w-4" />
+                    <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4" />
                   </Button>
                 </div>
                 <PlacesList places={featuredPlaces} />
               </section>
 
               {/* Real Estate Section */}
-              <section className="bg-muted/30 -mx-4 px-4 py-8">
-                <div className="flex items-center justify-between mb-6">
-                  <div className="flex items-center gap-3">
-                    <Calendar className="h-6 w-6 text-primary" />
+              <section className="bg-muted/30 -mx-2 sm:-mx-4 px-2 sm:px-4 py-4 sm:py-6 md:py-8">
+                <div className="flex items-center justify-between mb-3 sm:mb-4 md:mb-6">
+                  <div className="flex items-center gap-2 sm:gap-3">
+                    <Calendar className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
                     <div>
-                      <h2 className="text-2xl font-bold">¿Qué hay para hacer?</h2>
-                      <p className="text-sm text-muted-foreground">Eventos, conciertos, teatro, cine y más</p>
+                      <h2 className="text-lg sm:text-xl md:text-2xl font-bold">¿Qué hay para hacer?</h2>
+                      <p className="text-xs sm:text-sm text-muted-foreground hidden sm:block">Eventos, conciertos, teatro, cine y más</p>
                     </div>
                   </div>
                   <Button 
                     variant="ghost" 
-                    className="gap-2"
+                    className="gap-1 sm:gap-2 h-8 sm:h-10 text-xs sm:text-sm"
                     onClick={() => navigate('/events-all')}
                   >
                     Ver todos
-                    <ChevronRight className="h-4 w-4" />
+                    <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4" />
                   </Button>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
                   {featuredEvents.map(event => (
                     <EventCard key={event.id} event={event} />
                   ))}
@@ -130,22 +130,22 @@ const Index = () => {
             </div>
           ) : (
             /* Filtered Results */
-            <div className="px-4 py-8">
+            <div className="px-2 sm:px-4 py-4 sm:py-6 md:py-8">
               {selectedCategory !== 'Todos' && (
-                <div className="mb-6 flex items-center justify-between bg-card border rounded-lg p-4">
+                <div className="mb-4 sm:mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between bg-card border rounded-lg p-3 sm:p-4 gap-3">
                   <div>
-                    <h2 className="text-2xl font-bold mb-1">{selectedCategory}</h2>
-                    <p className="text-sm text-muted-foreground">
+                    <h2 className="text-xl sm:text-2xl font-bold mb-1">{ selectedCategory}</h2>
+                    <p className="text-xs sm:text-sm text-muted-foreground">
                       {filteredPlaces.length} {filteredPlaces.length === 1 ? 'resultado' : 'resultados'} encontrados
                     </p>
                   </div>
                   <Button
-                    size="lg"
+                    size="sm"
                     onClick={() => navigate(`/listings?category=${selectedCategory}`)}
-                    className="gap-2"
+                    className="gap-1.5 sm:gap-2 w-full sm:w-auto text-xs sm:text-sm"
                   >
-                    Ver todas con filtros avanzados
-                    <ChevronRight className="h-5 w-5" />
+                    Ver todas con filtros
+                    <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5" />
                   </Button>
                 </div>
               )}

@@ -27,36 +27,36 @@ const FilterBar = ({
 }: FilterBarProps) => {
   return (
     <div className="w-full bg-background/95 backdrop-blur-sm border-b border-border">
-      <div className="container mx-auto px-4 py-4">
-        <div className="flex flex-col md:flex-row gap-3">
+      <div className="container mx-auto px-2 sm:px-4 py-3 sm:py-4">
+        <div className="flex flex-col md:flex-row gap-2 sm:gap-3">
           {/* Search Input */}
           <div className="relative flex-1">
-            <label className="text-xs font-medium text-muted-foreground mb-1.5 block">
+            <label className="text-[10px] sm:text-xs font-medium text-muted-foreground mb-1 sm:mb-1.5 block">
               Escribe el nombre o categoría
             </label>
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Search className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
             <Input
               type="search"
-              placeholder="Buscar lugares, negocios..."
+              placeholder="Buscar lugares..."
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
-              className="pl-10 h-11"
+              className="pl-8 sm:pl-10 h-9 sm:h-11 text-sm"
             />
           </div>
 
           {/* Neighborhood Select */}
           <div className="w-full md:w-[200px]">
-            <label className="text-xs font-medium text-muted-foreground mb-1.5 block">
+            <label className="text-[10px] sm:text-xs font-medium text-muted-foreground mb-1 sm:mb-1.5 block">
               Escoge el barrio
             </label>
             <Select value={selectedNeighborhood} onValueChange={onNeighborhoodChange}>
-              <SelectTrigger className="w-full h-11">
-                <MapPin className="h-4 w-4 mr-2" />
+              <SelectTrigger className="w-full h-9 sm:h-11 text-sm">
+                <MapPin className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1.5 sm:mr-2" />
                 <SelectValue placeholder="Barrio" />
               </SelectTrigger>
               <SelectContent className="bg-popover z-50">
                 {neighborhoods.map((neighborhood) => (
-                  <SelectItem key={neighborhood} value={neighborhood}>
+                  <SelectItem key={neighborhood} value={neighborhood} className="text-sm">
                     {neighborhood}
                   </SelectItem>
                 ))}
@@ -68,9 +68,9 @@ const FilterBar = ({
           <Button
             variant="outline"
             onClick={onAdvancedFilters}
-            className="w-full md:w-auto h-11"
+            className="w-full md:w-auto h-9 sm:h-11 text-sm"
           >
-            <SlidersHorizontal className="h-4 w-4 mr-2" />
+            <SlidersHorizontal className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1.5 sm:mr-2" />
             Filtros
           </Button>
         </div>
