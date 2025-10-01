@@ -1,6 +1,5 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import FloatingAIChat from "./components/FloatingAIChat";
 import Index from "./pages/Index";
 import PlaceDetails from "./pages/PlaceDetails";
 import EventDetails from "./pages/EventDetails";
@@ -15,7 +14,6 @@ import NotFound from "./pages/NotFound";
 const App = () => {
   return (
     <BrowserRouter>
-      <FloatingAIChat />
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/place/:id" element={<PlaceDetails />} />
