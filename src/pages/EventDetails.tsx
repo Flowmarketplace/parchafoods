@@ -147,93 +147,100 @@ const EventDetails = () => {
             </div>
 
             {/* Details */}
-            <div className="p-6">
-              <div className="flex items-start justify-between mb-4">
+            <div className="p-4 sm:p-6">
+              {/* Title and Description - Full width on mobile */}
+              <div className="mb-4">
+                <h1 className="text-2xl sm:text-3xl font-bold mb-2">{event.name}</h1>
+                <p className="text-base sm:text-lg text-muted-foreground mb-4">{event.venue}</p>
+                {event.description && (
+                  <p className="text-sm sm:text-base text-muted-foreground mb-4">{event.description}</p>
+                )}
+              </div>
+
+              {/* Price and Button - Stacked on mobile, side by side on desktop */}
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 p-4 bg-muted/30 rounded-lg">
                 <div>
-                  <h1 className="text-3xl font-bold mb-2">{event.name}</h1>
-                  <p className="text-lg text-muted-foreground mb-2">{event.venue}</p>
-                </div>
-                <div className="text-right">
-                  <div className="text-2xl font-bold text-primary">
+                  <p className="text-sm text-muted-foreground mb-1">Precio</p>
+                  <div className="text-2xl sm:text-3xl font-bold text-primary">
                     {event.price}
                   </div>
-                  {event.price !== 'Gratis' && (
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button className="mt-2 gap-2">
-                          <Ticket className="h-4 w-4" />
-                          Comprar Boletas
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent className="sm:max-w-[425px]">
-                        <DialogHeader>
-                          <DialogTitle>Comprar Boletas</DialogTitle>
-                          <DialogDescription>
-                            {event.name}
-                          </DialogDescription>
-                        </DialogHeader>
-                        <form onSubmit={handlePurchase} className="space-y-4">
-                          <div className="space-y-2">
-                            <Label htmlFor="quantity">Cantidad de boletas</Label>
-                            <Input
-                              id="quantity"
-                              type="number"
-                              min="1"
-                              max="10"
-                              value={ticketQuantity}
-                              onChange={(e) => setTicketQuantity(parseInt(e.target.value) || 1)}
-                            />
-                          </div>
-                          <div className="space-y-2">
-                            <Label htmlFor="name">Nombre completo</Label>
-                            <Input
-                              id="name"
-                              placeholder="Juan Pérez"
-                              value={buyerName}
-                              onChange={(e) => setBuyerName(e.target.value)}
-                              required
-                            />
-                          </div>
-                          <div className="space-y-2">
-                            <Label htmlFor="email">Email</Label>
-                            <Input
-                              id="email"
-                              type="email"
-                              placeholder="juan@ejemplo.com"
-                              value={buyerEmail}
-                              onChange={(e) => setBuyerEmail(e.target.value)}
-                              required
-                            />
-                          </div>
-                          <div className="space-y-2">
-                            <Label htmlFor="phone">Teléfono</Label>
-                            <Input
-                              id="phone"
-                              type="tel"
-                              placeholder="+57 300 123 4567"
-                              value={buyerPhone}
-                              onChange={(e) => setBuyerPhone(e.target.value)}
-                              required
-                            />
-                          </div>
-                          <div className="pt-4 border-t">
-                            <div className="flex justify-between items-center mb-4">
-                              <span className="font-semibold">Total:</span>
-                              <span className="text-2xl font-bold text-primary">{getTotalPrice()}</span>
-                            </div>
-                            <Button type="submit" className="w-full">
-                              Confirmar Compra
-                            </Button>
-                          </div>
-                        </form>
-                      </DialogContent>
-                    </Dialog>
-                  )}
                 </div>
+                {event.price !== 'Gratis' && (
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button className="w-full sm:w-auto gap-2" size="lg">
+                        <Ticket className="h-4 w-4" />
+                        Comprar Boletas
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-[425px]">
+                      <DialogHeader>
+                        <DialogTitle>Comprar Boletas</DialogTitle>
+                        <DialogDescription>
+                          {event.name}
+                        </DialogDescription>
+                      </DialogHeader>
+                      <form onSubmit={handlePurchase} className="space-y-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="quantity">Cantidad de boletas</Label>
+                          <Input
+                            id="quantity"
+                            type="number"
+                            min="1"
+                            max="10"
+                            value={ticketQuantity}
+                            onChange={(e) => setTicketQuantity(parseInt(e.target.value) || 1)}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="name">Nombre completo</Label>
+                          <Input
+                            id="name"
+                            placeholder="Juan Pérez"
+                            value={buyerName}
+                            onChange={(e) => setBuyerName(e.target.value)}
+                            required
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="email">Email</Label>
+                          <Input
+                            id="email"
+                            type="email"
+                            placeholder="juan@ejemplo.com"
+                            value={buyerEmail}
+                            onChange={(e) => setBuyerEmail(e.target.value)}
+                            required
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="phone">Teléfono</Label>
+                          <Input
+                            id="phone"
+                            type="tel"
+                            placeholder="+57 300 123 4567"
+                            value={buyerPhone}
+                            onChange={(e) => setBuyerPhone(e.target.value)}
+                            required
+                          />
+                        </div>
+                        <div className="pt-4 border-t">
+                          <div className="flex justify-between items-center mb-4">
+                            <span className="font-semibold">Total:</span>
+                            <span className="text-2xl font-bold text-primary">{getTotalPrice()}</span>
+                          </div>
+                          <Button type="submit" className="w-full">
+                            Confirmar Compra
+                          </Button>
+                        </div>
+                      </form>
+                    </DialogContent>
+                  </Dialog>
+                )}
               </div>
 
               {/* Redes Sociales */}
-              <div className="flex gap-3 mb-6">
+              <div className="flex gap-2 sm:gap-3 mb-6">
                 <Button
                   variant="outline"
                   size="icon"
@@ -280,9 +287,6 @@ const EventDetails = () => {
                 </Button>
               </div>
 
-              {event.description && (
-                <p className="text-muted-foreground mb-6">{event.description}</p>
-              )}
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                 <div className="flex items-start gap-3 p-4 bg-muted/30 rounded-lg">
