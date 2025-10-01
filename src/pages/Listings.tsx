@@ -35,7 +35,7 @@ const Listings = () => {
         <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
         
         <main className="flex-1 lg:ml-64">
-          <div className="container mx-auto px-4 py-6">
+          <div className="w-full max-w-screen-2xl mx-auto px-3 sm:px-4 md:px-6 py-3 sm:py-4 md:py-6">
             <div className="mb-6">
               <h1 className="text-3xl font-bold mb-2">Explorar lugares</h1>
               <p className="text-muted-foreground">

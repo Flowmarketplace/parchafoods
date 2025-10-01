@@ -3,13 +3,11 @@ import mapboxgl from 'mapbox-gl';
 import { Place } from '@/types/place';
 import { mockPlaces } from '@/data/places';
 import { useNavigate } from 'react-router-dom';
-import { Card } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { MapPin } from 'lucide-react';
 import { getCategoryIcon, getCategoryColor } from '@/utils/categoryIcons';
 import { neighborhoodLocations } from '@/data/neighborhoods';
-import { supabase } from '@/integrations/supabase/client';
+
+// Mapbox public token (safe to expose in frontend)
+const MAPBOX_TOKEN = 'pk.eyJ1IjoiaGFuZGNpdHkiLCJhIjoiY2syNmp3ZjUxMzJkMzNtcGl6dXR6ZTV0diJ9.0xE-C5rlwWBM80gUY1POzw';
 
 interface MapComponentProps {
   selectedNeighborhood?: string;
@@ -20,8 +18,6 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
   const markers = useRef<mapboxgl.Marker[]>([]);
-  const [mapboxToken, setMapboxToken] = useState('');
-  const [showTokenInput, setShowTokenInput] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [mapLoaded, setMapLoaded] = useState(false);
   const navigate = useNavigate();
@@ -121,17 +117,17 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
     });
   };
 
-  const initializeMap = (token: string) => {
+  const initializeMap = () => {
     if (!mapContainer.current) {
       console.log('Map container not ready');
       return;
     }
 
-    console.log('Initializing map with token');
+    console.log('Initializing map');
     setIsLoading(true);
     
     try {
-      mapboxgl.accessToken = token;
+      mapboxgl.accessToken = MAPBOX_TOKEN;
 
       map.current = new mapboxgl.Map({
         container: mapContainer.current,
@@ -156,15 +152,15 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
 
   // Effect to update markers when category changes or map loads
   useEffect(() => {
-    if (map.current && mapLoaded && !showTokenInput) {
+    if (map.current && mapLoaded) {
       console.log('Updating markers for category:', selectedCategory);
       updateMarkers();
     }
-  }, [selectedCategory, mapLoaded, showTokenInput]);
+  }, [selectedCategory, mapLoaded]);
 
   // Effect to center map on selected neighborhood
   useEffect(() => {
-    if (map.current && mapLoaded && selectedNeighborhood && !showTokenInput) {
+    if (map.current && mapLoaded && selectedNeighborhood) {
       const location = neighborhoodLocations[selectedNeighborhood];
       if (location) {
         console.log('Flying to neighborhood:', selectedNeighborhood);
@@ -176,71 +172,14 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
         });
       }
     }
-  }, [selectedNeighborhood, mapLoaded, showTokenInput]);
+  }, [selectedNeighborhood, mapLoaded]);
 
-  const handleTokenSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (mapboxToken.trim()) {
-      console.log('Saving token and initializing map');
-      localStorage.setItem('mapbox_token', mapboxToken);
-      setShowTokenInput(false);
-      setTimeout(() => {
-        initializeMap(mapboxToken);
-      }, 100);
-    }
-  };
-
-  // Try to fetch token from backend, fallback to localStorage or manual input
+  // Initialize map on mount
   useEffect(() => {
-    const fetchTokenAndInitMap = async () => {
-      try {
-        console.log('Attempting to fetch Mapbox token from backend');
-        setIsLoading(true);
-        
-        const { data, error: fetchError } = await supabase.functions.invoke('get-mapbox-token');
-        
-        if (!fetchError && data?.token) {
-          console.log('Token received from backend, initializing map');
-          setTimeout(() => {
-            initializeMap(data.token);
-          }, 100);
-          return;
-        }
-        
-        // Fallback to localStorage
-        const savedToken = localStorage.getItem('mapbox_token');
-        if (savedToken) {
-          console.log('Using saved token from localStorage');
-          setMapboxToken(savedToken);
-          setShowTokenInput(false);
-          setTimeout(() => {
-            initializeMap(savedToken);
-          }, 100);
-        } else {
-          console.log('No token found, showing input form');
-          setShowTokenInput(true);
-          setIsLoading(false);
-        }
-        
-      } catch (err) {
-        console.error('Error fetching token:', err);
-        // Fallback to localStorage
-        const savedToken = localStorage.getItem('mapbox_token');
-        if (savedToken) {
-          console.log('Using saved token from localStorage after error');
-          setMapboxToken(savedToken);
-          setShowTokenInput(false);
-          setTimeout(() => {
-            initializeMap(savedToken);
-          }, 100);
-        } else {
-          setShowTokenInput(true);
-          setIsLoading(false);
-        }
-      }
-    };
-
-    fetchTokenAndInitMap();
+    if (!mapContainer.current) return;
+    
+    console.log('Initializing map on mount');
+    initializeMap();
 
     return () => {
       if (map.current) {
@@ -251,47 +190,6 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
       }
     };
   }, []);
-
-  if (showTokenInput) {
-    return (
-      <div className="flex items-center justify-center h-full bg-muted/30 p-4">
-        <Card className="p-4 sm:p-6 max-w-md w-full">
-          <div className="flex items-center gap-2 mb-3 sm:mb-4">
-            <MapPin className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
-            <h2 className="text-lg sm:text-xl font-semibold">Configurar Mapa</h2>
-          </div>
-          <p className="text-xs sm:text-sm text-muted-foreground mb-3 sm:mb-4">
-            Para mostrar el mapa interactivo, ingresa tu token público de Mapbox.
-          </p>
-          <form onSubmit={handleTokenSubmit} className="space-y-3 sm:space-y-4">
-            <div>
-              <Input
-                type="text"
-                placeholder="pk.eyJ1Ij..."
-                value={mapboxToken}
-                onChange={(e) => setMapboxToken(e.target.value)}
-                className="w-full text-sm"
-              />
-              <p className="text-xs text-muted-foreground mt-2">
-                Obtén tu token en{' '}
-                <a
-                  href="https://mapbox.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-primary hover:underline"
-                >
-                  mapbox.com
-                </a>
-              </p>
-            </div>
-            <Button type="submit" className="w-full text-sm">
-              Cargar Mapa
-            </Button>
-          </form>
-        </Card>
-      </div>
-    );
-  }
 
   return (
     <div className="relative w-full h-full bg-background">

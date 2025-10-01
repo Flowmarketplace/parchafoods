@@ -59,7 +59,7 @@ const Index = () => {
         
         <main className="flex-1 lg:ml-64">
           {/* Map Section - Reduced height on mobile */}
-          <div className="h-[25vh] sm:h-[30vh] md:h-[40vh] lg:h-[60vh]">
+          <div className="h-[25vh] sm:h-[30vh] md:h-[40vh] lg:h-[60vh] w-full">
             <MapComponent 
               selectedNeighborhood={selectedNeighborhood}
               selectedCategory={selectedCategory}
@@ -82,7 +82,7 @@ const Index = () => {
 
           {/* Content Sections */}
           {!showFilters ? (
-            <div className="px-2 sm:px-4 py-4 sm:py-6 md:py-8 space-y-6 sm:space-y-8 md:space-y-12">
+            <div className="w-full max-w-screen-2xl mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8 space-y-6 sm:space-y-8 md:space-y-12">
               {/* Featured/Popular Places Section */}
               <section>
                 <div className="flex items-center justify-between mb-3 sm:mb-4 md:mb-6">
@@ -103,7 +103,7 @@ const Index = () => {
               </section>
 
               {/* Real Estate Section */}
-              <section className="bg-muted/30 -mx-2 sm:-mx-4 px-2 sm:px-4 py-4 sm:py-6 md:py-8">
+              <section className="bg-muted/30 -mx-3 sm:-mx-4 md:-mx-6 px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
                 <div className="flex items-center justify-between mb-3 sm:mb-4 md:mb-6">
                   <div className="flex items-center gap-2 sm:gap-3">
                     <Calendar className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
@@ -130,7 +130,7 @@ const Index = () => {
             </div>
           ) : (
             /* Filtered Results */
-            <div className="px-2 sm:px-4 py-4 sm:py-6 md:py-8">
+            <div className="w-full max-w-screen-2xl mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
               {selectedCategory !== 'Todos' && (
                 <div className="mb-4 sm:mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between bg-card border rounded-lg p-3 sm:p-4 gap-3">
                   <div>

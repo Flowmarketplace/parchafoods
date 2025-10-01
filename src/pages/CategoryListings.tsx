@@ -86,7 +86,7 @@ const CategoryListings = () => {
         <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
         
         <main className="flex-1 lg:ml-64">
-          <div className="container mx-auto px-2 sm:px-4 py-3 sm:py-4 md:py-6">
+          <div className="w-full max-w-screen-2xl mx-auto px-3 sm:px-4 md:px-6 py-3 sm:py-4 md:py-6">
             {/* Header */}
             <div className="mb-4 sm:mb-6 flex items-center justify-between">
               <div className="flex items-center gap-2 sm:gap-4">

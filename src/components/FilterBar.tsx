@@ -27,7 +27,7 @@ const FilterBar = ({
 }: FilterBarProps) => {
   return (
     <div className="w-full bg-background/95 backdrop-blur-sm border-b border-border">
-      <div className="container mx-auto px-2 sm:px-4 py-3 sm:py-4">
+      <div className="w-full max-w-screen-2xl mx-auto px-3 sm:px-4 md:px-6 py-3 sm:py-4">
         <div className="flex flex-col md:flex-row gap-2 sm:gap-3">
           {/* Search Input */}
           <div className="relative flex-1">

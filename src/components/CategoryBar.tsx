@@ -42,7 +42,7 @@ const categories: CategoryItem[] = [
 const CategoryBar = ({ selectedCategory, onCategoryChange }: CategoryBarProps) => {
   return (
     <div className="w-full bg-card border-y border-border shadow-sm">
-      <div className="container mx-auto px-2 sm:px-4 py-2 sm:py-3">
+      <div className="w-full max-w-screen-2xl mx-auto px-3 sm:px-4 md:px-6 py-2 sm:py-3">
         <div className="flex gap-1.5 sm:gap-2 overflow-x-auto scrollbar-hide pb-1 sm:pb-2 -mx-2 px-2">
           {categories.map((category) => {
             const Icon = category.icon;
