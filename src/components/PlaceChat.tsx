@@ -96,7 +96,7 @@ const PlaceChat = ({ placeName, placeCategory, placeDescription }: PlaceChatProp
       <Button
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
-          'fixed bottom-6 right-6 h-14 w-14 rounded-full shadow-lg z-50 transition-transform',
+          'fixed bottom-6 right-6 h-14 w-14 rounded-full shadow-lg z-50 transition-transform bg-[#25D366] hover:bg-[#128C7E] text-white',
           isOpen && 'scale-0'
         )}
       >
@@ -110,12 +110,13 @@ const PlaceChat = ({ placeName, placeCategory, placeDescription }: PlaceChatProp
           isOpen ? 'scale-100 opacity-100' : 'scale-0 opacity-0'
         )}
       >
-        <CardHeader className="flex-row items-center justify-between space-y-0 pb-4 border-b">
+        <CardHeader className="flex-row items-center justify-between space-y-0 pb-4 border-b bg-[#25D366] text-white">
           <CardTitle className="text-lg">Chat con {placeName}</CardTitle>
           <Button
             variant="ghost"
             size="icon"
             onClick={() => setIsOpen(false)}
+            className="hover:bg-white/20 text-white"
           >
             <X className="h-5 w-5" />
           </Button>
@@ -161,7 +162,7 @@ const PlaceChat = ({ placeName, placeCategory, placeDescription }: PlaceChatProp
               onKeyPress={handleKeyPress}
               disabled={isLoading}
             />
-            <Button onClick={sendMessage} disabled={isLoading || !input.trim()}>
+            <Button onClick={sendMessage} disabled={isLoading || !input.trim()} className="bg-[#25D366] hover:bg-[#128C7E] text-white">
               <Send className="h-4 w-4" />
             </Button>
           </div>
