@@ -22,6 +22,7 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
   const [mapboxToken, setMapboxToken] = useState('');
   const [showTokenInput, setShowTokenInput] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [mapLoaded, setMapLoaded] = useState(false);
   const navigate = useNavigate();
 
   const createMarker = (place: Place) => {
@@ -90,7 +91,10 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
     markers.current.forEach(marker => marker.remove());
     markers.current = [];
 
-    if (!map.current) return;
+    if (!map.current || !mapLoaded) {
+      console.log('Map not ready for markers');
+      return;
+    }
 
     // Filter places based on category
     const filteredPlaces = selectedCategory === 'Todos' 
@@ -126,7 +130,7 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
       map.current.on('load', () => {
         console.log('Map loaded successfully');
         setIsLoading(false);
-        updateMarkers();
+        setMapLoaded(true);
       });
 
       map.current.addControl(new mapboxgl.NavigationControl(), 'top-right');
@@ -137,18 +141,20 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
     }
   };
 
-  // Effect to update markers when category changes
+  // Effect to update markers when category changes or map loads
   useEffect(() => {
-    if (map.current && !showTokenInput) {
+    if (map.current && mapLoaded && !showTokenInput) {
+      console.log('Updating markers for category:', selectedCategory);
       updateMarkers();
     }
-  }, [selectedCategory]);
+  }, [selectedCategory, mapLoaded]);
 
   // Effect to center map on selected neighborhood
   useEffect(() => {
-    if (map.current && selectedNeighborhood && !showTokenInput) {
+    if (map.current && mapLoaded && selectedNeighborhood && !showTokenInput) {
       const location = neighborhoodLocations[selectedNeighborhood];
       if (location) {
+        console.log('Flying to neighborhood:', selectedNeighborhood);
         map.current.flyTo({
           center: location.coordinates,
           zoom: location.zoom,
@@ -157,7 +163,7 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
         });
       }
     }
-  }, [selectedNeighborhood]);
+  }, [selectedNeighborhood, mapLoaded]);
 
   const handleTokenSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -189,6 +195,7 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
         console.log('Cleaning up map');
         markers.current.forEach(marker => marker.remove());
         map.current.remove();
+        setMapLoaded(false);
       }
     };
   }, []);
