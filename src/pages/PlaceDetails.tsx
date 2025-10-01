@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, MapPin, Phone, Star, UtensilsCrossed } from 'lucide-react';
+import { ArrowLeft, MapPin, Phone, Star, UtensilsCrossed, Facebook, Instagram, Twitter, Share2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -43,12 +43,12 @@ const PlaceDetails = () => {
       
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         <Button
-          variant="ghost"
-          onClick={() => navigate(-1)}
-          className="mb-6"
+          variant="outline"
+          onClick={() => navigate('/')}
+          className="mb-6 gap-2"
         >
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Volver
+          <ArrowLeft className="h-4 w-4" />
+          Volver al inicio
         </Button>
 
         <Card>
@@ -100,6 +100,48 @@ const PlaceDetails = () => {
               {place.description && (
                 <p className="text-muted-foreground mb-6">{place.description}</p>
               )}
+
+              {/* Redes Sociales */}
+              <div className="mb-6">
+                <h3 className="font-semibold mb-3">Síguenos en redes sociales</h3>
+                <div className="flex gap-3">
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="rounded-full hover:bg-[#1877F2] hover:text-white hover:border-[#1877F2] transition-colors"
+                    onClick={() => window.open('https://facebook.com', '_blank')}
+                  >
+                    <Facebook className="h-5 w-5" />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="rounded-full hover:bg-[#E4405F] hover:text-white hover:border-[#E4405F] transition-colors"
+                    onClick={() => window.open('https://instagram.com', '_blank')}
+                  >
+                    <Instagram className="h-5 w-5" />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="rounded-full hover:bg-[#1DA1F2] hover:text-white hover:border-[#1DA1F2] transition-colors"
+                    onClick={() => window.open('https://twitter.com', '_blank')}
+                  >
+                    <Twitter className="h-5 w-5" />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="rounded-full hover:bg-[#25D366] hover:text-white hover:border-[#25D366] transition-colors"
+                    onClick={() => {
+                      const phone = place.phone?.replace(/\D/g, '') || '';
+                      window.open(`https://wa.me/${phone}`, '_blank');
+                    }}
+                  >
+                    <Share2 className="h-5 w-5" />
+                  </Button>
+                </div>
+              </div>
 
               <div className="space-y-4 mb-6">
                 <div className="flex items-start gap-3">
