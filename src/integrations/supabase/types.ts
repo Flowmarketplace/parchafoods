@@ -488,6 +488,86 @@ export type Database = {
           },
         ]
       }
+      push_campaigns: {
+        Row: {
+          business_id: string
+          created_at: string
+          id: string
+          image_url: string | null
+          message: string
+          scheduled_at: string
+          sent_at: string | null
+          sent_count: number | null
+          status: string
+          target_audience: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          business_id: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          message: string
+          scheduled_at: string
+          sent_at?: string | null
+          sent_count?: number | null
+          status?: string
+          target_audience?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          business_id?: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          message?: string
+          scheduled_at?: string
+          sent_at?: string | null
+          sent_count?: number | null
+          status?: string
+          target_audience?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "push_campaigns_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      push_notification_tokens: {
+        Row: {
+          created_at: string
+          device_type: string | null
+          id: string
+          token: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          device_type?: string | null
+          id?: string
+          token: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          device_type?: string | null
+          id?: string
+          token?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       referrals: {
         Row: {
           created_at: string

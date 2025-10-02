@@ -24,6 +24,7 @@ import BusinessMenu from "./pages/business/BusinessMenu";
 import BusinessPromotions from "./pages/business/BusinessPromotions";
 import BusinessShorts from "./pages/business/BusinessShorts";
 import BusinessLoyalty from "./pages/business/BusinessLoyalty";
+import BusinessNotifications from "./pages/business/BusinessNotifications";
 
 function App() {
   return (
@@ -51,7 +52,8 @@ function App() {
          <Route path="/business-menu" element={<BusinessMenu />} />
          <Route path="/business-promotions" element={<BusinessPromotions />} />
          <Route path="/business-shorts" element={<BusinessShorts />} />
-         <Route path="/business-loyalty" element={<BusinessLoyalty />} />
+            <Route path="/business-loyalty" element={<BusinessLoyalty />} />
+            <Route path="/business-notifications" element={<BusinessNotifications />} />
          <Route path="*" element={<NotFound />} />
         </Routes>
       </RoleBasedRedirect>
