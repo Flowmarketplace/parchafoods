@@ -135,7 +135,7 @@ const BusinessSetup = () => {
                     <SelectTrigger>
                       <SelectValue placeholder="Selecciona una categoría" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent position="popper" sideOffset={5}>
                       {categories.map((cat) => (
                         <SelectItem key={cat} value={cat}>{cat}</SelectItem>
                       ))}
@@ -153,7 +153,7 @@ const BusinessSetup = () => {
                     <SelectTrigger>
                       <SelectValue placeholder="Selecciona un barrio" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent position="popper" sideOffset={5}>
                       {neighborhoods.map((nbh) => (
                         <SelectItem key={nbh} value={nbh}>{nbh}</SelectItem>
                       ))}
@@ -241,7 +241,7 @@ const BusinessSetup = () => {
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent position="popper" sideOffset={5}>
                     <SelectItem value="$">$ - Económico</SelectItem>
                     <SelectItem value="$$">$$ - Moderado</SelectItem>
                     <SelectItem value="$$$">$$$ - Caro</SelectItem>
