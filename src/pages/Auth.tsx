@@ -26,6 +26,7 @@ const Auth = () => {
   // Login form
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
+  const [loginAccountType, setLoginAccountType] = useState<'customer' | 'business_owner'>('customer');
 
   // Signup form
   const [signupEmail, setSignupEmail] = useState('');
@@ -87,7 +88,7 @@ const Auth = () => {
       emailSchema.parse(loginEmail);
       passwordSchema.parse(loginPassword);
 
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email: loginEmail,
         password: loginPassword,
       });
@@ -106,11 +107,31 @@ const Auth = () => {
             variant: "destructive",
           });
         }
-      } else {
-        toast({
-          title: "¡Bienvenido!",
-          description: "Has iniciado sesión correctamente",
-        });
+      } else if (data.user) {
+        // Verificar que el rol coincida con el tipo de cuenta seleccionado
+        const { data: roles } = await supabase
+          .from('user_roles')
+          .select('role')
+          .eq('user_id', data.user.id);
+        
+        const hasSelectedRole = roles?.some(r => r.role === loginAccountType);
+        
+        if (!hasSelectedRole) {
+          // Si no tiene el rol seleccionado, cerrar sesión
+          await supabase.auth.signOut();
+          toast({
+            title: "Error",
+            description: loginAccountType === 'business_owner' 
+              ? "Esta cuenta no es de dueño de negocio. Por favor selecciona 'Cliente'."
+              : "Esta cuenta no es de cliente. Por favor selecciona 'Dueño de Negocio'.",
+            variant: "destructive",
+          });
+        } else {
+          toast({
+            title: "¡Bienvenido!",
+            description: "Has iniciado sesión correctamente",
+          });
+        }
       }
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -248,6 +269,43 @@ const Auth = () => {
             <TabsContent value="login">
               {!showResetPassword ? (
                 <form onSubmit={handleLogin} className="space-y-4">
+                  <div className="space-y-3">
+                    <Label>Iniciar sesión como</Label>
+                    <RadioGroup
+                      value={loginAccountType}
+                      onValueChange={(value) => setLoginAccountType(value as 'customer' | 'business_owner')}
+                      className="grid grid-cols-2 gap-4"
+                    >
+                      <div>
+                        <RadioGroupItem
+                          value="customer"
+                          id="login-customer"
+                          className="peer sr-only"
+                        />
+                        <Label
+                          htmlFor="login-customer"
+                          className="flex flex-col items-center justify-between rounded-lg border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer"
+                        >
+                          <UserCircle className="mb-2 h-6 w-6" />
+                          <span className="text-sm font-medium">Cliente</span>
+                        </Label>
+                      </div>
+                      <div>
+                        <RadioGroupItem
+                          value="business_owner"
+                          id="login-business"
+                          className="peer sr-only"
+                        />
+                        <Label
+                          htmlFor="login-business"
+                          className="flex flex-col items-center justify-center rounded-lg border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer"
+                        >
+                          <Store className="mb-2 h-6 w-6" />
+                          <span className="text-sm font-medium text-center">Dueño de Negocio</span>
+                        </Label>
+                      </div>
+                    </RadioGroup>
+                  </div>
                   <div className="space-y-2">
                     <Label htmlFor="login-email">Email</Label>
                     <Input
