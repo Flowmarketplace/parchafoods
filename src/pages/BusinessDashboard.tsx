@@ -17,7 +17,8 @@ import {
   Image,
   Menu,
   Film,
-  Bell
+  Bell,
+  MapPin
 } from 'lucide-react';
 
 interface Business {
@@ -274,6 +275,7 @@ const BusinessDashboard = () => {
 
         {/* Action Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Notificaciones Push */}
             <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => navigate('/business-notifications')}>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -288,6 +290,25 @@ const BusinessDashboard = () => {
                 <Button className="w-full gap-2">
                   <Bell className="h-4 w-4" />
                   Gestionar Campañas
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* Notificaciones por Proximidad */}
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-950/30 dark:to-purple-950/30 border-2 border-primary/20" onClick={() => navigate('/business-proximity')}>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <MapPin className="h-5 w-5 text-primary" />
+                  Notificaciones de Proximidad
+                </CardTitle>
+                <CardDescription>
+                  Envía alertas automáticas a usuarios cercanos a tu negocio
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button className="w-full gap-2">
+                  <MapPin className="h-4 w-4" />
+                  Configurar
                 </Button>
               </CardContent>
             </Card>
