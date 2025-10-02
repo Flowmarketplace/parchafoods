@@ -10,9 +10,11 @@ import BottomNav from '@/components/BottomNav';
 import FloatingAIChat from '@/components/FloatingAIChat';
 import { mockPlaces } from '@/data/places';
 import { mockEvents } from '@/data/events';
+import { mockShorts } from '@/data/shorts';
 import { Button } from '@/components/ui/button';
-import { ChevronRight, Home, Star, Calendar } from 'lucide-react';
+import { ChevronRight, Home, Star, Calendar, Video } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import ShortCard from '@/components/ShortCard';
 
 const Index = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -34,6 +36,11 @@ const Index = () => {
     return mockEvents
       .filter(event => event.featured)
       .slice(0, 4);
+  }, []);
+
+  // Get featured shorts
+  const featuredShorts = useMemo(() => {
+    return mockShorts.slice(0, 6);
   }, []);
 
   // Filter places based on all criteria (for the filtered view)
@@ -108,7 +115,38 @@ const Index = () => {
           {/* Content Sections */}
           {!showFilters ? (
             <div className="w-full max-w-screen-2xl mx-auto px-4 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8 space-y-6 sm:space-y-8 md:space-y-12 pb-20 md:pb-8">
-              {/* Events Section - Now first */}
+              {/* Recomendados - Shorts Section */}
+              <section className="bg-gradient-to-br from-purple-500/5 via-pink-500/5 to-primary/5 -mx-4 sm:-mx-4 md:-mx-6 px-4 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8 rounded-lg border-t-2 border-purple-500/20">
+                <div className="flex items-center justify-between mb-3 sm:mb-4 md:mb-6">
+                  <div className="flex items-center gap-2 sm:gap-3">
+                    <div className="p-2 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-lg">
+                      <Video className="h-5 w-5 sm:h-6 sm:w-6 text-purple-600 dark:text-purple-400" />
+                    </div>
+                    <div>
+                      <h2 className="text-lg sm:text-xl md:text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                        Recomendados
+                      </h2>
+                      <p className="text-xs sm:text-sm text-muted-foreground hidden sm:block">
+                        Videos cortos de creadores locales
+                      </p>
+                    </div>
+                  </div>
+                  <Button 
+                    variant="ghost" 
+                    className="gap-1 sm:gap-2 h-8 sm:h-10 text-xs sm:text-sm"
+                  >
+                    Ver todos
+                    <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4" />
+                  </Button>
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
+                  {featuredShorts.map(short => (
+                    <ShortCard key={short.id} short={short} />
+                  ))}
+                </div>
+              </section>
+
+              {/* Events Section */}
               <section className="bg-gradient-to-br from-primary/5 to-secondary/5 -mx-4 sm:-mx-4 md:-mx-6 px-4 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8 rounded-lg border-t-2 border-primary/20">
                 <div className="flex items-center justify-between mb-3 sm:mb-4 md:mb-6">
                   <div className="flex items-center gap-2 sm:gap-3">
