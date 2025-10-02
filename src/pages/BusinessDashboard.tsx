@@ -5,20 +5,22 @@ import { User } from '@supabase/supabase-js';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
+import BusinessSidebar from '@/components/business/BusinessSidebar';
+import BusinessBottomNav from '@/components/business/BusinessBottomNav';
 import { 
   Store, 
   QrCode, 
   Users, 
   TrendingUp, 
-  Settings,
   LogOut,
   BarChart3,
   Gift,
   Image,
-  Menu,
+  Menu as MenuIcon,
   Film,
   Bell,
-  MapPin
+  MapPin,
+  CreditCard
 } from 'lucide-react';
 
 interface Business {
@@ -35,6 +37,7 @@ const BusinessDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [isBusinessOwner, setIsBusinessOwner] = useState(false);
   const [business, setBusiness] = useState<Business | null>(null);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     checkAuth();
@@ -183,11 +186,22 @@ const BusinessDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5 pb-16 lg:pb-0">
+      {/* Sidebar */}
+      <BusinessSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      
       {/* Header */}
-      <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 lg:ml-64">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              className="lg:hidden"
+            >
+              <MenuIcon className="h-6 w-6" />
+            </Button>
             <Store className="h-6 w-6 text-primary" />
             <h1 className="text-xl font-bold">Panel de Negocio</h1>
           </div>
@@ -202,7 +216,7 @@ const BusinessDashboard = () => {
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-4 py-8 lg:ml-64">
         <div className="mb-8">
           <h2 className="text-3xl font-bold mb-2">{business.name}</h2>
           <p className="text-muted-foreground">
@@ -275,6 +289,25 @@ const BusinessDashboard = () => {
 
         {/* Action Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Mi Suscripción */}
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30 border-2 border-green-500/20" onClick={() => navigate('/business-subscription')}>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <CreditCard className="h-5 w-5 text-green-600" />
+                  Mi Suscripción
+                </CardTitle>
+                <CardDescription>
+                  Gestiona tu plan y métodos de pago
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button className="w-full gap-2 bg-green-600 hover:bg-green-700">
+                  <CreditCard className="h-4 w-4" />
+                  Ver Plan
+                </Button>
+              </CardContent>
+            </Card>
+
             {/* Notificaciones Push */}
             <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => navigate('/business-notifications')}>
               <CardHeader>
@@ -358,7 +391,7 @@ const BusinessDashboard = () => {
               onClick={() => navigate('/business-menu')}
             >
               <CardHeader>
-                <Menu className="h-8 w-8 mb-2 text-primary" />
+                <MenuIcon className="h-8 w-8 mb-2 text-primary" />
                 <CardTitle>
                   {business.category === 'Restaurante' || business.category === 'Café' 
                     ? 'Menú & Precios' 
@@ -467,23 +500,11 @@ const BusinessDashboard = () => {
               </Button>
             </CardContent>
           </Card>
-
-          <Card className="hover:shadow-lg transition-shadow cursor-pointer">
-            <CardHeader>
-              <Settings className="h-8 w-8 mb-2 text-primary" />
-              <CardTitle>Configuración</CardTitle>
-              <CardDescription>
-                Ajusta preferencias de notificaciones y perfil de negocio
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Button className="w-full" disabled>
-                Próximamente
-              </Button>
-            </CardContent>
-          </Card>
         </div>
       </main>
+
+      {/* Bottom Navigation for mobile */}
+      <BusinessBottomNav onMenuClick={() => setSidebarOpen(true)} />
     </div>
   );
 };

@@ -26,6 +26,7 @@ import BusinessShorts from "./pages/business/BusinessShorts";
 import BusinessLoyalty from "./pages/business/BusinessLoyalty";
 import BusinessNotifications from "./pages/business/BusinessNotifications";
 import BusinessProximity from "./pages/business/BusinessProximity";
+import BusinessSubscription from "./pages/business/BusinessSubscription";
 
 function App() {
   return (
@@ -56,6 +57,7 @@ function App() {
             <Route path="/business-loyalty" element={<BusinessLoyalty />} />
             <Route path="/business-notifications" element={<BusinessNotifications />} />
             <Route path="/business-proximity" element={<BusinessProximity />} />
+            <Route path="/business-subscription" element={<BusinessSubscription />} />
          <Route path="*" element={<NotFound />} />
         </Routes>
       </RoleBasedRedirect>

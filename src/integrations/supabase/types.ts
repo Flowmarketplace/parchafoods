@@ -269,6 +269,56 @@ export type Database = {
           },
         ]
       }
+      business_subscriptions: {
+        Row: {
+          auto_renew: boolean
+          business_id: string
+          created_at: string
+          end_date: string
+          id: string
+          payment_method: string | null
+          payment_reference: string | null
+          plan_id: string
+          start_date: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          auto_renew?: boolean
+          business_id: string
+          created_at?: string
+          end_date: string
+          id?: string
+          payment_method?: string | null
+          payment_reference?: string | null
+          plan_id: string
+          start_date?: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          auto_renew?: boolean
+          business_id?: string
+          created_at?: string
+          end_date?: string
+          id?: string
+          payment_method?: string | null
+          payment_reference?: string | null
+          plan_id?: string
+          start_date?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "business_subscriptions_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "subscription_plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       businesses: {
         Row: {
           address: string
@@ -650,6 +700,63 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      subscription_plans: {
+        Row: {
+          analytics: boolean
+          created_at: string
+          currency: string
+          description: string | null
+          duration_days: number
+          featured_listing: boolean
+          id: string
+          max_images: number | null
+          max_promotions: number | null
+          max_shorts: number | null
+          name: string
+          price: number
+          priority_support: boolean
+          proximity_notifications: boolean
+          push_notifications: boolean
+          updated_at: string
+        }
+        Insert: {
+          analytics?: boolean
+          created_at?: string
+          currency?: string
+          description?: string | null
+          duration_days: number
+          featured_listing?: boolean
+          id?: string
+          max_images?: number | null
+          max_promotions?: number | null
+          max_shorts?: number | null
+          name: string
+          price: number
+          priority_support?: boolean
+          proximity_notifications?: boolean
+          push_notifications?: boolean
+          updated_at?: string
+        }
+        Update: {
+          analytics?: boolean
+          created_at?: string
+          currency?: string
+          description?: string | null
+          duration_days?: number
+          featured_listing?: boolean
+          id?: string
+          max_images?: number | null
+          max_promotions?: number | null
+          max_shorts?: number | null
+          name?: string
+          price?: number
+          priority_support?: boolean
+          proximity_notifications?: boolean
+          push_notifications?: boolean
+          updated_at?: string
+        }
+        Relationships: []
       }
       user_roles: {
         Row: {
