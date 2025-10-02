@@ -1,8 +1,12 @@
-import { Menu, MapPin, Search, Navigation } from 'lucide-react';
+import { Menu, MapPin, Search, Navigation, Bell, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
+import { useEffect, useState } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import { User as SupabaseUser } from '@supabase/supabase-js';
 
 interface NavbarProps {
   onMenuClick: () => void;
@@ -16,6 +20,21 @@ const Navbar = ({ onMenuClick, searchQuery, onSearchChange, selectedNeighborhood
   const navigate = useNavigate();
   const location = useLocation();
   const showFilter = searchQuery !== undefined && onSearchChange && selectedNeighborhood !== undefined && onNeighborhoodChange;
+  const [user, setUser] = useState<SupabaseUser | null>(null);
+
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setUser(session?.user ?? null);
+      }
+    );
+
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
   
   return (
     <header className="bg-background border-b border-border">
@@ -41,19 +60,56 @@ const Navbar = ({ onMenuClick, searchQuery, onSearchChange, selectedNeighborhood
             </div>
           </div>
 
-          <div className="hidden md:flex items-center gap-2">
+          <div className="flex items-center gap-2">
             <Button
               variant={location.pathname === '/near-me' ? 'default' : 'ghost'}
               size="sm"
               onClick={() => navigate('/near-me')}
               className={cn(
-                'gap-2',
+                'gap-2 hidden md:flex',
                 location.pathname === '/near-me' && 'bg-primary text-primary-foreground'
               )}
             >
               <Navigation className="h-4 w-4" />
               Cerca de mí
             </Button>
+
+            <Button
+              variant="ghost"
+              size="icon"
+              className="relative"
+              onClick={() => {
+                // TODO: Implement notifications
+              }}
+            >
+              <Bell className="h-5 w-5" />
+              <span className="absolute top-1 right-1 h-2 w-2 bg-secondary rounded-full" />
+            </Button>
+
+            {user ? (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => navigate('/profile')}
+                className="rounded-full"
+              >
+                <Avatar className="h-8 w-8">
+                  <AvatarFallback>
+                    {user.email?.charAt(0).toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
+              </Button>
+            ) : (
+              <Button
+                variant="default"
+                size="sm"
+                onClick={() => navigate('/auth')}
+                className="gap-2"
+              >
+                <User className="h-4 w-4" />
+                <span className="hidden sm:inline">Ingresar</span>
+              </Button>
+            )}
           </div>
         </div>
         

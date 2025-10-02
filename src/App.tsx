@@ -10,6 +10,8 @@ import CategoryListings from "./pages/CategoryListings";
 import Favorites from "./pages/Favorites";
 import Settings from "./pages/Settings";
 import NearMe from "./pages/NearMe";
+import Auth from "./pages/Auth";
+import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 
 function App() {
@@ -24,6 +26,8 @@ function App() {
         <Route path="/listings" element={<CategoryListings />} />
         <Route path="/neighborhoods" element={<Listings />} />
         <Route path="/near-me" element={<NearMe />} />
+        <Route path="/auth" element={<Auth />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="/favorites" element={<Favorites />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="*" element={<NotFound />} />
