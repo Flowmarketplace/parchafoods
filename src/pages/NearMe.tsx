@@ -1,24 +1,40 @@
 import { useState, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { MapPin, Navigation, AlertCircle, Loader2 } from 'lucide-react';
+import { MapPin, Navigation, AlertCircle, Loader2, X } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Sidebar from '@/components/Sidebar';
 import BottomNav from '@/components/BottomNav';
 import PlaceCard from '@/components/PlaceCard';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Badge } from '@/components/ui/badge';
 import { mockPlaces } from '@/data/places';
 import { useGeolocation } from '@/hooks/useGeolocation';
 import { calculateDistance, formatDistance } from '@/utils/distance';
-import { Place } from '@/types/place';
+import { Place, Category } from '@/types/place';
+import { categoryIcons } from '@/utils/categoryIcons';
 
 interface PlaceWithDistance extends Place {
   distance: number;
 }
 
+const categories: Category[] = [
+  'Restaurante',
+  'Café',
+  'Parque',
+  'Farmacia',
+  'Banco',
+  'Centro Comercial',
+  'Hospital',
+  'Hotel',
+  'Entretenimiento',
+  'Servicios',
+];
+
 const NearMe = () => {
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   const { position, error, loading, permissionDenied, requestLocation } = useGeolocation();
   const [maxDistance, setMaxDistance] = useState(5); // km
 
@@ -40,10 +56,15 @@ const NearMe = () => {
       )
     }));
 
-    return placesWithDistance
-      .filter(place => place.distance <= maxDistance)
-      .sort((a, b) => a.distance - b.distance);
-  }, [position, maxDistance]);
+    let filtered = placesWithDistance.filter(place => place.distance <= maxDistance);
+    
+    // Filter by category if selected
+    if (selectedCategory) {
+      filtered = filtered.filter(place => place.category === selectedCategory);
+    }
+
+    return filtered.sort((a, b) => a.distance - b.distance);
+  }, [position, maxDistance, selectedCategory]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -110,6 +131,32 @@ const NearMe = () => {
         {/* Results */}
         {position && (
           <>
+            {/* Category Filter */}
+            <div className="mb-6">
+              <h3 className="text-sm font-medium mb-3">Filtrar por categoría</h3>
+              <div className="flex flex-wrap gap-2">
+                <Badge
+                  variant={selectedCategory === null ? "default" : "outline"}
+                  className="cursor-pointer hover:bg-primary hover:text-primary-foreground transition-colors px-3 py-1.5"
+                  onClick={() => setSelectedCategory(null)}
+                >
+                  Todas
+                  {selectedCategory === null && <X className="ml-1.5 h-3 w-3" />}
+                </Badge>
+                {categories.map((category) => (
+                  <Badge
+                    key={category}
+                    variant={selectedCategory === category ? "default" : "outline"}
+                    className="cursor-pointer hover:bg-primary hover:text-primary-foreground transition-colors px-3 py-1.5"
+                    onClick={() => setSelectedCategory(category)}
+                  >
+                    {category}
+                    {selectedCategory === category && <X className="ml-1.5 h-3 w-3" />}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+
             {/* Distance Filter */}
             <div className="mb-6 p-4 bg-muted/50 rounded-lg">
               <div className="flex items-center justify-between mb-3">
@@ -132,11 +179,13 @@ const NearMe = () => {
             </div>
 
             {/* Current Location Info */}
-            <div className="mb-4 p-3 bg-primary/10 rounded-lg flex items-center gap-2">
-              <MapPin className="h-4 w-4 text-primary" />
-              <span className="text-sm">
-                Mostrando lugares en un radio de <strong>{maxDistance} km</strong>
-              </span>
+            <div className="mb-4 p-3 bg-primary/10 rounded-lg">
+              <div className="flex items-center gap-2 text-sm">
+                <MapPin className="h-4 w-4 text-primary" />
+                <span>
+                  Mostrando {selectedCategory ? `${selectedCategory.toLowerCase()}s` : 'lugares'} en un radio de <strong>{maxDistance} km</strong>
+                </span>
+              </div>
             </div>
 
             {/* Places List */}
