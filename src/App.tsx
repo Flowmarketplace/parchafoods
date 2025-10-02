@@ -9,6 +9,7 @@ import Listings from "./pages/Listings";
 import CategoryListings from "./pages/CategoryListings";
 import Favorites from "./pages/Favorites";
 import Settings from "./pages/Settings";
+import NearMe from "./pages/NearMe";
 import NotFound from "./pages/NotFound";
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
         <Route path="/events-all" element={<EventsListings />} />
         <Route path="/listings" element={<CategoryListings />} />
         <Route path="/neighborhoods" element={<Listings />} />
+        <Route path="/near-me" element={<NearMe />} />
         <Route path="/favorites" element={<Favorites />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="*" element={<NotFound />} />

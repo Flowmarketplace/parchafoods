@@ -1,6 +1,8 @@
-import { Menu, MapPin, Search } from 'lucide-react';
+import { Menu, MapPin, Search, Navigation } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { cn } from '@/lib/utils';
 
 interface NavbarProps {
   onMenuClick: () => void;
@@ -11,6 +13,8 @@ interface NavbarProps {
 }
 
 const Navbar = ({ onMenuClick, searchQuery, onSearchChange, selectedNeighborhood, onNeighborhoodChange }: NavbarProps) => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const showFilter = searchQuery !== undefined && onSearchChange && selectedNeighborhood !== undefined && onNeighborhoodChange;
   
   return (
@@ -35,6 +39,21 @@ const Navbar = ({ onMenuClick, searchQuery, onSearchChange, selectedNeighborhood
                 Guía Cali
               </h1>
             </div>
+          </div>
+
+          <div className="hidden md:flex items-center gap-2">
+            <Button
+              variant={location.pathname === '/near-me' ? 'default' : 'ghost'}
+              size="sm"
+              onClick={() => navigate('/near-me')}
+              className={cn(
+                'gap-2',
+                location.pathname === '/near-me' && 'bg-primary text-primary-foreground'
+              )}
+            >
+              <Navigation className="h-4 w-4" />
+              Cerca de mí
+            </Button>
           </div>
         </div>
         

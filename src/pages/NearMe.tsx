@@ -1,0 +1,180 @@
+import { useState, useMemo, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { MapPin, Navigation, AlertCircle, Loader2 } from 'lucide-react';
+import Navbar from '@/components/Navbar';
+import Sidebar from '@/components/Sidebar';
+import BottomNav from '@/components/BottomNav';
+import PlaceCard from '@/components/PlaceCard';
+import { Button } from '@/components/ui/button';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { mockPlaces } from '@/data/places';
+import { useGeolocation } from '@/hooks/useGeolocation';
+import { calculateDistance, formatDistance } from '@/utils/distance';
+import { Place } from '@/types/place';
+
+interface PlaceWithDistance extends Place {
+  distance: number;
+}
+
+const NearMe = () => {
+  const navigate = useNavigate();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { position, error, loading, permissionDenied, requestLocation } = useGeolocation();
+  const [maxDistance, setMaxDistance] = useState(5); // km
+
+  useEffect(() => {
+    // Auto-request location on mount
+    requestLocation();
+  }, []);
+
+  const nearbyPlaces = useMemo<PlaceWithDistance[]>(() => {
+    if (!position) return [];
+
+    const placesWithDistance = mockPlaces.map(place => ({
+      ...place,
+      distance: calculateDistance(
+        position.latitude,
+        position.longitude,
+        place.latitude,
+        place.longitude
+      )
+    }));
+
+    return placesWithDistance
+      .filter(place => place.distance <= maxDistance)
+      .sort((a, b) => a.distance - b.distance);
+  }, [position, maxDistance]);
+
+  return (
+    <div className="min-h-screen bg-background">
+      <Navbar onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
+      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+
+      <main className="w-full max-w-screen-2xl mx-auto px-4 sm:px-4 md:px-6 pt-4 pb-24 md:pb-8">
+        {/* Header */}
+        <div className="mb-6">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="bg-gradient-to-br from-primary to-secondary p-2 rounded-lg">
+              <Navigation className="h-6 w-6 text-white" />
+            </div>
+            <h1 className="text-2xl md:text-3xl font-bold">Cerca de Mí</h1>
+          </div>
+          <p className="text-muted-foreground">
+            Descubre lugares interesantes cerca de tu ubicación
+          </p>
+        </div>
+
+        {/* Permission Request / Error State */}
+        {!position && !loading && (
+          <div className="mb-6">
+            {error ? (
+              <Alert variant={permissionDenied ? "destructive" : "default"}>
+                <AlertCircle className="h-4 w-4" />
+                <AlertDescription className="flex flex-col gap-3">
+                  <p>{error}</p>
+                  {!permissionDenied && (
+                    <Button onClick={requestLocation} size="sm" className="w-fit">
+                      <Navigation className="h-4 w-4 mr-2" />
+                      Intentar de nuevo
+                    </Button>
+                  )}
+                  {permissionDenied && (
+                    <div className="text-sm">
+                      <p className="font-medium mb-2">Para habilitar la ubicación:</p>
+                      <ol className="list-decimal list-inside space-y-1 text-muted-foreground">
+                        <li>Haz clic en el icono de candado en la barra de direcciones</li>
+                        <li>Busca "Ubicación" y selecciona "Permitir"</li>
+                        <li>Recarga la página</li>
+                      </ol>
+                    </div>
+                  )}
+                </AlertDescription>
+              </Alert>
+            ) : (
+              <Button onClick={requestLocation} size="lg" className="w-full">
+                <Navigation className="h-5 w-5 mr-2" />
+                Activar mi ubicación
+              </Button>
+            )}
+          </div>
+        )}
+
+        {/* Loading State */}
+        {loading && (
+          <div className="flex flex-col items-center justify-center py-12 gap-4">
+            <Loader2 className="h-12 w-12 animate-spin text-primary" />
+            <p className="text-muted-foreground">Obteniendo tu ubicación...</p>
+          </div>
+        )}
+
+        {/* Results */}
+        {position && (
+          <>
+            {/* Distance Filter */}
+            <div className="mb-6 p-4 bg-muted/50 rounded-lg">
+              <div className="flex items-center justify-between mb-3">
+                <label className="text-sm font-medium">Radio de búsqueda</label>
+                <span className="text-sm font-bold text-primary">{maxDistance} km</span>
+              </div>
+              <input
+                type="range"
+                min="1"
+                max="20"
+                step="1"
+                value={maxDistance}
+                onChange={(e) => setMaxDistance(Number(e.target.value))}
+                className="w-full h-2 bg-border rounded-lg appearance-none cursor-pointer accent-primary"
+              />
+              <div className="flex justify-between text-xs text-muted-foreground mt-1">
+                <span>1 km</span>
+                <span>20 km</span>
+              </div>
+            </div>
+
+            {/* Current Location Info */}
+            <div className="mb-4 p-3 bg-primary/10 rounded-lg flex items-center gap-2">
+              <MapPin className="h-4 w-4 text-primary" />
+              <span className="text-sm">
+                Mostrando lugares en un radio de <strong>{maxDistance} km</strong>
+              </span>
+            </div>
+
+            {/* Places List */}
+            {nearbyPlaces.length > 0 ? (
+              <>
+                <div className="mb-4">
+                  <p className="text-sm text-muted-foreground">
+                    Encontramos <strong className="text-foreground">{nearbyPlaces.length}</strong> lugares cerca de ti
+                  </p>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {nearbyPlaces.map((place) => (
+                    <div key={place.id} className="relative">
+                      <PlaceCard place={place} />
+                      <div className="absolute top-2 left-2 bg-primary text-primary-foreground px-2 py-1 rounded-full text-xs font-bold shadow-lg flex items-center gap-1">
+                        <Navigation className="h-3 w-3" />
+                        {formatDistance(place.distance)}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <div className="text-center py-12">
+                <MapPin className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
+                <h3 className="text-lg font-semibold mb-2">No hay lugares cerca</h3>
+                <p className="text-muted-foreground mb-4">
+                  Intenta aumentar el radio de búsqueda para encontrar más lugares
+                </p>
+              </div>
+            )}
+          </>
+        )}
+      </main>
+
+      <BottomNav />
+    </div>
+  );
+};
+
+export default NearMe;
