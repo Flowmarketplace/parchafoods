@@ -6,9 +6,11 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { useToast } from '@/hooks/use-toast';
 import { z } from 'zod';
 import { User, Session } from '@supabase/supabase-js';
+import { Store, UserCircle } from 'lucide-react';
 
 const emailSchema = z.string().trim().email({ message: "Email inválido" });
 const passwordSchema = z.string().min(6, { message: "La contraseña debe tener al menos 6 caracteres" });
@@ -29,6 +31,7 @@ const Auth = () => {
   const [signupEmail, setSignupEmail] = useState('');
   const [signupPassword, setSignupPassword] = useState('');
   const [signupFullName, setSignupFullName] = useState('');
+  const [accountType, setAccountType] = useState<'customer' | 'business_owner'>('customer');
 
   useEffect(() => {
     // Set up auth state listener
@@ -39,18 +42,33 @@ const Auth = () => {
         
         // Redirect if user is already logged in
         if (session?.user) {
-          navigate('/');
+          // Check user role and redirect accordingly
+          setTimeout(async () => {
+            const { data: roles } = await supabase
+              .from('user_roles')
+              .select('role')
+              .eq('user_id', session.user.id);
+            
+            const isBusinessOwner = roles?.some(r => r.role === 'business_owner');
+            navigate(isBusinessOwner ? '/business-dashboard' : '/');
+          }, 0);
         }
       }
     );
 
     // Check for existing session
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
       
       if (session?.user) {
-        navigate('/');
+        const { data: roles } = await supabase
+          .from('user_roles')
+          .select('role')
+          .eq('user_id', session.user.id);
+        
+        const isBusinessOwner = roles?.some(r => r.role === 'business_owner');
+        navigate(isBusinessOwner ? '/business-dashboard' : '/');
       }
     });
 
@@ -121,6 +139,7 @@ const Auth = () => {
           emailRedirectTo: redirectUrl,
           data: {
             full_name: signupFullName,
+            role: accountType,
           },
         },
       });
@@ -206,6 +225,43 @@ const Auth = () => {
 
             <TabsContent value="signup">
               <form onSubmit={handleSignup} className="space-y-4">
+                <div className="space-y-3">
+                  <Label>Tipo de Cuenta</Label>
+                  <RadioGroup
+                    value={accountType}
+                    onValueChange={(value) => setAccountType(value as 'customer' | 'business_owner')}
+                    className="grid grid-cols-2 gap-4"
+                  >
+                    <div>
+                      <RadioGroupItem
+                        value="customer"
+                        id="customer"
+                        className="peer sr-only"
+                      />
+                      <Label
+                        htmlFor="customer"
+                        className="flex flex-col items-center justify-between rounded-lg border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer"
+                      >
+                        <UserCircle className="mb-2 h-6 w-6" />
+                        <span className="text-sm font-medium">Cliente</span>
+                      </Label>
+                    </div>
+                    <div>
+                      <RadioGroupItem
+                        value="business_owner"
+                        id="business_owner"
+                        className="peer sr-only"
+                      />
+                      <Label
+                        htmlFor="business_owner"
+                        className="flex flex-col items-center justify-between rounded-lg border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer"
+                      >
+                        <Store className="mb-2 h-6 w-6" />
+                        <span className="text-sm font-medium">Dueño de Negocio</span>
+                      </Label>
+                    </div>
+                  </RadioGroup>
+                </div>
                 <div className="space-y-2">
                   <Label htmlFor="signup-name">Nombre Completo</Label>
                   <Input

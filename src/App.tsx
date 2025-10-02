@@ -15,6 +15,7 @@ import Profile from "./pages/Profile";
 import MyLoyalty from "./pages/MyLoyalty";
 import Shorts from "./pages/Shorts";
 import NotFound from "./pages/NotFound";
+import BusinessDashboard from "./pages/BusinessDashboard";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
         <Route path="/favorites" element={<Favorites />} />
         <Route path="/shorts" element={<Shorts />} />
         <Route path="/settings" element={<Settings />} />
+        <Route path="/business-dashboard" element={<BusinessDashboard />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Toaster />
