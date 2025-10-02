@@ -239,10 +239,10 @@ const Auth = () => {
                       />
                       <Label
                         htmlFor="business_owner"
-                        className="flex flex-col items-center justify-between rounded-lg border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer"
+                        className="flex flex-col items-center justify-center rounded-lg border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer"
                       >
                         <Store className="mb-2 h-6 w-6" />
-                        <span className="text-sm font-medium">Dueño de Negocio</span>
+                        <span className="text-sm font-medium text-center">Dueño de Negocio</span>
                       </Label>
                     </div>
                   </RadioGroup>
