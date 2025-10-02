@@ -40,20 +40,34 @@ const Auth = () => {
         setSession(session);
         setUser(session?.user ?? null);
         
-        // Redirect if user is already logged in
-        if (session?.user) {
-          navigate('/');
+        // Redirect after login/signup based on role
+        if (session?.user && (event === 'SIGNED_IN' || event === 'USER_UPDATED')) {
+          setTimeout(async () => {
+            const { data: roles } = await supabase
+              .from('user_roles')
+              .select('role')
+              .eq('user_id', session.user.id);
+            
+            const isBusinessOwner = roles?.some(r => r.role === 'business_owner');
+            navigate(isBusinessOwner ? '/business-dashboard' : '/');
+          }, 0);
         }
       }
     );
 
     // Check for existing session
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
       
       if (session?.user) {
-        navigate('/');
+        const { data: roles } = await supabase
+          .from('user_roles')
+          .select('role')
+          .eq('user_id', session.user.id);
+        
+        const isBusinessOwner = roles?.some(r => r.role === 'business_owner');
+        navigate(isBusinessOwner ? '/business-dashboard' : '/');
       }
     });
 
