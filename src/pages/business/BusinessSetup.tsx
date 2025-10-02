@@ -7,8 +7,11 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { useToast } from '@/hooks/use-toast';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Check, ChevronsUpDown } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 const categories = [
   'Restaurante',
@@ -27,14 +30,21 @@ const categories = [
 ];
 
 const neighborhoods = [
-  'Poblado', 'Laureles', 'Envigado', 'Sabaneta', 'Centro',
-  'Belén', 'Bello', 'Itagüí', 'La Estrella', 'Caldas'
+  'Aguablanca', 'Alameda', 'Alfonso López', 'Alférez Real', 'Arboleda', 
+  'Bellavista', 'Bosques de Limonar', 'Caldas', 'Caney', 'Centenario',
+  'Ciudad Córdoba', 'Ciudad Jardín', 'El Ingenio', 'El Limonar', 'Flora Industrial',
+  'Granada', 'Juanchito', 'La Base', 'La Flora', 'Limonar',
+  'Los Andes', 'Meléndez', 'Normandía', 'Pance', 'Parque Residencial del Sur',
+  'Prados del Limonar', 'San Antonio', 'San Fernando', 'San Nicolás', 'Santa Mónica',
+  'Santa Rita', 'Tequendama', 'Valle del Lili', 'Versalles'
 ];
 
 const BusinessSetup = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
+  const [openCategory, setOpenCategory] = useState(false);
+  const [openNeighborhood, setOpenNeighborhood] = useState(false);
   
   const [formData, setFormData] = useState({
     name: '',
@@ -126,39 +136,93 @@ const BusinessSetup = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="category">Categoría *</Label>
-                  <Select
-                    value={formData.category}
-                    onValueChange={(value) => setFormData({ ...formData, category: value })}
-                    required
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Selecciona una categoría" />
-                    </SelectTrigger>
-                    <SelectContent position="popper" sideOffset={5}>
-                      {categories.map((cat) => (
-                        <SelectItem key={cat} value={cat}>{cat}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <Label>Categoría *</Label>
+                  <Popover open={openCategory} onOpenChange={setOpenCategory}>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        role="combobox"
+                        aria-expanded={openCategory}
+                        className="w-full justify-between"
+                      >
+                        {formData.category || "Selecciona una categoría"}
+                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-full p-0" align="start">
+                      <Command>
+                        <CommandInput placeholder="Buscar categoría..." />
+                        <CommandList>
+                          <CommandEmpty>No se encontró categoría.</CommandEmpty>
+                          <CommandGroup>
+                            {categories.map((cat) => (
+                              <CommandItem
+                                key={cat}
+                                value={cat}
+                                onSelect={() => {
+                                  setFormData({ ...formData, category: cat });
+                                  setOpenCategory(false);
+                                }}
+                              >
+                                <Check
+                                  className={cn(
+                                    "mr-2 h-4 w-4",
+                                    formData.category === cat ? "opacity-100" : "opacity-0"
+                                  )}
+                                />
+                                {cat}
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="neighborhood">Barrio *</Label>
-                  <Select
-                    value={formData.neighborhood}
-                    onValueChange={(value) => setFormData({ ...formData, neighborhood: value })}
-                    required
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Selecciona un barrio" />
-                    </SelectTrigger>
-                    <SelectContent position="popper" sideOffset={5}>
-                      {neighborhoods.map((nbh) => (
-                        <SelectItem key={nbh} value={nbh}>{nbh}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <Label>Barrio *</Label>
+                  <Popover open={openNeighborhood} onOpenChange={setOpenNeighborhood}>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        role="combobox"
+                        aria-expanded={openNeighborhood}
+                        className="w-full justify-between"
+                      >
+                        {formData.neighborhood || "Selecciona un barrio"}
+                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-full p-0" align="start">
+                      <Command>
+                        <CommandInput placeholder="Buscar barrio..." />
+                        <CommandList>
+                          <CommandEmpty>No se encontró barrio.</CommandEmpty>
+                          <CommandGroup>
+                            {neighborhoods.map((nbh) => (
+                              <CommandItem
+                                key={nbh}
+                                value={nbh}
+                                onSelect={() => {
+                                  setFormData({ ...formData, neighborhood: nbh });
+                                  setOpenNeighborhood(false);
+                                }}
+                              >
+                                <Check
+                                  className={cn(
+                                    "mr-2 h-4 w-4",
+                                    formData.neighborhood === nbh ? "opacity-100" : "opacity-0"
+                                  )}
+                                />
+                                {nbh}
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
                 </div>
               </div>
 
