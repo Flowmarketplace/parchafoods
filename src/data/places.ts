@@ -1265,6 +1265,109 @@ export const mockPlaces: Place[] = [
     priceRange: '$$',
     featured: true,
     attributes: ['WiFi', 'Estacionamiento', 'Casilleros', 'Duchas'],
+    hasPromotions: true,
+    promotions: [
+      {
+        id: 'gym-p1',
+        title: '🎉 ¡Bienvenido! Primera clase gratis',
+        description: 'Prueba cualquier clase grupal GRATIS en tu primera visita con la app',
+        image: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=800&q=80',
+        conditions: 'Válido solo en tu primera visita\nEscanea el código QR en recepción\nAplica para cualquier clase grupal',
+        validUntil: '2025-12-31',
+        qrRequired: true,
+        firstTimeOnly: true
+      },
+      {
+        id: 'gym-p2',
+        title: 'Membresía Semestral - 20% OFF',
+        description: 'Adquiere tu membresía de 6 meses con descuento especial',
+        image: 'https://images.unsplash.com/photo-1540497077202-7c8a3999166f?w=800&q=80',
+        conditions: 'Precio especial: $450.000 (antes $540.000)\nIncluye todas las clases grupales\nAcceso 7 días a la semana\nEscanea el código QR para reclamar',
+        validUntil: '2025-12-31',
+        qrRequired: true
+      },
+      {
+        id: 'gym-p3',
+        title: 'Pack Nutrición + Gym',
+        description: 'Membresía mensual + plan nutricional personalizado',
+        image: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&q=80',
+        conditions: 'Precio combo: $180.000/mes\nIncluye valoración nutricional\nPlan de alimentación personalizado\nEscanea el código QR en recepción',
+        validUntil: '2025-12-31',
+        qrRequired: true
+      },
+      {
+        id: 'gym-p4',
+        title: 'Proteína y Suplementos - 15% OFF',
+        description: 'Descuento en nuestra línea de productos de nutrición deportiva',
+        image: 'https://images.unsplash.com/photo-1593095948071-474c5cc2989d?w=800&q=80',
+        conditions: 'Aplica en proteínas, creatina, pre-entrenos y más\nSolo para miembros activos\nEscanea el código QR en la tienda del gym',
+        validUntil: '2025-12-31',
+        qrRequired: true
+      }
+    ],
+    hasGymClasses: true,
+    gymClasses: [
+      {
+        id: 'gc1',
+        name: 'Zumba',
+        description: 'Baila y quema calorías con ritmos latinos. Clase energética y divertida para todos los niveles.',
+        instructor: 'Carolina Rodríguez',
+        schedule: 'Lunes, Miércoles y Viernes 6:00 PM',
+        duration: '60 min',
+        level: 'Todos los niveles',
+        image: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=800&q=80'
+      },
+      {
+        id: 'gc2',
+        name: 'Spinning',
+        description: 'Cardio intenso sobre bicicleta estática. Fortalece piernas y mejora resistencia cardiovascular.',
+        instructor: 'Miguel Ángel Torres',
+        schedule: 'Martes y Jueves 7:00 AM, Sábados 9:00 AM',
+        duration: '45 min',
+        level: 'Intermedio - Avanzado',
+        image: 'https://images.unsplash.com/photo-1594737626072-90dc274bc2dd?w=800&q=80'
+      },
+      {
+        id: 'gc3',
+        name: 'Yoga',
+        description: 'Conecta cuerpo y mente. Mejora flexibilidad, fuerza y reduce el estrés.',
+        instructor: 'Andrea Gómez',
+        schedule: 'Lunes, Miércoles y Viernes 8:00 AM',
+        duration: '60 min',
+        level: 'Todos los niveles',
+        image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&q=80'
+      },
+      {
+        id: 'gc4',
+        name: 'Entrenamiento Funcional',
+        description: 'Ejercicios con peso corporal y equipamiento variado. Mejora fuerza, agilidad y coordinación.',
+        instructor: 'Andrés Martínez',
+        schedule: 'Martes y Jueves 6:30 PM',
+        duration: '50 min',
+        level: 'Intermedio',
+        image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80'
+      },
+      {
+        id: 'gc5',
+        name: 'Aeróbicos',
+        description: 'Clase clásica de cardio con pasos coreografiados. Perfecta para quemar grasa y tonificar.',
+        instructor: 'Laura Sánchez',
+        schedule: 'Lunes y Viernes 5:30 PM',
+        duration: '55 min',
+        level: 'Principiante - Intermedio',
+        image: 'https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=800&q=80'
+      },
+      {
+        id: 'gc6',
+        name: 'CrossFit',
+        description: 'Entrenamientos de alta intensidad variados. Combina fuerza, cardio y gimnasia.',
+        instructor: 'Daniel Vargas',
+        schedule: 'Lunes a Viernes 7:00 PM, Sábados 10:00 AM',
+        duration: '60 min',
+        level: 'Avanzado',
+        image: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=800&q=80'
+      }
+    ],
     reviews: []
   },
   {

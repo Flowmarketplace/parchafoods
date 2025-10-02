@@ -24,6 +24,17 @@ export interface Service {
   duration?: string;
 }
 
+export interface GymClass {
+  id: string;
+  name: string;
+  description: string;
+  instructor?: string;
+  schedule: string; // e.g., "Lunes y Miércoles 6:00 PM"
+  duration?: string;
+  level?: string; // Principiante, Intermedio, Avanzado
+  image?: string;
+}
+
 export interface Promotion {
   id: string;
   title: string;
@@ -62,6 +73,8 @@ export interface Place {
   hasPromotions?: boolean;
   catalogUrl?: string; // URL del catálogo completo
   airbnbUrl?: string;
+  gymClasses?: GymClass[]; // Clases del gimnasio
+  hasGymClasses?: boolean;
   // Características y filtros
   foodType?: string[]; // Para restaurantes: ['Colombiana', 'Internacional', etc.]
   familyFriendly?: boolean;

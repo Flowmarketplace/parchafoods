@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, MapPin, Phone, Star, UtensilsCrossed, Facebook, Instagram, Twitter, Share2, ShoppingBag, Briefcase, Home as HomeIcon, Tag, QrCode, ExternalLink } from 'lucide-react';
+import { ArrowLeft, MapPin, Phone, Star, UtensilsCrossed, Facebook, Instagram, Twitter, Share2, ShoppingBag, Briefcase, Home as HomeIcon, Tag, QrCode, ExternalLink, Calendar, Users } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { User } from '@supabase/supabase-js';
@@ -270,6 +270,12 @@ const PlaceDetails = () => {
                       Servicios
                     </TabsTrigger>
                   )}
+                  {place.hasGymClasses && (
+                    <TabsTrigger value="clases">
+                      <Calendar className="h-4 w-4 mr-2" />
+                      Clases
+                    </TabsTrigger>
+                  )}
                   {place.hasPromotions && (
                     <TabsTrigger value="promociones">
                       <Tag className="h-4 w-4 mr-2" />
@@ -405,6 +411,67 @@ const PlaceDetails = () => {
                           </CardContent>
                         </Card>
                       ))}
+                    </div>
+                  </TabsContent>
+                )}
+
+                {place.hasGymClasses && place.gymClasses && (
+                  <TabsContent value="clases" className="mt-6">
+                    <div className="space-y-6">
+                      <div className="flex items-center justify-between mb-4">
+                        <div>
+                          <h3 className="text-2xl font-semibold">Nuestras Clases</h3>
+                          <p className="text-muted-foreground">Mantente activo con nuestra variedad de clases grupales</p>
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {place.gymClasses.map((gymClass) => (
+                          <Card key={gymClass.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+                            <CardContent className="p-0">
+                              {gymClass.image && (
+                                <div className="relative h-48 w-full overflow-hidden">
+                                  <img
+                                    src={gymClass.image}
+                                    alt={gymClass.name}
+                                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                                  />
+                                  {gymClass.level && (
+                                    <Badge className="absolute top-3 right-3 bg-primary">
+                                      {gymClass.level}
+                                    </Badge>
+                                  )}
+                                </div>
+                              )}
+                              <div className="p-5">
+                                <h4 className="font-bold text-xl mb-2 text-primary">{gymClass.name}</h4>
+                                <p className="text-sm text-muted-foreground mb-4">{gymClass.description}</p>
+                                
+                                <div className="space-y-2 mb-4">
+                                  {gymClass.instructor && (
+                                    <div className="flex items-center gap-2 text-sm">
+                                      <Users className="h-4 w-4 text-primary" />
+                                      <span className="font-medium">Instructor:</span>
+                                      <span className="text-muted-foreground">{gymClass.instructor}</span>
+                                    </div>
+                                  )}
+                                  <div className="flex items-center gap-2 text-sm">
+                                    <Calendar className="h-4 w-4 text-primary" />
+                                    <span className="font-medium">Horario:</span>
+                                    <span className="text-muted-foreground">{gymClass.schedule}</span>
+                                  </div>
+                                  {gymClass.duration && (
+                                    <div className="flex items-center gap-2 text-sm">
+                                      <Tag className="h-4 w-4 text-primary" />
+                                      <span className="font-medium">Duración:</span>
+                                      <span className="text-muted-foreground">{gymClass.duration}</span>
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        ))}
+                      </div>
                     </div>
                   </TabsContent>
                 )}
