@@ -634,9 +634,9 @@ export const mockPlaces: Place[] = [
     phone: '+57 2 555 8234',
     description: 'Centro comercial de barrio con supermercado, ferreterías, almacenes de ropa y servicios varios.',
     images: [
-      'https://images.unsplash.com/photo-1582655299221-2d3e3c0c3d3c?w=800&q=80',
-      'https://images.unsplash.com/photo-1580674285054-bed31e145f59?w=800&q=80',
-      'https://images.unsplash.com/photo-1534452203293-494d7ddbf7e0?w=800&q=80'
+      'https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=800&q=80',
+      'https://images.unsplash.com/photo-1583258292688-d0213dc5a3a8?w=800&q=80',
+      'https://images.unsplash.com/photo-1583623025817-d180a2221d0a?w=800&q=80'
     ],
     latitude: 3.4100,
     longitude: -76.5178,
