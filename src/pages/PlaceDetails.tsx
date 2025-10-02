@@ -299,10 +299,12 @@ const PlaceDetails = () => {
                           <Button
                             onClick={() => window.open(place.catalogUrl, '_blank')}
                             variant="outline"
+                            size="sm"
                             className="gap-2"
                           >
                             <ExternalLink className="h-4 w-4" />
-                            Ver Catálogo Completo
+                            <span className="hidden sm:inline">Ver todo</span>
+                            <span className="sm:hidden">Todo</span>
                           </Button>
                         )}
                       </div>
@@ -340,10 +342,11 @@ const PlaceDetails = () => {
                           <Button
                             onClick={() => window.open(place.catalogUrl, '_blank')}
                             size="lg"
-                            className="gap-2"
+                            className="gap-2 w-full sm:w-auto"
                           >
                             <ExternalLink className="h-5 w-5" />
-                            Ver Todos los Productos en el Catálogo
+                            <span className="hidden sm:inline">Ver todo el catálogo</span>
+                            <span className="sm:hidden">Ver todo</span>
                           </Button>
                         </div>
                       )}
