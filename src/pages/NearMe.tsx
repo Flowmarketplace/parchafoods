@@ -29,6 +29,8 @@ const categories: Category[] = [
   'Hotel',
   'Entretenimiento',
   'Servicios',
+  'Gym',
+  'Gasolinera',
 ];
 
 const NearMe = () => {

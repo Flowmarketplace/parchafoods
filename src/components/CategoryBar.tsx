@@ -10,7 +10,7 @@ import {
   Landmark,
   Stethoscope,
   Car,
-  GraduationCap,
+  Fuel,
   Film
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -33,9 +33,11 @@ const categories: CategoryItem[] = [
   { id: 'Café', name: 'Café', icon: Coffee },
   { id: 'Centro Comercial', name: 'Tiendas', icon: ShoppingBag },
   { id: 'Hotel', name: 'Hotel', icon: Hotel },
+  { id: 'Gym', name: 'Gym', icon: Dumbbell },
   { id: 'Parque', name: 'Parque', icon: Heart },
   { id: 'Hospital', name: 'Salud', icon: Stethoscope },
   { id: 'Banco', name: 'Banco', icon: Landmark },
+  { id: 'Gasolinera', name: 'Gasolinera', icon: Fuel },
   { id: 'Entretenimiento', name: 'Ocio', icon: Film },
   { id: 'Servicios', name: 'Servicios', icon: Car },
 ];

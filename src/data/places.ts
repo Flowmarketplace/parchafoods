@@ -1065,6 +1065,90 @@ export const mockPlaces: Place[] = [
     priceRange: 'Gratis',
     featured: false,
     reviews: []
+  },
+  {
+    id: '31',
+    name: 'Smart Fit Granada',
+    category: 'Gym',
+    address: 'Carrera 36 #5A-100, Centro Comercial Unicentro',
+    neighborhood: 'Granada',
+    phone: '+57 2 555 4500',
+    description: 'Moderno gimnasio con equipos de última generación. Clases grupales de spinning, yoga, funcional y zumba. Horario: Lunes a Viernes 5:00 AM - 11:00 PM, Sábados y Domingos 7:00 AM - 9:00 PM. Área de pesas libres, máquinas cardiovasculares y zona de estiramiento.',
+    images: [
+      'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80',
+      'https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=800&q=80',
+      'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=800&q=80'
+    ],
+    latitude: 3.4236,
+    longitude: -76.5295,
+    rating: 4.6,
+    priceRange: '$$',
+    featured: true,
+    attributes: ['WiFi', 'Estacionamiento', 'Casilleros', 'Duchas'],
+    reviews: []
+  },
+  {
+    id: '32',
+    name: 'Bodytech San Fernando',
+    category: 'Gym',
+    address: 'Calle 13 #100-10, Barrio San Fernando',
+    neighborhood: 'San Fernando',
+    phone: '+57 2 555 7800',
+    description: 'Gimnasio premium con entrenadores personales certificados. Incluye piscina, sauna, spa y cafetería saludable. Horario: Lunes a Viernes 5:30 AM - 10:30 PM, Sábados y Domingos 7:00 AM - 8:00 PM. Clases incluidas: CrossFit, pilates, natación y más.',
+    images: [
+      'https://images.unsplash.com/photo-1540497077202-7c8a3999166f?w=800&q=80',
+      'https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=800&q=80',
+      'https://images.unsplash.com/photo-1593079831268-3381b0db4a77?w=800&q=80'
+    ],
+    latitude: 3.3845,
+    longitude: -76.5425,
+    rating: 4.8,
+    priceRange: '$$$',
+    featured: true,
+    attributes: ['WiFi', 'Estacionamiento', 'Piscina', 'Sauna', 'Spa', 'Cafetería'],
+    reviews: []
+  },
+  {
+    id: '33',
+    name: 'Gasolinera Terpel Ciudad Jardín',
+    category: 'Gasolinera',
+    address: 'Calle 16 Norte #6N-25, Ciudad Jardín',
+    neighborhood: 'Ciudad Jardín',
+    phone: '+57 2 555 3300',
+    description: 'Estación de servicio 24 horas con tienda de conveniencia, baños limpios y servicio de lavado express. Combustibles: Gasolina corriente, extra y diesel. Métodos de pago: efectivo, tarjetas débito/crédito. Servicio de aire y agua gratis.',
+    images: [
+      'https://images.unsplash.com/photo-1545262810-77515befe149?w=800&q=80',
+      'https://images.unsplash.com/photo-1529688499411-262f191fe29e?w=800&q=80',
+      'https://images.unsplash.com/photo-1626668011687-8a114d2e0b61?w=800&q=80'
+    ],
+    latitude: 3.4156,
+    longitude: -76.5389,
+    rating: 4.3,
+    priceRange: '$$',
+    featured: false,
+    attributes: ['Abierto 24h', 'Tienda', 'Baños', 'Lavado'],
+    reviews: []
+  },
+  {
+    id: '34',
+    name: 'Estación de Servicio Mobil Versalles',
+    category: 'Gasolinera',
+    address: 'Avenida 4N #24-50, Versalles',
+    neighborhood: 'Versalles',
+    phone: '+57 2 555 6700',
+    description: 'Gasolinera moderna con servicio rápido y eficiente. Abierto 24/7. Ofrece programa de puntos y descuentos. Tienda con snacks, bebidas y productos básicos. Área de descanso para conductores. Combustibles certificados y de alta calidad.',
+    images: [
+      'https://images.unsplash.com/photo-1594919121168-ba8b5cb35de6?w=800&q=80',
+      'https://images.unsplash.com/photo-1529688499411-262f191fe29e?w=800&q=80',
+      'https://images.unsplash.com/photo-1618090584126-30a1b610d651?w=800&q=80'
+    ],
+    latitude: 3.4573,
+    longitude: -76.5378,
+    rating: 4.5,
+    priceRange: '$$',
+    featured: false,
+    attributes: ['Abierto 24h', 'Tienda', 'WiFi', 'Programa de puntos'],
+    reviews: []
   }
 ];
 
@@ -1079,7 +1163,9 @@ export const categories: string[] = [
   'Hospital',
   'Hotel',
   'Entretenimiento',
-  'Servicios'
+  'Servicios',
+  'Gym',
+  'Gasolinera'
 ];
 
 export const neighborhoods: string[] = [

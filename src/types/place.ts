@@ -75,4 +75,6 @@ export type Category =
   | 'Hotel'
   | 'Entretenimiento'
   | 'Servicios'
+  | 'Gym'
+  | 'Gasolinera'
   | 'Otro';
