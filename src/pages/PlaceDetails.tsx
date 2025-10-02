@@ -1,5 +1,8 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, MapPin, Phone, Star, UtensilsCrossed, Facebook, Instagram, Twitter, Share2, ShoppingBag, Briefcase, Home as HomeIcon, Tag } from 'lucide-react';
+import { ArrowLeft, MapPin, Phone, Star, UtensilsCrossed, Facebook, Instagram, Twitter, Share2, ShoppingBag, Briefcase, Home as HomeIcon, Tag, QrCode } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import { User } from '@supabase/supabase-js';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -8,6 +11,7 @@ import { mockPlaces } from '@/data/places';
 import PlaceChat from '@/components/PlaceChat';
 import PlaceMap from '@/components/PlaceMap';
 import PlaceMenu from '@/components/PlaceMenu';
+import QRScanner from '@/components/QRScanner';
 import {
   Carousel,
   CarouselContent,
@@ -20,6 +24,52 @@ const PlaceDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const place = mockPlaces.find((p) => p.id === id);
+  const [user, setUser] = useState<User | null>(null);
+  const [showQRScanner, setShowQRScanner] = useState(false);
+  const [loyaltyPoints, setLoyaltyPoints] = useState<number>(0);
+
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setUser(session?.user ?? null);
+      }
+    );
+
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+      if (session?.user && id) {
+        setTimeout(() => {
+          loadLoyaltyPoints(session.user.id, id);
+        }, 0);
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [id]);
+
+  const loadLoyaltyPoints = async (userId: string, placeId: string) => {
+    try {
+      const { data } = await supabase
+        .from('loyalty_points')
+        .select('points')
+        .eq('user_id', userId)
+        .eq('place_id', placeId)
+        .single();
+
+      if (data) {
+        setLoyaltyPoints(data.points);
+      }
+    } catch (error) {
+      // No points yet, that's ok
+    }
+  };
+
+  const handleQRScanSuccess = () => {
+    if (user && id) {
+      loadLoyaltyPoints(user.id, id);
+    }
+  };
+
 
   if (!place) {
     return (
@@ -291,6 +341,69 @@ const PlaceDetails = () => {
                 {place.hasPromotions && place.promotions && (
                   <TabsContent value="promociones" className="mt-6">
                     <div className="space-y-6">
+                      {/* Loyalty Progress */}
+                      {user && (
+                        <Card className="bg-gradient-to-br from-primary/10 to-secondary/10">
+                          <CardContent className="p-6">
+                            <div className="flex items-center justify-between mb-4">
+                              <h3 className="text-lg font-semibold">Tus Puntos de Fidelidad</h3>
+                              <Button
+                                onClick={() => setShowQRScanner(true)}
+                                className="gap-2"
+                              >
+                                <QrCode className="h-4 w-4" />
+                                Escanear QR
+                              </Button>
+                            </div>
+                            <div className="relative w-full h-12 bg-muted rounded-full overflow-hidden">
+                              <div
+                                className="absolute inset-y-0 left-0 transition-all duration-500 ease-out rounded-full bg-gradient-to-r from-primary to-secondary"
+                                style={{ width: `${Math.min((loyaltyPoints / 5) * 100, 100)}%` }}
+                              />
+                              <div className="absolute inset-0 flex items-center justify-between px-3">
+                                {Array.from({ length: 5 }).map((_, index) => (
+                                  <div
+                                    key={index}
+                                    className={`flex items-center justify-center w-8 h-8 rounded-full border-2 transition-all ${
+                                      index < loyaltyPoints
+                                        ? 'bg-background border-primary scale-110'
+                                        : 'bg-muted border-muted-foreground/30'
+                                    }`}
+                                  >
+                                    <Star
+                                      className={`h-4 w-4 ${
+                                        index < loyaltyPoints
+                                          ? 'fill-primary text-primary'
+                                          : 'text-muted-foreground/30'
+                                      }`}
+                                    />
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                            <p className="text-center mt-3 font-semibold text-primary">
+                              {loyaltyPoints >= 5 
+                                ? '¡Recompensa disponible! 🎉' 
+                                : `${loyaltyPoints}/5 puntos acumulados`}
+                            </p>
+                          </CardContent>
+                        </Card>
+                      )}
+
+                      {!user && (
+                        <Card className="bg-gradient-to-br from-primary/10 to-secondary/10">
+                          <CardContent className="p-6 text-center">
+                            <Star className="h-12 w-12 text-primary mx-auto mb-3" />
+                            <p className="text-muted-foreground mb-4">
+                              Inicia sesión para acumular puntos de fidelidad
+                            </p>
+                            <Button onClick={() => navigate('/auth')}>
+                              Iniciar Sesión
+                            </Button>
+                          </CardContent>
+                        </Card>
+                      )}
+
                       {place.promotions.map((promotion) => (
                         <Card key={promotion.id} className="overflow-hidden">
                           <CardContent className="p-0">
@@ -358,6 +471,16 @@ const PlaceDetails = () => {
           </CardContent>
         </Card>
       </div>
+
+      {/* QR Scanner Modal */}
+      {showQRScanner && place && (
+        <QRScanner
+          placeId={place.id}
+          placeName={place.name}
+          onClose={() => setShowQRScanner(false)}
+          onSuccess={handleQRScanSuccess}
+        />
+      )}
     </div>
   );
 };

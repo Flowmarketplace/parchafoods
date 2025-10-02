@@ -14,6 +14,66 @@ export type Database = {
   }
   public: {
     Tables: {
+      loyalty_history: {
+        Row: {
+          id: string
+          place_id: string
+          points_earned: number
+          qr_code: string
+          scanned_at: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          place_id: string
+          points_earned?: number
+          qr_code: string
+          scanned_at?: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          place_id?: string
+          points_earned?: number
+          qr_code?: string
+          scanned_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      loyalty_points: {
+        Row: {
+          created_at: string
+          id: string
+          last_scan_at: string | null
+          place_id: string
+          points: number
+          reward_claimed: boolean
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          last_scan_at?: string | null
+          place_id: string
+          points?: number
+          reward_claimed?: boolean
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          last_scan_at?: string | null
+          place_id?: string
+          points?: number
+          reward_claimed?: boolean
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null

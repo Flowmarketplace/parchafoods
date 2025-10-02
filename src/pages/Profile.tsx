@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useToast } from '@/hooks/use-toast';
 import { User, Session } from '@supabase/supabase-js';
-import { ArrowLeft, Star } from 'lucide-react';
+import { ArrowLeft, Star, Award } from 'lucide-react';
 
 interface Profile {
   id: string;
@@ -159,18 +159,32 @@ const Profile = () => {
             </div>
           </CardHeader>
           <CardContent className="space-y-6">
-            {/* Loyalty Points */}
-            <Card className="bg-gradient-to-br from-primary/10 to-secondary/10">
+            {/* Loyalty Points Card */}
+            <Card 
+              className="bg-gradient-to-br from-primary/10 to-secondary/10 cursor-pointer hover:shadow-lg transition-shadow"
+              onClick={() => navigate('/my-loyalty')}
+            >
               <CardContent className="p-6">
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between mb-3">
                   <div>
-                    <p className="text-sm text-muted-foreground">Puntos de Fidelización</p>
+                    <p className="text-sm text-muted-foreground">Puntos Totales</p>
                     <p className="text-3xl font-bold text-primary">
                       {profile?.loyalty_points || 0}
                     </p>
                   </div>
-                  <Star className="h-12 w-12 text-secondary" />
+                  <Award className="h-12 w-12 text-secondary" />
                 </div>
+                <Button 
+                  variant="secondary" 
+                  className="w-full gap-2"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate('/my-loyalty');
+                  }}
+                >
+                  <Star className="h-4 w-4" />
+                  Ver Mis Puntos por Local
+                </Button>
               </CardContent>
             </Card>
 
