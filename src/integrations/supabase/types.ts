@@ -88,6 +88,7 @@ export type Database = {
         Row: {
           business_id: string
           created_at: string | null
+          description: string | null
           display_order: number | null
           id: string
           image_type: string
@@ -97,6 +98,7 @@ export type Database = {
         Insert: {
           business_id: string
           created_at?: string | null
+          description?: string | null
           display_order?: number | null
           id?: string
           image_type?: string
@@ -106,6 +108,7 @@ export type Database = {
         Update: {
           business_id?: string
           created_at?: string | null
+          description?: string | null
           display_order?: number | null
           id?: string
           image_type?: string
