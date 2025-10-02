@@ -96,6 +96,33 @@ const BusinessDashboard = () => {
     }
   };
 
+  const getRelevantSections = () => {
+    if (!business) {
+      return {
+        manage: false,
+        images: false,
+        menu: false,
+        promotions: false,
+        shorts: false,
+        hours: false,
+      };
+    }
+
+    const category = business.category.toLowerCase();
+    
+    // Secciones por tipo de establecimiento
+    return {
+      manage: true, // Todos
+      images: true, // Todos
+      menu: ['restaurante', 'café', 'hotel', 'gym'].some(cat => category.includes(cat)),
+      promotions: ['restaurante', 'café', 'gym', 'centro comercial', 'entretenimiento', 'hotel'].some(cat => category.includes(cat)),
+      shorts: ['restaurante', 'café', 'entretenimiento', 'gym', 'hotel'].some(cat => category.includes(cat)),
+      hours: true, // Todos necesitan horarios
+    };
+  };
+
+  const sections = getRelevantSections();
+
   const handleLogout = async () => {
     await supabase.auth.signOut();
     navigate('/auth');
@@ -246,110 +273,113 @@ const BusinessDashboard = () => {
 
         {/* Action Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <Card 
-            className="hover:shadow-lg transition-shadow cursor-pointer"
-            onClick={() => navigate('/business-manage')}
-          >
-            <CardHeader>
-              <Store className="h-8 w-8 mb-2 text-primary" />
-              <CardTitle>Mi Establecimiento</CardTitle>
-              <CardDescription>
-                Gestiona la información de tu negocio, fotos, horarios y descripción
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Button className="w-full">
-                Gestionar
-              </Button>
-            </CardContent>
-          </Card>
+          {sections.manage && (
+            <Card 
+              className="hover:shadow-lg transition-shadow cursor-pointer"
+              onClick={() => navigate('/business-manage')}
+            >
+              <CardHeader>
+                <Store className="h-8 w-8 mb-2 text-primary" />
+                <CardTitle>Mi Establecimiento</CardTitle>
+                <CardDescription>
+                  Gestiona información, fotos, horarios y descripción
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button className="w-full">
+                  Gestionar
+                </Button>
+              </CardContent>
+            </Card>
+          )}
 
-          <Card 
-            className="hover:shadow-lg transition-shadow cursor-pointer"
-            onClick={() => navigate('/business-images')}
-          >
-            <CardHeader>
-              <Image className="h-8 w-8 mb-2 text-primary" />
-              <CardTitle>Galería de Imágenes</CardTitle>
-              <CardDescription>
-                Sube y gestiona las fotos de tu negocio
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Button className="w-full">
-                Ver Galería
-              </Button>
-            </CardContent>
-          </Card>
+          {sections.images && (
+            <Card 
+              className="hover:shadow-lg transition-shadow cursor-pointer"
+              onClick={() => navigate('/business-images')}
+            >
+              <CardHeader>
+                <Image className="h-8 w-8 mb-2 text-primary" />
+                <CardTitle>Galería de Imágenes</CardTitle>
+                <CardDescription>
+                  Sube y gestiona las fotos de tu negocio
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button className="w-full">
+                  Ver Galería
+                </Button>
+              </CardContent>
+            </Card>
+          )}
 
-          <Card 
-            className="hover:shadow-lg transition-shadow cursor-pointer"
-            onClick={() => navigate('/business-menu')}
-          >
-            <CardHeader>
-              <Menu className="h-8 w-8 mb-2 text-primary" />
-              <CardTitle>Menú & Precios</CardTitle>
-              <CardDescription>
-                Administra tu menú, productos y servicios con precios
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Button className="w-full">
-                Gestionar Menú
-              </Button>
-            </CardContent>
-          </Card>
+          {sections.menu && (
+            <Card 
+              className="hover:shadow-lg transition-shadow cursor-pointer"
+              onClick={() => navigate('/business-menu')}
+            >
+              <CardHeader>
+                <Menu className="h-8 w-8 mb-2 text-primary" />
+                <CardTitle>
+                  {business.category === 'Restaurante' || business.category === 'Café' 
+                    ? 'Menú & Precios' 
+                    : business.category === 'Gym' 
+                    ? 'Planes & Precios'
+                    : business.category === 'Hotel'
+                    ? 'Habitaciones & Tarifas'
+                    : 'Servicios & Precios'}
+                </CardTitle>
+                <CardDescription>
+                  Administra tu catálogo de productos y servicios
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button className="w-full">
+                  Gestionar
+                </Button>
+              </CardContent>
+            </Card>
+          )}
 
-          <Card className="hover:shadow-lg transition-shadow cursor-pointer">
-            <CardHeader>
-              <QrCode className="h-8 w-8 mb-2 text-primary" />
-              <CardTitle>Código QR de Lealtad</CardTitle>
-              <CardDescription>
-                Genera y descarga tu código QR para que clientes ganen puntos
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Button className="w-full" disabled>
-                Próximamente
-              </Button>
-            </CardContent>
-          </Card>
+          {sections.promotions && (
+            <Card 
+              className="hover:shadow-lg transition-shadow cursor-pointer"
+              onClick={() => navigate('/business-promotions')}
+            >
+              <CardHeader>
+                <Gift className="h-8 w-8 mb-2 text-primary" />
+                <CardTitle>Promociones</CardTitle>
+                <CardDescription>
+                  Crea y gestiona promociones especiales para tus clientes
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button className="w-full">
+                  Gestionar
+                </Button>
+              </CardContent>
+            </Card>
+          )}
 
-          <Card 
-            className="hover:shadow-lg transition-shadow cursor-pointer"
-            onClick={() => navigate('/business-promotions')}
-          >
-            <CardHeader>
-              <Gift className="h-8 w-8 mb-2 text-primary" />
-              <CardTitle>Promociones</CardTitle>
-              <CardDescription>
-                Crea y gestiona promociones especiales para tus clientes
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Button className="w-full">
-                Gestionar
-              </Button>
-            </CardContent>
-          </Card>
-
-          <Card 
-            className="hover:shadow-lg transition-shadow cursor-pointer"
-            onClick={() => navigate('/business-shorts')}
-          >
-            <CardHeader>
-              <Film className="h-8 w-8 mb-2 text-primary" />
-              <CardTitle>Shorts/Reels</CardTitle>
-              <CardDescription>
-                Sube videos cortos para promocionar tu negocio
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Button className="w-full">
-                Gestionar Videos
-              </Button>
-            </CardContent>
-          </Card>
+          {sections.shorts && (
+            <Card 
+              className="hover:shadow-lg transition-shadow cursor-pointer"
+              onClick={() => navigate('/business-shorts')}
+            >
+              <CardHeader>
+                <Film className="h-8 w-8 mb-2 text-primary" />
+                <CardTitle>Shorts/Reels</CardTitle>
+                <CardDescription>
+                  Sube videos cortos para promocionar tu negocio
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button className="w-full">
+                  Gestionar Videos
+                </Button>
+              </CardContent>
+            </Card>
+          )}
 
           <Card className="hover:shadow-lg transition-shadow cursor-pointer">
             <CardHeader>
