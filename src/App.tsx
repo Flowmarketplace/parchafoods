@@ -18,6 +18,7 @@ import Shorts from "./pages/Shorts";
 import NotFound from "./pages/NotFound";
 import BusinessDashboard from "./pages/BusinessDashboard";
 import BusinessSetup from "./pages/business/BusinessSetup";
+import BusinessManage from "./pages/business/BusinessManage";
 import BusinessImages from "./pages/business/BusinessImages";
 import BusinessMenu from "./pages/business/BusinessMenu";
 import BusinessPromotions from "./pages/business/BusinessPromotions";
@@ -44,6 +45,7 @@ function App() {
         <Route path="/settings" element={<Settings />} />
         <Route path="/business-dashboard" element={<BusinessDashboard />} />
         <Route path="/business-setup" element={<BusinessSetup />} />
+        <Route path="/business-manage" element={<BusinessManage />} />
         <Route path="/business-images" element={<BusinessImages />} />
         <Route path="/business-menu" element={<BusinessMenu />} />
         <Route path="/business-promotions" element={<BusinessPromotions />} />
