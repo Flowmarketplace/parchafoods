@@ -64,6 +64,25 @@ export const mockPlaces: Place[] = [
         category: 'Bebidas'
       }
     ],
+    hasPromotions: true,
+    promotions: [
+      {
+        id: 'p1',
+        title: '2x1 en Bandeja Paisa los Miércoles',
+        description: 'Disfruta de nuestra deliciosa Bandeja Paisa y lleva la segunda a mitad de precio',
+        image: 'https://images.unsplash.com/photo-1604909052743-94e838986d24?w=800&q=80',
+        conditions: 'Válido solo los miércoles de 12:00 PM a 3:00 PM\nNo aplica con otras promociones\nDebe mencionar la promoción al ordenar',
+        validUntil: '2025-12-31'
+      },
+      {
+        id: 'p2',
+        title: 'Menú Ejecutivo - Almuerzo Completo',
+        description: 'Sopa + Plato Principal + Jugo + Postre por un precio especial',
+        image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&q=80',
+        conditions: 'Disponible de lunes a viernes de 12:00 PM a 2:00 PM\nPrecio especial: $22.000\nOpciones de plato principal limitadas al menú del día',
+        validUntil: '2025-12-31'
+      }
+    ],
     reviews: [
       {
         id: '1',

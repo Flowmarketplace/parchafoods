@@ -24,6 +24,15 @@ export interface Service {
   duration?: string;
 }
 
+export interface Promotion {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+  conditions: string;
+  validUntil?: string;
+}
+
 export interface Place {
   id: string;
   name: string;
@@ -46,6 +55,8 @@ export interface Place {
   hasProducts?: boolean;
   services?: Service[];
   hasServices?: boolean;
+  promotions?: Promotion[];
+  hasPromotions?: boolean;
   airbnbUrl?: string;
   // Características y filtros
   foodType?: string[]; // Para restaurantes: ['Colombiana', 'Internacional', etc.]

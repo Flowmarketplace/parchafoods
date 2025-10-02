@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, MapPin, Phone, Star, UtensilsCrossed, Facebook, Instagram, Twitter, Share2, ShoppingBag, Briefcase, Home as HomeIcon } from 'lucide-react';
+import { ArrowLeft, MapPin, Phone, Star, UtensilsCrossed, Facebook, Instagram, Twitter, Share2, ShoppingBag, Briefcase, Home as HomeIcon, Tag } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -194,7 +194,7 @@ const PlaceDetails = () => {
 
               {/* Tabs Section */}
               <Tabs defaultValue="ubicacion" className="w-full">
-                <TabsList className="grid w-full grid-cols-3">
+                <TabsList className="grid w-full grid-cols-4">
                   <TabsTrigger value="ubicacion">Ubicación</TabsTrigger>
                   {place.hasMenu && (
                     <TabsTrigger value="menu">
@@ -212,6 +212,12 @@ const PlaceDetails = () => {
                     <TabsTrigger value="servicios">
                       <Briefcase className="h-4 w-4 mr-2" />
                       Servicios
+                    </TabsTrigger>
+                  )}
+                  {place.hasPromotions && (
+                    <TabsTrigger value="promociones">
+                      <Tag className="h-4 w-4 mr-2" />
+                      Promociones
                     </TabsTrigger>
                   )}
                   <TabsTrigger value="resenas">Reseñas</TabsTrigger>
@@ -273,6 +279,42 @@ const PlaceDetails = () => {
                                 {service.duration && (
                                   <span className="text-xs text-muted-foreground">{service.duration}</span>
                                 )}
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  </TabsContent>
+                )}
+
+                {place.hasPromotions && place.promotions && (
+                  <TabsContent value="promociones" className="mt-6">
+                    <div className="space-y-6">
+                      {place.promotions.map((promotion) => (
+                        <Card key={promotion.id} className="overflow-hidden">
+                          <CardContent className="p-0">
+                            <div className="relative h-64">
+                              <img
+                                src={promotion.image}
+                                alt={promotion.title}
+                                className="w-full h-full object-cover"
+                              />
+                              {promotion.validUntil && (
+                                <Badge className="absolute top-4 right-4 bg-secondary">
+                                  Válida hasta: {new Date(promotion.validUntil).toLocaleDateString('es-CO')}
+                                </Badge>
+                              )}
+                            </div>
+                            <div className="p-6">
+                              <h3 className="text-2xl font-bold mb-3 text-primary">{promotion.title}</h3>
+                              <p className="text-muted-foreground mb-4">{promotion.description}</p>
+                              <div className="bg-muted p-4 rounded-lg">
+                                <h4 className="font-semibold mb-2 flex items-center gap-2">
+                                  <Tag className="h-4 w-4" />
+                                  Condiciones
+                                </h4>
+                                <p className="text-sm text-muted-foreground whitespace-pre-line">{promotion.conditions}</p>
                               </div>
                             </div>
                           </CardContent>
