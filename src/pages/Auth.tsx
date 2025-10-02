@@ -42,33 +42,18 @@ const Auth = () => {
         
         // Redirect if user is already logged in
         if (session?.user) {
-          // Check user role and redirect accordingly
-          setTimeout(async () => {
-            const { data: roles } = await supabase
-              .from('user_roles')
-              .select('role')
-              .eq('user_id', session.user.id);
-            
-            const isBusinessOwner = roles?.some(r => r.role === 'business_owner');
-            navigate(isBusinessOwner ? '/business-dashboard' : '/');
-          }, 0);
+          navigate('/');
         }
       }
     );
 
     // Check for existing session
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
       
       if (session?.user) {
-        const { data: roles } = await supabase
-          .from('user_roles')
-          .select('role')
-          .eq('user_id', session.user.id);
-        
-        const isBusinessOwner = roles?.some(r => r.role === 'business_owner');
-        navigate(isBusinessOwner ? '/business-dashboard' : '/');
+        navigate('/');
       }
     });
 

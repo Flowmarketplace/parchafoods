@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
+import RoleBasedRedirect from "./components/RoleBasedRedirect";
 import Index from "./pages/Index";
 import PlaceDetails from "./pages/PlaceDetails";
 import EventDetails from "./pages/EventDetails";
@@ -20,8 +21,9 @@ import BusinessDashboard from "./pages/BusinessDashboard";
 function App() {
   return (
     <>
-      <Routes>
-        <Route path="/" element={<Index />} />
+      <RoleBasedRedirect>
+        <Routes>
+          <Route path="/" element={<Index />} />
         <Route path="/place/:id" element={<PlaceDetails />} />
         <Route path="/event/:id" element={<EventDetails />} />
         <Route path="/events" element={<Events />} />
@@ -37,7 +39,8 @@ function App() {
         <Route path="/settings" element={<Settings />} />
         <Route path="/business-dashboard" element={<BusinessDashboard />} />
         <Route path="*" element={<NotFound />} />
-      </Routes>
+        </Routes>
+      </RoleBasedRedirect>
       <Toaster />
     </>
   );
