@@ -141,6 +141,7 @@ const Index = () => {
                   <Button 
                     variant="ghost" 
                     className="gap-1 sm:gap-2 h-8 sm:h-10 text-xs sm:text-sm"
+                    onClick={() => navigate('/shorts')}
                   >
                     Ver todos
                     <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4" />

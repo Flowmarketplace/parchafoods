@@ -13,6 +13,7 @@ import NearMe from "./pages/NearMe";
 import Auth from "./pages/Auth";
 import Profile from "./pages/Profile";
 import MyLoyalty from "./pages/MyLoyalty";
+import Shorts from "./pages/Shorts";
 import NotFound from "./pages/NotFound";
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/my-loyalty" element={<MyLoyalty />} />
         <Route path="/favorites" element={<Favorites />} />
+        <Route path="/shorts" element={<Shorts />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
