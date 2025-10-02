@@ -1315,7 +1315,7 @@ export const mockPlaces: Place[] = [
         schedule: 'Lunes, Miércoles y Viernes 6:00 PM',
         duration: '60 min',
         level: 'Todos los niveles',
-        image: 'https://images.unsplash.com/photo-1520877880798-5ee002cf8d3d?w=800&q=80'
+        image: 'https://images.unsplash.com/photo-1524594152303-9fd13543fe6e?w=800&q=80'
       },
       {
         id: 'gc2',
