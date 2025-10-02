@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useToast } from '@/hooks/use-toast';
 import { User, Session } from '@supabase/supabase-js';
-import { ArrowLeft, Star, Award, Camera, Share2, Copy, Check, Gift } from 'lucide-react';
+import { ArrowLeft, Star, Award, Camera, Copy, Share2, Gift } from 'lucide-react';
 
 interface Profile {
   id: string;
@@ -27,17 +27,13 @@ const Profile = () => {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [profile, setProfile] = useState<Profile | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [fullName, setFullName] = useState('');
   const [phone, setPhone] = useState('');
-  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
-  const [uploading, setUploading] = useState(false);
   const [referralCode, setReferralCode] = useState('');
-  const [copied, setCopied] = useState(false);
-  const [applyingReferral, setApplyingReferral] = useState(false);
-  const [referralInput, setReferralInput] = useState('');
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
@@ -81,7 +77,6 @@ const Profile = () => {
         setProfile(data);
         setFullName(data.full_name || '');
         setPhone(data.phone || '');
-        setAvatarUrl(data.avatar_url);
         setReferralCode(data.referral_code || '');
       }
     } catch (error: any) {
@@ -132,40 +127,58 @@ const Profile = () => {
   const handleAvatarUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     try {
       setUploading(true);
+      const file = event.target.files?.[0];
+      if (!file || !user) return;
 
-      if (!event.target.files || event.target.files.length === 0) {
-        throw new Error('Debes seleccionar una imagen');
+      // Validate file size (max 2MB)
+      if (file.size > 2 * 1024 * 1024) {
+        toast({
+          title: "Error",
+          description: "La imagen debe ser menor a 2MB",
+          variant: "destructive",
+        });
+        return;
       }
 
-      const file = event.target.files[0];
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        toast({
+          title: "Error",
+          description: "Solo se permiten archivos de imagen",
+          variant: "destructive",
+        });
+        return;
+      }
+
       const fileExt = file.name.split('.').pop();
-      const filePath = `${user!.id}/avatar.${fileExt}`;
+      const fileName = `${user.id}/${Math.random()}.${fileExt}`;
 
       // Upload to storage
       const { error: uploadError } = await supabase.storage
         .from('avatars')
-        .upload(filePath, file, { upsert: true });
+        .upload(fileName, file, { upsert: true });
 
       if (uploadError) throw uploadError;
 
       // Get public URL
       const { data: { publicUrl } } = supabase.storage
         .from('avatars')
-        .getPublicUrl(filePath);
+        .getPublicUrl(fileName);
 
-      // Update profile
+      // Update profile with new avatar URL
       const { error: updateError } = await supabase
         .from('profiles')
         .update({ avatar_url: publicUrl })
-        .eq('id', user!.id);
+        .eq('id', user.id);
 
       if (updateError) throw updateError;
 
-      setAvatarUrl(publicUrl);
       toast({
         title: "¡Foto actualizada!",
         description: "Tu foto de perfil ha sido actualizada",
       });
+
+      loadProfile(user.id);
     } catch (error: any) {
       toast({
         title: "Error",
@@ -180,107 +193,30 @@ const Profile = () => {
   const copyReferralCode = () => {
     if (referralCode) {
       navigator.clipboard.writeText(referralCode);
-      setCopied(true);
       toast({
         title: "¡Código copiado!",
-        description: "Comparte este código con tus amigos",
+        description: "El código de referido ha sido copiado al portapapeles",
       });
-      setTimeout(() => setCopied(false), 2000);
     }
   };
 
   const shareReferralCode = async () => {
-    if (referralCode && navigator.share) {
+    if (!referralCode) return;
+
+    const shareText = `¡Únete a la app con mi código de referido ${referralCode} y gana puntos!`;
+    
+    if (navigator.share) {
       try {
         await navigator.share({
-          title: '¡Únete a nuestra app!',
-          text: `Usa mi código de referido ${referralCode} para obtener puntos extra al registrarte`,
-          url: window.location.origin,
+          title: 'Código de Referido',
+          text: shareText,
         });
       } catch (error) {
-        // User cancelled share
+        // User cancelled or share failed
+        copyReferralCode();
       }
     } else {
       copyReferralCode();
-    }
-  };
-
-  const applyReferralCode = async () => {
-    if (!referralInput.trim() || !user) return;
-
-    setApplyingReferral(true);
-
-    try {
-      // Find the referrer by code
-      const { data: referrerData, error: referrerError } = await supabase
-        .from('profiles')
-        .select('id')
-        .eq('referral_code', referralInput.trim().toUpperCase())
-        .single();
-
-      if (referrerError || !referrerData) {
-        throw new Error('Código de referido no válido');
-      }
-
-      if (referrerData.id === user.id) {
-        throw new Error('No puedes usar tu propio código');
-      }
-
-      // Check if user already used a referral
-      const { data: existingReferral } = await supabase
-        .from('referrals')
-        .select('id')
-        .eq('referred_id', user.id)
-        .single();
-
-      if (existingReferral) {
-        throw new Error('Ya has usado un código de referido');
-      }
-
-      // Create referral record
-      const { error: referralError } = await supabase
-        .from('referrals')
-        .insert({
-          referrer_id: referrerData.id,
-          referred_id: user.id,
-          points_awarded: 1
-        });
-
-      if (referralError) throw referralError;
-
-      // Get current points and update
-      const { data: referrerProfile } = await supabase
-        .from('profiles')
-        .select('general_points')
-        .eq('id', referrerData.id)
-        .single();
-
-      if (referrerProfile) {
-        const { error: updateError } = await supabase
-          .from('profiles')
-          .update({ 
-            general_points: referrerProfile.general_points + 1
-          })
-          .eq('id', referrerData.id);
-
-        if (updateError) throw updateError;
-      }
-
-      toast({
-        title: "¡Código aplicado!",
-        description: "El referidor ha recibido un punto",
-      });
-
-      setReferralInput('');
-      loadProfile(user.id);
-    } catch (error: any) {
-      toast({
-        title: "Error",
-        description: error.message,
-        variant: "destructive",
-      });
-    } finally {
-      setApplyingReferral(false);
     }
   };
 
@@ -312,26 +248,28 @@ const Profile = () => {
         <Card>
           <CardHeader>
             <div className="flex items-center gap-4">
-              <div className="relative group">
+              <div className="relative">
                 <Avatar className="h-20 w-20">
-                  <AvatarImage src={avatarUrl || ''} />
+                  <AvatarImage src={profile?.avatar_url || ''} />
                   <AvatarFallback className="text-2xl">
                     {fullName.charAt(0).toUpperCase() || user?.email?.charAt(0).toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
-                <button
+                <Button
+                  size="icon"
+                  variant="secondary"
+                  className="absolute -bottom-1 -right-1 h-8 w-8 rounded-full shadow-lg"
                   onClick={() => fileInputRef.current?.click()}
                   disabled={uploading}
-                  className="absolute inset-0 flex items-center justify-center bg-black/60 rounded-full opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
                 >
-                  <Camera className="h-6 w-6 text-white" />
-                </button>
+                  <Camera className="h-4 w-4" />
+                </Button>
                 <input
                   ref={fileInputRef}
                   type="file"
                   accept="image/*"
-                  onChange={handleAvatarUpload}
                   className="hidden"
+                  onChange={handleAvatarUpload}
                 />
               </div>
               <div>
@@ -341,20 +279,49 @@ const Profile = () => {
             </div>
           </CardHeader>
           <CardContent className="space-y-6">
-            {/* General Points Card */}
-            <Card className="bg-gradient-to-br from-green-500/10 to-emerald-500/10 border-green-500/20">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-muted-foreground">Puntos Generales</p>
-                    <p className="text-3xl font-bold text-green-600 dark:text-green-400">
-                      {profile?.general_points || 0}
-                    </p>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      Por referidos
+            {/* Referral Card */}
+            <Card className="bg-gradient-to-br from-purple-500/10 via-pink-500/10 to-primary/10 border-purple-500/20">
+              <CardContent className="p-6 space-y-4">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-lg">
+                    <Gift className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-semibold">Recomienda y Gana</p>
+                    <p className="text-sm text-muted-foreground">
+                      Puntos generales: <span className="font-bold text-primary">{profile?.general_points || 0}</span>
                     </p>
                   </div>
-                  <Gift className="h-12 w-12 text-green-600 dark:text-green-400" />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label className="text-xs">Tu código de referido</Label>
+                  <div className="flex gap-2">
+                    <Input
+                      value={referralCode}
+                      readOnly
+                      className="font-mono text-lg font-bold bg-background"
+                    />
+                    <Button
+                      size="icon"
+                      variant="outline"
+                      onClick={copyReferralCode}
+                      className="shrink-0"
+                    >
+                      <Copy className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      size="icon"
+                      variant="outline"
+                      onClick={shareReferralCode}
+                      className="shrink-0"
+                    >
+                      <Share2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Comparte tu código con amigos. Cuando se registren usando tu código, ¡ambos ganan puntos!
+                  </p>
                 </div>
               </CardContent>
             </Card>
@@ -367,7 +334,7 @@ const Profile = () => {
               <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-3">
                   <div>
-                    <p className="text-sm text-muted-foreground">Puntos de Lealtad</p>
+                    <p className="text-sm text-muted-foreground">Puntos Totales</p>
                     <p className="text-3xl font-bold text-primary">
                       {profile?.loyalty_points || 0}
                     </p>
@@ -385,65 +352,6 @@ const Profile = () => {
                   <Star className="h-4 w-4" />
                   Ver Mis Puntos por Local
                 </Button>
-              </CardContent>
-            </Card>
-
-            {/* Referral Section */}
-            <Card className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 border-purple-500/20">
-              <CardHeader>
-                <CardTitle className="text-lg flex items-center gap-2">
-                  <Share2 className="h-5 w-5" />
-                  Recomienda a un Amigo
-                </CardTitle>
-                <CardDescription>
-                  Comparte tu código y gana puntos cuando se registren
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex gap-2">
-                  <Input
-                    value={referralCode}
-                    readOnly
-                    className="font-mono text-lg font-bold"
-                  />
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={copyReferralCode}
-                    className="shrink-0"
-                  >
-                    {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
-                  </Button>
-                </div>
-                <Button
-                  onClick={shareReferralCode}
-                  className="w-full gap-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
-                >
-                  <Share2 className="h-4 w-4" />
-                  Compartir Código
-                </Button>
-
-                <div className="pt-4 border-t">
-                  <Label htmlFor="referralInput" className="text-sm font-medium">
-                    ¿Tienes un código de referido?
-                  </Label>
-                  <div className="flex gap-2 mt-2">
-                    <Input
-                      id="referralInput"
-                      value={referralInput}
-                      onChange={(e) => setReferralInput(e.target.value.toUpperCase())}
-                      placeholder="Ingresa el código"
-                      className="font-mono"
-                    />
-                    <Button
-                      onClick={applyReferralCode}
-                      disabled={applyingReferral || !referralInput.trim()}
-                      variant="secondary"
-                    >
-                      {applyingReferral ? 'Aplicando...' : 'Aplicar'}
-                    </Button>
-                  </div>
-                </div>
               </CardContent>
             </Card>
 
