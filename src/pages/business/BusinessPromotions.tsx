@@ -341,7 +341,10 @@ const BusinessPromotions = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="image">Imagen de la promoción</Label>
+                  <Label htmlFor="image">Imagen de la promoción *</Label>
+                  <p className="text-xs text-muted-foreground">
+                    Sube una imagen llamativa que muestre tu oferta
+                  </p>
                   <Input
                     id="image"
                     type="file"
@@ -352,8 +355,9 @@ const BusinessPromotions = () => {
                   />
                   {uploading && <p className="text-sm text-muted-foreground">Subiendo...</p>}
                   {formData.image_url && (
-                    <div className="mt-2">
-                      <img src={formData.image_url} alt="Preview" className="h-32 rounded-lg object-cover" />
+                    <div className="mt-2 space-y-2">
+                      <img src={formData.image_url} alt="Preview" className="w-full h-48 rounded-lg object-cover" />
+                      <p className="text-xs text-green-600">✓ Imagen lista</p>
                     </div>
                   )}
                 </div>

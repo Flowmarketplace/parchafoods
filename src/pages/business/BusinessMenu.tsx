@@ -17,6 +17,7 @@ interface MenuItem {
   description: string | null;
   price: number;
   category: string | null;
+  image_url: string | null;
   available: boolean;
 }
 
@@ -28,12 +29,14 @@ const BusinessMenu = () => {
   const [businessId, setBusinessId] = useState<string>('');
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<MenuItem | null>(null);
+  const [uploading, setUploading] = useState(false);
   
   const [formData, setFormData] = useState({
     name: '',
     description: '',
     price: '',
     category: '',
+    image_url: '',
     available: true
   });
 
@@ -83,6 +86,47 @@ const BusinessMenu = () => {
     }
   };
 
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || e.target.files.length === 0) return;
+    
+    setUploading(true);
+    const file = e.target.files[0];
+
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error('No user');
+
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${user.id}/menu/${Date.now()}.${fileExt}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('business-content')
+        .upload(fileName, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('business-content')
+        .getPublicUrl(fileName);
+
+      setFormData({ ...formData, image_url: publicUrl });
+
+      toast({
+        title: "¡Imagen subida!",
+        description: "La imagen del producto se ha subido correctamente",
+      });
+    } catch (error: any) {
+      console.error('Error:', error);
+      toast({
+        title: "Error",
+        description: error.message || "No se pudo subir la imagen",
+        variant: "destructive",
+      });
+    } finally {
+      setUploading(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -96,6 +140,7 @@ const BusinessMenu = () => {
             description: formData.description || null,
             price: parseFloat(formData.price),
             category: formData.category || null,
+            image_url: formData.image_url || null,
             available: formData.available
           })
           .eq('id', editingItem.id);
@@ -116,6 +161,7 @@ const BusinessMenu = () => {
             description: formData.description || null,
             price: parseFloat(formData.price),
             category: formData.category || null,
+            image_url: formData.image_url || null,
             available: formData.available
           });
 
@@ -147,6 +193,7 @@ const BusinessMenu = () => {
       description: item.description || '',
       price: item.price.toString(),
       category: item.category || '',
+      image_url: item.image_url || '',
       available: item.available
     });
     setDialogOpen(true);
@@ -183,6 +230,7 @@ const BusinessMenu = () => {
       description: '',
       price: '',
       category: '',
+      image_url: '',
       available: true
     });
     setEditingItem(null);
@@ -275,12 +323,31 @@ const BusinessMenu = () => {
                 </div>
 
                 <div className="space-y-2">
+                  <Label htmlFor="image">Imagen del producto</Label>
+                  <Input
+                    id="image"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    disabled={uploading}
+                    className="cursor-pointer"
+                  />
+                  {uploading && <p className="text-sm text-muted-foreground">Subiendo...</p>}
+                  {formData.image_url && (
+                    <div className="mt-2">
+                      <img src={formData.image_url} alt="Preview" className="h-32 rounded-lg object-cover" />
+                    </div>
+                  )}
+                </div>
+
+                <div className="space-y-2">
                   <Label htmlFor="description">Descripción</Label>
                   <Textarea
                     id="description"
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                     rows={3}
+                    placeholder="Ingredientes, preparación, etc."
                   />
                 </div>
 
@@ -324,10 +391,17 @@ const BusinessMenu = () => {
                   <CardDescription>{categoryItems.length} productos</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-4">
+                   <div className="space-y-4">
                     {categoryItems.map((item) => (
-                      <div key={item.id} className="flex items-center justify-between p-4 border rounded-lg">
-                        <div className="flex-1">
+                      <div key={item.id} className="flex items-start gap-4 p-4 border rounded-lg">
+                        {item.image_url && (
+                          <img
+                            src={item.image_url}
+                            alt={item.name}
+                            className="w-24 h-24 object-cover rounded-lg flex-shrink-0"
+                          />
+                        )}
+                        <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2">
                             <h3 className="font-semibold">{item.name}</h3>
                             {!item.available && (
@@ -343,7 +417,7 @@ const BusinessMenu = () => {
                             ${item.price.toLocaleString('es-CO')}
                           </p>
                         </div>
-                        <div className="flex gap-2">
+                        <div className="flex gap-2 flex-shrink-0">
                           <Button size="icon" variant="outline" onClick={() => handleEdit(item)}>
                             <Pencil className="h-4 w-4" />
                           </Button>
