@@ -15,6 +15,7 @@ import { Button } from '@/components/ui/button';
 import { ChevronRight, Home, Star, Calendar, Video } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import ShortCard from '@/components/ShortCard';
+import ShortsCarousel from '@/components/ShortsCarousel';
 
 const Index = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -38,10 +39,13 @@ const Index = () => {
       .slice(0, 4);
   }, []);
 
-  // Get featured shorts
-  const featuredShorts = useMemo(() => {
-    return mockShorts.slice(0, 6);
-  }, []);
+  // Filter shorts by category
+  const filteredShorts = useMemo(() => {
+    if (selectedCategory === 'Todos') {
+      return mockShorts;
+    }
+    return mockShorts.filter(short => short.category === selectedCategory);
+  }, [selectedCategory]);
 
   // Filter places based on all criteria (for the filtered view)
   const filteredPlaces = useMemo(() => {
@@ -127,7 +131,10 @@ const Index = () => {
                         Recomendados
                       </h2>
                       <p className="text-xs sm:text-sm text-muted-foreground hidden sm:block">
-                        Videos cortos de creadores locales
+                        {selectedCategory === 'Todos' 
+                          ? 'Videos cortos de creadores locales'
+                          : `Videos de ${selectedCategory}`
+                        }
                       </p>
                     </div>
                   </div>
@@ -139,11 +146,7 @@ const Index = () => {
                     <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4" />
                   </Button>
                 </div>
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
-                  {featuredShorts.map(short => (
-                    <ShortCard key={short.id} short={short} />
-                  ))}
-                </div>
+                <ShortsCarousel shorts={filteredShorts} />
               </section>
 
               {/* Events Section */}
