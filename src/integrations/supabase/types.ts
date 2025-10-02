@@ -277,6 +277,7 @@ export type Database = {
           description: string | null
           email: string | null
           featured: boolean | null
+          geo_notifications_enabled: boolean | null
           id: string
           latitude: number | null
           longitude: number | null
@@ -287,6 +288,7 @@ export type Database = {
           loyalty_reward_image: string | null
           name: string
           neighborhood: string
+          notification_radius_km: number | null
           owner_id: string
           phone: string | null
           price_range: string | null
@@ -302,6 +304,7 @@ export type Database = {
           description?: string | null
           email?: string | null
           featured?: boolean | null
+          geo_notifications_enabled?: boolean | null
           id?: string
           latitude?: number | null
           longitude?: number | null
@@ -312,6 +315,7 @@ export type Database = {
           loyalty_reward_image?: string | null
           name: string
           neighborhood: string
+          notification_radius_km?: number | null
           owner_id: string
           phone?: string | null
           price_range?: string | null
@@ -327,6 +331,7 @@ export type Database = {
           description?: string | null
           email?: string | null
           featured?: boolean | null
+          geo_notifications_enabled?: boolean | null
           id?: string
           latitude?: number | null
           longitude?: number | null
@@ -337,6 +342,7 @@ export type Database = {
           loyalty_reward_image?: string | null
           name?: string
           neighborhood?: string
+          notification_radius_km?: number | null
           owner_id?: string
           phone?: string | null
           price_range?: string | null
@@ -488,6 +494,44 @@ export type Database = {
           },
         ]
       }
+      proximity_notifications_sent: {
+        Row: {
+          business_id: string
+          distance_km: number | null
+          id: string
+          sent_at: string
+          user_id: string
+          user_latitude: number | null
+          user_longitude: number | null
+        }
+        Insert: {
+          business_id: string
+          distance_km?: number | null
+          id?: string
+          sent_at?: string
+          user_id: string
+          user_latitude?: number | null
+          user_longitude?: number | null
+        }
+        Update: {
+          business_id?: string
+          distance_km?: number | null
+          id?: string
+          sent_at?: string
+          user_id?: string
+          user_latitude?: number | null
+          user_longitude?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "proximity_notifications_sent_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       push_campaigns: {
         Row: {
           business_id: string
@@ -633,9 +677,24 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      calculate_distance_km: {
+        Args: { lat1: number; lat2: number; lon1: number; lon2: number }
+        Returns: number
+      }
       generate_referral_code: {
         Args: Record<PropertyKey, never>
         Returns: string
+      }
+      get_nearby_businesses: {
+        Args: { max_radius_km?: number; user_lat: number; user_lon: number }
+        Returns: {
+          distance_km: number
+          id: string
+          latitude: number
+          longitude: number
+          name: string
+          notification_radius_km: number
+        }[]
       }
       has_role: {
         Args: {
