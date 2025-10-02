@@ -2,37 +2,27 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-import { ArrowLeft, Upload, Trash2, Star, Image as ImageIcon } from 'lucide-react';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Label } from '@/components/ui/label';
+import { ArrowLeft, Image as ImageIcon, Menu, Tag, Video } from 'lucide-react';
+import { ProfileImageUpload } from '@/components/business/ProfileImageUpload';
+import { GalleryImageUpload } from '@/components/business/GalleryImageUpload';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 interface BusinessImage {
   id: string;
   image_url: string;
-  is_primary: boolean;
+  description?: string;
   display_order: number;
-  image_type: 'profile' | 'menu' | 'promotion' | 'gallery' | 'other';
+  image_type: string;
 }
-
-const IMAGE_TYPES = {
-  profile: 'Foto de Perfil',
-  menu: 'Menú',
-  promotion: 'Promoción',
-  gallery: 'Galería General',
-  other: 'Otra'
-} as const;
 
 const BusinessImages = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [loading, setLoading] = useState(true);
-  const [uploading, setUploading] = useState(false);
-  const [images, setImages] = useState<BusinessImage[]>([]);
   const [businessId, setBusinessId] = useState<string>('');
-  const [selectedImageType, setSelectedImageType] = useState<string>('gallery');
+  const [profileImage, setProfileImage] = useState<BusinessImage | null>(null);
+  const [galleryImages, setGalleryImages] = useState<BusinessImage[]>([]);
 
   useEffect(() => {
     loadBusiness();
@@ -75,125 +65,12 @@ const BusinessImages = () => {
 
     if (error) {
       console.error('Error loading images:', error);
-    } else {
-      setImages((data || []) as BusinessImage[]);
+      return;
     }
-  };
 
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files || e.target.files.length === 0) return;
-    
-    setUploading(true);
-    const file = e.target.files[0];
-
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error('No user');
-
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${user.id}/${Date.now()}.${fileExt}`;
-
-      const { error: uploadError, data } = await supabase.storage
-        .from('business-content')
-        .upload(fileName, file);
-
-      if (uploadError) throw uploadError;
-
-      const { data: { publicUrl } } = supabase.storage
-        .from('business-content')
-        .getPublicUrl(fileName);
-
-      const { error: dbError } = await supabase
-        .from('business_images')
-        .insert({
-          business_id: businessId,
-          image_url: publicUrl,
-          display_order: images.length,
-          image_type: selectedImageType
-        });
-
-      if (dbError) throw dbError;
-
-      toast({
-        title: "¡Imagen subida!",
-        description: "La imagen se ha agregado correctamente",
-      });
-
-      await loadImages(businessId);
-    } catch (error: any) {
-      console.error('Error:', error);
-      toast({
-        title: "Error",
-        description: error.message || "No se pudo subir la imagen",
-        variant: "destructive",
-      });
-    } finally {
-      setUploading(false);
-    }
-  };
-
-  const handleDelete = async (imageId: string, imageUrl: string) => {
-    try {
-      // Delete from storage
-      const path = imageUrl.split('/').slice(-2).join('/');
-      await supabase.storage
-        .from('business-content')
-        .remove([path]);
-
-      // Delete from database
-      const { error } = await supabase
-        .from('business_images')
-        .delete()
-        .eq('id', imageId);
-
-      if (error) throw error;
-
-      toast({
-        title: "Imagen eliminada",
-        description: "La imagen se ha eliminado correctamente",
-      });
-
-      await loadImages(businessId);
-    } catch (error: any) {
-      console.error('Error:', error);
-      toast({
-        title: "Error",
-        description: error.message || "No se pudo eliminar la imagen",
-        variant: "destructive",
-      });
-    }
-  };
-
-  const handleSetPrimary = async (imageId: string) => {
-    try {
-      // Remove primary from all images
-      await supabase
-        .from('business_images')
-        .update({ is_primary: false })
-        .eq('business_id', businessId);
-
-      // Set this image as primary
-      const { error } = await supabase
-        .from('business_images')
-        .update({ is_primary: true })
-        .eq('id', imageId);
-
-      if (error) throw error;
-
-      toast({
-        title: "Imagen principal actualizada",
-        description: "Esta imagen ahora es la principal",
-      });
-
-      await loadImages(businessId);
-    } catch (error: any) {
-      console.error('Error:', error);
-      toast({
-        title: "Error",
-        description: error.message || "No se pudo actualizar",
-        variant: "destructive",
-      });
-    }
+    const images = (data || []) as BusinessImage[];
+    setProfileImage(images.find(img => img.image_type === 'profile') || null);
+    setGalleryImages(images.filter(img => img.image_type === 'gallery'));
   };
 
   if (loading) {
@@ -209,7 +86,7 @@ const BusinessImages = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5 p-4 md:p-8">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-6xl mx-auto space-y-6">
         <Button
           variant="ghost"
           onClick={() => navigate('/business-dashboard')}
@@ -219,118 +96,38 @@ const BusinessImages = () => {
           Volver al Dashboard
         </Button>
 
-        <Card className="mb-6">
-          <CardHeader>
-            <CardTitle>Subir Nueva Imagen</CardTitle>
-            <CardDescription>
-              Selecciona el tipo de imagen y sube el archivo
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div>
-                <Label htmlFor="image-type">Tipo de imagen</Label>
-                <Select value={selectedImageType} onValueChange={setSelectedImageType}>
-                  <SelectTrigger id="image-type">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Object.entries(IMAGE_TYPES).map(([key, label]) => (
-                      <SelectItem key={key} value={key}>
-                        {label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <Label htmlFor="image-file">Archivo de imagen</Label>
-                <Input
-                  id="image-file"
-                  type="file"
-                  accept="image/*"
-                  onChange={handleFileUpload}
-                  disabled={uploading}
-                  className="cursor-pointer"
-                />
-                {uploading && (
-                  <p className="text-sm text-muted-foreground mt-2">Subiendo imagen...</p>
-                )}
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+        <Alert>
+          <ImageIcon className="h-4 w-4" />
+          <AlertDescription>
+            <strong>Gestiona las imágenes de tu negocio:</strong>
+            <ul className="mt-2 space-y-1 text-sm">
+              <li className="flex items-center gap-2">
+                <Menu className="h-3 w-3" />
+                <span>Para fotos de productos/menú, ve a la sección <strong>Menú & Precios</strong></span>
+              </li>
+              <li className="flex items-center gap-2">
+                <Tag className="h-3 w-3" />
+                <span>Para fotos de promociones, ve a la sección <strong>Promociones</strong></span>
+              </li>
+              <li className="flex items-center gap-2">
+                <Video className="h-3 w-3" />
+                <span>Para videos cortos, ve a la sección <strong>Shorts</strong></span>
+              </li>
+            </ul>
+          </AlertDescription>
+        </Alert>
 
-        {images.length === 0 ? (
-          <Card>
-            <CardContent className="py-12">
-              <div className="text-center">
-                <Upload className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-                <p className="text-muted-foreground">
-                  No tienes imágenes aún. Sube la primera imagen de tu negocio.
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-        ) : (
-          <div className="space-y-6">
-            {Object.entries(IMAGE_TYPES).map(([type, label]) => {
-              const typeImages = images.filter(img => img.image_type === type);
-              if (typeImages.length === 0) return null;
+        <ProfileImageUpload
+          businessId={businessId}
+          currentImage={profileImage}
+          onUpdate={() => loadImages(businessId)}
+        />
 
-              return (
-                <Card key={type}>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <ImageIcon className="h-5 w-5" />
-                      {label}
-                    </CardTitle>
-                    <CardDescription>
-                      {typeImages.length} {typeImages.length === 1 ? 'imagen' : 'imágenes'}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                      {typeImages.map((img) => (
-                        <div key={img.id} className="relative group">
-                          <div className="aspect-video rounded-lg overflow-hidden bg-muted">
-                            <img
-                              src={img.image_url}
-                              alt={label}
-                              className="w-full h-full object-cover"
-                            />
-                          </div>
-                          <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                            <Button
-                              size="icon"
-                              variant={img.is_primary ? "default" : "secondary"}
-                              onClick={() => handleSetPrimary(img.id)}
-                              title="Marcar como principal"
-                            >
-                              <Star className={`h-4 w-4 ${img.is_primary ? 'fill-current' : ''}`} />
-                            </Button>
-                            <Button
-                              size="icon"
-                              variant="destructive"
-                              onClick={() => handleDelete(img.id, img.image_url)}
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          </div>
-                          {img.is_primary && (
-                            <div className="absolute bottom-2 left-2 bg-primary text-primary-foreground px-2 py-1 rounded text-xs font-medium">
-                              Principal
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
-        )}
+        <GalleryImageUpload
+          businessId={businessId}
+          images={galleryImages}
+          onUpdate={() => loadImages(businessId)}
+        />
       </div>
     </div>
   );
