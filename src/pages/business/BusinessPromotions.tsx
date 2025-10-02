@@ -22,6 +22,7 @@ interface Promotion {
   valid_until: string | null;
   qr_code: string | null;
   first_time_only: boolean;
+  max_redemptions_per_user: number;
   active: boolean;
 }
 
@@ -42,6 +43,7 @@ const BusinessPromotions = () => {
     valid_until: '',
     image_url: '',
     first_time_only: false,
+    max_redemptions_per_user: 1,
     active: true
   });
 
@@ -185,6 +187,7 @@ const BusinessPromotions = () => {
             valid_until: formData.valid_until || null,
             image_url: formData.image_url || null,
             first_time_only: formData.first_time_only,
+            max_redemptions_per_user: formData.max_redemptions_per_user,
             active: formData.active
           })
           .eq('id', editingPromo.id);
@@ -209,6 +212,7 @@ const BusinessPromotions = () => {
             image_url: formData.image_url || null,
             qr_code: qrCode,
             first_time_only: formData.first_time_only,
+            max_redemptions_per_user: formData.max_redemptions_per_user,
             active: formData.active
           });
 
@@ -242,6 +246,7 @@ const BusinessPromotions = () => {
       valid_until: promo.valid_until || '',
       image_url: promo.image_url || '',
       first_time_only: promo.first_time_only,
+      max_redemptions_per_user: promo.max_redemptions_per_user,
       active: promo.active
     });
     setDialogOpen(true);
@@ -280,6 +285,7 @@ const BusinessPromotions = () => {
       valid_until: '',
       image_url: '',
       first_time_only: false,
+      max_redemptions_per_user: 1,
       active: true
     });
     setEditingPromo(null);
@@ -397,6 +403,22 @@ const BusinessPromotions = () => {
                   )}
                 </div>
 
+                <div className="space-y-2">
+                  <Label htmlFor="max_redemptions">Canjes por usuario *</Label>
+                  <Input
+                    id="max_redemptions"
+                    type="number"
+                    min="1"
+                    max="999"
+                    value={formData.max_redemptions_per_user}
+                    onChange={(e) => setFormData({ ...formData, max_redemptions_per_user: parseInt(e.target.value) || 1 })}
+                    required
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    Número máximo de veces que cada usuario puede canjear esta promoción
+                  </p>
+                </div>
+
                 <div className="flex items-center space-x-2">
                   <Checkbox
                     id="first_time_only"
@@ -460,6 +482,9 @@ const BusinessPromotions = () => {
                             Solo nuevos
                           </span>
                         )}
+                        <span className="text-xs bg-purple-500/10 text-purple-500 px-2 py-1 rounded">
+                          {promo.max_redemptions_per_user}x por usuario
+                        </span>
                       </div>
                     </div>
                     <div className="flex gap-2">

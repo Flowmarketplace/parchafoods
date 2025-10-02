@@ -179,6 +179,7 @@ export type Database = {
           first_time_only: boolean | null
           id: string
           image_url: string | null
+          max_redemptions_per_user: number | null
           qr_code: string | null
           title: string
           valid_until: string | null
@@ -192,6 +193,7 @@ export type Database = {
           first_time_only?: boolean | null
           id?: string
           image_url?: string | null
+          max_redemptions_per_user?: number | null
           qr_code?: string | null
           title: string
           valid_until?: string | null
@@ -205,6 +207,7 @@ export type Database = {
           first_time_only?: boolean | null
           id?: string
           image_url?: string | null
+          max_redemptions_per_user?: number | null
           qr_code?: string | null
           title?: string
           valid_until?: string | null
@@ -424,6 +427,35 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      promotion_redemptions: {
+        Row: {
+          id: string
+          promotion_id: string
+          redeemed_at: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          promotion_id: string
+          redeemed_at?: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          promotion_id?: string
+          redeemed_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "promotion_redemptions_promotion_id_fkey"
+            columns: ["promotion_id"]
+            isOneToOne: false
+            referencedRelation: "business_promotions"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       referrals: {
         Row: {
