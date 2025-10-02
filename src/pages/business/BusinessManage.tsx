@@ -9,8 +9,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { useToast } from '@/hooks/use-toast';
-import { ArrowLeft, Check, ChevronsUpDown } from 'lucide-react';
+import { ArrowLeft, Check, ChevronsUpDown, MapPin } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Switch } from '@/components/ui/switch';
 
 const categories = [
   'Restaurante', 'Café', 'Parque', 'Farmacia', 'Banco', 'Centro Comercial',
@@ -53,7 +54,11 @@ const BusinessManage = () => {
     whatsapp: '',
     email: '',
     website: '',
-    price_range: '$'
+    price_range: '$',
+    latitude: null as number | null,
+    longitude: null as number | null,
+    geo_notifications_enabled: false,
+    notification_radius_km: 1.0
   });
 
   useEffect(() => {
@@ -93,7 +98,11 @@ const BusinessManage = () => {
         whatsapp: business.whatsapp || '',
         email: business.email || '',
         website: business.website || '',
-        price_range: business.price_range || '$'
+        price_range: business.price_range || '$',
+        latitude: business.latitude,
+        longitude: business.longitude,
+        geo_notifications_enabled: business.geo_notifications_enabled || false,
+        notification_radius_km: business.notification_radius_km || 1.0
       });
     } catch (error: any) {
       console.error('Error:', error);
@@ -358,6 +367,86 @@ const BusinessManage = () => {
                   ))}
                 </div>
               </div>
+
+              {/* Proximity Notifications Section */}
+              <Card className="bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-950/30 dark:to-purple-950/30 border-2 border-primary/20">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <MapPin className="h-5 w-5" />
+                    Notificaciones por Proximidad
+                  </CardTitle>
+                  <CardDescription>
+                    Envía notificaciones automáticas a usuarios cercanos a tu negocio
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center space-x-2">
+                    <Switch
+                      id="geo_enabled"
+                      checked={formData.geo_notifications_enabled}
+                      onCheckedChange={(checked) => setFormData({ ...formData, geo_notifications_enabled: checked })}
+                    />
+                    <Label htmlFor="geo_enabled" className="font-semibold">
+                      Activar notificaciones por proximidad
+                    </Label>
+                  </div>
+
+                  {formData.geo_notifications_enabled && (
+                    <>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="latitude">Latitud *</Label>
+                          <Input
+                            id="latitude"
+                            type="number"
+                            step="0.000001"
+                            value={formData.latitude || ''}
+                            onChange={(e) => setFormData({ ...formData, latitude: parseFloat(e.target.value) || null })}
+                            placeholder="Ej: 3.451647"
+                            required={formData.geo_notifications_enabled}
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="longitude">Longitud *</Label>
+                          <Input
+                            id="longitude"
+                            type="number"
+                            step="0.000001"
+                            value={formData.longitude || ''}
+                            onChange={(e) => setFormData({ ...formData, longitude: parseFloat(e.target.value) || null })}
+                            placeholder="Ej: -76.531835"
+                            required={formData.geo_notifications_enabled}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="radius">Radio de notificación (km) *</Label>
+                        <Input
+                          id="radius"
+                          type="number"
+                          step="0.1"
+                          min="0.1"
+                          max="50"
+                          value={formData.notification_radius_km}
+                          onChange={(e) => setFormData({ ...formData, notification_radius_km: parseFloat(e.target.value) || 1.0 })}
+                          required={formData.geo_notifications_enabled}
+                        />
+                        <p className="text-xs text-muted-foreground">
+                          Los usuarios recibirán notificaciones cuando estén a {formData.notification_radius_km} km de tu negocio
+                        </p>
+                      </div>
+
+                      <div className="bg-yellow-50 dark:bg-yellow-950/30 border border-yellow-200 dark:border-yellow-800 rounded-lg p-3">
+                        <p className="text-sm text-yellow-800 dark:text-yellow-200">
+                          <strong>💡 Consejo:</strong> Puedes obtener las coordenadas de tu negocio en Google Maps haciendo clic derecho en la ubicación y seleccionando las coordenadas que aparecen.
+                        </p>
+                      </div>
+                    </>
+                  )}
+                </CardContent>
+              </Card>
 
               <div className="flex justify-end space-x-4">
                 <Button
