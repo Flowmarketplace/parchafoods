@@ -1325,7 +1325,7 @@ export const mockPlaces: Place[] = [
         schedule: 'Martes y Jueves 7:00 AM, Sábados 9:00 AM',
         duration: '45 min',
         level: 'Intermedio - Avanzado',
-        image: 'https://images.unsplash.com/photo-1594737626072-90dc274bc2dd?w=800&q=80'
+        image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80'
       },
       {
         id: 'gc3',
@@ -1365,7 +1365,7 @@ export const mockPlaces: Place[] = [
         schedule: 'Lunes a Viernes 7:00 PM, Sábados 10:00 AM',
         duration: '60 min',
         level: 'Avanzado',
-        image: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=800&q=80'
+        image: 'https://images.unsplash.com/photo-1534258936925-c58bed479fcb?w=800&q=80'
       }
     ],
     reviews: []
