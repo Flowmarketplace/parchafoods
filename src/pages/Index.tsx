@@ -7,6 +7,7 @@ import FilterBar from '@/components/FilterBar';
 import PlacesList from '@/components/PlacesList';
 import EventCard from '@/components/EventCard';
 import BottomNav from '@/components/BottomNav';
+import FloatingAIChat from '@/components/FloatingAIChat';
 import { mockPlaces } from '@/data/places';
 import { mockEvents } from '@/data/events';
 import { Button } from '@/components/ui/button';
@@ -182,6 +183,9 @@ const Index = () => {
       
       {/* Bottom Navigation for mobile */}
       <BottomNav />
+      
+      {/* Floating AI Chat */}
+      <FloatingAIChat />
     </div>
   );
 };
