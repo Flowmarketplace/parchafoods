@@ -11,34 +11,12 @@ interface ShortsCarouselProps {
 const ShortsCarousel = ({ shorts }: ShortsCarouselProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const scrollContainer = scrollRef.current;
-    if (!scrollContainer || shorts.length === 0) return;
-
-    // Auto-scroll to the right every 3 seconds
-    const interval = setInterval(() => {
-      if (scrollContainer) {
-        const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
-        const currentScroll = scrollContainer.scrollLeft;
-        
-        // If we're at the end, scroll back to start
-        if (currentScroll >= maxScroll - 10) {
-          scrollContainer.scrollTo({ left: 0, behavior: 'smooth' });
-        } else {
-          // Scroll one card width to the right
-          const cardWidth = scrollContainer.firstElementChild?.clientWidth || 200;
-          scrollContainer.scrollBy({ left: cardWidth + 16, behavior: 'smooth' }); // +16 for gap
-        }
-      }
-    }, 3000);
-
-    return () => clearInterval(interval);
-  }, [shorts.length]);
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
+      // Scroll by 2 cards (for the 2 columns)
       const cardWidth = scrollRef.current.firstElementChild?.clientWidth || 200;
-      const scrollAmount = direction === 'left' ? -(cardWidth + 16) : (cardWidth + 16);
+      const scrollAmount = direction === 'left' ? -((cardWidth + 16) * 2) : ((cardWidth + 16) * 2);
       scrollRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
     }
   };
@@ -50,10 +28,6 @@ const ShortsCarousel = ({ shorts }: ShortsCarouselProps) => {
       </div>
     );
   }
-
-  // Split shorts into 2 rows
-  const row1 = shorts.filter((_, index) => index % 2 === 0);
-  const row2 = shorts.filter((_, index) => index % 2 === 1);
 
   return (
     <div className="relative group">
@@ -76,34 +50,17 @@ const ShortsCarousel = ({ shorts }: ShortsCarouselProps) => {
         <ChevronRight className="h-5 w-5" />
       </Button>
 
-      {/* Carousel Container */}
-      <div className="space-y-4">
-        {/* Row 1 */}
-        <div
-          ref={scrollRef}
-          className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-        >
-          {row1.map((short) => (
-            <div key={short.id} className="flex-shrink-0 w-40 sm:w-48">
-              <ShortCard short={short} />
-            </div>
-          ))}
-        </div>
-
-        {/* Row 2 */}
-        {row2.length > 0 && (
-          <div
-            className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth"
-            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-          >
-            {row2.map((short) => (
-              <div key={short.id} className="flex-shrink-0 w-40 sm:w-48">
-                <ShortCard short={short} />
-              </div>
-            ))}
+      {/* Carousel Container - Single row with 2 columns */}
+      <div
+        ref={scrollRef}
+        className="grid grid-flow-col auto-cols-[minmax(45%,1fr)] sm:auto-cols-[minmax(300px,1fr)] gap-4 overflow-x-auto scrollbar-hide scroll-smooth px-2"
+        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+      >
+        {shorts.map((short) => (
+          <div key={short.id}>
+            <ShortCard short={short} />
           </div>
-        )}
+        ))}
       </div>
     </div>
   );
