@@ -20,6 +20,8 @@ import BusinessDashboard from "./pages/BusinessDashboard";
 import BusinessSetup from "./pages/business/BusinessSetup";
 import BusinessImages from "./pages/business/BusinessImages";
 import BusinessMenu from "./pages/business/BusinessMenu";
+import BusinessPromotions from "./pages/business/BusinessPromotions";
+import BusinessShorts from "./pages/business/BusinessShorts";
 
 function App() {
   return (
@@ -44,6 +46,8 @@ function App() {
         <Route path="/business-setup" element={<BusinessSetup />} />
         <Route path="/business-images" element={<BusinessImages />} />
         <Route path="/business-menu" element={<BusinessMenu />} />
+        <Route path="/business-promotions" element={<BusinessPromotions />} />
+        <Route path="/business-shorts" element={<BusinessShorts />} />
         <Route path="*" element={<NotFound />} />
         </Routes>
       </RoleBasedRedirect>
