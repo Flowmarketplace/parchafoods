@@ -13,8 +13,18 @@ import {
   Settings,
   LogOut,
   BarChart3,
-  Gift
+  Gift,
+  Image,
+  Menu,
+  Film
 } from 'lucide-react';
+
+interface Business {
+  id: string;
+  name: string;
+  category: string;
+  address: string;
+}
 
 const BusinessDashboard = () => {
   const navigate = useNavigate();
@@ -22,6 +32,7 @@ const BusinessDashboard = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [isBusinessOwner, setIsBusinessOwner] = useState(false);
+  const [business, setBusiness] = useState<Business | null>(null);
 
   useEffect(() => {
     checkAuth();
@@ -67,6 +78,17 @@ const BusinessDashboard = () => {
       }
 
       setIsBusinessOwner(true);
+
+      // Check if user has a business
+      const { data: businessData } = await supabase
+        .from('businesses')
+        .select('id, name, category, address')
+        .eq('owner_id', session.user.id)
+        .single();
+
+      if (businessData) {
+        setBusiness(businessData);
+      }
     } catch (error) {
       console.error('Auth check error:', error);
     } finally {
@@ -94,6 +116,43 @@ const BusinessDashboard = () => {
     return null;
   }
 
+  // If no business, show create business prompt
+  if (!business) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
+        <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+          <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Store className="h-6 w-6 text-primary" />
+              <h1 className="text-xl font-bold">Panel de Negocio</h1>
+            </div>
+            <div className="flex items-center gap-4">
+              <span className="text-sm text-muted-foreground">{user?.email}</span>
+              <Button variant="ghost" size="icon" onClick={handleLogout}>
+                <LogOut className="h-5 w-5" />
+              </Button>
+            </div>
+          </div>
+        </header>
+
+        <main className="container mx-auto px-4 py-16">
+          <div className="max-w-2xl mx-auto text-center">
+            <div className="bg-muted/50 rounded-full p-8 w-32 h-32 mx-auto mb-6 flex items-center justify-center">
+              <Store className="h-16 w-16 text-primary" />
+            </div>
+            <h2 className="text-3xl font-bold mb-4">Bienvenido al Panel de Negocios</h2>
+            <p className="text-muted-foreground mb-8 text-lg">
+              Para comenzar, registra tu establecimiento y empieza a gestionar tu presencia digital
+            </p>
+            <Button size="lg" onClick={() => navigate('/business-setup')}>
+              Registrar Mi Negocio
+            </Button>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
       {/* Header */}
@@ -116,9 +175,9 @@ const BusinessDashboard = () => {
 
       <main className="container mx-auto px-4 py-8">
         <div className="mb-8">
-          <h2 className="text-3xl font-bold mb-2">Bienvenido a tu Panel de Negocio</h2>
+          <h2 className="text-3xl font-bold mb-2">{business.name}</h2>
           <p className="text-muted-foreground">
-            Gestiona tu establecimiento, promociones y estadísticas desde aquí
+            {business.category} • {business.address}
           </p>
         </div>
 
@@ -187,7 +246,10 @@ const BusinessDashboard = () => {
 
         {/* Action Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+          <Card 
+            className="hover:shadow-lg transition-shadow cursor-pointer"
+            onClick={() => navigate('/business-manage')}
+          >
             <CardHeader>
               <Store className="h-8 w-8 mb-2 text-primary" />
               <CardTitle>Mi Establecimiento</CardTitle>
@@ -196,8 +258,44 @@ const BusinessDashboard = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Button className="w-full" disabled>
-                Próximamente
+              <Button className="w-full">
+                Gestionar
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card 
+            className="hover:shadow-lg transition-shadow cursor-pointer"
+            onClick={() => navigate('/business-images')}
+          >
+            <CardHeader>
+              <Image className="h-8 w-8 mb-2 text-primary" />
+              <CardTitle>Galería de Imágenes</CardTitle>
+              <CardDescription>
+                Sube y gestiona las fotos de tu negocio
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button className="w-full">
+                Ver Galería
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card 
+            className="hover:shadow-lg transition-shadow cursor-pointer"
+            onClick={() => navigate('/business-menu')}
+          >
+            <CardHeader>
+              <Menu className="h-8 w-8 mb-2 text-primary" />
+              <CardTitle>Menú & Precios</CardTitle>
+              <CardDescription>
+                Administra tu menú, productos y servicios con precios
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button className="w-full">
+                Gestionar Menú
               </Button>
             </CardContent>
           </Card>
@@ -217,7 +315,10 @@ const BusinessDashboard = () => {
             </CardContent>
           </Card>
 
-          <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+          <Card 
+            className="hover:shadow-lg transition-shadow cursor-pointer"
+            onClick={() => navigate('/business-promotions')}
+          >
             <CardHeader>
               <Gift className="h-8 w-8 mb-2 text-primary" />
               <CardTitle>Promociones</CardTitle>
@@ -226,8 +327,26 @@ const BusinessDashboard = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Button className="w-full" disabled>
-                Próximamente
+              <Button className="w-full">
+                Gestionar
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card 
+            className="hover:shadow-lg transition-shadow cursor-pointer"
+            onClick={() => navigate('/business-shorts')}
+          >
+            <CardHeader>
+              <Film className="h-8 w-8 mb-2 text-primary" />
+              <CardTitle>Shorts/Reels</CardTitle>
+              <CardDescription>
+                Sube videos cortos para promocionar tu negocio
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button className="w-full">
+                Gestionar Videos
               </Button>
             </CardContent>
           </Card>

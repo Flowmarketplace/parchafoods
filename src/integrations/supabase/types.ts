@@ -14,6 +14,315 @@ export type Database = {
   }
   public: {
     Tables: {
+      business_attributes: {
+        Row: {
+          attribute_type: string
+          attribute_value: string
+          business_id: string
+          created_at: string | null
+          id: string
+        }
+        Insert: {
+          attribute_type: string
+          attribute_value: string
+          business_id: string
+          created_at?: string | null
+          id?: string
+        }
+        Update: {
+          attribute_type?: string
+          attribute_value?: string
+          business_id?: string
+          created_at?: string | null
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "business_attributes_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      business_hours: {
+        Row: {
+          business_id: string
+          close_time: string | null
+          created_at: string | null
+          day_of_week: number
+          id: string
+          is_closed: boolean | null
+          open_time: string | null
+        }
+        Insert: {
+          business_id: string
+          close_time?: string | null
+          created_at?: string | null
+          day_of_week: number
+          id?: string
+          is_closed?: boolean | null
+          open_time?: string | null
+        }
+        Update: {
+          business_id?: string
+          close_time?: string | null
+          created_at?: string | null
+          day_of_week?: number
+          id?: string
+          is_closed?: boolean | null
+          open_time?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "business_hours_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      business_images: {
+        Row: {
+          business_id: string
+          created_at: string | null
+          display_order: number | null
+          id: string
+          image_url: string
+          is_primary: boolean | null
+        }
+        Insert: {
+          business_id: string
+          created_at?: string | null
+          display_order?: number | null
+          id?: string
+          image_url: string
+          is_primary?: boolean | null
+        }
+        Update: {
+          business_id?: string
+          created_at?: string | null
+          display_order?: number | null
+          id?: string
+          image_url?: string
+          is_primary?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "business_images_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      business_menu: {
+        Row: {
+          available: boolean | null
+          business_id: string
+          category: string | null
+          created_at: string | null
+          description: string | null
+          id: string
+          image_url: string | null
+          name: string
+          price: number
+        }
+        Insert: {
+          available?: boolean | null
+          business_id: string
+          category?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          name: string
+          price: number
+        }
+        Update: {
+          available?: boolean | null
+          business_id?: string
+          category?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          name?: string
+          price?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "business_menu_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      business_promotions: {
+        Row: {
+          active: boolean | null
+          business_id: string
+          conditions: string | null
+          created_at: string | null
+          description: string
+          first_time_only: boolean | null
+          id: string
+          image_url: string | null
+          qr_code: string | null
+          title: string
+          valid_until: string | null
+        }
+        Insert: {
+          active?: boolean | null
+          business_id: string
+          conditions?: string | null
+          created_at?: string | null
+          description: string
+          first_time_only?: boolean | null
+          id?: string
+          image_url?: string | null
+          qr_code?: string | null
+          title: string
+          valid_until?: string | null
+        }
+        Update: {
+          active?: boolean | null
+          business_id?: string
+          conditions?: string | null
+          created_at?: string | null
+          description?: string
+          first_time_only?: boolean | null
+          id?: string
+          image_url?: string | null
+          qr_code?: string | null
+          title?: string
+          valid_until?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "business_promotions_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      business_shorts: {
+        Row: {
+          active: boolean | null
+          business_id: string
+          created_at: string | null
+          description: string | null
+          id: string
+          likes: number | null
+          thumbnail_url: string | null
+          title: string
+          video_url: string
+          views: number | null
+        }
+        Insert: {
+          active?: boolean | null
+          business_id: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          likes?: number | null
+          thumbnail_url?: string | null
+          title: string
+          video_url: string
+          views?: number | null
+        }
+        Update: {
+          active?: boolean | null
+          business_id?: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          likes?: number | null
+          thumbnail_url?: string | null
+          title?: string
+          video_url?: string
+          views?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "business_shorts_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      businesses: {
+        Row: {
+          address: string
+          category: string
+          created_at: string | null
+          description: string | null
+          email: string | null
+          featured: boolean | null
+          id: string
+          latitude: number | null
+          longitude: number | null
+          name: string
+          neighborhood: string
+          owner_id: string
+          phone: string | null
+          price_range: string | null
+          updated_at: string | null
+          website: string | null
+          whatsapp: string | null
+          zone: string | null
+        }
+        Insert: {
+          address: string
+          category: string
+          created_at?: string | null
+          description?: string | null
+          email?: string | null
+          featured?: boolean | null
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          name: string
+          neighborhood: string
+          owner_id: string
+          phone?: string | null
+          price_range?: string | null
+          updated_at?: string | null
+          website?: string | null
+          whatsapp?: string | null
+          zone?: string | null
+        }
+        Update: {
+          address?: string
+          category?: string
+          created_at?: string | null
+          description?: string | null
+          email?: string | null
+          featured?: boolean | null
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          name?: string
+          neighborhood?: string
+          owner_id?: string
+          phone?: string | null
+          price_range?: string | null
+          updated_at?: string | null
+          website?: string | null
+          whatsapp?: string | null
+          zone?: string | null
+        }
+        Relationships: []
+      }
       loyalty_history: {
         Row: {
           id: string
