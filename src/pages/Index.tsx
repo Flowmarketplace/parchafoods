@@ -18,7 +18,6 @@ import ShortCard from '@/components/ShortCard';
 import ShortsCarousel from '@/components/ShortsCarousel';
 import PlaceChat from '@/components/PlaceChat';
 import { Badge } from '@/components/ui/badge';
-import { ProximityTracker } from '@/components/ProximityTracker';
 
 const Index = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -122,11 +121,6 @@ const Index = () => {
           {/* Content Sections */}
           {!showFilters ? (
             <div className="w-full max-w-screen-2xl mx-auto px-4 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8 space-y-6 sm:space-y-8 md:space-y-12 pb-20 md:pb-8">
-              {/* Proximity Tracker */}
-              <div className="max-w-md">
-                <ProximityTracker />
-              </div>
-
               {/* Recomendados - Shorts Section */}
               <section className="bg-gradient-to-br from-purple-500/5 via-pink-500/5 to-primary/5 -mx-4 sm:-mx-4 md:-mx-6 px-4 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8 rounded-lg border-t-2 border-purple-500/20">
                 <div className="flex items-center justify-between mb-3 sm:mb-4 md:mb-6">

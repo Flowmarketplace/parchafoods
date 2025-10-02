@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils';
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { User as SupabaseUser } from '@supabase/supabase-js';
+import { ProximityDialog } from '@/components/ProximityDialog';
 
 interface NavbarProps {
   onMenuClick: () => void;
@@ -85,6 +86,9 @@ const Navbar = ({ onMenuClick, searchQuery, onSearchChange, selectedNeighborhood
               <Bell className="h-5 w-5" />
               <span className="absolute top-1 right-1 h-2 w-2 bg-secondary rounded-full" />
             </Button>
+
+            {/* Proximity notifications toggle */}
+            {user && <ProximityDialog />}
 
             {user ? (
               <Button
