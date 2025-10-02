@@ -8,7 +8,8 @@ const corsHeaders = {
 
 interface QRScanRequest {
   qrCode: string;
-  placeId: string;
+  placeId?: string;
+  businessId?: string;
 }
 
 serve(async (req) => {
@@ -44,33 +45,96 @@ serve(async (req) => {
       );
     }
 
-    const { qrCode, placeId }: QRScanRequest = await req.json();
+    const { qrCode, placeId, businessId }: QRScanRequest = await req.json();
 
-    console.log('Processing QR scan for user:', user.id, 'place:', placeId);
+    // Check if it's a loyalty QR code (format: loyalty:business_id:timestamp)
+    const isLoyaltyQR = qrCode.startsWith('loyalty:');
+    let targetBusinessId = businessId;
 
-    // Validate QR code format (should be place_id:timestamp)
-    if (!qrCode.startsWith(`${placeId}:`)) {
-      console.error('Invalid QR code format');
-      return new Response(
-        JSON.stringify({ error: 'Código QR inválido' }),
-        {
-          status: 400,
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        }
-      );
+    if (isLoyaltyQR) {
+      const parts = qrCode.split(':');
+      if (parts.length < 2) {
+        return new Response(
+          JSON.stringify({ error: 'Código QR de lealtad inválido' }),
+          {
+            status: 400,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          }
+        );
+      }
+      targetBusinessId = parts[1];
+      console.log('Processing loyalty QR scan for user:', user.id, 'business:', targetBusinessId);
+    } else {
+      console.log('Processing QR scan for user:', user.id, 'place:', placeId);
+
+      // Validate QR code format for old place-based QRs (should be place_id:timestamp)
+      if (!qrCode.startsWith(`${placeId}:`)) {
+        console.error('Invalid QR code format');
+        return new Response(
+          JSON.stringify({ error: 'Código QR inválido' }),
+          {
+            status: 400,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          }
+        );
+      }
+    }
+
+    // Get business loyalty configuration if this is a loyalty QR
+    let pointsPerScan = 1;
+    let pointsToRedeem = 10;
+
+    if (isLoyaltyQR && targetBusinessId) {
+      const { data: business, error: businessError } = await supabaseClient
+        .from('businesses')
+        .select('loyalty_enabled, loyalty_points_per_scan, loyalty_points_to_redeem')
+        .eq('id', targetBusinessId)
+        .single();
+
+      if (businessError || !business) {
+        console.error('Error fetching business:', businessError);
+        return new Response(
+          JSON.stringify({ error: 'Negocio no encontrado' }),
+          {
+            status: 404,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          }
+        );
+      }
+
+      if (!business.loyalty_enabled) {
+        return new Response(
+          JSON.stringify({ error: 'Este negocio no tiene programa de lealtad activo' }),
+          {
+            status: 400,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          }
+        );
+      }
+
+      pointsPerScan = business.loyalty_points_per_scan || 1;
+      pointsToRedeem = business.loyalty_points_to_redeem || 10;
     }
 
     // Check if user already scanned today (prevent spam)
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    const { data: todayScans, error: historyCheckError } = await supabaseClient
+    const historyQuery = supabaseClient
       .from('loyalty_history')
       .select('*')
       .eq('user_id', user.id)
-      .eq('place_id', placeId)
       .gte('scanned_at', today.toISOString())
       .limit(1);
+
+    // Filter by business_id for loyalty QRs or place_id for old QRs
+    if (isLoyaltyQR && targetBusinessId) {
+      historyQuery.eq('business_id', targetBusinessId);
+    } else if (placeId) {
+      historyQuery.is('business_id', null); // Legacy place-based scans
+    }
+
+    const { data: todayScans, error: historyCheckError } = await historyQuery;
 
     if (historyCheckError) {
       console.error('Error checking today scans:', historyCheckError);
@@ -98,14 +162,19 @@ serve(async (req) => {
     }
 
     // Add scan to history
+    const historyInsert: any = {
+      user_id: user.id,
+      points_earned: pointsPerScan,
+      scan_type: isLoyaltyQR ? 'qr_scan' : 'purchase',
+    };
+
+    if (isLoyaltyQR && targetBusinessId) {
+      historyInsert.business_id = targetBusinessId;
+    }
+
     const { error: historyError } = await supabaseClient
       .from('loyalty_history')
-      .insert({
-        user_id: user.id,
-        place_id: placeId,
-        points_earned: 1,
-        qr_code: qrCode,
-      });
+      .insert(historyInsert);
 
     if (historyError) {
       console.error('Error adding to history:', historyError);
@@ -119,14 +188,20 @@ serve(async (req) => {
     }
 
     // Get or create loyalty points record
-    const { data: existingPoints, error: pointsError } = await supabaseClient
+    const pointsQuery = supabaseClient
       .from('loyalty_points')
       .select('*')
-      .eq('user_id', user.id)
-      .eq('place_id', placeId)
-      .single();
+      .eq('user_id', user.id);
 
-    let newPoints = 1;
+    if (isLoyaltyQR && targetBusinessId) {
+      pointsQuery.eq('business_id', targetBusinessId);
+    } else if (placeId) {
+      pointsQuery.is('business_id', null);
+    }
+
+    const { data: existingPoints, error: pointsError } = await pointsQuery.single();
+
+    let newPoints = pointsPerScan;
     let rewardEarned = false;
 
     if (pointsError && pointsError.code !== 'PGRST116') {
@@ -142,18 +217,27 @@ serve(async (req) => {
 
     if (existingPoints) {
       // Update existing record
-      newPoints = existingPoints.reward_claimed ? 1 : existingPoints.points + 1;
-      rewardEarned = newPoints >= 5;
+      newPoints = existingPoints.reward_claimed ? pointsPerScan : existingPoints.points + pointsPerScan;
+      rewardEarned = newPoints >= pointsToRedeem;
 
-      const { error: updateError } = await supabaseClient
+      const updateData: any = {
+        points: rewardEarned ? pointsToRedeem : newPoints,
+        last_scan_at: new Date().toISOString(),
+        reward_claimed: false,
+      };
+
+      const updateQuery = supabaseClient
         .from('loyalty_points')
-        .update({
-          points: rewardEarned ? 5 : newPoints,
-          last_scan_at: new Date().toISOString(),
-          reward_claimed: false,
-        })
-        .eq('user_id', user.id)
-        .eq('place_id', placeId);
+        .update(updateData)
+        .eq('user_id', user.id);
+
+      if (isLoyaltyQR && targetBusinessId) {
+        updateQuery.eq('business_id', targetBusinessId);
+      } else if (placeId) {
+        updateQuery.is('business_id', null);
+      }
+
+      const { error: updateError } = await updateQuery;
 
       if (updateError) {
         console.error('Error updating points:', updateError);
@@ -167,14 +251,19 @@ serve(async (req) => {
       }
     } else {
       // Create new record
+      const insertData: any = {
+        user_id: user.id,
+        points: pointsPerScan,
+        last_scan_at: new Date().toISOString(),
+      };
+
+      if (isLoyaltyQR && targetBusinessId) {
+        insertData.business_id = targetBusinessId;
+      }
+
       const { error: insertError } = await supabaseClient
         .from('loyalty_points')
-        .insert({
-          user_id: user.id,
-          place_id: placeId,
-          points: 1,
-          last_scan_at: new Date().toISOString(),
-        });
+        .insert(insertData);
 
       if (insertError) {
         console.error('Error creating loyalty points:', insertError);
@@ -195,9 +284,10 @@ serve(async (req) => {
         success: true,
         points: newPoints,
         rewardEarned,
+        pointsToRedeem,
         message: rewardEarned 
-          ? '¡Felicitaciones! Has completado 5 puntos. Reclama tu recompensa.' 
-          : `¡Punto acumulado! Llevas ${newPoints} de 5 puntos.`
+          ? `¡Felicitaciones! Has completado ${pointsToRedeem} puntos. Reclama tu recompensa.` 
+          : `¡${pointsPerScan} punto(s) acumulado(s)! Llevas ${newPoints} de ${pointsToRedeem} puntos.`
       }),
       {
         status: 200,

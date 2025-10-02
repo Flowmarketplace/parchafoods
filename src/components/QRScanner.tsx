@@ -7,13 +7,14 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
 interface QRScannerProps {
-  placeId: string;
+  placeId?: string;
+  businessId?: string;
   placeName: string;
   onClose: () => void;
   onSuccess: () => void;
 }
 
-const QRScanner = ({ placeId, placeName, onClose, onSuccess }: QRScannerProps) => {
+const QRScanner = ({ placeId, businessId, placeName, onClose, onSuccess }: QRScannerProps) => {
   const { toast } = useToast();
   const [scanning, setScanning] = useState(true);
 
@@ -34,11 +35,12 @@ const QRScanner = ({ placeId, placeName, onClose, onSuccess }: QRScannerProps) =
         scanner.clear();
 
         try {
+          const body: any = { qrCode: decodedText };
+          if (placeId) body.placeId = placeId;
+          if (businessId) body.businessId = businessId;
+
           const { data, error } = await supabase.functions.invoke('process-qr-scan', {
-            body: {
-              qrCode: decodedText,
-              placeId: placeId,
-            },
+            body,
           });
 
           if (error) throw error;

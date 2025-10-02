@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
@@ -7,8 +7,9 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-import { ArrowLeft, Gift, Upload, Award } from 'lucide-react';
+import { ArrowLeft, Gift, Upload, Award, Download, QrCode } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
+import QRCode from 'qrcode';
 
 interface LoyaltyConfig {
   loyalty_enabled: boolean;
@@ -25,6 +26,8 @@ const BusinessLoyalty = () => {
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [businessId, setBusinessId] = useState<string>('');
+  const [qrCodeUrl, setQrCodeUrl] = useState<string>('');
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   
   const [formData, setFormData] = useState<LoyaltyConfig>({
     loyalty_enabled: false,
@@ -72,11 +75,45 @@ const BusinessLoyalty = () => {
         loyalty_reward_image: business.loyalty_reward_image,
         loyalty_reward_description: business.loyalty_reward_description
       });
+
+      // Generate QR code for loyalty
+      await generateQRCode(business.id);
     } catch (error) {
       console.error('Error:', error);
     } finally {
       setLoading(false);
     }
+  };
+
+  const generateQRCode = async (businessId: string) => {
+    try {
+      const qrData = `loyalty:${businessId}:${Date.now()}`;
+      const url = await QRCode.toDataURL(qrData, {
+        width: 300,
+        margin: 2,
+        color: {
+          dark: '#000000',
+          light: '#FFFFFF',
+        },
+      });
+      setQrCodeUrl(url);
+    } catch (error) {
+      console.error('Error generating QR code:', error);
+    }
+  };
+
+  const downloadQRCode = () => {
+    const link = document.createElement('a');
+    link.href = qrCodeUrl;
+    link.download = `loyalty-qr-${businessId}.png`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    toast({
+      title: "QR Descargado",
+      description: "Imprime este código para que tus clientes acumulen puntos",
+    });
   };
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -293,6 +330,45 @@ const BusinessLoyalty = () => {
                       </div>
                     </div>
                   </div>
+
+                  {qrCodeUrl && (
+                    <Card className="bg-gradient-to-br from-primary/5 to-secondary/5 border-primary/20">
+                      <CardHeader>
+                        <CardTitle className="flex items-center gap-2 text-lg">
+                          <QrCode className="h-5 w-5" />
+                          Código QR de Lealtad
+                        </CardTitle>
+                        <CardDescription>
+                          Imprime o muestra este código para que tus clientes acumulen puntos
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <div className="flex flex-col items-center gap-4">
+                          <div className="bg-white p-4 rounded-lg shadow-md">
+                            <img 
+                              src={qrCodeUrl} 
+                              alt="QR Code de Lealtad" 
+                              className="w-64 h-64"
+                            />
+                          </div>
+                          <Button 
+                            type="button"
+                            onClick={downloadQRCode}
+                            className="gap-2"
+                            variant="outline"
+                          >
+                            <Download className="h-4 w-4" />
+                            Descargar QR
+                          </Button>
+                        </div>
+                        <div className="bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+                          <p className="text-sm text-blue-800 dark:text-blue-200">
+                            <strong>Cómo funciona:</strong> Los clientes escanean este código con la app para acumular {formData.loyalty_points_per_scan} punto(s) por visita. Al llegar a {formData.loyalty_points_to_redeem} puntos, pueden canjear su premio.
+                          </p>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
                 </>
               )}
             </CardContent>
