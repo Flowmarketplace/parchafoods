@@ -90,6 +90,7 @@ export type Database = {
           created_at: string | null
           display_order: number | null
           id: string
+          image_type: string
           image_url: string
           is_primary: boolean | null
         }
@@ -98,6 +99,7 @@ export type Database = {
           created_at?: string | null
           display_order?: number | null
           id?: string
+          image_type?: string
           image_url: string
           is_primary?: boolean | null
         }
@@ -106,6 +108,7 @@ export type Database = {
           created_at?: string | null
           display_order?: number | null
           id?: string
+          image_type?: string
           image_url?: string
           is_primary?: boolean | null
         }
