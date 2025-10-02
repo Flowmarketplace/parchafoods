@@ -280,6 +280,11 @@ export type Database = {
           id: string
           latitude: number | null
           longitude: number | null
+          loyalty_enabled: boolean | null
+          loyalty_points_per_scan: number | null
+          loyalty_points_to_redeem: number | null
+          loyalty_reward_description: string | null
+          loyalty_reward_image: string | null
           name: string
           neighborhood: string
           owner_id: string
@@ -300,6 +305,11 @@ export type Database = {
           id?: string
           latitude?: number | null
           longitude?: number | null
+          loyalty_enabled?: boolean | null
+          loyalty_points_per_scan?: number | null
+          loyalty_points_to_redeem?: number | null
+          loyalty_reward_description?: string | null
+          loyalty_reward_image?: string | null
           name: string
           neighborhood: string
           owner_id: string
@@ -320,6 +330,11 @@ export type Database = {
           id?: string
           latitude?: number | null
           longitude?: number | null
+          loyalty_enabled?: boolean | null
+          loyalty_points_per_scan?: number | null
+          loyalty_points_to_redeem?: number | null
+          loyalty_reward_description?: string | null
+          loyalty_reward_image?: string | null
           name?: string
           neighborhood?: string
           owner_id?: string
@@ -334,63 +349,79 @@ export type Database = {
       }
       loyalty_history: {
         Row: {
+          business_id: string | null
           id: string
-          place_id: string
           points_earned: number
-          qr_code: string
+          scan_type: string | null
           scanned_at: string
           user_id: string
         }
         Insert: {
+          business_id?: string | null
           id?: string
-          place_id: string
           points_earned?: number
-          qr_code: string
+          scan_type?: string | null
           scanned_at?: string
           user_id: string
         }
         Update: {
+          business_id?: string | null
           id?: string
-          place_id?: string
           points_earned?: number
-          qr_code?: string
+          scan_type?: string | null
           scanned_at?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "loyalty_history_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       loyalty_points: {
         Row: {
+          business_id: string | null
           created_at: string
           id: string
           last_scan_at: string | null
-          place_id: string
           points: number
           reward_claimed: boolean
           updated_at: string
           user_id: string
         }
         Insert: {
+          business_id?: string | null
           created_at?: string
           id?: string
           last_scan_at?: string | null
-          place_id: string
           points?: number
           reward_claimed?: boolean
           updated_at?: string
           user_id: string
         }
         Update: {
+          business_id?: string | null
           created_at?: string
           id?: string
           last_scan_at?: string | null
-          place_id?: string
           points?: number
           reward_claimed?: boolean
           updated_at?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "loyalty_points_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       profiles: {
         Row: {

@@ -381,6 +381,24 @@ const BusinessDashboard = () => {
             </Card>
           )}
 
+          <Card 
+            className="hover:shadow-lg transition-shadow cursor-pointer"
+            onClick={() => navigate('/business-loyalty')}
+          >
+            <CardHeader>
+              <Gift className="h-8 w-8 mb-2 text-primary" />
+              <CardTitle>Programa de Lealtad</CardTitle>
+              <CardDescription>
+                Configura sistema de puntos para premiar a tus clientes
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button className="w-full">
+                Configurar Lealtad
+              </Button>
+            </CardContent>
+          </Card>
+
           <Card className="hover:shadow-lg transition-shadow cursor-pointer">
             <CardHeader>
               <BarChart3 className="h-8 w-8 mb-2 text-primary" />

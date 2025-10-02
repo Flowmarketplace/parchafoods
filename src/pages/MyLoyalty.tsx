@@ -11,7 +11,7 @@ import { mockPlaces } from '@/data/places';
 
 interface LoyaltyPoint {
   id: string;
-  place_id: string;
+  business_id: string;
   points: number;
   reward_claimed: boolean;
   last_scan_at: string;
@@ -75,7 +75,7 @@ const MyLoyalty = () => {
     }
   };
 
-  const handleClaimReward = async (placeId: string) => {
+  const handleClaimReward = async (businessId: string) => {
     if (!user) return;
 
     try {
@@ -86,7 +86,7 @@ const MyLoyalty = () => {
           reward_claimed: true,
         })
         .eq('user_id', user.id)
-        .eq('place_id', placeId);
+        .eq('business_id', businessId);
 
       if (error) throw error;
 
@@ -109,9 +109,9 @@ const MyLoyalty = () => {
     return loyaltyPoints.reduce((sum, item) => sum + item.points, 0);
   };
 
-  const getPlaceName = (placeId: string) => {
-    const place = mockPlaces.find(p => p.id === placeId);
-    return place?.name || placeId;
+  const getBusinessName = (businessId: string) => {
+    // This will be improved later to fetch from businesses table
+    return businessId;
   };
 
   if (loading) {
@@ -173,12 +173,12 @@ const MyLoyalty = () => {
               <div key={loyalty.id}>
                 <LoyaltyProgressBar
                   points={loyalty.points}
-                  placeName={getPlaceName(loyalty.place_id)}
+                  placeName={getBusinessName(loyalty.business_id)}
                 />
                 {loyalty.points >= 5 && !loyalty.reward_claimed && (
                   <Button
                     className="w-full mt-2"
-                    onClick={() => handleClaimReward(loyalty.place_id)}
+                    onClick={() => handleClaimReward(loyalty.business_id)}
                   >
                     Reclamar Recompensa
                   </Button>

@@ -53,8 +53,8 @@ const PlaceDetails = () => {
         .from('loyalty_points')
         .select('points')
         .eq('user_id', userId)
-        .eq('place_id', placeId)
-        .single();
+        .eq('business_id', placeId)
+        .maybeSingle();
 
       if (data) {
         setLoyaltyPoints(data.points);

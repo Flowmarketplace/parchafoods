@@ -23,6 +23,7 @@ import BusinessImages from "./pages/business/BusinessImages";
 import BusinessMenu from "./pages/business/BusinessMenu";
 import BusinessPromotions from "./pages/business/BusinessPromotions";
 import BusinessShorts from "./pages/business/BusinessShorts";
+import BusinessLoyalty from "./pages/business/BusinessLoyalty";
 
 function App() {
   return (
@@ -47,10 +48,11 @@ function App() {
         <Route path="/business-setup" element={<BusinessSetup />} />
         <Route path="/business-manage" element={<BusinessManage />} />
         <Route path="/business-images" element={<BusinessImages />} />
-        <Route path="/business-menu" element={<BusinessMenu />} />
-        <Route path="/business-promotions" element={<BusinessPromotions />} />
-        <Route path="/business-shorts" element={<BusinessShorts />} />
-        <Route path="*" element={<NotFound />} />
+         <Route path="/business-menu" element={<BusinessMenu />} />
+         <Route path="/business-promotions" element={<BusinessPromotions />} />
+         <Route path="/business-shorts" element={<BusinessShorts />} />
+         <Route path="/business-loyalty" element={<BusinessLoyalty />} />
+         <Route path="*" element={<NotFound />} />
         </Routes>
       </RoleBasedRedirect>
       <Toaster />
