@@ -164,9 +164,9 @@ export const mockPlaces: Place[] = [
     phone: '+57 2 555 2345',
     description: 'Especialistas en carnes a la parrilla y platos típicos del Valle del Cauca. Ambiente familiar y acogedor.',
     images: [
-      'https://images.unsplash.com/photo-1544025162-d76694265947?w=800&q=80',
+      'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800&q=80',
       'https://images.unsplash.com/photo-1558030006-450675393462?w=800&q=80',
-      'https://images.unsplash.com/photo-1432139555190-58524dae6a55?w=800&q=80'
+      'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=800&q=80'
     ],
     latitude: 3.4105,
     longitude: -76.5175,
@@ -1126,6 +1126,37 @@ export const mockPlaces: Place[] = [
         description: 'Selección de pescado fresco del día',
         price: '$42.000',
         category: 'Sashimi'
+      }
+    ],
+    hasPromotions: true,
+    promotions: [
+      {
+        id: 'p0-29',
+        title: '🎉 ¡Bienvenida! Primera visita con la app',
+        description: '¡Recibe un roll especial GRATIS por ser tu primera vez usando nuestra app!',
+        image: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=800&q=80',
+        conditions: 'Válido solo en tu primera visita\nEscanea el código QR en el restaurante\nNo aplica con otras promociones',
+        validUntil: '2025-12-31',
+        qrRequired: true,
+        firstTimeOnly: true
+      },
+      {
+        id: 'p29-1',
+        title: 'Combo Sushi para 2 Personas',
+        description: '20 piezas de sushi variado + 2 bebidas por precio especial',
+        image: 'https://images.unsplash.com/photo-1583623025817-d180a2221d0a?w=800&q=80',
+        conditions: 'Válido de domingo a jueves\nPrecio especial: $65.000\nEscanea el código QR para reclamar',
+        validUntil: '2025-12-31',
+        qrRequired: true
+      },
+      {
+        id: 'p29-2',
+        title: 'Happy Hour Sake & Rolls',
+        description: '25% de descuento en rolls seleccionados y sake',
+        image: 'https://images.unsplash.com/photo-1617196034796-73dfa7b1fd56?w=800&q=80',
+        conditions: 'Válido de lunes a viernes de 3:00 PM a 6:00 PM\nEscanea el código QR para reclamar',
+        validUntil: '2025-12-31',
+        qrRequired: true
       }
     ],
     reviews: []
