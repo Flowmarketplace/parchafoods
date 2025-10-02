@@ -8,9 +8,10 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
-import { ArrowLeft, Plus, Pencil, Trash2, QrCode as QrCodeIcon } from 'lucide-react';
+import { ArrowLeft, Plus, Pencil, Trash2, QrCode as QrCodeIcon, Download } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
 import { Checkbox } from '@/components/ui/checkbox';
+import QRCode from 'qrcode';
 
 interface Promotion {
   id: string;
@@ -132,8 +133,42 @@ const BusinessPromotions = () => {
   };
 
   const generateQRCode = () => {
-    // Generate a unique QR code identifier
-    return `PROMO-${businessId.slice(0, 8)}-${Date.now()}`;
+    // Generate a unique QR code identifier with timestamp and random component
+    const timestamp = Date.now();
+    const random = Math.random().toString(36).substring(2, 8).toUpperCase();
+    return `PROMO-${businessId.slice(0, 8)}-${timestamp}-${random}`;
+  };
+
+  const downloadQRCode = async (qrCode: string, title: string) => {
+    try {
+      const canvas = document.createElement('canvas');
+      await QRCode.toCanvas(canvas, qrCode, {
+        width: 512,
+        margin: 2,
+        color: {
+          dark: '#000000',
+          light: '#FFFFFF'
+        }
+      });
+      
+      const url = canvas.toDataURL('image/png');
+      const link = document.createElement('a');
+      link.download = `QR-${title.replace(/\s+/g, '-')}.png`;
+      link.href = url;
+      link.click();
+      
+      toast({
+        title: "¡QR descargado!",
+        description: "El código QR se ha descargado correctamente",
+      });
+    } catch (error) {
+      console.error('Error downloading QR:', error);
+      toast({
+        title: "Error",
+        description: "No se pudo descargar el código QR",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -453,13 +488,38 @@ const BusinessPromotions = () => {
                     </p>
                   )}
                   {promo.qr_code && (
-                    <div className="bg-muted p-3 rounded-lg">
-                      <div className="flex items-center gap-2">
-                        <QrCodeIcon className="h-4 w-4" />
-                        <span className="text-xs font-mono">{promo.qr_code}</span>
+                    <div className="bg-muted p-4 rounded-lg space-y-3">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <QrCodeIcon className="h-4 w-4" />
+                          <span className="text-sm font-semibold">Código QR</span>
+                        </div>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => downloadQRCode(promo.qr_code!, promo.title)}
+                        >
+                          <Download className="h-4 w-4 mr-2" />
+                          Descargar
+                        </Button>
                       </div>
-                      <p className="text-xs text-muted-foreground mt-2">
-                        Los clientes escanean este código para canjear
+                      <div className="flex items-center justify-center bg-white p-4 rounded">
+                        <canvas
+                          ref={(canvas) => {
+                            if (canvas && promo.qr_code) {
+                              QRCode.toCanvas(canvas, promo.qr_code, {
+                                width: 200,
+                                margin: 1
+                              }).catch(console.error);
+                            }
+                          }}
+                        />
+                      </div>
+                      <p className="text-xs text-center text-muted-foreground">
+                        Los clientes escanean este código para canjear la promoción
+                      </p>
+                      <p className="text-xs text-center font-mono bg-background px-2 py-1 rounded">
+                        {promo.qr_code}
                       </p>
                     </div>
                   )}
