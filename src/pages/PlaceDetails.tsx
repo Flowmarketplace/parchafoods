@@ -217,7 +217,7 @@ const PlaceDetails = () => {
                   {place.hasPromotions && (
                     <TabsTrigger value="promociones">
                       <Tag className="h-4 w-4 mr-2" />
-                      Promociones
+                      Promo
                     </TabsTrigger>
                   )}
                   <TabsTrigger value="resenas">Reseñas</TabsTrigger>
