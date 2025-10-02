@@ -67,20 +67,32 @@ export const mockPlaces: Place[] = [
     hasPromotions: true,
     promotions: [
       {
+        id: 'p0-1',
+        title: '🎉 ¡Bienvenida! Primera visita con la app',
+        description: '¡Recibe un postre GRATIS por ser tu primera vez usando nuestra app!',
+        image: 'https://images.unsplash.com/photo-1551024601-bec78aea704b?w=800&q=80',
+        conditions: 'Válido solo en tu primera visita\nEscanea el código QR en el restaurante\nNo aplica con otras promociones',
+        validUntil: '2025-12-31',
+        qrRequired: true,
+        firstTimeOnly: true
+      },
+      {
         id: 'p1',
         title: '2x1 en Bandeja Paisa los Miércoles',
         description: 'Disfruta de nuestra deliciosa Bandeja Paisa y lleva la segunda a mitad de precio',
         image: 'https://images.unsplash.com/photo-1604909052743-94e838986d24?w=800&q=80',
-        conditions: 'Válido solo los miércoles de 12:00 PM a 3:00 PM\nNo aplica con otras promociones\nDebe mencionar la promoción al ordenar',
-        validUntil: '2025-12-31'
+        conditions: 'Válido solo los miércoles de 12:00 PM a 3:00 PM\nNo aplica con otras promociones\nEscanea el código QR en el restaurante para reclamar',
+        validUntil: '2025-12-31',
+        qrRequired: true
       },
       {
         id: 'p2',
         title: 'Menú Ejecutivo - Almuerzo Completo',
         description: 'Sopa + Plato Principal + Jugo + Postre por un precio especial',
         image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&q=80',
-        conditions: 'Disponible de lunes a viernes de 12:00 PM a 2:00 PM\nPrecio especial: $22.000\nOpciones de plato principal limitadas al menú del día',
-        validUntil: '2025-12-31'
+        conditions: 'Disponible de lunes a viernes de 12:00 PM a 2:00 PM\nPrecio especial: $22.000\nEscanea el código QR en el restaurante para reclamar',
+        validUntil: '2025-12-31',
+        qrRequired: true
       }
     ],
     reviews: [
@@ -184,6 +196,37 @@ export const mockPlaces: Place[] = [
         category: 'Especialidades'
       }
     ],
+    hasPromotions: true,
+    promotions: [
+      {
+        id: 'p0-3',
+        title: '🎉 ¡Bienvenida! Primera visita con la app',
+        description: '¡Recibe una entrada GRATIS por ser tu primera vez usando nuestra app!',
+        image: 'https://images.unsplash.com/photo-1633436375094-77d8e5f0d2b2?w=800&q=80',
+        conditions: 'Válido solo en tu primera visita\nEscanea el código QR en el restaurante\nNo aplica con otras promociones',
+        validUntil: '2025-12-31',
+        qrRequired: true,
+        firstTimeOnly: true
+      },
+      {
+        id: 'p3-1',
+        title: 'Happy Hour - 2x1 en Bebidas',
+        description: 'Lleva dos bebidas al precio de una en nuestro happy hour',
+        image: 'https://images.unsplash.com/photo-1566554273541-37a9ca77b91f?w=800&q=80',
+        conditions: 'Válido de lunes a viernes de 5:00 PM a 7:00 PM\nEscanea el código QR para reclamar',
+        validUntil: '2025-12-31',
+        qrRequired: true
+      },
+      {
+        id: 'p3-2',
+        title: 'Parrillada Familiar Especial',
+        description: 'Parrillada para 4 personas con descuento del 20%',
+        image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=800&q=80',
+        conditions: 'Válido fines de semana\nReserva con anticipación\nEscanea el código QR para reclamar',
+        validUntil: '2025-12-31',
+        qrRequired: true
+      }
+    ],
     reviews: [
       {
         id: '5',
@@ -242,6 +285,28 @@ export const mockPlaces: Place[] = [
         description: 'Recién horneado con almendras tostadas',
         price: '$6.000',
         category: 'Repostería'
+      }
+    ],
+    hasPromotions: true,
+    promotions: [
+      {
+        id: 'p0-4',
+        title: '🎉 ¡Bienvenida! Primera visita con la app',
+        description: '¡Recibe un pastelito GRATIS por ser tu primera vez usando nuestra app!',
+        image: 'https://images.unsplash.com/photo-1587049352846-4a222e784422?w=800&q=80',
+        conditions: 'Válido solo en tu primera visita\nEscanea el código QR en la cafetería\nNo aplica con otras promociones',
+        validUntil: '2025-12-31',
+        qrRequired: true,
+        firstTimeOnly: true
+      },
+      {
+        id: 'p4-1',
+        title: 'Desayuno Completo + Café',
+        description: 'Croissant + Café americano por precio especial',
+        image: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&q=80',
+        conditions: 'Disponible hasta las 11:00 AM\nPrecio especial: $8.000\nEscanea el código QR para reclamar',
+        validUntil: '2025-12-31',
+        qrRequired: true
       }
     ],
     reviews: [

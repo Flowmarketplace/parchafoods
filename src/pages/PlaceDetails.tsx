@@ -418,17 +418,38 @@ const PlaceDetails = () => {
                                   Válida hasta: {new Date(promotion.validUntil).toLocaleDateString('es-CO')}
                                 </Badge>
                               )}
+                              {promotion.firstTimeOnly && (
+                                <Badge className="absolute top-4 left-4 bg-primary">
+                                  ¡Primera Vez!
+                                </Badge>
+                              )}
                             </div>
                             <div className="p-6">
                               <h3 className="text-2xl font-bold mb-3 text-primary">{promotion.title}</h3>
                               <p className="text-muted-foreground mb-4">{promotion.description}</p>
-                              <div className="bg-muted p-4 rounded-lg">
+                              <div className="bg-muted p-4 rounded-lg mb-4">
                                 <h4 className="font-semibold mb-2 flex items-center gap-2">
                                   <Tag className="h-4 w-4" />
                                   Condiciones
                                 </h4>
                                 <p className="text-sm text-muted-foreground whitespace-pre-line">{promotion.conditions}</p>
                               </div>
+                              {promotion.qrRequired && (
+                                <Button
+                                  onClick={() => {
+                                    if (user) {
+                                      setShowQRScanner(true);
+                                    } else {
+                                      navigate('/auth');
+                                    }
+                                  }}
+                                  className="w-full gap-2"
+                                  size="lg"
+                                >
+                                  <QrCode className="h-5 w-5" />
+                                  {user ? 'Reclamar Promo' : 'Iniciar Sesión para Reclamar'}
+                                </Button>
+                              )}
                             </div>
                           </CardContent>
                         </Card>

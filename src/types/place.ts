@@ -31,6 +31,8 @@ export interface Promotion {
   image: string;
   conditions: string;
   validUntil?: string;
+  qrRequired?: boolean;
+  firstTimeOnly?: boolean;
 }
 
 export interface Place {
