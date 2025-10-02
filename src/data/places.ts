@@ -550,6 +550,71 @@ export const mockPlaces: Place[] = [
     rating: 4.4,
     priceRange: '$$',
     featured: true,
+    hasPromotions: true,
+    promotions: [
+      {
+        id: 'p0-11',
+        title: '🎉 ¡Bienvenida! Primera visita con la app',
+        description: '¡Recibe un cupón de $20.000 en compras por ser tu primera vez usando nuestra app!',
+        image: 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=800&q=80',
+        conditions: 'Válido solo en tu primera visita\nEscanea el código QR en el centro comercial\nMínimo de compra: $100.000',
+        validUntil: '2025-12-31',
+        qrRequired: true,
+        firstTimeOnly: true
+      },
+      {
+        id: 'p11-1',
+        title: 'Black Friday - Descuentos hasta 70%',
+        description: 'Aprovecha descuentos increíbles en todas las tiendas del centro comercial',
+        image: 'https://images.unsplash.com/photo-1607083206968-13611e3d76db?w=800&q=80',
+        conditions: 'Válido del 23 al 27 de noviembre\nEscanea el código QR para acceso anticipado',
+        validUntil: '2025-11-27',
+        qrRequired: true
+      }
+    ],
+    featuredProducts: [
+      {
+        id: 'fp11-1',
+        name: 'Smart TV 55" 4K',
+        description: 'Televisor inteligente Samsung con tecnología QLED',
+        price: '$2.499.000',
+        category: 'Tecnología',
+        image: 'https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=400&q=80'
+      },
+      {
+        id: 'fp11-2',
+        name: 'Zapatos Deportivos Nike',
+        description: 'Tenis para running con tecnología Air Max',
+        price: '$389.900',
+        category: 'Ropa y Calzado',
+        image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=80'
+      },
+      {
+        id: 'fp11-3',
+        name: 'Perfume Importado',
+        description: 'Fragancia exclusiva para mujer 100ml',
+        price: '$259.000',
+        category: 'Perfumería',
+        image: 'https://images.unsplash.com/photo-1541643600914-78b084683601?w=400&q=80'
+      },
+      {
+        id: 'fp11-4',
+        name: 'Audífonos Bluetooth Sony',
+        description: 'Audífonos inalámbricos con cancelación de ruido',
+        price: '$599.000',
+        category: 'Tecnología',
+        image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&q=80'
+      },
+      {
+        id: 'fp11-5',
+        name: 'Reloj Inteligente',
+        description: 'Smartwatch con monitor de salud y fitness',
+        price: '$899.000',
+        category: 'Tecnología',
+        image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=80'
+      }
+    ],
+    catalogUrl: 'https://www.plazavallegrande.com/catalogo',
     reviews: [
       {
         id: '10',

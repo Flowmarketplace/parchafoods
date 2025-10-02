@@ -55,10 +55,12 @@ export interface Place {
   hasMenu?: boolean;
   products?: Product[];
   hasProducts?: boolean;
+  featuredProducts?: Product[]; // Top 5 productos destacados para tiendas
   services?: Service[];
   hasServices?: boolean;
   promotions?: Promotion[];
   hasPromotions?: boolean;
+  catalogUrl?: string; // URL del catálogo completo
   airbnbUrl?: string;
   // Características y filtros
   foodType?: string[]; // Para restaurantes: ['Colombiana', 'Internacional', etc.]

@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, MapPin, Phone, Star, UtensilsCrossed, Facebook, Instagram, Twitter, Share2, ShoppingBag, Briefcase, Home as HomeIcon, Tag, QrCode } from 'lucide-react';
+import { ArrowLeft, MapPin, Phone, Star, UtensilsCrossed, Facebook, Instagram, Twitter, Share2, ShoppingBag, Briefcase, Home as HomeIcon, Tag, QrCode, ExternalLink } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { User } from '@supabase/supabase-js';
@@ -246,6 +246,12 @@ const PlaceDetails = () => {
               <Tabs defaultValue="ubicacion" className="w-full">
                 <TabsList className="grid w-full grid-cols-4">
                   <TabsTrigger value="ubicacion">Ubicación</TabsTrigger>
+                  {place.featuredProducts && place.featuredProducts.length > 0 && (
+                    <TabsTrigger value="catalogo">
+                      <ShoppingBag className="h-4 w-4 mr-2" />
+                      Catálogo
+                    </TabsTrigger>
+                  )}
                   {place.hasMenu && (
                     <TabsTrigger value="menu">
                       <UtensilsCrossed className="h-4 w-4 mr-2" />
@@ -283,6 +289,68 @@ const PlaceDetails = () => {
                     />
                   </div>
                 </TabsContent>
+
+                {place.featuredProducts && place.featuredProducts.length > 0 && (
+                  <TabsContent value="catalogo" className="mt-6">
+                    <div className="space-y-6">
+                      <div className="flex items-center justify-between">
+                        <h3 className="text-xl font-semibold">Productos Destacados</h3>
+                        {place.catalogUrl && (
+                          <Button
+                            onClick={() => window.open(place.catalogUrl, '_blank')}
+                            variant="outline"
+                            className="gap-2"
+                          >
+                            <ExternalLink className="h-4 w-4" />
+                            Ver Catálogo Completo
+                          </Button>
+                        )}
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {place.featuredProducts.map((product) => (
+                          <Card key={product.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+                            <CardContent className="p-0">
+                              {product.image && (
+                                <div className="relative h-48 w-full overflow-hidden">
+                                  <img
+                                    src={product.image}
+                                    alt={product.name}
+                                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                                  />
+                                </div>
+                              )}
+                              <div className="p-4">
+                                <div className="flex justify-between items-start mb-2">
+                                  <h4 className="font-semibold text-lg">{product.name}</h4>
+                                  <span className="font-bold text-primary whitespace-nowrap ml-2">{product.price}</span>
+                                </div>
+                                {product.description && (
+                                  <p className="text-sm text-muted-foreground mb-2">{product.description}</p>
+                                )}
+                                {product.category && (
+                                  <Badge variant="outline" className="text-xs">{product.category}</Badge>
+                                )}
+                              </div>
+                            </CardContent>
+                          </Card>
+                        ))}
+                      </div>
+                      {place.catalogUrl && (
+                        <div className="text-center pt-4">
+                          <Button
+                            onClick={() => window.open(place.catalogUrl, '_blank')}
+                            size="lg"
+                            className="gap-2"
+                          >
+                            <ExternalLink className="h-5 w-5" />
+                            Ver Todos los Productos en el Catálogo
+                          </Button>
+                        </div>
+                      )}
+                    </div>
+                  </TabsContent>
+                )}
+
 
                 {place.hasMenu && place.menu && (
                   <TabsContent value="menu" className="mt-6">
