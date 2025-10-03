@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { mockEvents } from '@/data/events';
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
+import DirectionsPanel from '@/components/DirectionsPanel';
 import {
   Carousel,
   CarouselContent,
@@ -333,18 +334,29 @@ const EventDetails = () => {
                 </TabsList>
 
                 <TabsContent value="ubicacion" className="mt-6">
-                  <div className="rounded-lg overflow-hidden border border-border h-[400px]">
-                    <iframe
-                      width="100%"
-                      height="100%"
-                      style={{ border: 0 }}
-                      loading="lazy"
-                      src={`https://www.google.com/maps?q=${event.latitude},${event.longitude}&output=embed`}
-                    />
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div>
+                      <div className="rounded-lg overflow-hidden border border-border h-[400px]">
+                        <iframe
+                          width="100%"
+                          height="100%"
+                          style={{ border: 0 }}
+                          loading="lazy"
+                          src={`https://www.google.com/maps?q=${event.latitude},${event.longitude}&output=embed`}
+                        />
+                      </div>
+                      <p className="text-sm text-muted-foreground mt-4">
+                        {event.address}, {event.neighborhood}
+                      </p>
+                    </div>
+                    <div>
+                      <DirectionsPanel 
+                        destinationLat={event.latitude}
+                        destinationLng={event.longitude}
+                        destinationName={event.name}
+                      />
+                    </div>
                   </div>
-                  <p className="text-sm text-muted-foreground mt-4">
-                    {event.address}, {event.neighborhood}
-                  </p>
                 </TabsContent>
 
                 <TabsContent value="detalles" className="mt-6">

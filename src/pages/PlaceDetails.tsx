@@ -12,6 +12,7 @@ import PlaceChat from '@/components/PlaceChat';
 import PlaceMap from '@/components/PlaceMap';
 import PlaceMenu from '@/components/PlaceMenu';
 import QRScanner from '@/components/QRScanner';
+import DirectionsPanel from '@/components/DirectionsPanel';
 import {
   Carousel,
   CarouselContent,
@@ -286,13 +287,24 @@ const PlaceDetails = () => {
                 </TabsList>
 
                 <TabsContent value="ubicacion" className="mt-6">
-                  <div className="rounded-lg overflow-hidden border border-border h-[400px]">
-                    <PlaceMap
-                      latitude={place.latitude}
-                      longitude={place.longitude}
-                      placeName={place.name}
-                      category={place.category}
-                    />
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div>
+                      <div className="rounded-lg overflow-hidden border border-border h-[400px]">
+                        <PlaceMap
+                          latitude={place.latitude}
+                          longitude={place.longitude}
+                          placeName={place.name}
+                          category={place.category}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <DirectionsPanel 
+                        destinationLat={place.latitude}
+                        destinationLng={place.longitude}
+                        destinationName={place.name}
+                      />
+                    </div>
                   </div>
                 </TabsContent>
 
