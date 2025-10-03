@@ -38,7 +38,7 @@ const Index = () => {
     setIsSearching(true);
     const timer = setTimeout(() => {
       setIsSearching(false);
-    }, 300);
+    }, 800); // Increased to make loading more visible
 
     return () => clearTimeout(timer);
   }, [searchQuery, selectedCategory, selectedNeighborhood]);
@@ -96,6 +96,7 @@ const Index = () => {
         onSearchChange={setSearchQuery}
         selectedNeighborhood={selectedNeighborhood}
         onNeighborhoodChange={setSelectedNeighborhood}
+        isSearching={isSearching}
       />
       
       <div className="flex flex-1">
@@ -222,19 +223,29 @@ const Index = () => {
             /* Filtered Results */
             <div className="w-full max-w-screen-2xl mx-auto px-4 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8 pb-20 md:pb-8">
               {isSearching ? (
-                <div className="space-y-4">
-                  <div className="flex items-center justify-center py-8">
-                    <div className="flex flex-col items-center gap-3">
-                      <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary"></div>
-                      <p className="text-sm text-muted-foreground">Buscando...</p>
+                <div className="space-y-6">
+                  <div className="flex items-center justify-center py-12 bg-gradient-to-br from-primary/5 to-secondary/5 rounded-lg border border-primary/20">
+                    <div className="flex flex-col items-center gap-4">
+                      <div className="relative">
+                        <div className="animate-spin rounded-full h-16 w-16 border-4 border-primary/20"></div>
+                        <div className="absolute top-0 left-0 animate-spin rounded-full h-16 w-16 border-4 border-transparent border-t-primary"></div>
+                      </div>
+                      <div className="text-center">
+                        <p className="text-lg font-semibold text-foreground">Buscando lugares...</p>
+                        <p className="text-sm text-muted-foreground mt-1">Esto tomará solo un momento</p>
+                      </div>
                     </div>
                   </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 animate-pulse">
                     {[1, 2, 3, 4, 5, 6].map((i) => (
-                      <div key={i} className="space-y-3">
+                      <div key={i} className="space-y-3 bg-card rounded-lg p-4 border">
                         <Skeleton className="h-48 w-full rounded-lg" />
-                        <Skeleton className="h-4 w-3/4" />
+                        <Skeleton className="h-5 w-3/4" />
                         <Skeleton className="h-4 w-1/2" />
+                        <div className="flex gap-2">
+                          <Skeleton className="h-4 w-16" />
+                          <Skeleton className="h-4 w-20" />
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -242,7 +253,7 @@ const Index = () => {
               ) : (
                 <>
                   {selectedCategory !== 'Todos' && (
-                    <div className="mb-4 sm:mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between bg-card border rounded-lg p-3 sm:p-4 gap-3">
+                    <div className="mb-4 sm:mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between bg-card border rounded-lg p-3 sm:p-4 gap-3 animate-fade-in">
                       <p className="text-sm sm:text-base text-muted-foreground font-normal">
                         {filteredPlaces.length} {filteredPlaces.length === 1 ? 'lugar encontrado' : 'lugares encontrados'}
                       </p>
@@ -256,7 +267,9 @@ const Index = () => {
                       </Button>
                     </div>
                   )}
-                  <PlacesList places={filteredPlaces} />
+                  <div className="animate-fade-in">
+                    <PlacesList places={filteredPlaces} />
+                  </div>
                 </>
               )}
             </div>

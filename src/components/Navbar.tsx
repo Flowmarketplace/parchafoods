@@ -1,4 +1,4 @@
-import { Menu, MapPin, Search, Navigation, Bell, User } from 'lucide-react';
+import { Menu, MapPin, Search, Navigation, Bell, User, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
@@ -15,9 +15,10 @@ interface NavbarProps {
   onSearchChange?: (query: string) => void;
   selectedNeighborhood?: string;
   onNeighborhoodChange?: (neighborhood: string) => void;
+  isSearching?: boolean;
 }
 
-const Navbar = ({ onMenuClick, searchQuery, onSearchChange, selectedNeighborhood, onNeighborhoodChange }: NavbarProps) => {
+const Navbar = ({ onMenuClick, searchQuery, onSearchChange, selectedNeighborhood, onNeighborhoodChange, isSearching = false }: NavbarProps) => {
   const navigate = useNavigate();
   const location = useLocation();
   const showFilter = searchQuery !== undefined && onSearchChange && selectedNeighborhood !== undefined && onNeighborhoodChange;
@@ -121,7 +122,11 @@ const Navbar = ({ onMenuClick, searchQuery, onSearchChange, selectedNeighborhood
         {showFilter && onSearchChange && (
           <div className="pb-3">
             <div className="relative">
-              <Search className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
+              {isSearching ? (
+                <Loader2 className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary animate-spin" />
+              ) : (
+                <Search className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
+              )}
               <Input
                 type="search"
                 placeholder="¿Qué estás buscando?"

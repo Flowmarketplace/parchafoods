@@ -1,4 +1,4 @@
-import { Search, MapPin, SlidersHorizontal } from 'lucide-react';
+import { Search, MapPin, SlidersHorizontal, Loader2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import {
@@ -16,6 +16,7 @@ interface FilterBarProps {
   selectedNeighborhood: string;
   onNeighborhoodChange: (value: string) => void;
   onAdvancedFilters?: () => void;
+  isSearching?: boolean;
 }
 
 const FilterBar = ({ 
@@ -23,7 +24,8 @@ const FilterBar = ({
   onSearchChange, 
   selectedNeighborhood, 
   onNeighborhoodChange,
-  onAdvancedFilters 
+  onAdvancedFilters,
+  isSearching = false
 }: FilterBarProps) => {
   return (
     <div className="w-full bg-background/95 backdrop-blur-sm border-b border-border">
@@ -34,7 +36,11 @@ const FilterBar = ({
             <label className="text-[10px] sm:text-xs font-medium text-muted-foreground mb-1 sm:mb-1.5 block">
               Escribe el nombre o categoría
             </label>
-            <Search className="absolute left-2 sm:left-3 top-[26px] sm:top-7 h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground pointer-events-none" />
+            {isSearching ? (
+              <Loader2 className="absolute left-2 sm:left-3 top-[26px] sm:top-7 h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary pointer-events-none animate-spin" />
+            ) : (
+              <Search className="absolute left-2 sm:left-3 top-[26px] sm:top-7 h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground pointer-events-none" />
+            )}
             <Input
               type="search"
               placeholder="Buscar lugares..."
