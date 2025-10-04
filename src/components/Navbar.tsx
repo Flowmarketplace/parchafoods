@@ -1,4 +1,4 @@
-import { Menu, MapPin, Search, Navigation, Bell, User, Loader2 } from 'lucide-react';
+import { Menu, MapPin, Search, Navigation, User, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { User as SupabaseUser } from '@supabase/supabase-js';
 import { ProximityDialog } from '@/components/ProximityDialog';
+import { NotificationsPanel } from '@/components/NotificationsPanel';
 
 interface NavbarProps {
   onMenuClick: () => void;
@@ -76,17 +77,8 @@ const Navbar = ({ onMenuClick, searchQuery, onSearchChange, selectedNeighborhood
               Cerca de mí
             </Button>
 
-            <Button
-              variant="ghost"
-              size="icon"
-              className="relative"
-              onClick={() => {
-                // TODO: Implement notifications
-              }}
-            >
-              <Bell className="h-5 w-5" />
-              <span className="absolute top-1 right-1 h-2 w-2 bg-secondary rounded-full" />
-            </Button>
+            {/* Notifications Panel */}
+            {user && <NotificationsPanel />}
 
             {/* Proximity notifications toggle */}
             {user && <ProximityDialog />}
