@@ -1,14 +1,23 @@
 import { Search, MapPin, SlidersHorizontal, Loader2 } from 'lucide-react';
+import { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@/components/ui/command';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 import { neighborhoods } from '@/data/places';
+import { cn } from '@/lib/utils';
+import { Check } from 'lucide-react';
 
 interface FilterBarProps {
   searchQuery: string;
@@ -27,6 +36,8 @@ const FilterBar = ({
   onAdvancedFilters,
   isSearching = false
 }: FilterBarProps) => {
+  const [open, setOpen] = useState(false);
+
   return (
     <div className="w-full bg-background/95 backdrop-blur-sm border-b border-border">
       <div className="w-full max-w-screen-2xl mx-auto px-3 sm:px-4 md:px-6 py-3 sm:py-4">
@@ -50,24 +61,58 @@ const FilterBar = ({
             />
           </div>
 
-          {/* Neighborhood Select */}
+          {/* Neighborhood Select with Search */}
           <div className="w-full md:w-[200px]">
             <label className="text-[10px] sm:text-xs font-medium text-muted-foreground mb-1 sm:mb-1.5 block">
               Escoge el barrio
             </label>
-            <Select value={selectedNeighborhood} onValueChange={onNeighborhoodChange}>
-              <SelectTrigger className="w-full h-9 sm:h-11 text-sm">
-                <MapPin className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1.5 sm:mr-2" />
-                <SelectValue placeholder="Barrio" />
-              </SelectTrigger>
-              <SelectContent className="bg-popover z-50">
-                {neighborhoods.map((neighborhood) => (
-                  <SelectItem key={neighborhood} value={neighborhood} className="text-sm">
-                    {neighborhood}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <Popover open={open} onOpenChange={setOpen}>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  role="combobox"
+                  aria-expanded={open}
+                  className="w-full h-9 sm:h-11 justify-between text-sm"
+                >
+                  <div className="flex items-center gap-1.5 sm:gap-2 truncate">
+                    <MapPin className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0" />
+                    <span className="truncate">
+                      {selectedNeighborhood || "Barrio"}
+                    </span>
+                  </div>
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-[200px] p-0" align="start">
+                <Command>
+                  <CommandInput placeholder="Buscar barrio..." className="h-9" />
+                  <CommandList>
+                    <CommandEmpty>No se encontró barrio.</CommandEmpty>
+                    <CommandGroup>
+                      {neighborhoods.map((neighborhood) => (
+                        <CommandItem
+                          key={neighborhood}
+                          value={neighborhood}
+                          onSelect={() => {
+                            onNeighborhoodChange(neighborhood);
+                            setOpen(false);
+                          }}
+                        >
+                          <Check
+                            className={cn(
+                              "mr-2 h-4 w-4",
+                              selectedNeighborhood === neighborhood
+                                ? "opacity-100"
+                                : "opacity-0"
+                            )}
+                          />
+                          {neighborhood}
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  </CommandList>
+                </Command>
+              </PopoverContent>
+            </Popover>
           </div>
 
           {/* Advanced Filters Button */}

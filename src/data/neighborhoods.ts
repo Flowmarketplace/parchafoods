@@ -7,8 +7,33 @@ export interface NeighborhoodLocation {
 export const neighborhoodLocations: Record<string, NeighborhoodLocation> = {
   'Todos': {
     name: 'Todos',
-    coordinates: [-76.5225, 3.4516], // Centro de Cali
+    coordinates: [-76.5225, 3.4516],
     zoom: 12
+  },
+  'Aguablanca': {
+    name: 'Aguablanca',
+    coordinates: [-76.4900, 3.4200],
+    zoom: 14
+  },
+  'Alameda': {
+    name: 'Alameda',
+    coordinates: [-76.5350, 3.4450],
+    zoom: 14
+  },
+  'Alfonso López': {
+    name: 'Alfonso López',
+    coordinates: [-76.5000, 3.4300],
+    zoom: 14
+  },
+  'Alférez Real': {
+    name: 'Alférez Real',
+    coordinates: [-76.5100, 3.4000],
+    zoom: 14
+  },
+  'Arboledas': {
+    name: 'Arboledas',
+    coordinates: [-76.5200, 3.4100],
+    zoom: 14
   },
   'Compartir': {
     name: 'Compartir',
@@ -53,6 +78,31 @@ export const neighborhoodLocations: Record<string, NeighborhoodLocation> = {
   'Juanambú': {
     name: 'Juanambú',
     coordinates: [-76.5100, 3.4100],
+    zoom: 14
+  },
+  'El Limonar': {
+    name: 'El Limonar',
+    coordinates: [-76.5280, 3.3950],
+    zoom: 14
+  },
+  'San Antonio': {
+    name: 'San Antonio',
+    coordinates: [-76.5350, 3.4500],
+    zoom: 14
+  },
+  'Meléndez': {
+    name: 'Meléndez',
+    coordinates: [-76.5450, 3.3650],
+    zoom: 14
+  },
+  'Pance': {
+    name: 'Pance',
+    coordinates: [-76.5700, 3.3000],
+    zoom: 14
+  },
+  'Normandía': {
+    name: 'Normandía',
+    coordinates: [-76.5150, 3.4600],
     zoom: 14
   }
 };
