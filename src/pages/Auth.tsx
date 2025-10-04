@@ -10,7 +10,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { useToast } from '@/hooks/use-toast';
 import { z } from 'zod';
 import { User, Session } from '@supabase/supabase-js';
-import { Store, UserCircle } from 'lucide-react';
+import { Store, UserCircle, ArrowLeft } from 'lucide-react';
 
 const emailSchema = z.string().trim().email({ message: "Email inválido" });
 const passwordSchema = z.string().min(6, { message: "La contraseña debe tener al menos 6 caracteres" });
@@ -254,6 +254,16 @@ const Auth = () => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/10 via-background to-secondary/10 p-4">
       <Card className="w-full max-w-md">
         <CardHeader>
+          <div className="flex items-center justify-between mb-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => navigate('/')}
+              className="h-8 w-8"
+            >
+              <ArrowLeft className="h-4 w-4" />
+            </Button>
+          </div>
           <CardTitle className="text-2xl text-center">Bienvenido</CardTitle>
           <CardDescription className="text-center">
             Inicia sesión o crea una cuenta para continuar
