@@ -8,17 +8,31 @@ import PlacesList from '@/components/PlacesList';
 import EventCard from '@/components/EventCard';
 import BottomNav from '@/components/BottomNav';
 import FloatingAIChat from '@/components/FloatingAIChat';
-import { mockPlaces } from '@/data/places';
+import { mockPlaces, neighborhoods } from '@/data/places';
 import { mockEvents } from '@/data/events';
 import { mockShorts } from '@/data/shorts';
 import { Button } from '@/components/ui/button';
-import { ChevronRight, Home, Star, Calendar, Video } from 'lucide-react';
+import { ChevronRight, Home, Star, Calendar, Video, MapPin, Check } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import ShortCard from '@/components/ShortCard';
 import ShortsCarousel from '@/components/ShortsCarousel';
 import PlaceChat from '@/components/PlaceChat';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@/components/ui/command';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
+import { cn } from '@/lib/utils';
 
 const Index = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -26,6 +40,7 @@ const Index = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedNeighborhood, setSelectedNeighborhood] = useState('Todos');
   const [isSearching, setIsSearching] = useState(false);
+  const [neighborhoodOpen, setNeighborhoodOpen] = useState(false);
   const navigate = useNavigate();
 
   // Handle search with loading state
@@ -114,19 +129,51 @@ const Index = () => {
           {/* Neighborhood Selector below map */}
           <div className="w-full bg-card border-b border-border">
             <div className="w-full max-w-screen-2xl mx-auto px-4 sm:px-4 md:px-6 py-3">
-              <select
-                value={selectedNeighborhood}
-                onChange={(e) => setSelectedNeighborhood(e.target.value)}
-                className="w-full sm:w-auto px-3 py-2 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-              >
-                <option value="Todos">Todos los barrios</option>
-                <option value="Granada">Granada</option>
-                <option value="San Antonio">San Antonio</option>
-                <option value="El Peñón">El Peñón</option>
-                <option value="San Fernando">San Fernando</option>
-                <option value="Ciudad Jardín">Ciudad Jardín</option>
-                <option value="Juanchito">Juanchito</option>
-              </select>
+              <Popover open={neighborhoodOpen} onOpenChange={setNeighborhoodOpen}>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    role="combobox"
+                    aria-expanded={neighborhoodOpen}
+                    className="w-full sm:w-auto justify-between min-w-[200px]"
+                  >
+                    <div className="flex items-center gap-2">
+                      <MapPin className="h-4 w-4" />
+                      <span>{selectedNeighborhood || "Todos los barrios"}</span>
+                    </div>
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-[300px] p-0" align="start">
+                  <Command>
+                    <CommandInput placeholder="Buscar barrio..." className="h-9" />
+                    <CommandList>
+                      <CommandEmpty>No se encontró barrio.</CommandEmpty>
+                      <CommandGroup>
+                        {neighborhoods.map((neighborhood) => (
+                          <CommandItem
+                            key={neighborhood}
+                            value={neighborhood}
+                            onSelect={() => {
+                              setSelectedNeighborhood(neighborhood);
+                              setNeighborhoodOpen(false);
+                            }}
+                          >
+                            <Check
+                              className={cn(
+                                "mr-2 h-4 w-4",
+                                selectedNeighborhood === neighborhood
+                                  ? "opacity-100"
+                                  : "opacity-0"
+                              )}
+                            />
+                            {neighborhood}
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
             </div>
           </div>
 
