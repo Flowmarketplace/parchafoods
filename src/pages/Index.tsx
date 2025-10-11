@@ -19,7 +19,6 @@ import ShortsCarousel from '@/components/ShortsCarousel';
 import PlaceChat from '@/components/PlaceChat';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
-import { WeeklyRecommendations } from '@/components/WeeklyRecommendations';
 import {
   Command,
   CommandEmpty,
@@ -187,8 +186,32 @@ const Index = () => {
           {/* Content Sections */}
           {!showFilters ? (
             <div className="w-full max-w-screen-2xl mx-auto px-4 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8 space-y-6 sm:space-y-8 md:space-y-12 pb-20 md:pb-8">
-              {/* Weekly Recommendations Section */}
-              <WeeklyRecommendations />
+              {/* Nuestros Recomendados Button */}
+              <section className="bg-gradient-to-br from-primary/10 via-secondary/5 to-purple-500/10 -mx-4 sm:-mx-4 md:-mx-6 px-4 sm:px-4 md:px-6 py-6 sm:py-8 rounded-lg border-t-2 border-primary/20">
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <div className="flex items-center gap-2 sm:gap-3">
+                    <div className="p-2 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-lg">
+                      <Calendar className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+                    </div>
+                    <div className="text-center sm:text-left">
+                      <h2 className="text-lg sm:text-xl md:text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                        Nuestros Recomendados
+                      </h2>
+                      <p className="text-xs sm:text-sm text-muted-foreground">
+                        Descubre qué hacer cada día de la semana en Cali
+                      </p>
+                    </div>
+                  </div>
+                  <Button
+                    onClick={() => navigate('/recommendations')}
+                    size="lg"
+                    className="gap-2 w-full sm:w-auto"
+                  >
+                    Ver recomendaciones
+                    <ChevronRight className="h-4 w-4" />
+                  </Button>
+                </div>
+              </section>
 
               {/* Recomendados - Shorts Section */}
               <section className="bg-gradient-to-br from-purple-500/5 via-pink-500/5 to-primary/5 -mx-4 sm:-mx-4 md:-mx-6 px-4 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8 rounded-lg border-t-2 border-purple-500/20">

@@ -18,6 +18,7 @@ import Shorts from "./pages/Shorts";
 import NotFound from "./pages/NotFound";
 import BusinessDashboard from "./pages/BusinessDashboard";
 import BusinessSetup from "./pages/business/BusinessSetup";
+import Recommendations from "./pages/Recommendations";
 import BusinessManage from "./pages/business/BusinessManage";
 import BusinessImages from "./pages/business/BusinessImages";
 import BusinessMenu from "./pages/business/BusinessMenu";
@@ -46,6 +47,7 @@ function App() {
         <Route path="/my-loyalty" element={<MyLoyalty />} />
         <Route path="/favorites" element={<Favorites />} />
         <Route path="/shorts" element={<Shorts />} />
+        <Route path="/recommendations" element={<Recommendations />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/business-dashboard" element={<BusinessDashboard />} />
         <Route path="/business-setup" element={<BusinessSetup />} />
