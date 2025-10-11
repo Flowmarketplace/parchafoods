@@ -520,10 +520,13 @@ const BusinessDashboard = () => {
             </CardContent>
           </Card>
 
-          <Card className="group hover:shadow-2xl transition-all duration-300 cursor-pointer bg-gradient-to-br from-slate-50 to-zinc-50 dark:from-slate-950/30 dark:to-zinc-950/30 border-2 border-slate-500/20 overflow-hidden relative opacity-75">
-            <div className="absolute inset-0 bg-gradient-to-br from-slate-500/0 to-zinc-500/0 transition-all duration-300" />
+          <Card 
+            className="group hover-scale hover:shadow-2xl transition-all duration-300 cursor-pointer bg-gradient-to-br from-slate-50 to-zinc-50 dark:from-slate-950/30 dark:to-zinc-950/30 border-2 border-slate-500/20 hover:border-slate-500/50 overflow-hidden relative"
+            onClick={() => navigate('/business-customers')}
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-slate-500/0 to-zinc-500/0 group-hover:from-slate-500/10 group-hover:to-zinc-500/10 transition-all duration-300" />
             <CardHeader className="relative">
-              <div className="p-3 rounded-xl bg-slate-500/10 w-fit mb-2">
+              <div className="p-3 rounded-xl bg-slate-500/10 w-fit mb-2 group-hover:scale-110 transition-transform duration-300">
                 <Users className="h-6 w-6 text-slate-600" />
               </div>
               <CardTitle className="text-xl">Clientes</CardTitle>
@@ -532,8 +535,8 @@ const BusinessDashboard = () => {
               </CardDescription>
             </CardHeader>
             <CardContent className="relative">
-              <Button className="w-full" disabled>
-                Próximamente
+              <Button className="w-full bg-slate-600 hover:bg-slate-700 shadow-lg group-hover:shadow-xl transition-shadow">
+                Ver Clientes
               </Button>
             </CardContent>
           </Card>
