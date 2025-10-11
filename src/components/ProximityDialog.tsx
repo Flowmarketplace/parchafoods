@@ -86,21 +86,19 @@ export const ProximityDialog = () => {
         </DialogContent>
       </Dialog>
 
-      {/* Icon button in navbar - only show after dialog has been seen */}
-      {hasSeenDialog && (
-        <Button
-          variant={isTracking ? 'default' : 'ghost'}
-          size="icon"
-          onClick={handleToggle}
-          className="relative"
-          title={isTracking ? 'Notificaciones activas' : 'Activar notificaciones de proximidad'}
-        >
-          <MapPin className="h-5 w-5" />
-          {isTracking && (
-            <span className="absolute -top-1 -right-1 h-3 w-3 bg-green-500 rounded-full animate-pulse border-2 border-background" />
-          )}
-        </Button>
-      )}
+      {/* Icon button in navbar */}
+      <Button
+        variant={isTracking ? 'default' : 'ghost'}
+        size="icon"
+        onClick={handleToggle}
+        className="relative"
+        title={isTracking ? 'Notificaciones activas' : 'Activar notificaciones de proximidad'}
+      >
+        <MapPin className="h-5 w-5" />
+        {isTracking && (
+          <span className="absolute -top-1 -right-1 h-3 w-3 bg-green-500 rounded-full animate-pulse border-2 border-background" />
+        )}
+      </Button>
     </>
   );
 };
