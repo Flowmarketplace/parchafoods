@@ -126,26 +126,41 @@ export function TutorialTour({ onClose }: { onClose: () => void }) {
 
   return (
     <div className="fixed inset-0 z-50">
-      {/* Dark Overlay */}
-      <div className="absolute inset-0 bg-black/80" onClick={onClose} />
+      {/* Gray Tinted Overlay */}
+      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
       
       {/* Spotlight */}
       {spotlight && (
-        <div
-          className="absolute rounded-lg border-4 border-white shadow-2xl animate-pulse"
-          style={{
-            top: `${spotlight.top}px`,
-            left: `${spotlight.left}px`,
-            width: `${spotlight.width}px`,
-            height: `${spotlight.height}px`,
-            boxShadow: "0 0 0 9999px rgba(0, 0, 0, 0.8)"
-          }}
-        />
+        <>
+          {/* Highlighted element border */}
+          <div
+            className="absolute rounded-lg ring-4 ring-white/60 shadow-xl transition-all duration-300"
+            style={{
+              top: `${spotlight.top}px`,
+              left: `${spotlight.left}px`,
+              width: `${spotlight.width}px`,
+              height: `${spotlight.height}px`,
+              pointerEvents: 'none'
+            }}
+          />
+          {/* Clear spotlight area */}
+          <div
+            className="absolute rounded-lg bg-background transition-all duration-300"
+            style={{
+              top: `${spotlight.top}px`,
+              left: `${spotlight.left}px`,
+              width: `${spotlight.width}px`,
+              height: `${spotlight.height}px`,
+              pointerEvents: 'none',
+              opacity: 0.1
+            }}
+          />
+        </>
       )}
 
       {/* Tooltip */}
       <div
-        className="absolute bg-white rounded-2xl shadow-2xl p-6 max-w-sm animate-fade-in"
+        className="absolute bg-primary text-white rounded-2xl shadow-2xl p-6 max-w-sm animate-fade-in"
         style={getTooltipPosition()}
       >
         {/* Close Button */}
@@ -153,21 +168,21 @@ export function TutorialTour({ onClose }: { onClose: () => void }) {
           onClick={onClose}
           variant="ghost"
           size="icon"
-          className="absolute -top-2 -right-2 rounded-full bg-primary text-white hover:bg-primary/90"
+          className="absolute -top-2 -right-2 rounded-full bg-white text-primary hover:bg-white/90 shadow-lg"
         >
           <X className="h-4 w-4" />
         </Button>
 
         {/* Arrow Indicator */}
-        <div className="text-primary mb-3 flex justify-center">
+        <div className="text-white mb-4 flex justify-center">
           {getArrowIcon()}
         </div>
 
         {/* Content */}
-        <div className="space-y-3">
+        <div className="space-y-4">
           <div className="text-center">
-            <h3 className="text-xl font-bold text-foreground mb-2">{step.title}</h3>
-            <p className="text-sm text-muted-foreground">{step.description}</p>
+            <h3 className="text-xl font-bold mb-2">{step.title}</h3>
+            <p className="text-sm text-white/90 leading-relaxed">{step.description}</p>
           </div>
 
           {/* Progress */}
@@ -177,10 +192,10 @@ export function TutorialTour({ onClose }: { onClose: () => void }) {
                 key={index}
                 className={`h-2 rounded-full transition-all ${
                   index === currentStep
-                    ? "w-8 bg-primary"
+                    ? "w-8 bg-white"
                     : index < currentStep
-                    ? "w-2 bg-primary/60"
-                    : "w-2 bg-border"
+                    ? "w-2 bg-white/60"
+                    : "w-2 bg-white/30"
                 }`}
               />
             ))}
@@ -192,15 +207,16 @@ export function TutorialTour({ onClose }: { onClose: () => void }) {
               onClick={onClose}
               variant="outline"
               size="sm"
-              className="flex-1"
+              className="flex-1 bg-white/10 border-white/30 text-white hover:bg-white/20"
             >
-              Saltar Tutorial
+              Saltar
             </Button>
             {currentStep > 0 && (
               <Button
                 onClick={prevStep}
                 variant="outline"
                 size="sm"
+                className="bg-white/10 border-white/30 text-white hover:bg-white/20"
               >
                 <ChevronLeft className="h-4 w-4" />
               </Button>
@@ -208,7 +224,7 @@ export function TutorialTour({ onClose }: { onClose: () => void }) {
             <Button
               onClick={nextStep}
               size="sm"
-              className="bg-primary hover:bg-primary/90"
+              className="bg-white text-primary hover:bg-white/90 font-semibold"
             >
               {currentStep === tourSteps.length - 1 ? (
                 "Finalizar"
