@@ -144,62 +144,130 @@ Sé conciso, amigable y útil. Si no encuentras algo, sugiere alternativas.`
       );
     }
 
-    // Handle streaming with potential tool calls
-    const reader = response.body?.getReader();
-    const decoder = new TextDecoder();
-    const encoder = new TextEncoder();
+    // First, check if we get tool calls (non-streaming to handle tools)
+    const firstResponse = await response.json();
+    
+    // Check if AI wants to use tools
+    if (firstResponse.choices?.[0]?.message?.tool_calls) {
+      const toolCalls = firstResponse.choices[0].message.tool_calls;
+      const toolResults = [];
 
-    const stream = new ReadableStream({
-      async start(controller) {
-        let buffer = "";
+      for (const toolCall of toolCalls) {
+        const functionName = toolCall.function.name;
+        const args = JSON.parse(toolCall.function.arguments);
         
-        try {
-          while (true) {
-            const { done, value } = await reader!.read();
-            if (done) break;
+        console.log(`Executing tool: ${functionName}`, args);
 
-            buffer += decoder.decode(value, { stream: true });
-            const lines = buffer.split('\n');
-            buffer = lines.pop() || "";
-
-            for (const line of lines) {
-              if (line.startsWith('data: ')) {
-                const data = line.slice(6);
-                if (data === '[DONE]') {
-                  controller.enqueue(encoder.encode('data: [DONE]\n\n'));
-                  continue;
-                }
-
-                try {
-                  const parsed = JSON.parse(data);
-                  
-                  // Check for tool calls
-                  if (parsed.choices?.[0]?.delta?.tool_calls) {
-                    const toolCall = parsed.choices[0].delta.tool_calls[0];
-                    console.log("Tool call detected:", toolCall);
-                    
-                    // Handle tool execution here if needed
-                    // For now, just pass through
-                  }
-                  
-                  controller.enqueue(encoder.encode(`data: ${data}\n\n`));
-                } catch (e) {
-                  console.error("Error parsing SSE data:", e);
-                }
-              }
-            }
+        if (functionName === "search_businesses") {
+          let query = supabase.from('businesses').select('id, name, category, neighborhood, description, address, price_range, latitude, longitude');
+          
+          if (args.category) {
+            query = query.ilike('category', `%${args.category}%`);
           }
+          if (args.neighborhood) {
+            query = query.ilike('neighborhood', `%${args.neighborhood}%`);
+          }
+          if (args.search) {
+            query = query.or(`name.ilike.%${args.search}%,description.ilike.%${args.search}%`);
+          }
+          
+          const { data, error } = await query.limit(5);
+          
+          toolResults.push({
+            tool_call_id: toolCall.id,
+            role: "tool",
+            name: functionName,
+            content: JSON.stringify(error ? { error: error.message } : { businesses: data || [] })
+          });
+        } else if (functionName === "get_business_details") {
+          const { data: business, error: bizError } = await supabase
+            .from('businesses')
+            .select('*')
+            .ilike('name', `%${args.business_name}%`)
+            .single();
 
-          controller.close();
-        } catch (error) {
-          console.error("Stream error:", error);
-          controller.error(error);
+          if (!bizError && business) {
+            const { data: menu } = await supabase
+              .from('business_menu')
+              .select('*')
+              .eq('business_id', business.id);
+
+            const { data: hours } = await supabase
+              .from('business_hours')
+              .select('*')
+              .eq('business_id', business.id);
+
+            toolResults.push({
+              tool_call_id: toolCall.id,
+              role: "tool",
+              name: functionName,
+              content: JSON.stringify({ business, menu, hours })
+            });
+          } else {
+            toolResults.push({
+              tool_call_id: toolCall.id,
+              role: "tool",
+              name: functionName,
+              content: JSON.stringify({ error: "Negocio no encontrado" })
+            });
+          }
         }
       }
-    });
 
-    return new Response(stream, {
-      headers: { ...corsHeaders, "Content-Type": "text/event-stream" },
+      // Send tool results back to AI for final response
+      const finalResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${LOVABLE_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: "google/gemini-2.5-flash",
+          messages: [
+            {
+              role: "system",
+              content: `Eres HandCity AI, un asistente virtual experto en Cali, Colombia. Tu trabajo es ayudar a los usuarios a descubrir y explorar lugares en la ciudad.
+
+CAPACIDADES:
+- Buscar negocios por categoría, barrio o nombre
+- Proporcionar información detallada sobre lugares (precios, horarios, ubicación, menú)
+- Recomendar lugares según las necesidades del usuario
+- Dar links directos para ver lugares en la app
+
+FORMATO DE RESPUESTAS:
+Cuando recomiendes un lugar, SIEMPRE incluye:
+1. Nombre del lugar
+2. Descripción breve
+3. Link directo: /place/[id] (usa el ID del negocio)
+4. Información relevante (precio, ubicación, especialidad)
+
+EJEMPLO:
+"Te recomiendo **Restaurante El Sabor del Barrio** - Deliciosa comida típica caleña. 
+📍 Barrio Compartir
+💰 Rango: $$
+Ver más: /place/1
+
+Ofrecen sancocho de gallina ($18.000) y bandeja paisa ($25.000)."
+
+Sé conciso, amigable y útil. Si no encuentras algo, sugiere alternativas.`
+            },
+            ...messages,
+            firstResponse.choices[0].message,
+            ...toolResults
+          ],
+          stream: true,
+        }),
+      });
+
+      // Stream the final response
+      return new Response(finalResponse.body, {
+        headers: { ...corsHeaders, "Content-Type": "text/event-stream" },
+      });
+    }
+
+    // No tools needed, stream original response
+    return new Response(JSON.stringify(firstResponse), {
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (error) {
     console.error("AI assistant error:", error);
