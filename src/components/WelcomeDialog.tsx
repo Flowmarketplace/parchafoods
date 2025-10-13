@@ -9,10 +9,12 @@ export function WelcomeDialog() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const hasSeenWelcome = localStorage.getItem(WELCOME_SEEN_KEY);
-    if (!hasSeenWelcome) {
-      setOpen(true);
-    }
+    // Temporalmente siempre mostrar el popup
+    setOpen(true);
+    // const hasSeenWelcome = localStorage.getItem(WELCOME_SEEN_KEY);
+    // if (!hasSeenWelcome) {
+    //   setOpen(true);
+    // }
   }, []);
 
   const handleClose = () => {
