@@ -152,36 +152,28 @@ export function TutorialTour({ onClose }: { onClose: () => void }) {
 
   return (
     <div className="fixed inset-0 z-50">
-      {/* Gray Tinted Overlay */}
-      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
+      {/* Gray Tinted Overlay with cutout */}
+      <div 
+        className="absolute inset-0 transition-all duration-300"
+        style={{
+          background: spotlight 
+            ? `radial-gradient(circle at ${spotlight.left + spotlight.width / 2}px ${spotlight.top + spotlight.height / 2}px, transparent ${Math.max(spotlight.width, spotlight.height) / 2 + 20}px, rgba(0, 0, 0, 0.5) ${Math.max(spotlight.width, spotlight.height) / 2 + 40}px)`
+            : 'rgba(0, 0, 0, 0.5)'
+        }}
+        onClick={onClose} 
+      />
       
-      {/* Spotlight */}
+      {/* Spotlight Border */}
       {spotlight && (
-        <>
-          {/* Cut out clear area for the highlighted element */}
-          <div
-            className="absolute bg-background rounded-lg shadow-2xl transition-all duration-300 z-10"
-            style={{
-              top: `${spotlight.top}px`,
-              left: `${spotlight.left}px`,
-              width: `${spotlight.width}px`,
-              height: `${spotlight.height}px`,
-              pointerEvents: 'none',
-              boxShadow: '0 0 0 9999px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 255, 255, 0.3)'
-            }}
-          />
-          {/* Highlighted element border */}
-          <div
-            className="absolute rounded-lg ring-4 ring-white shadow-xl transition-all duration-300 z-20 animate-pulse"
-            style={{
-              top: `${spotlight.top}px`,
-              left: `${spotlight.left}px`,
-              width: `${spotlight.width}px`,
-              height: `${spotlight.height}px`,
-              pointerEvents: 'none'
-            }}
-          />
-        </>
+        <div
+          className="absolute rounded-lg ring-4 ring-white shadow-xl transition-all duration-300 z-20 animate-pulse pointer-events-none"
+          style={{
+            top: `${spotlight.top}px`,
+            left: `${spotlight.left}px`,
+            width: `${spotlight.width}px`,
+            height: `${spotlight.height}px`
+          }}
+        />
       )}
 
       {/* Tooltip */}
