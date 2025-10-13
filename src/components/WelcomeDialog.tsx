@@ -29,17 +29,17 @@ export function WelcomeDialog() {
       <DialogContent className="max-w-xl p-0 bg-white border-2 border-[#E31C25] shadow-2xl [&>button]:hidden">
         <div className="space-y-3">
           {/* Header with Red Background */}
-          <div className="bg-[#E31C25] px-4 py-4 flex items-center justify-between">
+          <div className="bg-[#E31C25] px-4 py-6 relative flex items-center justify-center">
             <img 
               src={handcityLogo} 
               alt="HandCity" 
-              className="h-10 brightness-0 invert"
+              className="h-16 w-auto max-w-[80%] brightness-0 invert object-contain"
             />
             <Button
               onClick={handleClose}
               variant="ghost"
               size="icon"
-              className="rounded-full text-white hover:bg-white/20"
+              className="absolute right-3 top-3 rounded-full text-white hover:bg-white/20"
             >
               <X className="h-5 w-5" />
             </Button>
