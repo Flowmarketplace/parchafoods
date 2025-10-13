@@ -178,7 +178,7 @@ export function TutorialTour({ onClose }: { onClose: () => void }) {
 
       {/* Tooltip */}
       <div
-        className="absolute bg-primary text-white rounded-2xl shadow-2xl p-6 max-w-sm animate-fade-in"
+        className="absolute bg-primary/80 backdrop-blur-md text-white rounded-2xl shadow-2xl p-6 max-w-sm animate-fade-in border border-white/20"
         style={getTooltipPosition()}
       >
         {/* Close Button */}
