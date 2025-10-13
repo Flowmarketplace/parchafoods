@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
@@ -10,6 +10,7 @@ const WELCOME_SEEN_KEY = "handcity_welcome_seen";
 export function WelcomeDialog({ onTourChange }: { onTourChange?: (isActive: boolean) => void }) {
   const [open, setOpen] = useState(false);
   const [showTour, setShowTour] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     // Temporalmente siempre mostrar para pruebas
@@ -24,11 +25,17 @@ export function WelcomeDialog({ onTourChange }: { onTourChange?: (isActive: bool
   }, []);
 
   const handleClose = () => {
+    if (videoRef.current) {
+      videoRef.current.pause();
+    }
     localStorage.setItem(WELCOME_SEEN_KEY, "true");
     setOpen(false);
   };
 
   const handleTutorial = () => {
+    if (videoRef.current) {
+      videoRef.current.pause();
+    }
     localStorage.setItem(WELCOME_SEEN_KEY, "true");
     setOpen(false);
     setTimeout(() => {
@@ -78,6 +85,7 @@ export function WelcomeDialog({ onTourChange }: { onTourChange?: (isActive: bool
             <div className="px-4">
               <div className="relative rounded-xl overflow-hidden border-2 border-border shadow-lg">
                 <video
+                  ref={videoRef}
                   className="w-full max-h-[360px] object-contain"
                   controls
                   autoPlay
