@@ -31,14 +31,17 @@ export function WelcomeDialog() {
           {/* Header with City Background */}
           <div 
             className="bg-primary px-4 py-4 relative flex items-center justify-center overflow-hidden"
-            style={{
-              backgroundImage: `url(${citySkyline})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'bottom',
-              backgroundRepeat: 'no-repeat'
-            }}
           >
-            <div className="absolute inset-0 bg-primary/70"></div>
+            <div 
+              className="absolute inset-0 opacity-20"
+              style={{
+                backgroundImage: `url(${citySkyline})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'bottom',
+                backgroundRepeat: 'no-repeat',
+                filter: 'brightness(0) invert(1)'
+              }}
+            ></div>
             <h2 className="text-2xl font-bold text-white relative z-10">HandCity</h2>
             <Button
               onClick={handleClose}
