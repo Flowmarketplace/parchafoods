@@ -12,10 +12,15 @@ export function WelcomeDialog({ onTourChange }: { onTourChange?: (isActive: bool
   const [showTour, setShowTour] = useState(false);
 
   useEffect(() => {
-    const hasSeenWelcome = localStorage.getItem(WELCOME_SEEN_KEY);
-    if (!hasSeenWelcome) {
-      setOpen(true);
-    }
+    // Temporalmente siempre mostrar para pruebas
+    localStorage.removeItem(WELCOME_SEEN_KEY);
+    setOpen(true);
+    
+    // Para producción, descomentar esto:
+    // const hasSeenWelcome = localStorage.getItem(WELCOME_SEEN_KEY);
+    // if (!hasSeenWelcome) {
+    //   setOpen(true);
+    // }
   }, []);
 
   const handleClose = () => {
