@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, X, ArrowDown, ArrowUp, ArrowLeft, ArrowRight } from "lucide-react";
 
@@ -52,6 +52,18 @@ export function TutorialTour({ onClose }: { onClose: () => void }) {
   const [currentStep, setCurrentStep] = useState(0);
   const step = tourSteps[currentStep];
 
+  useEffect(() => {
+    // Scroll to element when step changes
+    const targetElement = document.querySelector(`[data-tour="${step.target}"]`);
+    if (targetElement) {
+      targetElement.scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'center',
+        inline: 'center'
+      });
+    }
+  }, [currentStep, step.target]);
+
   const nextStep = () => {
     if (currentStep < tourSteps.length - 1) {
       setCurrentStep(currentStep + 1);
@@ -80,33 +92,47 @@ export function TutorialTour({ onClose }: { onClose: () => void }) {
     if (!targetElement) return { top: "50%", left: "50%" };
 
     const rect = targetElement.getBoundingClientRect();
+    const windowHeight = window.innerHeight;
+    const windowWidth = window.innerWidth;
     
-    switch (step.position) {
-      case "bottom":
-        return {
-          top: `${rect.bottom + 20}px`,
-          left: `${rect.left + rect.width / 2}px`,
-          transform: "translateX(-50%)"
-        };
-      case "top":
-        return {
-          bottom: `${window.innerHeight - rect.top + 20}px`,
-          left: `${rect.left + rect.width / 2}px`,
-          transform: "translateX(-50%)"
-        };
-      case "left":
-        return {
-          top: `${rect.top + rect.height / 2}px`,
-          right: `${window.innerWidth - rect.left + 20}px`,
-          transform: "translateY(-50%)"
-        };
-      case "right":
-        return {
-          top: `${rect.top + rect.height / 2}px`,
-          left: `${rect.right + 20}px`,
-          transform: "translateY(-50%)"
-        };
+    // Calculate available space
+    const spaceBelow = windowHeight - rect.bottom;
+    const spaceAbove = rect.top;
+    const spaceRight = windowWidth - rect.right;
+    const spaceLeft = rect.left;
+
+    // Determine best position based on available space
+    let position: any = {};
+    
+    if (step.position === "bottom" && spaceBelow > 300) {
+      position = {
+        top: `${rect.bottom + 20}px`,
+        left: `${rect.left + rect.width / 2}px`,
+        transform: "translateX(-50%)"
+      };
+    } else if (step.position === "top" && spaceAbove > 300) {
+      position = {
+        bottom: `${windowHeight - rect.top + 20}px`,
+        left: `${rect.left + rect.width / 2}px`,
+        transform: "translateX(-50%)"
+      };
+    } else if (spaceBelow > spaceAbove) {
+      // Default to below if more space
+      position = {
+        top: `${rect.bottom + 20}px`,
+        left: "50%",
+        transform: "translateX(-50%)"
+      };
+    } else {
+      // Default to above if more space there
+      position = {
+        bottom: `${windowHeight - rect.top + 20}px`,
+        left: "50%",
+        transform: "translateX(-50%)"
+      };
     }
+
+    return position;
   };
 
   const getSpotlightPosition = () => {
