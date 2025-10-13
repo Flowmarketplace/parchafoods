@@ -55,12 +55,15 @@ export function TutorialTour({ onClose }: { onClose: () => void }) {
   useEffect(() => {
     // Scroll to element when step changes
     const targetElement = document.querySelector(`[data-tour="${step.target}"]`);
+    console.log('Tutorial step:', step.target, 'Element found:', !!targetElement);
     if (targetElement) {
       targetElement.scrollIntoView({ 
         behavior: 'smooth', 
         block: 'center',
         inline: 'center'
       });
+    } else {
+      console.warn(`Tutorial: Element with data-tour="${step.target}" not found`);
     }
   }, [currentStep, step.target]);
 
