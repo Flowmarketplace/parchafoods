@@ -42,6 +42,7 @@ const Index = () => {
   const [selectedNeighborhood, setSelectedNeighborhood] = useState('Todos');
   const [isSearching, setIsSearching] = useState(false);
   const [neighborhoodOpen, setNeighborhoodOpen] = useState(false);
+  const [isTourActive, setIsTourActive] = useState(false);
   const navigate = useNavigate();
 
   // Handle search with loading state
@@ -106,7 +107,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen w-full flex flex-col">
-      <WelcomeDialog />
+      <WelcomeDialog onTourChange={setIsTourActive} />
       <Navbar
         onMenuClick={() => setSidebarOpen(!sidebarOpen)}
         searchQuery={searchQuery}
@@ -357,7 +358,7 @@ const Index = () => {
       <BottomNav />
       
       {/* Floating AI Chat */}
-      <FloatingAIChat />
+      <FloatingAIChat isHidden={isTourActive} />
     </div>
   );
 };

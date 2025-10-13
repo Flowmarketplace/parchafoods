@@ -12,7 +12,7 @@ interface Message {
   content: string;
 }
 
-const FloatingAIChat = () => {
+const FloatingAIChat = ({ isHidden }: { isHidden?: boolean }) => {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
@@ -132,8 +132,8 @@ const FloatingAIChat = () => {
     }
   };
 
-  // Don't render anything if not on home page
-  if (!isHomePage) {
+  // Don't render anything if not on home page or if hidden
+  if (!isHomePage || isHidden) {
     return null;
   }
 

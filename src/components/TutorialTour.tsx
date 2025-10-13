@@ -158,27 +158,27 @@ export function TutorialTour({ onClose }: { onClose: () => void }) {
       {/* Spotlight */}
       {spotlight && (
         <>
-          {/* Highlighted element border */}
+          {/* Cut out clear area for the highlighted element */}
           <div
-            className="absolute rounded-lg ring-4 ring-white/60 shadow-xl transition-all duration-300"
-            style={{
-              top: `${spotlight.top}px`,
-              left: `${spotlight.left}px`,
-              width: `${spotlight.width}px`,
-              height: `${spotlight.height}px`,
-              pointerEvents: 'none'
-            }}
-          />
-          {/* Clear spotlight area */}
-          <div
-            className="absolute rounded-lg bg-background transition-all duration-300"
+            className="absolute bg-background rounded-lg shadow-2xl transition-all duration-300 z-10"
             style={{
               top: `${spotlight.top}px`,
               left: `${spotlight.left}px`,
               width: `${spotlight.width}px`,
               height: `${spotlight.height}px`,
               pointerEvents: 'none',
-              opacity: 0.1
+              boxShadow: '0 0 0 9999px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 255, 255, 0.3)'
+            }}
+          />
+          {/* Highlighted element border */}
+          <div
+            className="absolute rounded-lg ring-4 ring-white shadow-xl transition-all duration-300 z-20 animate-pulse"
+            style={{
+              top: `${spotlight.top}px`,
+              left: `${spotlight.left}px`,
+              width: `${spotlight.width}px`,
+              height: `${spotlight.height}px`,
+              pointerEvents: 'none'
             }}
           />
         </>

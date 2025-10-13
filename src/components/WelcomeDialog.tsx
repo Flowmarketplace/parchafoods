@@ -7,7 +7,7 @@ import { TutorialTour } from "./TutorialTour";
 
 const WELCOME_SEEN_KEY = "handcity_welcome_seen";
 
-export function WelcomeDialog() {
+export function WelcomeDialog({ onTourChange }: { onTourChange?: (isActive: boolean) => void }) {
   const [open, setOpen] = useState(false);
   const [showTour, setShowTour] = useState(false);
 
@@ -23,12 +23,20 @@ export function WelcomeDialog() {
 
   const handleTutorial = () => {
     setOpen(false);
-    setTimeout(() => setShowTour(true), 300);
+    setTimeout(() => {
+      setShowTour(true);
+      onTourChange?.(true);
+    }, 300);
+  };
+
+  const handleCloseTour = () => {
+    setShowTour(false);
+    onTourChange?.(false);
   };
 
   return (
     <>
-      {showTour && <TutorialTour onClose={() => setShowTour(false)} />}
+      {showTour && <TutorialTour onClose={handleCloseTour} />}
       
       <Dialog open={open} onOpenChange={() => {}}>
         <DialogContent className="max-w-md p-0 bg-background border-2 border-primary rounded-2xl shadow-2xl overflow-hidden [&>button]:hidden">
