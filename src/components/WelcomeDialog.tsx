@@ -12,8 +12,10 @@ export function WelcomeDialog({ onTourChange }: { onTourChange?: (isActive: bool
   const [showTour, setShowTour] = useState(false);
 
   useEffect(() => {
-    // Temporalmente siempre mostrar
-    setOpen(true);
+    const hasSeenWelcome = localStorage.getItem(WELCOME_SEEN_KEY);
+    if (!hasSeenWelcome) {
+      setOpen(true);
+    }
   }, []);
 
   const handleClose = () => {
@@ -22,6 +24,7 @@ export function WelcomeDialog({ onTourChange }: { onTourChange?: (isActive: bool
   };
 
   const handleTutorial = () => {
+    localStorage.setItem(WELCOME_SEEN_KEY, "true");
     setOpen(false);
     setTimeout(() => {
       setShowTour(true);
