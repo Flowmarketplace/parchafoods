@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
+import citySkyline from "@/assets/city-skyline.png";
 
 const WELCOME_SEEN_KEY = "handcity_welcome_seen";
 
@@ -25,16 +26,25 @@ export function WelcomeDialog() {
 
   return (
     <Dialog open={open} onOpenChange={() => {}}>
-      <DialogContent className="max-w-xl p-0 bg-background border-2 border-primary rounded-2xl shadow-2xl overflow-hidden [&>button]:hidden">
+      <DialogContent className="max-w-md p-0 bg-background border-2 border-primary rounded-2xl shadow-2xl overflow-hidden [&>button]:hidden">
         <div className="space-y-3">
-          {/* Header */}
-          <div className="bg-primary px-4 py-4 relative flex items-center justify-center">
-            <h2 className="text-2xl font-bold text-white">HandCity</h2>
+          {/* Header with City Background */}
+          <div 
+            className="bg-primary px-4 py-4 relative flex items-center justify-center overflow-hidden"
+            style={{
+              backgroundImage: `url(${citySkyline})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'bottom',
+              backgroundRepeat: 'no-repeat'
+            }}
+          >
+            <div className="absolute inset-0 bg-primary/70"></div>
+            <h2 className="text-2xl font-bold text-white relative z-10">HandCity</h2>
             <Button
               onClick={handleClose}
               variant="ghost"
               size="icon"
-              className="absolute right-3 top-3 rounded-full text-white hover:bg-white/20"
+              className="absolute right-3 top-3 rounded-full text-white hover:bg-white/20 z-10"
             >
               <X className="h-5 w-5" />
             </Button>
