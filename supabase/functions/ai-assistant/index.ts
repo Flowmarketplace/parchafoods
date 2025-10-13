@@ -31,23 +31,20 @@ serve(async (req) => {
         type: "function",
         function: {
           name: "search_businesses",
-          description: "Busca negocios en Cali por categoría, nombre o barrio. Útil cuando el usuario pregunta por restaurantes, cafés, tiendas, etc.",
+          description: "Busca negocios en Cali por categoría, nombre o barrio. Útil cuando el usuario pregunta por restaurantes, cafés, tiendas, asados, pizza, etc. Usa términos generales y flexibles.",
           parameters: {
             type: "object",
             properties: {
-              category: {
+              query: {
                 type: "string",
-                description: "Categoría del negocio (Restaurante, Café, Hotel, Gym, etc.)"
+                description: "Término de búsqueda general (nombre, tipo de comida, especialidad). Ejemplo: 'asado', 'pizza', 'café', 'sushi'"
               },
               neighborhood: {
                 type: "string",
-                description: "Barrio específico donde buscar"
-              },
-              search: {
-                type: "string",
-                description: "Término de búsqueda general por nombre"
+                description: "Barrio específico donde buscar (opcional)"
               }
-            }
+            },
+            required: ["query"]
           }
         }
       },
@@ -191,17 +188,26 @@ Sé conciso, amigable y útil. Si no encuentras algo, sugiere alternativas.`
         if (functionName === "search_businesses") {
           let query = supabase.from('businesses').select('id, name, category, neighborhood, description, address, price_range, latitude, longitude');
           
-          if (args.category) {
-            query = query.ilike('category', `%${args.category}%`);
+          // Build search conditions
+          const conditions = [];
+          
+          if (args.query) {
+            // Search in name, description, and category
+            conditions.push(`name.ilike.%${args.query}%`);
+            conditions.push(`description.ilike.%${args.query}%`);
+            conditions.push(`category.ilike.%${args.query}%`);
           }
+          
           if (args.neighborhood) {
             query = query.ilike('neighborhood', `%${args.neighborhood}%`);
           }
-          if (args.search) {
-            query = query.or(`name.ilike.%${args.search}%,description.ilike.%${args.search}%`);
+          
+          // Apply OR conditions for flexible search
+          if (conditions.length > 0) {
+            query = query.or(conditions.join(','));
           }
           
-          const { data, error } = await query.limit(5);
+          const { data, error } = await query.limit(10);
           
           toolResults.push({
             tool_call_id: toolCall.id,
