@@ -151,22 +151,25 @@ export function TutorialTour({ onClose }: { onClose: () => void }) {
   const spotlight = getSpotlightPosition();
 
   return (
-    <div className="fixed inset-0 z-50">
-      {/* Gray Tinted Overlay with cutout */}
-      <div 
-        className="absolute inset-0 transition-all duration-300"
-        style={{
-          background: spotlight 
-            ? `radial-gradient(circle at ${spotlight.left + spotlight.width / 2}px ${spotlight.top + spotlight.height / 2}px, transparent ${Math.max(spotlight.width, spotlight.height) / 2 + 20}px, rgba(0, 0, 0, 0.5) ${Math.max(spotlight.width, spotlight.height) / 2 + 40}px)`
-            : 'rgba(0, 0, 0, 0.5)'
-        }}
-        onClick={onClose} 
-      />
-      
-      {/* Spotlight Border */}
+    <div className="fixed inset-0 z-50 pointer-events-none">
+      {/* Spotlight with box-shadow technique */}
       {spotlight && (
         <div
-          className="absolute rounded-lg ring-4 ring-white shadow-xl transition-all duration-300 z-20 animate-pulse pointer-events-none"
+          className="absolute rounded-lg transition-all duration-300 pointer-events-auto"
+          style={{
+            top: `${spotlight.top}px`,
+            left: `${spotlight.left}px`,
+            width: `${spotlight.width}px`,
+            height: `${spotlight.height}px`,
+            boxShadow: '0 0 0 9999px rgba(0, 0, 0, 0.6)'
+          }}
+        />
+      )}
+      
+      {/* Highlighted element border */}
+      {spotlight && (
+        <div
+          className="absolute rounded-lg ring-4 ring-white shadow-2xl transition-all duration-300 z-20 animate-pulse"
           style={{
             top: `${spotlight.top}px`,
             left: `${spotlight.left}px`,
@@ -178,7 +181,7 @@ export function TutorialTour({ onClose }: { onClose: () => void }) {
 
       {/* Tooltip */}
       <div
-        className="absolute bg-primary/80 backdrop-blur-md text-white rounded-2xl shadow-2xl p-6 max-w-sm animate-fade-in border border-white/20"
+        className="absolute bg-primary/80 backdrop-blur-md text-white rounded-2xl shadow-2xl p-6 max-w-sm animate-fade-in border border-white/20 pointer-events-auto z-30"
         style={getTooltipPosition()}
       >
         {/* Close Button */}
