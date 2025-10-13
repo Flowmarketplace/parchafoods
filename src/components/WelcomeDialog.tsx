@@ -25,25 +25,27 @@ export function WelcomeDialog() {
 
   return (
     <Dialog open={open} onOpenChange={() => {}}>
-      <DialogContent className="max-w-xl p-0 bg-background border-2 border-border shadow-xl [&>button]:hidden">
-        <div className="p-6 space-y-4">
+      <DialogContent className="max-w-xl p-0 bg-gradient-to-br from-primary/20 via-secondary/20 to-accent/20 backdrop-blur-xl border-2 border-primary/40 shadow-2xl [&>button]:hidden">
+        <div className="p-4 space-y-3">
           {/* Header */}
-          <div className="flex items-center justify-between border-b pb-4">
-            <h2 className="text-2xl font-bold">HandCity</h2>
+          <div className="flex items-center justify-between border-b border-primary/30 pb-3">
+            <h2 className="text-3xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+              HandCity
+            </h2>
             <Button
               onClick={handleClose}
               variant="ghost"
               size="icon"
-              className="rounded-full"
+              className="rounded-full hover:bg-primary/10"
             >
               <X className="h-5 w-5" />
             </Button>
           </div>
 
           {/* Video Container */}
-          <div className="relative rounded-lg overflow-hidden border-2 border-border shadow-lg">
+          <div className="relative rounded-lg overflow-hidden border-2 border-primary/30 shadow-xl">
             <video
-              className="w-full max-h-[420px] object-contain"
+              className="w-full max-h-[380px] object-contain"
               controls
               autoPlay
               playsInline
@@ -54,17 +56,19 @@ export function WelcomeDialog() {
           </div>
 
           {/* Buttons */}
-          <div className="flex gap-3">
+          <div className="flex gap-3 pt-1">
             <Button 
               onClick={handleClose} 
               variant="outline"
+              size="lg"
               className="flex-1"
             >
               Saltar
             </Button>
             <Button 
               onClick={handleTutorial}
-              className="flex-1"
+              size="lg"
+              className="flex-1 bg-gradient-to-r from-primary to-secondary hover:opacity-90"
             >
               Ver Tutorial
             </Button>
