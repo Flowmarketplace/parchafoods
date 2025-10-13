@@ -25,7 +25,7 @@ export function WelcomeDialog() {
 
   return (
     <Dialog open={open} onOpenChange={() => {}}>
-      <DialogContent className="max-w-xl p-0 bg-background border-2 border-primary shadow-xl [&>button]:hidden">
+      <DialogContent className="max-w-xl p-0 bg-background border-2 border-primary rounded-2xl shadow-2xl overflow-hidden [&>button]:hidden">
         <div className="space-y-3">
           {/* Header */}
           <div className="bg-primary px-4 py-4 relative flex items-center justify-center">
@@ -42,7 +42,7 @@ export function WelcomeDialog() {
 
           {/* Video Container */}
           <div className="px-4">
-            <div className="relative rounded-lg overflow-hidden border-2 border-border shadow-lg">
+            <div className="relative rounded-xl overflow-hidden border-2 border-border shadow-lg">
               <video
                 className="w-full max-h-[360px] object-contain"
                 controls
@@ -61,14 +61,14 @@ export function WelcomeDialog() {
               onClick={handleClose} 
               variant="outline"
               size="lg"
-              className="flex-1"
+              className="flex-1 rounded-xl"
             >
               Saltar
             </Button>
             <Button 
               onClick={handleTutorial}
               size="lg"
-              className="flex-1 bg-primary hover:bg-primary/90"
+              className="flex-1 bg-primary hover:bg-primary/90 rounded-xl"
             >
               Ver Tutorial
             </Button>
