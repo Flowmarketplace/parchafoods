@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Bot, X, Send, Loader2 } from 'lucide-react';
+import { Bot, X, Send, Loader2, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -19,7 +19,7 @@ const FloatingAIChat = ({ isHidden }: { isHidden?: boolean }) => {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'assistant',
-      content: '¡Hola! 👋 Soy tu asistente virtual. ¿En qué puedo ayudarte hoy?'
+      content: '¡Hola! 👋 Soy tu asistente HandCity. ¿En qué puedo ayudarte hoy?'
     }
   ]);
   const [input, setInput] = useState('');
@@ -126,6 +126,19 @@ const FloatingAIChat = ({ isHidden }: { isHidden?: boolean }) => {
     await streamChat(userMessage);
   };
 
+  const handleClearChat = () => {
+    setMessages([
+      {
+        role: 'assistant',
+        content: '¡Hola! 👋 Soy tu asistente HandCity. ¿En qué puedo ayudarte hoy?'
+      }
+    ]);
+    toast({
+      title: "Chat limpiado",
+      description: "La conversación ha sido reiniciada",
+    });
+  };
+
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
@@ -135,43 +148,56 @@ const FloatingAIChat = ({ isHidden }: { isHidden?: boolean }) => {
 
   // Function to render message content with clickable links
   const renderMessageContent = (content: string) => {
-    // Match markdown links: [text](/place/slug) or [text](/event/id)
-    const linkRegex = /\[([^\]]+)\]\((\/place\/[a-z0-9-]+|\/event\/\d+)\)/g;
-    const parts: (string | JSX.Element)[] = [];
-    let lastIndex = 0;
-    let match;
-
-    while ((match = linkRegex.exec(content)) !== null) {
-      // Add text before the link
-      if (match.index > lastIndex) {
-        parts.push(content.slice(lastIndex, match.index));
-      }
-      
-      // Add the clickable link
-      const linkText = match[1];
-      const linkUrl = match[2];
-      parts.push(
-        <button
-          key={match.index}
-          onClick={() => {
-            navigate(linkUrl);
-            setIsOpen(false);
-          }}
-          className="text-primary underline font-medium hover:text-primary/80 transition-colors"
-        >
-          {linkText}
-        </button>
-      );
-      
-      lastIndex = match.index + match[0].length;
-    }
+    // Split by newlines to preserve formatting
+    const lines = content.split('\n');
     
-    // Add remaining text
-    if (lastIndex < content.length) {
-      parts.push(content.slice(lastIndex));
-    }
+    return (
+      <div className="text-sm whitespace-pre-wrap break-words">
+        {lines.map((line, lineIndex) => {
+          const parts: (string | JSX.Element)[] = [];
+          // Match markdown links: [text](/place/slug) or [text](/event/id)
+          const linkRegex = /\[([^\]]+)\]\((\/place\/[a-z0-9-]+|\/event\/\d+)\)/g;
+          let lastIndex = 0;
+          let match;
 
-    return <p className="text-sm whitespace-pre-wrap break-words">{parts.length > 0 ? parts : content}</p>;
+          while ((match = linkRegex.exec(line)) !== null) {
+            // Add text before the link
+            if (match.index > lastIndex) {
+              parts.push(line.slice(lastIndex, match.index));
+            }
+            
+            // Add the clickable link
+            const linkText = match[1];
+            const linkUrl = match[2];
+            parts.push(
+              <button
+                key={`${lineIndex}-${match.index}`}
+                onClick={() => {
+                  navigate(linkUrl);
+                  setIsOpen(false);
+                }}
+                className="text-primary underline font-bold hover:text-primary/80 transition-colors inline-block"
+              >
+                {linkText}
+              </button>
+            );
+            
+            lastIndex = match.index + match[0].length;
+          }
+
+          // Add remaining text
+          if (lastIndex < line.length) {
+            parts.push(line.slice(lastIndex));
+          }
+
+          return (
+            <div key={lineIndex}>
+              {parts.length > 0 ? parts : line}
+            </div>
+          );
+        })}
+      </div>
+    );
   };
 
   // Don't render anything if not on home page or if hidden
@@ -199,17 +225,28 @@ const FloatingAIChat = ({ isHidden }: { isHidden?: boolean }) => {
             <div className="flex items-center gap-2">
               <Bot className="h-5 w-5" />
               <CardTitle className="text-lg font-semibold">
-                Asistente Virtual
+                Asistente HandCity
               </CardTitle>
             </div>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setIsOpen(false)}
-              className="h-8 w-8 hover:bg-white/20 text-primary-foreground shrink-0"
-            >
-              <X className="h-5 w-5" />
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={handleClearChat}
+                className="h-8 w-8 hover:bg-white/20 text-primary-foreground shrink-0"
+                title="Limpiar chat"
+              >
+                <Trash2 className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setIsOpen(false)}
+                className="h-8 w-8 hover:bg-white/20 text-primary-foreground shrink-0"
+              >
+                <X className="h-5 w-5" />
+              </Button>
+            </div>
           </CardHeader>
 
           <CardContent className="flex-1 flex flex-col p-0 overflow-hidden">
