@@ -22,12 +22,52 @@ import {
 } from '@/components/ui/carousel';
 
 const PlaceDetails = () => {
-  const { id } = useParams();
+  const { id } = useParams(); // This could be an ID or a slug
   const navigate = useNavigate();
-  const place = mockPlaces.find((p) => p.id === id);
+  const [place, setPlace] = useState<any>(null);
   const [user, setUser] = useState<User | null>(null);
   const [showQRScanner, setShowQRScanner] = useState(false);
   const [loyaltyPoints, setLoyaltyPoints] = useState<number>(0);
+  const [loading, setLoading] = useState(true);
+
+  // Load place from database (by slug or ID)
+  useEffect(() => {
+    const loadPlace = async () => {
+      if (!id) return;
+      
+      setLoading(true);
+      
+      // Try to find by slug first, then by ID
+      let { data, error } = await supabase
+        .from('businesses')
+        .select('*')
+        .eq('slug', id)
+        .single();
+      
+      // If not found by slug, try by ID
+      if (error || !data) {
+        const result = await supabase
+          .from('businesses')
+          .select('*')
+          .eq('id', id)
+          .single();
+        data = result.data;
+        error = result.error;
+      }
+      
+      if (data) {
+        setPlace(data);
+      } else {
+        // Fallback to mock data
+        const mockPlace = mockPlaces.find((p) => p.id === id);
+        setPlace(mockPlace);
+      }
+      
+      setLoading(false);
+    };
+    
+    loadPlace();
+  }, [id]);
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
@@ -38,15 +78,15 @@ const PlaceDetails = () => {
 
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
-      if (session?.user && id) {
+      if (session?.user && place?.id) {
         setTimeout(() => {
-          loadLoyaltyPoints(session.user.id, id);
+          loadLoyaltyPoints(session.user.id, place.id);
         }, 0);
       }
     });
 
     return () => subscription.unsubscribe();
-  }, [id]);
+  }, [place?.id]);
 
   const loadLoyaltyPoints = async (userId: string, placeId: string) => {
     try {
@@ -71,6 +111,14 @@ const PlaceDetails = () => {
     }
   };
 
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
 
   if (!place) {
     return (

@@ -135,35 +135,43 @@ const FloatingAIChat = ({ isHidden }: { isHidden?: boolean }) => {
 
   // Function to render message content with clickable links
   const renderMessageContent = (content: string) => {
-    // Match /place/[id] or /event/[id] patterns
-    const linkRegex = /\/(?:place|event)\/\d+/g;
-    const parts = content.split(linkRegex);
-    const matches = content.match(linkRegex);
+    // Match markdown links: [text](/place/slug) or [text](/event/id)
+    const linkRegex = /\[([^\]]+)\]\((\/place\/[a-z0-9-]+|\/event\/\d+)\)/g;
+    const parts: (string | JSX.Element)[] = [];
+    let lastIndex = 0;
+    let match;
 
-    if (!matches) {
-      return <p className="text-sm whitespace-pre-wrap break-words">{content}</p>;
+    while ((match = linkRegex.exec(content)) !== null) {
+      // Add text before the link
+      if (match.index > lastIndex) {
+        parts.push(content.slice(lastIndex, match.index));
+      }
+      
+      // Add the clickable link
+      const linkText = match[1];
+      const linkUrl = match[2];
+      parts.push(
+        <button
+          key={match.index}
+          onClick={() => {
+            navigate(linkUrl);
+            setIsOpen(false);
+          }}
+          className="text-primary underline font-medium hover:text-primary/80 transition-colors"
+        >
+          {linkText}
+        </button>
+      );
+      
+      lastIndex = match.index + match[0].length;
+    }
+    
+    // Add remaining text
+    if (lastIndex < content.length) {
+      parts.push(content.slice(lastIndex));
     }
 
-    return (
-      <p className="text-sm whitespace-pre-wrap break-words">
-        {parts.map((part, i) => (
-          <span key={i}>
-            {part}
-            {matches[i] && (
-              <button
-                onClick={() => {
-                  navigate(matches[i]);
-                  setIsOpen(false);
-                }}
-                className="text-primary underline font-medium hover:text-primary/80 transition-colors"
-              >
-                {matches[i]}
-              </button>
-            )}
-          </span>
-        ))}
-      </p>
-    );
+    return <p className="text-sm whitespace-pre-wrap break-words">{parts.length > 0 ? parts : content}</p>;
   };
 
   // Don't render anything if not on home page or if hidden

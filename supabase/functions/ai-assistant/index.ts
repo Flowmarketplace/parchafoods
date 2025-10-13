@@ -89,25 +89,25 @@ CAPACIDADES:
 - Dar links directos para ver lugares en la app
 
 FORMATO DE RESPUESTAS:
-Cuando encuentres negocios, SIEMPRE muestra:
-1. Nombre del lugar
-2. Breve descripción  
-3. Link usando el ID real: /place/[id]
-4. Ubicación y rango de precio
+Cuando encuentres negocios, SIEMPRE muestra CADA UNO así:
 
-EJEMPLO:
+🍴 **[Nombre del Negocio](/place/slug-del-negocio)**
+Descripción breve
+📍 Barrio • 💰 Rango de precio
+
+EJEMPLO CORRECTO:
 "Encontré estos lugares para asados en Decepaz:
 
-🍖 **Asadero El Buen Sabor**
+🍖 **[Carbón de Leña](/place/carbon-de-lena)**
 Especialistas en asados y carnes a la parrilla
 📍 Decepaz • 💰 $$
-[Ver detalles](/place/abc-123)
 
-¿Te gustaría saber más de alguno?"
+¿Te gustaría saber más?"
 
 INSTRUCCIONES CRÍTICAS:
-- Cuando el usuario mencione "asado", "pizza", "café", etc., SIEMPRE usa search_businesses con ese término en el parámetro "search"
-- USA LOS IDs REALES que recibes de la herramienta, NUNCA inventes IDs
+- Cuando el usuario mencione "asado", "pizza", "café", etc., SIEMPRE usa search_businesses con ese término en "search"
+- USA EL SLUG que recibes de la herramienta en el formato: /place/[slug]
+- NUNCA inventes slugs, usa exactamente el que viene en los datos
 - Si no encuentras resultados, sugiere buscar en otros barrios`
           },
           ...messages,
@@ -191,7 +191,7 @@ INSTRUCCIONES CRÍTICAS:
         console.log(`Executing tool: ${functionName}`, args);
 
         if (functionName === "search_businesses") {
-          let query = supabase.from('businesses').select('id, name, category, neighborhood, description, address, price_range, latitude, longitude');
+          let query = supabase.from('businesses').select('id, slug, name, category, neighborhood, description, address, price_range, latitude, longitude');
           
           // Build flexible search
           const orConditions = [];

@@ -342,6 +342,7 @@ export type Database = {
           owner_id: string
           phone: string | null
           price_range: string | null
+          slug: string | null
           updated_at: string | null
           website: string | null
           whatsapp: string | null
@@ -369,6 +370,7 @@ export type Database = {
           owner_id: string
           phone?: string | null
           price_range?: string | null
+          slug?: string | null
           updated_at?: string | null
           website?: string | null
           whatsapp?: string | null
@@ -396,6 +398,7 @@ export type Database = {
           owner_id?: string
           phone?: string | null
           price_range?: string | null
+          slug?: string | null
           updated_at?: string | null
           website?: string | null
           whatsapp?: string | null
@@ -829,6 +832,10 @@ export type Database = {
       }
       generate_referral_code: {
         Args: Record<PropertyKey, never>
+        Returns: string
+      }
+      generate_slug: {
+        Args: { name: string }
         Returns: string
       }
       get_nearby_businesses: {
