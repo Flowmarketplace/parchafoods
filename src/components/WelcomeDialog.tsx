@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
-import handcityLogo from "@/assets/handcity-logo.png";
+import handcityLogo from "@/assets/handcity-logo-black.png";
 
 const WELCOME_SEEN_KEY = "handcity_welcome_seen";
 
@@ -26,10 +26,10 @@ export function WelcomeDialog() {
 
   return (
     <Dialog open={open} onOpenChange={() => {}}>
-      <DialogContent className="max-w-xl p-0 bg-white border-2 border-[#E31C25] shadow-2xl [&>button]:hidden">
+      <DialogContent className="max-w-xl p-0 bg-gradient-to-br from-primary/20 via-secondary/20 to-accent/20 backdrop-blur-xl border-2 border-primary/40 shadow-2xl [&>button]:hidden">
         <div className="space-y-3">
-          {/* Header with Red Background */}
-          <div className="bg-[#E31C25] px-4 py-6 relative flex items-center justify-center">
+          {/* Header with Blue Gradient Background */}
+          <div className="bg-gradient-to-r from-primary via-secondary to-accent px-4 py-6 relative flex items-center justify-center">
             <img 
               src={handcityLogo} 
               alt="HandCity" 
@@ -47,7 +47,7 @@ export function WelcomeDialog() {
 
           {/* Video Container */}
           <div className="px-4">
-            <div className="relative rounded-lg overflow-hidden border-2 border-gray-200 shadow-lg">
+            <div className="relative rounded-lg overflow-hidden border-2 border-primary/30 shadow-xl">
               <video
                 className="w-full max-h-[380px] object-contain"
                 controls
@@ -66,14 +66,14 @@ export function WelcomeDialog() {
               onClick={handleClose} 
               variant="outline"
               size="lg"
-              className="flex-1 border-2 border-gray-300"
+              className="flex-1 border-2"
             >
               Saltar
             </Button>
             <Button 
               onClick={handleTutorial}
               size="lg"
-              className="flex-1 bg-[#E31C25] hover:bg-[#C41820] text-white"
+              className="flex-1 bg-gradient-to-r from-primary to-secondary hover:opacity-90"
             >
               Ver Tutorial
             </Button>
