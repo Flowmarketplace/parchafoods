@@ -9,10 +9,8 @@ export function WelcomeDialog() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const hasSeenWelcome = localStorage.getItem(WELCOME_SEEN_KEY);
-    if (!hasSeenWelcome) {
-      setOpen(true);
-    }
+    // Temporalmente siempre mostrar
+    setOpen(true);
   }, []);
 
   const handleClose = () => {
