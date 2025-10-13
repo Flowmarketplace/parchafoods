@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Bot, X, Send, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -14,6 +14,7 @@ interface Message {
 
 const FloatingAIChat = ({ isHidden }: { isHidden?: boolean }) => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -132,6 +133,39 @@ const FloatingAIChat = ({ isHidden }: { isHidden?: boolean }) => {
     }
   };
 
+  // Function to render message content with clickable links
+  const renderMessageContent = (content: string) => {
+    // Match /place/[id] or /event/[id] patterns
+    const linkRegex = /\/(?:place|event)\/\d+/g;
+    const parts = content.split(linkRegex);
+    const matches = content.match(linkRegex);
+
+    if (!matches) {
+      return <p className="text-sm whitespace-pre-wrap break-words">{content}</p>;
+    }
+
+    return (
+      <p className="text-sm whitespace-pre-wrap break-words">
+        {parts.map((part, i) => (
+          <span key={i}>
+            {part}
+            {matches[i] && (
+              <button
+                onClick={() => {
+                  navigate(matches[i]);
+                  setIsOpen(false);
+                }}
+                className="text-primary underline font-medium hover:text-primary/80 transition-colors"
+              >
+                {matches[i]}
+              </button>
+            )}
+          </span>
+        ))}
+      </p>
+    );
+  };
+
   // Don't render anything if not on home page or if hidden
   if (!isHomePage || isHidden) {
     return null;
@@ -187,9 +221,7 @@ const FloatingAIChat = ({ isHidden }: { isHidden?: boolean }) => {
                           : 'bg-muted'
                       }`}
                     >
-                      <p className="text-sm whitespace-pre-wrap break-words">
-                        {message.content}
-                      </p>
+                      {renderMessageContent(message.content)}
                     </div>
                   </div>
                 ))}
