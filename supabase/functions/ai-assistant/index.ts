@@ -79,31 +79,36 @@ serve(async (req) => {
         messages: [
           {
             role: "system",
-            content: `Eres HandCity AI, un asistente virtual experto en Cali, Colombia. Tu trabajo es ayudar a los usuarios a descubrir y explorar lugares en la ciudad.
+            content: `Eres HandCity AI, un asistente virtual experto en Cali, Colombia. 
+
+IMPORTANTE: SIEMPRE usa la herramienta search_businesses cuando el usuario pregunta por lugares, comida, o negocios.
 
 CAPACIDADES:
-- Buscar negocios por categoría, barrio o nombre
-- Proporcionar información detallada sobre lugares (precios, horarios, ubicación, menú)
-- Recomendar lugares según las necesidades del usuario
+- Buscar negocios por categoría, barrio o tipo de comida/servicio
+- Proporcionar información detallada sobre lugares
 - Dar links directos para ver lugares en la app
 
 FORMATO DE RESPUESTAS:
-Cuando recomiendes un lugar, SIEMPRE incluye:
+Cuando encuentres negocios, SIEMPRE muestra:
 1. Nombre del lugar
-2. Descripción breve
-3. Link directo: /place/[id] (usa el ID del negocio)
-4. Información relevante (precio, ubicación, especialidad)
+2. Breve descripción  
+3. Link usando el ID real: /place/[id]
+4. Ubicación y rango de precio
 
 EJEMPLO:
-"Te recomiendo **Restaurante El Sabor del Barrio** - Deliciosa comida típica caleña. 
-📍 Barrio Compartir
-💰 Rango: $$
-Ver más: /place/1
+"Encontré estos lugares para asados en Decepaz:
 
-Ofrecen sancocho de gallina ($18.000) y bandeja paisa ($25.000)."
+🍖 **Asadero El Buen Sabor**
+Especialistas en asados y carnes a la parrilla
+📍 Decepaz • 💰 $$
+[Ver detalles](/place/abc-123)
 
-Usa las herramientas search_businesses y get_business_details para buscar información real.
-Sé conciso, amigable y útil. Si no encuentras algo, sugiere alternativas.`
+¿Te gustaría saber más de alguno?"
+
+INSTRUCCIONES CRÍTICAS:
+- Cuando el usuario mencione "asado", "pizza", "café", etc., SIEMPRE usa search_businesses con ese término en el parámetro "search"
+- USA LOS IDs REALES que recibes de la herramienta, NUNCA inventes IDs
+- Si no encuentras resultados, sugiere buscar en otros barrios`
           },
           ...messages,
         ],
@@ -188,14 +193,16 @@ Sé conciso, amigable y útil. Si no encuentras algo, sugiere alternativas.`
         if (functionName === "search_businesses") {
           let query = supabase.from('businesses').select('id, name, category, neighborhood, description, address, price_range, latitude, longitude');
           
-          // Build search conditions
-          const conditions = [];
+          // Build flexible search
+          const orConditions = [];
           
-          if (args.query) {
-            // Search in name, description, and category
-            conditions.push(`name.ilike.%${args.query}%`);
-            conditions.push(`description.ilike.%${args.query}%`);
-            conditions.push(`category.ilike.%${args.query}%`);
+          if (args.category) {
+            orConditions.push(`category.ilike.%${args.category}%`);
+          }
+          if (args.search) {
+            orConditions.push(`name.ilike.%${args.search}%`);
+            orConditions.push(`description.ilike.%${args.search}%`);
+            orConditions.push(`category.ilike.%${args.search}%`);
           }
           
           if (args.neighborhood) {
@@ -203,11 +210,13 @@ Sé conciso, amigable y útil. Si no encuentras algo, sugiere alternativas.`
           }
           
           // Apply OR conditions for flexible search
-          if (conditions.length > 0) {
-            query = query.or(conditions.join(','));
+          if (orConditions.length > 0) {
+            query = query.or(orConditions.join(','));
           }
           
           const { data, error } = await query.limit(10);
+          
+          console.log(`Search for ${JSON.stringify(args)} found:`, data);
           
           toolResults.push({
             tool_call_id: toolCall.id,
@@ -219,7 +228,7 @@ Sé conciso, amigable y útil. Si no encuentras algo, sugiere alternativas.`
           const { data: business, error: bizError } = await supabase
             .from('businesses')
             .select('*')
-            .ilike('name', `%${args.business_name}%`)
+            .eq('id', args.business_id)
             .single();
 
           if (!bizError && business) {
