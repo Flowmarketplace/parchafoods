@@ -13,15 +13,14 @@ export function WelcomeDialog({ onTourChange }: { onTourChange?: (isActive: bool
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    // Temporalmente siempre mostrar para pruebas
-    localStorage.removeItem(WELCOME_SEEN_KEY);
-    setOpen(true);
+    // Solo mostrar si no se ha visto antes
+    const hasSeenWelcome = localStorage.getItem(WELCOME_SEEN_KEY);
+    if (!hasSeenWelcome) {
+      setOpen(true);
+    }
     
-    // Para producción, descomentar esto:
-    // const hasSeenWelcome = localStorage.getItem(WELCOME_SEEN_KEY);
-    // if (!hasSeenWelcome) {
-    //   setOpen(true);
-    // }
+    // Para pruebas, descomentar esta línea temporalmente:
+    // localStorage.removeItem(WELCOME_SEEN_KEY);
   }, []);
 
   const handleClose = () => {
