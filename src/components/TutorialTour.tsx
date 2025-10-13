@@ -97,42 +97,42 @@ export function TutorialTour({ onClose }: { onClose: () => void }) {
     const rect = targetElement.getBoundingClientRect();
     const windowHeight = window.innerHeight;
     const windowWidth = window.innerWidth;
+    const tooltipHeight = 350; // Altura aproximada del tooltip
+    const tooltipWidth = 384; // max-w-sm = 24rem = 384px
+    const margin = 20; // Margen mínimo desde los bordes
     
     // Calculate available space
     const spaceBelow = windowHeight - rect.bottom;
     const spaceAbove = rect.top;
-    const spaceRight = windowWidth - rect.right;
-    const spaceLeft = rect.left;
 
-    // Determine best position based on available space
     let position: any = {};
     
-    if (step.position === "bottom" && spaceBelow > 300) {
+    // Determinar si va arriba o abajo
+    if (step.position === "bottom" && spaceBelow > tooltipHeight + margin * 2) {
+      // Colocar debajo
       position = {
-        top: `${rect.bottom + 20}px`,
-        left: `${rect.left + rect.width / 2}px`,
-        transform: "translateX(-50%)"
+        top: `${rect.bottom + margin}px`,
+        left: `${Math.max(margin, Math.min(rect.left + rect.width / 2 - tooltipWidth / 2, windowWidth - tooltipWidth - margin))}px`,
       };
-    } else if (step.position === "top" && spaceAbove > 300) {
+    } else if (step.position === "top" && spaceAbove > tooltipHeight + margin * 2) {
+      // Colocar arriba
       position = {
-        bottom: `${windowHeight - rect.top + 20}px`,
-        left: `${rect.left + rect.width / 2}px`,
-        transform: "translateX(-50%)"
-      };
-    } else if (spaceBelow > spaceAbove) {
-      // Default to below if more space
-      position = {
-        top: `${rect.bottom + 20}px`,
-        left: "50%",
-        transform: "translateX(-50%)"
+        top: `${Math.max(margin, rect.top - tooltipHeight - margin)}px`,
+        left: `${Math.max(margin, Math.min(rect.left + rect.width / 2 - tooltipWidth / 2, windowWidth - tooltipWidth - margin))}px`,
       };
     } else {
-      // Default to above if more space there
-      position = {
-        bottom: `${windowHeight - rect.top + 20}px`,
-        left: "50%",
-        transform: "translateX(-50%)"
-      };
+      // Colocar donde haya más espacio
+      if (spaceBelow > spaceAbove) {
+        position = {
+          top: `${rect.bottom + margin}px`,
+          left: `${Math.max(margin, Math.min(rect.left + rect.width / 2 - tooltipWidth / 2, windowWidth - tooltipWidth - margin))}px`,
+        };
+      } else {
+        position = {
+          top: `${Math.max(margin, rect.top - tooltipHeight - margin)}px`,
+          left: `${Math.max(margin, Math.min(rect.left + rect.width / 2 - tooltipWidth / 2, windowWidth - tooltipWidth - margin))}px`,
+        };
+      }
     }
 
     return position;
@@ -184,7 +184,7 @@ export function TutorialTour({ onClose }: { onClose: () => void }) {
 
       {/* Tooltip */}
       <div
-        className="absolute bg-primary/80 backdrop-blur-md text-white rounded-2xl shadow-2xl p-6 max-w-sm animate-fade-in border border-white/20 pointer-events-auto z-30"
+        className="absolute bg-primary/90 backdrop-blur-md text-white rounded-2xl shadow-2xl p-5 w-80 animate-fade-in border border-white/20 pointer-events-auto z-30"
         style={getTooltipPosition()}
       >
         {/* Close Button */}
