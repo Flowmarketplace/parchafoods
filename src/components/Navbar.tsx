@@ -49,6 +49,7 @@ const Navbar = ({ onMenuClick, searchQuery, onSearchChange, selectedNeighborhood
               size="icon"
               onClick={onMenuClick}
               className="lg:hidden active:scale-95 transition-transform touch-manipulation"
+              data-tour="sidebar-trigger"
             >
               <Menu className="h-6 w-6" />
             </Button>
@@ -112,7 +113,7 @@ const Navbar = ({ onMenuClick, searchQuery, onSearchChange, selectedNeighborhood
         
         {/* Search Bar only - no neighborhood selector */}
         {showFilter && onSearchChange && (
-          <div className="pb-3">
+          <div className="pb-3" data-tour="navbar-search">
             <div className="relative">
               {isSearching ? (
                 <Loader2 className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary animate-spin" />

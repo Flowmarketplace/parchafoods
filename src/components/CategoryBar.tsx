@@ -49,7 +49,7 @@ const CategoryBar = ({ selectedCategory, onCategoryChange }: CategoryBarProps) =
   const visibleCategories = showAll ? categories : categories.slice(0, 7);
   
   return (
-    <div className="w-full bg-card border-y border-border shadow-sm">
+    <div className="w-full bg-card border-y border-border shadow-sm" data-tour="category-bar">
       <div className="w-full max-w-screen-2xl mx-auto px-4 sm:px-4 md:px-6 py-3 sm:py-3">
         {/* Mobile: 2 rows of 4 (7 categories + Ver todos) */}
         <div className="grid grid-cols-4 gap-2 sm:hidden">

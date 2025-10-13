@@ -129,7 +129,7 @@ const Index = () => {
           </div>
 
           {/* Neighborhood Selector below map */}
-          <div className="w-full bg-card border-b border-border">
+          <div className="w-full bg-card border-b border-border" data-tour="neighborhood-selector">
             <div className="w-full max-w-screen-2xl mx-auto px-4 sm:px-4 md:px-6 py-3">
               <Popover open={neighborhoodOpen} onOpenChange={setNeighborhoodOpen}>
                 <PopoverTrigger asChild>
