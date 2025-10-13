@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
-import handcityLogo from "@/assets/handcity-logo-black.png";
 
 const WELCOME_SEEN_KEY = "handcity_welcome_seen";
 
@@ -26,15 +25,11 @@ export function WelcomeDialog() {
 
   return (
     <Dialog open={open} onOpenChange={() => {}}>
-      <DialogContent className="max-w-xl p-0 bg-gradient-to-br from-primary/20 via-secondary/20 to-accent/20 backdrop-blur-xl border-2 border-primary/40 shadow-2xl [&>button]:hidden">
+      <DialogContent className="max-w-xl p-0 bg-background border-2 border-primary shadow-xl [&>button]:hidden">
         <div className="space-y-3">
-          {/* Header with Blue Gradient Background */}
-          <div className="bg-gradient-to-r from-primary via-secondary to-accent px-4 py-6 relative flex items-center justify-center">
-            <img 
-              src={handcityLogo} 
-              alt="HandCity" 
-              className="h-16 w-auto max-w-[80%] brightness-0 invert object-contain"
-            />
+          {/* Header */}
+          <div className="bg-primary px-4 py-4 relative flex items-center justify-center">
+            <h2 className="text-2xl font-bold text-white">HandCity</h2>
             <Button
               onClick={handleClose}
               variant="ghost"
@@ -47,9 +42,9 @@ export function WelcomeDialog() {
 
           {/* Video Container */}
           <div className="px-4">
-            <div className="relative rounded-lg overflow-hidden border-2 border-primary/30 shadow-xl">
+            <div className="relative rounded-lg overflow-hidden border-2 border-border shadow-lg">
               <video
-                className="w-full max-h-[380px] object-contain"
+                className="w-full max-h-[360px] object-contain"
                 controls
                 autoPlay
                 playsInline
@@ -66,14 +61,14 @@ export function WelcomeDialog() {
               onClick={handleClose} 
               variant="outline"
               size="lg"
-              className="flex-1 border-2"
+              className="flex-1"
             >
               Saltar
             </Button>
             <Button 
               onClick={handleTutorial}
               size="lg"
-              className="flex-1 bg-gradient-to-r from-primary to-secondary hover:opacity-90"
+              className="flex-1 bg-primary hover:bg-primary/90"
             >
               Ver Tutorial
             </Button>
