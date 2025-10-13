@@ -70,7 +70,8 @@ serve(async (req) => {
       }
     ];
 
-    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+    // First check if we need tools (non-streaming)
+    const checkResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${LOVABLE_API_KEY}`,
@@ -110,12 +111,12 @@ Sé conciso, amigable y útil. Si no encuentras algo, sugiere alternativas.`
           ...messages,
         ],
         tools: tools,
-        stream: true,
+        stream: false,
       }),
     });
 
-    if (!response.ok) {
-      if (response.status === 429) {
+    if (!checkResponse.ok) {
+      if (checkResponse.status === 429) {
         return new Response(
           JSON.stringify({ error: "Límite de peticiones excedido, intenta más tarde." }),
           {
@@ -124,7 +125,7 @@ Sé conciso, amigable y útil. Si no encuentras algo, sugiere alternativas.`
           }
         );
       }
-      if (response.status === 402) {
+      if (checkResponse.status === 402) {
         return new Response(
           JSON.stringify({ error: "Fondos insuficientes en la cuenta." }),
           {
@@ -133,8 +134,8 @@ Sé conciso, amigable y útil. Si no encuentras algo, sugiere alternativas.`
           }
         );
       }
-      const errorText = await response.text();
-      console.error("AI gateway error:", response.status, errorText);
+      const errorText = await checkResponse.text();
+      console.error("AI gateway error:", checkResponse.status, errorText);
       return new Response(
         JSON.stringify({ error: "Error en el servicio de IA" }),
         {
@@ -144,12 +145,41 @@ Sé conciso, amigable y útil. Si no encuentras algo, sugiere alternativas.`
       );
     }
 
-    // First, check if we get tool calls (non-streaming to handle tools)
-    const firstResponse = await response.json();
+    if (!checkResponse.ok) {
+      if (checkResponse.status === 429) {
+        return new Response(
+          JSON.stringify({ error: "Límite de peticiones excedido, intenta más tarde." }),
+          {
+            status: 429,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          }
+        );
+      }
+      if (checkResponse.status === 402) {
+        return new Response(
+          JSON.stringify({ error: "Fondos insuficientes en la cuenta." }),
+          {
+            status: 402,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          }
+        );
+      }
+      const errorText = await checkResponse.text();
+      console.error("AI gateway error:", checkResponse.status, errorText);
+      return new Response(
+        JSON.stringify({ error: "Error en el servicio de IA" }),
+        {
+          status: 500,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        }
+      );
+    }
+
+    const checkData = await checkResponse.json();
     
     // Check if AI wants to use tools
-    if (firstResponse.choices?.[0]?.message?.tool_calls) {
-      const toolCalls = firstResponse.choices[0].message.tool_calls;
+    if (checkData.choices?.[0]?.message?.tool_calls) {
+      const toolCalls = checkData.choices[0].message.tool_calls;
       const toolResults = [];
 
       for (const toolCall of toolCalls) {
@@ -214,7 +244,7 @@ Sé conciso, amigable y útil. Si no encuentras algo, sugiere alternativas.`
         }
       }
 
-      // Send tool results back to AI for final response
+      // Send tool results back to AI for final response (with streaming)
       const finalResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
         method: "POST",
         headers: {
@@ -252,7 +282,7 @@ Ofrecen sancocho de gallina ($18.000) y bandeja paisa ($25.000)."
 Sé conciso, amigable y útil. Si no encuentras algo, sugiere alternativas.`
             },
             ...messages,
-            firstResponse.choices[0].message,
+            checkData.choices[0].message,
             ...toolResults
           ],
           stream: true,
@@ -265,9 +295,51 @@ Sé conciso, amigable y útil. Si no encuentras algo, sugiere alternativas.`
       });
     }
 
-    // No tools needed, stream original response
-    return new Response(JSON.stringify(firstResponse), {
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    // No tools needed, make streaming call
+    const streamResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${LOVABLE_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "google/gemini-2.5-flash",
+        messages: [
+          {
+            role: "system",
+            content: `Eres HandCity AI, un asistente virtual experto en Cali, Colombia. Tu trabajo es ayudar a los usuarios a descubrir y explorar lugares en la ciudad.
+
+CAPACIDADES:
+- Buscar negocios por categoría, barrio o nombre
+- Proporcionar información detallada sobre lugares (precios, horarios, ubicación, menú)
+- Recomendar lugares según las necesidades del usuario
+- Dar links directos para ver lugares en la app
+
+FORMATO DE RESPUESTAS:
+Cuando recomiendes un lugar, SIEMPRE incluye:
+1. Nombre del lugar
+2. Descripción breve
+3. Link directo: /place/[id] (usa el ID del negocio)
+4. Información relevante (precio, ubicación, especialidad)
+
+EJEMPLO:
+"Te recomiendo **Restaurante El Sabor del Barrio** - Deliciosa comida típica caleña. 
+📍 Barrio Compartir
+💰 Rango: $$
+Ver más: /place/1
+
+Ofrecen sancocho de gallina ($18.000) y bandeja paisa ($25.000)."
+
+Sé conciso, amigable y útil. Si no encuentras algo, sugiere alternativas.`
+          },
+          ...messages,
+        ],
+        stream: true,
+      }),
+    });
+
+    return new Response(streamResponse.body, {
+      headers: { ...corsHeaders, "Content-Type": "text/event-stream" },
     });
   } catch (error) {
     console.error("AI assistant error:", error);
