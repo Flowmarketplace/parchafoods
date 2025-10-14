@@ -5,8 +5,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { Menu, Search, Eye, Edit, Trash2 } from 'lucide-react';
-import AdminSidebar from '@/components/admin/AdminSidebar';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Menu, Search, Eye, Edit, Trash2, ArrowLeft } from 'lucide-react';
+import AdminSidebar, { AdminSidebarDesktop } from '@/components/admin/AdminSidebar';
 import { toast } from 'sonner';
 
 interface Business {
@@ -94,18 +95,31 @@ const AdminBusinesses = () => {
 
   return (
     <div className="flex min-h-screen w-full bg-background">
-      <AdminSidebar />
+      <AdminSidebarDesktop />
 
       <div className="flex-1 lg:ml-64 w-full">
         <header className="sticky top-0 z-30 bg-card border-b border-border px-4 py-3">
           <div className="flex items-center gap-3">
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="lg:hidden"
+                >
+                  <Menu className="h-5 w-5" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="left" className="p-0 w-64">
+                <AdminSidebar />
+              </SheetContent>
+            </Sheet>
             <Button
               variant="ghost"
               size="icon"
-              className="lg:hidden"
-              onClick={() => setSidebarOpen(true)}
+              onClick={() => navigate('/admin')}
             >
-              <Menu className="h-5 w-5" />
+              <ArrowLeft className="h-5 w-5" />
             </Button>
             <div className="flex-1">
               <h1 className="text-xl font-bold">Gestión de Negocios</h1>

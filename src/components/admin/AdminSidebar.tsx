@@ -13,7 +13,11 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-const AdminSidebar = () => {
+interface AdminSidebarWrapperProps {
+  className?: string;
+}
+
+const AdminSidebar = ({ className }: AdminSidebarWrapperProps = {}) => {
   const menuItems = [
     { icon: LayoutDashboard, label: 'Dashboard', path: '/admin' },
     { icon: Store, label: 'Negocios', path: '/admin/businesses' },
@@ -28,7 +32,7 @@ const AdminSidebar = () => {
   ];
 
   return (
-    <aside className="hidden lg:block fixed top-0 left-0 h-full w-64 bg-card border-r border-border overflow-y-auto z-40">
+    <aside className={cn("h-full w-64 bg-card border-r border-border overflow-y-auto", className)}>
       <div className="p-6">
         <div className="flex items-center gap-2 mb-8">
           <div className="bg-gradient-to-br from-primary to-secondary p-2 rounded-lg">
@@ -64,6 +68,15 @@ const AdminSidebar = () => {
         </nav>
       </div>
     </aside>
+  );
+};
+
+// Desktop version (fixed sidebar)
+export const AdminSidebarDesktop = () => {
+  return (
+    <div className="hidden lg:block fixed top-0 left-0 h-full z-40">
+      <AdminSidebar />
+    </div>
   );
 };
 
