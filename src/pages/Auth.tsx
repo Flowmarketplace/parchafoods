@@ -54,8 +54,16 @@ const Auth = () => {
               .select('role')
               .eq('user_id', session.user.id);
             
+            const isAdmin = roles?.some(r => r.role === 'admin');
             const isBusinessOwner = roles?.some(r => r.role === 'business_owner');
-            navigate(isBusinessOwner ? '/business-dashboard' : '/');
+            
+            if (isAdmin) {
+              navigate('/admin');
+            } else if (isBusinessOwner) {
+              navigate('/business-dashboard');
+            } else {
+              navigate('/');
+            }
           }, 0);
         }
       }
@@ -72,8 +80,16 @@ const Auth = () => {
           .select('role')
           .eq('user_id', session.user.id);
         
+        const isAdmin = roles?.some(r => r.role === 'admin');
         const isBusinessOwner = roles?.some(r => r.role === 'business_owner');
-        navigate(isBusinessOwner ? '/business-dashboard' : '/');
+        
+        if (isAdmin) {
+          navigate('/admin');
+        } else if (isBusinessOwner) {
+          navigate('/business-dashboard');
+        } else {
+          navigate('/');
+        }
       }
     });
 
