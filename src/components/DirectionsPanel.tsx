@@ -23,15 +23,24 @@ type TransportMode = 'driving' | 'cycling' | 'walking';
 const DirectionsPanel = ({ destinationLat, destinationLng, destinationName }: DirectionsPanelProps) => {
   const [selectedMode, setSelectedMode] = useState<TransportMode>('driving');
   const [userLocation, setUserLocation] = useState<{lat: number; lng: number} | null>(null);
+  const [locationError, setLocationError] = useState<string | null>(null);
   const [routes, setRoutes] = useState<Record<TransportMode, RouteInfo | null>>({
     driving: null,
     cycling: null,
     walking: null
   });
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const { toast } = useToast();
 
   useEffect(() => {
+    // Set a timeout to prevent infinite loading
+    const timeout = setTimeout(() => {
+      if (!userLocation && !locationError) {
+        setLocationError("No pudimos obtener tu ubicación. Asegúrate de dar permiso de ubicación.");
+        setLoading(false);
+      }
+    }, 10000); // 10 seconds timeout
+
     // Get user's current location
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -40,16 +49,48 @@ const DirectionsPanel = ({ destinationLat, destinationLng, destinationName }: Di
             lat: position.coords.latitude,
             lng: position.coords.longitude
           });
+          setLoading(false);
+          clearTimeout(timeout);
         },
         (error) => {
+          console.error("Geolocation error:", error);
+          let errorMessage = "No pudimos obtener tu ubicación.";
+          
+          switch(error.code) {
+            case error.PERMISSION_DENIED:
+              errorMessage = "Permiso de ubicación denegado. Por favor habilita el acceso a tu ubicación.";
+              break;
+            case error.POSITION_UNAVAILABLE:
+              errorMessage = "Ubicación no disponible. Verifica tu GPS.";
+              break;
+            case error.TIMEOUT:
+              errorMessage = "Tiempo de espera agotado al obtener tu ubicación.";
+              break;
+          }
+          
+          setLocationError(errorMessage);
+          setLoading(false);
+          clearTimeout(timeout);
+          
           toast({
             title: "Error de ubicación",
-            description: "No pudimos obtener tu ubicación actual. Por favor habilita el GPS.",
+            description: errorMessage,
             variant: "destructive"
           });
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 8000,
+          maximumAge: 0
         }
       );
+    } else {
+      setLocationError("Tu navegador no soporta geolocalización.");
+      setLoading(false);
+      clearTimeout(timeout);
     }
+
+    return () => clearTimeout(timeout);
   }, [toast]);
 
   const getDirectionsUrl = (mode: TransportMode) => {
@@ -133,12 +174,23 @@ const DirectionsPanel = ({ destinationLat, destinationLng, destinationName }: Di
           <h3 className="text-xl font-semibold">¿Cómo llegar?</h3>
         </div>
 
-        {!userLocation ? (
+        {loading ? (
           <div className="text-center py-8">
             <p className="text-muted-foreground mb-4">Obteniendo tu ubicación...</p>
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
           </div>
-        ) : (
+        ) : locationError ? (
+          <div className="text-center py-8">
+            <p className="text-muted-foreground mb-4">{locationError}</p>
+            <Button
+              onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${destinationLat},${destinationLng}`, '_blank')}
+              className="gap-2"
+            >
+              <Navigation2 className="h-4 w-4" />
+              Abrir en Google Maps
+            </Button>
+          </div>
+        ) : userLocation ? (
           <>
             {/* Transport Mode Selector */}
             <Tabs value={selectedMode} onValueChange={(v) => setSelectedMode(v as TransportMode)} className="w-full">
@@ -211,7 +263,7 @@ const DirectionsPanel = ({ destinationLat, destinationLng, destinationName }: Di
               )}
             </Tabs>
           </>
-        )}
+        ) : null}
       </CardContent>
     </Card>
   );
