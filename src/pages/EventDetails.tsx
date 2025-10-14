@@ -7,8 +7,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { mockEvents } from '@/data/events';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 import DirectionsPanel from '@/components/DirectionsPanel';
 import {
   Carousel,
@@ -27,14 +28,62 @@ import {
 } from '@/components/ui/dialog';
 
 const EventDetails = () => {
-  const { id } = useParams();
+  const { id } = useParams(); // This could be an ID or a slug
   const navigate = useNavigate();
   const { toast } = useToast();
-  const event = mockEvents.find((e) => e.id === id);
+  const [event, setEvent] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
   const [ticketQuantity, setTicketQuantity] = useState(1);
   const [buyerName, setBuyerName] = useState('');
   const [buyerEmail, setBuyerEmail] = useState('');
   const [buyerPhone, setBuyerPhone] = useState('');
+
+  // Load event from database (by slug or ID)
+  useEffect(() => {
+    const loadEvent = async () => {
+      if (!id) return;
+      
+      setLoading(true);
+      
+      // Try to find by slug first, then by ID
+      let { data, error } = await supabase
+        .from('events')
+        .select('*')
+        .eq('slug', id)
+        .maybeSingle();
+      
+      // If not found by slug, try by ID
+      if (!data) {
+        const result = await supabase
+          .from('events')
+          .select('*')
+          .eq('id', id)
+          .maybeSingle();
+        data = result.data;
+        error = result.error;
+      }
+      
+      if (data) {
+        setEvent(data);
+      } else {
+        // Fallback to mock data
+        const mockEvent = mockEvents.find((e) => e.id === id);
+        setEvent(mockEvent);
+      }
+      
+      setLoading(false);
+    };
+    
+    loadEvent();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
 
   if (!event) {
     return (
@@ -58,11 +107,12 @@ const EventDetails = () => {
   };
 
   const getTotalPrice = () => {
-    if (event.price === 'Gratis') return 'Gratis';
+    const price = event.price_range || event.price || 'Gratis';
+    if (price === 'Gratis') return 'Gratis';
     
     // Handle price ranges (e.g., "$50.000 - $80.000")
-    const priceMatch = event.price.match(/\$?([\d.,]+)/);
-    if (!priceMatch) return event.price;
+    const priceMatch = price.match(/\$?([\d.,]+)/);
+    if (!priceMatch) return price;
     
     const priceNumber = parseInt(priceMatch[1].replace(/[.,]/g, ''));
     const total = priceNumber * ticketQuantity;
@@ -83,9 +133,10 @@ const EventDetails = () => {
     }
 
     // Aquí iría la lógica de compra real
+    const eventName = event.title || event.name;
     toast({
       title: "¡Compra exitosa!",
-      description: `Has adquirido ${ticketQuantity} boleta(s) para ${event.name}. Te enviaremos los detalles a ${buyerEmail}`,
+      description: `Has adquirido ${ticketQuantity} boleta(s) para ${eventName}. Te enviaremos los detalles a ${buyerEmail}`,
     });
 
     // Reset form
@@ -124,26 +175,40 @@ const EventDetails = () => {
           <CardContent className="p-0">
             {/* Image Carousel */}
             <div className="relative">
-              <Carousel className="w-full">
-                <CarouselContent>
-                  {event.images.map((image, index) => (
-                    <CarouselItem key={index}>
-                      <div className="relative h-[400px]">
-                        <img
-                          src={image}
-                          alt={`${event.name} - Imagen ${index + 1}`}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-                <CarouselPrevious className="left-4" />
-                <CarouselNext className="right-4" />
-              </Carousel>
+              {event.images && event.images.length > 0 ? (
+                <Carousel className="w-full">
+                  <CarouselContent>
+                    {event.images.map((image, index) => (
+                      <CarouselItem key={index}>
+                        <div className="relative h-[400px]">
+                          <img
+                            src={image}
+                            alt={`${event.title || event.name} - Imagen ${index + 1}`}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                  <CarouselPrevious className="left-4" />
+                  <CarouselNext className="right-4" />
+                </Carousel>
+              ) : event.image_url ? (
+                <div className="relative h-[400px]">
+                  <img
+                    src={event.image_url}
+                    alt={event.title || event.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              ) : (
+                <div className="relative h-[400px] bg-muted flex items-center justify-center">
+                  <p className="text-muted-foreground">No hay imágenes disponibles</p>
+                </div>
+              )}
               
-              <Badge className={`absolute top-4 right-4 ${getEventTypeColor(event.type)}`}>
-                {event.type}
+              <Badge className={`absolute top-4 right-4 ${getEventTypeColor(event.category || event.type)}`}>
+                {event.category || event.type}
               </Badge>
             </div>
 
@@ -151,8 +216,8 @@ const EventDetails = () => {
             <div className="p-4 sm:p-6">
               {/* Title and Description - Full width on mobile */}
               <div className="mb-4">
-                <h1 className="text-2xl sm:text-3xl font-bold mb-2">{event.name}</h1>
-                <p className="text-base sm:text-lg text-muted-foreground mb-4">{event.venue}</p>
+                <h1 className="text-2xl sm:text-3xl font-bold mb-2">{event.title || event.name}</h1>
+                <p className="text-base sm:text-lg text-muted-foreground mb-4">{event.location || event.venue}</p>
                 {event.description && (
                   <p className="text-sm sm:text-base text-muted-foreground mb-4">{event.description}</p>
                 )}
@@ -178,7 +243,7 @@ const EventDetails = () => {
                       <DialogHeader>
                         <DialogTitle>Comprar Boletas</DialogTitle>
                         <DialogDescription>
-                          {event.name}
+                          {event.title || event.name}
                         </DialogDescription>
                       </DialogHeader>
                       <form onSubmit={handlePurchase} className="space-y-4">
@@ -276,7 +341,7 @@ const EventDetails = () => {
                   onClick={() => {
                     if (navigator.share) {
                       navigator.share({
-                        title: event.name,
+                        title: event.title || event.name,
                         text: event.description,
                         url: window.location.href,
                       });
@@ -353,7 +418,7 @@ const EventDetails = () => {
                       <DirectionsPanel 
                         destinationLat={event.latitude}
                         destinationLng={event.longitude}
-                        destinationName={event.name}
+                        destinationName={event.title || event.name}
                       />
                     </div>
                   </div>
