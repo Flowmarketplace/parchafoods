@@ -9,9 +9,13 @@ import {
   BarChart3,
   Palette,
   Shield,
-  Package
+  Package,
+  Home,
+  ArrowLeft
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
 
 interface AdminSidebarWrapperProps {
   className?: string;
@@ -44,6 +48,16 @@ const AdminSidebar = ({ className }: AdminSidebarWrapperProps = {}) => {
             <p className="text-xs text-muted-foreground">Panel de Control</p>
           </div>
         </div>
+
+        {/* Back to App Button */}
+        <NavLink to="/" className="block mb-4">
+          <Button variant="outline" className="w-full justify-start" size="sm">
+            <Home className="h-4 w-4 mr-2" />
+            Volver a la App
+          </Button>
+        </NavLink>
+
+        <Separator className="mb-4" />
 
         <nav className="space-y-1">
           {menuItems.map((item) => {
