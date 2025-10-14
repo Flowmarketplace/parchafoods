@@ -41,6 +41,8 @@ import AdminAnalytics from "./pages/admin/AdminAnalytics";
 import AdminNotifications from "./pages/admin/AdminNotifications";
 import AdminCustomization from "./pages/admin/AdminCustomization";
 import AdminSettings from "./pages/admin/AdminSettings";
+import AdminEvents from "./pages/admin/AdminEvents";
+import AdminCategories from "./pages/admin/AdminCategories";
 
 function App() {
   return (
@@ -82,6 +84,8 @@ function App() {
              <Route path="/admin/packages" element={<AdminPackages />} />
              <Route path="/admin/subscriptions" element={<AdminSubscriptions />} />
              <Route path="/admin/users" element={<AdminUsers />} />
+             <Route path="/admin/events" element={<AdminEvents />} />
+             <Route path="/admin/categories" element={<AdminCategories />} />
              <Route path="/admin/analytics" element={<AdminAnalytics />} />
              <Route path="/admin/notifications" element={<AdminNotifications />} />
              <Route path="/admin/customization" element={<AdminCustomization />} />
