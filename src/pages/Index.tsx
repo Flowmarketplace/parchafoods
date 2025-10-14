@@ -137,10 +137,28 @@ const Index = () => {
       });
     }
     
-    // Búsqueda activa - normalizar el término de búsqueda
+    // Mapeo de términos de búsqueda comunes a categorías
+    const categoryAliases: { [key: string]: string[] } = {
+      'cafe': ['café', 'cafetería', 'coffee'],
+      'gym': ['gimnasio', 'gym', 'fitness'],
+      'gasolinera': ['gasolinera', 'gas', 'estación de servicio'],
+      'restaurante': ['restaurante', 'comida', 'restaurant'],
+      'parque': ['parque', 'park'],
+      'farmacia': ['farmacia', 'droguería', 'pharmacy'],
+      'banco': ['banco', 'bank'],
+      'supermercado': ['supermercado', 'super', 'market'],
+      'hospital': ['hospital', 'clínica', 'clinic'],
+      'hotel': ['hotel', 'hospedaje'],
+      'bar': ['bar', 'pub', 'cantina'],
+      'pizza': ['pizza', 'pizzería'],
+      'panaderia': ['panadería', 'bakery', 'pan'],
+      'peluqueria': ['peluquería', 'barbería', 'salon']
+    };
+    
+    // Normalizar texto (quitar acentos y convertir a minúsculas)
     const normalizeText = (text: string) => {
       return text.toLowerCase()
-        .normalize("NFD").replace(/[\u0300-\u036f]/g, ""); // Remove accents
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     };
     
     const searchLower = normalizeText(searchQuery.trim());
@@ -160,8 +178,19 @@ const Index = () => {
         ...(place.foodType || [])
       ].join(' '));
       
-      // Buscar el término en el texto
-      const searchMatch = searchableText.includes(searchLower);
+      // Buscar coincidencias directas en el texto
+      let searchMatch = searchableText.includes(searchLower);
+      
+      // Si no hay coincidencia directa, buscar por aliases de categoría
+      if (!searchMatch) {
+        for (const [key, aliases] of Object.entries(categoryAliases)) {
+          if (normalizeText(key).includes(searchLower) || aliases.some(alias => normalizeText(alias).includes(searchLower))) {
+            // Si encontramos un alias, verificar si la categoría del lugar coincide
+            searchMatch = aliases.some(alias => searchableText.includes(normalizeText(alias)));
+            if (searchMatch) break;
+          }
+        }
+      }
       
       return searchMatch && categoryMatch && neighborhoodMatch;
     });
