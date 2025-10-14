@@ -137,28 +137,33 @@ const Index = () => {
       });
     }
     
-    // Búsqueda activa - buscar en múltiples campos
-    const searchLower = searchQuery.toLowerCase().trim();
-    const searchTerms = searchLower.split(' ').filter(term => term.length > 0);
+    // Búsqueda activa - normalizar el término de búsqueda
+    const normalizeText = (text: string) => {
+      return text.toLowerCase()
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, ""); // Remove accents
+    };
+    
+    const searchLower = normalizeText(searchQuery.trim());
     
     return allPlaces.filter((place) => {
+      // Cuando hay búsqueda activa, los filtros son opcionales
       const categoryMatch = selectedCategory === 'Todos' || place.category === selectedCategory;
       const neighborhoodMatch = selectedNeighborhood === 'Todos' || place.neighborhood === selectedNeighborhood;
       
-      // Combinar todos los campos buscables en un solo texto
-      const searchableText = [
+      // Combinar todos los campos buscables
+      const searchableText = normalizeText([
         place.name,
         place.category,
         place.address,
         place.neighborhood,
         place.description || '',
         ...(place.foodType || [])
-      ].join(' ').toLowerCase();
+      ].join(' '));
       
-      // El lugar debe coincidir con al menos un término de búsqueda
-      const searchMatch = searchTerms.some(term => searchableText.includes(term));
+      // Buscar el término en el texto
+      const searchMatch = searchableText.includes(searchLower);
       
-      return categoryMatch && neighborhoodMatch && searchMatch;
+      return searchMatch && categoryMatch && neighborhoodMatch;
     });
   }, [selectedCategory, selectedNeighborhood, searchQuery, places]);
 
