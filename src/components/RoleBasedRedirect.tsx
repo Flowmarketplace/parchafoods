@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -6,9 +6,16 @@ const RoleBasedRedirect = ({ children }: { children: React.ReactNode }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [loading, setLoading] = useState(true);
+  const hasChecked = useRef(false);
 
   useEffect(() => {
-    checkUserRole();
+    // Only check once on initial mount
+    if (!hasChecked.current) {
+      checkUserRole();
+      hasChecked.current = true;
+    } else {
+      setLoading(false);
+    }
   }, []);
 
   const checkUserRole = async () => {
