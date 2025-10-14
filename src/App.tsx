@@ -31,6 +31,7 @@ import BusinessSubscription from "./pages/business/BusinessSubscription";
 import BusinessAnalytics from "./pages/business/BusinessAnalytics";
 import BusinessCustomers from "./pages/business/BusinessCustomers";
 import BusinessAIConfig from "./pages/business/BusinessAIConfig";
+import BusinessSettings from "./pages/business/BusinessSettings";
 
 function App() {
   return (
@@ -66,6 +67,7 @@ function App() {
              <Route path="/business-analytics" element={<BusinessAnalytics />} />
              <Route path="/business-customers" element={<BusinessCustomers />} />
              <Route path="/business-ai-config" element={<BusinessAIConfig />} />
+             <Route path="/business-settings" element={<BusinessSettings />} />
          <Route path="*" element={<NotFound />} />
         </Routes>
       </RoleBasedRedirect>

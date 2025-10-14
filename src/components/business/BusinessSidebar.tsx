@@ -34,9 +34,9 @@ const BusinessSidebar = ({ isOpen, onClose }: BusinessSidebarProps) => {
     { icon: Brain, label: 'Configuración IA', path: '/business-ai-config' },
     { icon: Bell, label: 'Campañas Push', path: '/business-notifications' },
     { icon: MapPin, label: 'Proximidad GPS', path: '/business-proximity' },
-    { icon: BarChart3, label: 'Analíticas', path: '#', disabled: true },
-    { icon: Users, label: 'Clientes', path: '#', disabled: true },
-    { icon: Settings, label: 'Configuración', path: '#', disabled: true },
+    { icon: BarChart3, label: 'Analíticas', path: '/business-analytics' },
+    { icon: Users, label: 'Clientes', path: '/business-customers' },
+    { icon: Settings, label: 'Configuración', path: '/business-settings' },
   ];
 
   return (
@@ -76,23 +76,13 @@ const BusinessSidebar = ({ isOpen, onClose }: BusinessSidebarProps) => {
                       "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
                       isActive
                         ? "bg-primary text-primary-foreground"
-                        : "text-muted-foreground hover:bg-muted hover:text-foreground",
-                      item.disabled && "opacity-50 cursor-not-allowed"
+                        : "text-muted-foreground hover:bg-muted hover:text-foreground"
                     )
                   }
-                  onClick={(e) => {
-                    if (item.disabled) {
-                      e.preventDefault();
-                    } else {
-                      onClose();
-                    }
-                  }}
+                  onClick={() => onClose()}
                 >
                   <Icon className="h-5 w-5" />
                   <span>{item.label}</span>
-                  {item.disabled && (
-                    <span className="ml-auto text-xs">Próximamente</span>
-                  )}
                 </NavLink>
               );
             })}
