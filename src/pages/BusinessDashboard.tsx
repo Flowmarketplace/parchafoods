@@ -18,7 +18,8 @@ import {
   Bell,
   MapPin,
   CreditCard,
-  Users
+  Users,
+  Brain
 } from 'lucide-react';
 
 interface Business {
@@ -495,6 +496,28 @@ const BusinessDashboard = () => {
             <CardContent className="relative">
               <Button className="w-full bg-teal-600 hover:bg-teal-700 shadow-lg group-hover:shadow-xl transition-shadow">
                 Configurar Lealtad
+              </Button>
+            </CardContent>
+          </Card>
+
+          {/* AI Configuration Card */}
+          <Card 
+            className="group hover-scale hover:shadow-2xl transition-all duration-300 cursor-pointer bg-gradient-to-br from-purple-50 to-fuchsia-50 dark:from-purple-950/30 dark:to-fuchsia-950/30 border-2 border-purple-500/20 hover:border-purple-500/50 overflow-hidden relative"
+            onClick={() => navigate('/business-ai-config')}
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/0 to-fuchsia-500/0 group-hover:from-purple-500/10 group-hover:to-fuchsia-500/10 transition-all duration-300" />
+            <CardHeader className="relative">
+              <div className="p-3 rounded-xl bg-purple-500/10 w-fit mb-2 group-hover:scale-110 transition-transform duration-300">
+                <Brain className="h-6 w-6 text-purple-600" />
+              </div>
+              <CardTitle className="text-xl">Entrenamiento de IA</CardTitle>
+              <CardDescription className="text-base">
+                Configura y entrena tu asistente virtual personalizado
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="relative">
+              <Button className="w-full bg-purple-600 hover:bg-purple-700 shadow-lg group-hover:shadow-xl transition-shadow">
+                Configurar IA
               </Button>
             </CardContent>
           </Card>
