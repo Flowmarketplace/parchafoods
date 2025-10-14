@@ -59,7 +59,7 @@ const Navbar = ({ onMenuClick, searchQuery, onSearchChange, selectedNeighborhood
                 <MapPin className="h-4 w-4 sm:h-6 sm:w-6 text-white" />
               </div>
               <h1 className="text-lg sm:text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                Guía Cali
+                Handcity
               </h1>
             </div>
           </div>
