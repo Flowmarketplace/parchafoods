@@ -127,19 +127,36 @@ const Index = () => {
   // Filter places based on all criteria (for the filtered view)
   const filteredPlaces = useMemo(() => {
     const allPlaces = places.length > 0 ? places : mockPlaces;
+    
+    // Si no hay búsqueda activa, aplicar solo filtros de categoría y barrio
+    if (!searchQuery || searchQuery.trim() === '') {
+      return allPlaces.filter((place) => {
+        const categoryMatch = selectedCategory === 'Todos' || place.category === selectedCategory;
+        const neighborhoodMatch = selectedNeighborhood === 'Todos' || place.neighborhood === selectedNeighborhood;
+        return categoryMatch && neighborhoodMatch;
+      });
+    }
+    
+    // Búsqueda activa - buscar en múltiples campos
+    const searchLower = searchQuery.toLowerCase().trim();
+    const searchTerms = searchLower.split(' ').filter(term => term.length > 0);
+    
     return allPlaces.filter((place) => {
       const categoryMatch = selectedCategory === 'Todos' || place.category === selectedCategory;
       const neighborhoodMatch = selectedNeighborhood === 'Todos' || place.neighborhood === selectedNeighborhood;
       
-      // Enhanced search: search in name, category, address, neighborhood, and foodType
-      const searchLower = searchQuery.toLowerCase();
-      const searchMatch = searchQuery === '' || 
-        place.name.toLowerCase().includes(searchLower) ||
-        place.category.toLowerCase().includes(searchLower) ||
-        place.address.toLowerCase().includes(searchLower) ||
-        place.neighborhood.toLowerCase().includes(searchLower) ||
-        (place.foodType && place.foodType.some(type => type.toLowerCase().includes(searchLower))) ||
-        (place.description && place.description.toLowerCase().includes(searchLower));
+      // Combinar todos los campos buscables en un solo texto
+      const searchableText = [
+        place.name,
+        place.category,
+        place.address,
+        place.neighborhood,
+        place.description || '',
+        ...(place.foodType || [])
+      ].join(' ').toLowerCase();
+      
+      // El lugar debe coincidir con al menos un término de búsqueda
+      const searchMatch = searchTerms.some(term => searchableText.includes(term));
       
       return categoryMatch && neighborhoodMatch && searchMatch;
     });
@@ -371,19 +388,28 @@ const Index = () => {
                 </div>
               ) : (
                 <>
-                  {selectedCategory !== 'Todos' && (
+                  {(selectedCategory !== 'Todos' || searchQuery) && (
                     <div className="mb-4 sm:mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between bg-card border rounded-lg p-3 sm:p-4 gap-3 animate-fade-in">
-                      <p className="text-sm sm:text-base text-muted-foreground font-normal">
-                        {filteredPlaces.length} {filteredPlaces.length === 1 ? 'lugar encontrado' : 'lugares encontrados'}
-                      </p>
-                      <Button
-                        size="sm"
-                        onClick={() => navigate(`/listings?category=${selectedCategory}`)}
-                        className="gap-1.5 sm:gap-2 w-full sm:w-auto text-xs sm:text-sm"
-                      >
-                        Ver todas con filtros
-                        <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5" />
-                      </Button>
+                      <div>
+                        <p className="text-sm sm:text-base text-muted-foreground font-normal">
+                          {filteredPlaces.length} {filteredPlaces.length === 1 ? 'lugar encontrado' : 'lugares encontrados'}
+                        </p>
+                        {searchQuery && (
+                          <p className="text-xs text-muted-foreground mt-1">
+                            Búsqueda: "{searchQuery}"
+                          </p>
+                        )}
+                      </div>
+                      {selectedCategory !== 'Todos' && (
+                        <Button
+                          size="sm"
+                          onClick={() => navigate(`/listings?category=${selectedCategory}`)}
+                          className="gap-1.5 sm:gap-2 w-full sm:w-auto text-xs sm:text-sm"
+                        >
+                          Ver todas con filtros
+                          <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5" />
+                        </Button>
+                      )}
                     </div>
                   )}
                   <div className="animate-fade-in">
