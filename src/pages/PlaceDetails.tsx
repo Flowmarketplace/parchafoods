@@ -698,16 +698,34 @@ const PlaceDetails = () => {
                               <h3 className="text-2xl font-bold mb-2">{promotion.title}</h3>
                               <p className="text-muted-foreground mb-4">{promotion.description}</p>
                               {promotion.conditions && (
-                                <div className="bg-muted p-4 rounded-lg">
+                                <div className="bg-muted p-4 rounded-lg mb-4">
                                   <p className="text-sm font-medium mb-1">Términos y condiciones:</p>
                                   <p className="text-sm text-muted-foreground">{promotion.conditions}</p>
                                 </div>
                               )}
-                              {promotion.first_time_only && (
-                                <Badge variant="outline" className="mt-4">
-                                  Solo primera visita
-                                </Badge>
-                              )}
+                              <div className="flex items-center gap-2 flex-wrap">
+                                {promotion.first_time_only && (
+                                  <Badge variant="outline">
+                                    Solo primera visita
+                                  </Badge>
+                                )}
+                                {user ? (
+                                  <Button
+                                    onClick={() => setShowQRScanner(true)}
+                                    className="gap-2 flex-1 sm:flex-initial"
+                                  >
+                                    <QrCode className="h-4 w-4" />
+                                    Reclamar Promoción
+                                  </Button>
+                                ) : (
+                                  <Button
+                                    onClick={() => navigate('/auth')}
+                                    className="gap-2 flex-1 sm:flex-initial"
+                                  >
+                                    Registrarse para Reclamar
+                                  </Button>
+                                )}
+                              </div>
                             </div>
                           </CardContent>
                         </Card>
