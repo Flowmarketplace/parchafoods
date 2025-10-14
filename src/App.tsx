@@ -32,6 +32,9 @@ import BusinessAnalytics from "./pages/business/BusinessAnalytics";
 import BusinessCustomers from "./pages/business/BusinessCustomers";
 import BusinessAIConfig from "./pages/business/BusinessAIConfig";
 import BusinessSettings from "./pages/business/BusinessSettings";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminBusinesses from "./pages/admin/AdminBusinesses";
+import AdminPackages from "./pages/admin/AdminPackages";
 
 function App() {
   return (
@@ -68,6 +71,9 @@ function App() {
              <Route path="/business-customers" element={<BusinessCustomers />} />
              <Route path="/business-ai-config" element={<BusinessAIConfig />} />
              <Route path="/business-settings" element={<BusinessSettings />} />
+             <Route path="/admin" element={<AdminDashboard />} />
+             <Route path="/admin/businesses" element={<AdminBusinesses />} />
+             <Route path="/admin/packages" element={<AdminPackages />} />
          <Route path="*" element={<NotFound />} />
         </Routes>
       </RoleBasedRedirect>
