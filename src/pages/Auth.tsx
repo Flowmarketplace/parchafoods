@@ -10,7 +10,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { useToast } from '@/hooks/use-toast';
 import { z } from 'zod';
 import { User, Session } from '@supabase/supabase-js';
-import { Store, UserCircle, ArrowLeft } from 'lucide-react';
+import { Store, UserCircle, ArrowLeft, ShieldCheck } from 'lucide-react';
 
 const emailSchema = z.string().trim().email({ message: "Email inválido" });
 const passwordSchema = z.string().min(6, { message: "La contraseña debe tener al menos 6 caracteres" });
@@ -26,7 +26,7 @@ const Auth = () => {
   // Login form
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
-  const [loginAccountType, setLoginAccountType] = useState<'customer' | 'business_owner'>('customer');
+  const [loginAccountType, setLoginAccountType] = useState<'customer' | 'business_owner' | 'admin'>('customer');
 
   // Signup form
   const [signupEmail, setSignupEmail] = useState('');
@@ -119,11 +119,17 @@ const Auth = () => {
         if (!hasSelectedRole) {
           // Si no tiene el rol seleccionado, cerrar sesión
           await supabase.auth.signOut();
+          let errorMessage = "Esta cuenta no tiene los permisos correspondientes.";
+          if (loginAccountType === 'business_owner') {
+            errorMessage = "Esta cuenta no es de dueño de negocio. Por favor selecciona 'Cliente' o 'Admin'.";
+          } else if (loginAccountType === 'admin') {
+            errorMessage = "Esta cuenta no tiene permisos de administrador.";
+          } else {
+            errorMessage = "Esta cuenta no es de cliente. Por favor selecciona 'Dueño de Negocio' o 'Admin'.";
+          }
           toast({
             title: "Error",
-            description: loginAccountType === 'business_owner' 
-              ? "Esta cuenta no es de dueño de negocio. Por favor selecciona 'Cliente'."
-              : "Esta cuenta no es de cliente. Por favor selecciona 'Dueño de Negocio'.",
+            description: errorMessage,
             variant: "destructive",
           });
         } else {
@@ -271,10 +277,12 @@ const Auth = () => {
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="login" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="login">Iniciar Sesión</TabsTrigger>
-              <TabsTrigger value="signup">Registrarse</TabsTrigger>
-            </TabsList>
+            {loginAccountType !== 'admin' && (
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="login">Iniciar Sesión</TabsTrigger>
+                <TabsTrigger value="signup">Registrarse</TabsTrigger>
+              </TabsList>
+            )}
 
             <TabsContent value="login">
               {!showResetPassword ? (
@@ -283,8 +291,8 @@ const Auth = () => {
                     <Label>Iniciar sesión como</Label>
                     <RadioGroup
                       value={loginAccountType}
-                      onValueChange={(value) => setLoginAccountType(value as 'customer' | 'business_owner')}
-                      className="grid grid-cols-2 gap-4"
+                      onValueChange={(value) => setLoginAccountType(value as 'customer' | 'business_owner' | 'admin')}
+                      className="grid grid-cols-3 gap-3"
                     >
                       <div>
                         <RadioGroupItem
@@ -294,10 +302,10 @@ const Auth = () => {
                         />
                         <Label
                           htmlFor="login-customer"
-                          className="flex flex-col items-center justify-between rounded-lg border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer"
+                          className="flex flex-col items-center justify-between rounded-lg border-2 border-muted bg-popover p-3 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer"
                         >
-                          <UserCircle className="mb-2 h-6 w-6" />
-                          <span className="text-sm font-medium">Cliente</span>
+                          <UserCircle className="mb-2 h-5 w-5" />
+                          <span className="text-xs font-medium text-center">Cliente</span>
                         </Label>
                       </div>
                       <div>
@@ -308,10 +316,24 @@ const Auth = () => {
                         />
                         <Label
                           htmlFor="login-business"
-                          className="flex flex-col items-center justify-center rounded-lg border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer"
+                          className="flex flex-col items-center justify-center rounded-lg border-2 border-muted bg-popover p-3 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer"
                         >
-                          <Store className="mb-2 h-6 w-6" />
-                          <span className="text-sm font-medium text-center">Dueño de Negocio</span>
+                          <Store className="mb-2 h-5 w-5" />
+                          <span className="text-xs font-medium text-center">Negocio</span>
+                        </Label>
+                      </div>
+                      <div>
+                        <RadioGroupItem
+                          value="admin"
+                          id="login-admin"
+                          className="peer sr-only"
+                        />
+                        <Label
+                          htmlFor="login-admin"
+                          className="flex flex-col items-center justify-center rounded-lg border-2 border-muted bg-popover p-3 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer"
+                        >
+                          <ShieldCheck className="mb-2 h-5 w-5" />
+                          <span className="text-xs font-medium text-center">Admin</span>
                         </Label>
                       </div>
                     </RadioGroup>
@@ -378,7 +400,8 @@ const Auth = () => {
               )}
             </TabsContent>
 
-            <TabsContent value="signup">
+            {loginAccountType !== 'admin' && (
+              <TabsContent value="signup">
               <form onSubmit={handleSignup} className="space-y-4">
                 <div className="space-y-3">
                   <Label>Tipo de Cuenta</Label>
@@ -465,7 +488,8 @@ const Auth = () => {
                   {loading ? 'Creando cuenta...' : 'Crear Cuenta'}
                 </Button>
               </form>
-            </TabsContent>
+              </TabsContent>
+            )}
           </Tabs>
         </CardContent>
       </Card>
