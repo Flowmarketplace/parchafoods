@@ -406,6 +406,69 @@ export type Database = {
         }
         Relationships: []
       }
+      events: {
+        Row: {
+          address: string | null
+          category: string
+          created_at: string
+          description: string | null
+          end_date: string | null
+          featured: boolean | null
+          id: string
+          image_url: string | null
+          latitude: number | null
+          location: string
+          longitude: number | null
+          organizer: string | null
+          price_range: string | null
+          slug: string | null
+          start_date: string
+          ticket_url: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          address?: string | null
+          category: string
+          created_at?: string
+          description?: string | null
+          end_date?: string | null
+          featured?: boolean | null
+          id?: string
+          image_url?: string | null
+          latitude?: number | null
+          location: string
+          longitude?: number | null
+          organizer?: string | null
+          price_range?: string | null
+          slug?: string | null
+          start_date: string
+          ticket_url?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          address?: string | null
+          category?: string
+          created_at?: string
+          description?: string | null
+          end_date?: string | null
+          featured?: boolean | null
+          id?: string
+          image_url?: string | null
+          latitude?: number | null
+          location?: string
+          longitude?: number | null
+          organizer?: string | null
+          price_range?: string | null
+          slug?: string | null
+          start_date?: string
+          ticket_url?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       loyalty_history: {
         Row: {
           business_id: string | null

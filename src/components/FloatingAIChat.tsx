@@ -155,8 +155,8 @@ const FloatingAIChat = ({ isHidden }: { isHidden?: boolean }) => {
       <div className="text-sm whitespace-pre-wrap break-words">
         {lines.map((line, lineIndex) => {
           const parts: (string | JSX.Element)[] = [];
-          // Match markdown links: [text](/place/slug) or [text](/event/id)
-          const linkRegex = /\[([^\]]+)\]\((\/place\/[a-z0-9-]+|\/event\/\d+)\)/g;
+          // Match markdown links: [text](/place/slug), [text](/event/slug), or [text](/event/id)
+          const linkRegex = /\[([^\]]+)\]\((\/(?:place|event)\/[a-z0-9-]+)\)/g;
           let lastIndex = 0;
           let match;
 

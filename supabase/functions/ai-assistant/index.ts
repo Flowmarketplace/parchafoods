@@ -25,7 +25,7 @@ serve(async (req) => {
 
     console.log("Processing AI request with", messages.length, "messages");
 
-    // Define tools for AI to search businesses and get details
+    // Define tools for AI to search businesses, events and get details
     const tools = [
       {
         type: "function",
@@ -42,6 +42,27 @@ serve(async (req) => {
               neighborhood: {
                 type: "string",
                 description: "Barrio específico donde buscar (opcional)"
+              }
+            },
+            required: ["query"]
+          }
+        }
+      },
+      {
+        type: "function",
+        function: {
+          name: "search_events",
+          description: "Busca eventos en Cali por categoría, nombre o tipo. Útil cuando el usuario pregunta por eventos, conciertos, festivales, actividades culturales, deportes, etc.",
+          parameters: {
+            type: "object",
+            properties: {
+              query: {
+                type: "string",
+                description: "Término de búsqueda general (nombre del evento, tipo, categoría). Ejemplo: 'concierto', 'festival', 'teatro', 'deportes'"
+              },
+              category: {
+                type: "string",
+                description: "Categoría específica del evento (opcional). Ejemplo: 'Música', 'Teatro', 'Deportes', 'Festival'"
               }
             },
             required: ["query"]
@@ -81,28 +102,37 @@ serve(async (req) => {
             role: "system",
             content: `Eres HandCity AI, un asistente virtual experto en Cali, Colombia. 
 
-IMPORTANTE: SIEMPRE usa la herramienta search_businesses cuando el usuario pregunta por lugares, comida, o negocios.
+IMPORTANTE: SIEMPRE usa las herramientas search_businesses o search_events cuando el usuario pregunta por lugares, comida, negocios o eventos.
 
 INSTRUCCIONES CRÍTICAS PARA LINKS:
 - NUNCA uses "Ver más:" seguido de una URL
-- SIEMPRE usa el formato de markdown: [Nombre del Lugar](/place/slug-aqui)
-- El "slug" es el identificador legible en la URL (ej: "juan-valdez-cafe", "carbon-de-lena")
+- SIEMPRE usa el formato de markdown: [Nombre del Lugar](/place/slug-aqui) o [Nombre del Evento](/event/slug-aqui)
+- El "slug" es el identificador legible en la URL (ej: "juan-valdez-cafe", "feria-de-cali-2025")
 - NUNCA uses el campo "id", SOLO usa el campo "slug"
 
 EJEMPLO INCORRECTO:
 Ver más: /place/abc-123-456
+Ver más: /event/abc-123-456
 
 EJEMPLO CORRECTO:
 [Juan Valdez Café](/place/juan-valdez-cafe)
+[Feria de Cali 2025](/event/feria-de-cali-2025)
 
-FORMATO DE RESPUESTAS:
+FORMATO DE RESPUESTAS PARA NEGOCIOS:
 Cuando encuentres negocios, muéstralos así:
 
 🍴 **[Nombre del Negocio](/place/slug-del-negocio)**
 Descripción breve
 📍 Barrio • 💰 Rango de precio
 
-EJEMPLO COMPLETO:
+FORMATO DE RESPUESTAS PARA EVENTOS:
+Cuando encuentres eventos, muéstralos así:
+
+🎉 **[Nombre del Evento](/event/slug-del-evento)**
+Descripción breve
+📍 Ubicación • 📅 Fecha • 💰 Precio
+
+EJEMPLO COMPLETO DE NEGOCIOS:
 "Encontré estos lugares para café en Granada:
 
 ☕ **[Juan Valdez Café](/place/juan-valdez-cafe)**
@@ -115,14 +145,28 @@ Café specialty y brunch
 
 ¿Te gustaría más información de alguno?"
 
+EJEMPLO COMPLETO DE EVENTOS:
+"Encontré estos eventos de música:
+
+🎵 **[Concierto Salsa al Parque](/event/concierto-salsa-parque)**
+Concierto gratuito de orquestas de salsa
+📍 Parque de la Música • 📅 Nov 15 • 💰 Gratis
+
+🎵 **[Festival Petronio Álvarez](/event/festival-petronio-alvarez)**
+Festival de música del Pacífico colombiano
+📍 Unidad Deportiva • 📅 Ago 15-19 • 💰 $
+
+¿Te interesa alguno en particular?"
+
 REGLAS:
-- USA el campo "slug" de cada negocio para crear el link
-- El link DEBE estar en formato markdown: [texto](/place/slug)
+- USA el campo "slug" de cada negocio o evento para crear el link
+- El link DEBE estar en formato markdown: [texto](/place/slug) o [texto](/event/slug)
 - NUNCA escribas "Ver más:" o URLs sueltas
-- Cuando el usuario mencione "asado", "pizza", "café", etc., SIEMPRE usa search_businesses con ese término en "search"
-- USA EL SLUG que recibes de la herramienta en el formato: /place/[slug]
+- Cuando el usuario mencione "asado", "pizza", "café", etc., SIEMPRE usa search_businesses
+- Cuando el usuario mencione "concierto", "evento", "festival", etc., SIEMPRE usa search_events
+- USA EL SLUG que recibes de la herramienta en el formato: /place/[slug] o /event/[slug]
 - NUNCA inventes slugs, usa exactamente el que viene en los datos
-- Si no encuentras resultados, sugiere buscar en otros barrios`
+- Si no encuentras resultados, sugiere buscar en otros barrios o categorías`
           },
           ...messages,
         ],
@@ -213,10 +257,10 @@ REGLAS:
           if (args.category) {
             orConditions.push(`category.ilike.%${args.category}%`);
           }
-          if (args.search) {
-            orConditions.push(`name.ilike.%${args.search}%`);
-            orConditions.push(`description.ilike.%${args.search}%`);
-            orConditions.push(`category.ilike.%${args.search}%`);
+          if (args.query) {
+            orConditions.push(`name.ilike.%${args.query}%`);
+            orConditions.push(`description.ilike.%${args.query}%`);
+            orConditions.push(`category.ilike.%${args.query}%`);
           }
           
           if (args.neighborhood) {
@@ -230,13 +274,44 @@ REGLAS:
           
           const { data, error } = await query.limit(10);
           
-          console.log(`Search for ${JSON.stringify(args)} found:`, data);
+          console.log(`Search businesses for ${JSON.stringify(args)} found:`, data);
           
           toolResults.push({
             tool_call_id: toolCall.id,
             role: "tool",
             name: functionName,
             content: JSON.stringify(error ? { error: error.message } : { businesses: data || [] })
+          });
+        } else if (functionName === "search_events") {
+          let query = supabase.from('events').select('id, slug, title, category, location, description, start_date, end_date, price_range, image_url');
+          
+          // Build flexible search
+          const orConditions = [];
+          
+          if (args.query) {
+            orConditions.push(`title.ilike.%${args.query}%`);
+            orConditions.push(`description.ilike.%${args.query}%`);
+            orConditions.push(`category.ilike.%${args.query}%`);
+          }
+          
+          if (args.category) {
+            query = query.ilike('category', `%${args.category}%`);
+          }
+          
+          // Apply OR conditions for flexible search
+          if (orConditions.length > 0) {
+            query = query.or(orConditions.join(','));
+          }
+          
+          const { data, error } = await query.limit(10);
+          
+          console.log(`Search events for ${JSON.stringify(args)} found:`, data);
+          
+          toolResults.push({
+            tool_call_id: toolCall.id,
+            role: "tool",
+            name: functionName,
+            content: JSON.stringify(error ? { error: error.message } : { events: data || [] })
           });
         } else if (functionName === "get_business_details") {
           const { data: business, error: bizError } = await supabase
@@ -289,17 +364,23 @@ REGLAS:
 
 INSTRUCCIONES CRÍTICAS PARA LINKS:
 - NUNCA uses "Ver más:" seguido de una URL
-- SIEMPRE usa el formato de markdown: [Nombre del Lugar](/place/slug-aqui)
+- SIEMPRE usa el formato de markdown: [Nombre del Lugar](/place/slug-aqui) o [Nombre del Evento](/event/slug-aqui)
 - El "slug" es el identificador legible en la URL
 - NUNCA uses el campo "id", SOLO usa el campo "slug"
 
-EJEMPLO CORRECTO:
+EJEMPLO CORRECTO NEGOCIOS:
 ☕ **[Juan Valdez Café](/place/juan-valdez-cafe)**
 Café colombiano premium
 📍 Granada • 💰 $$
 
+EJEMPLO CORRECTO EVENTOS:
+🎉 **[Feria de Cali 2025](/event/feria-de-cali-2025)**
+Festival cultural y musical
+📍 Cali Centro • 📅 Dic 25-30 • 💰 Gratis
+
 NUNCA hagas esto:
 Ver más: /place/abc-123
+Ver más: /event/abc-123
 
 Sé conciso, amigable y útil.`
           },
@@ -333,17 +414,23 @@ Sé conciso, amigable y útil.`
 
 INSTRUCCIONES CRÍTICAS PARA LINKS:
 - NUNCA uses "Ver más:" seguido de una URL
-- SIEMPRE usa el formato de markdown: [Nombre del Lugar](/place/slug-aqui)
+- SIEMPRE usa el formato de markdown: [Nombre del Lugar](/place/slug-aqui) o [Nombre del Evento](/event/slug-aqui)
 - El "slug" es el identificador legible en la URL
 - NUNCA uses el campo "id", SOLO usa el campo "slug"
 
-EJEMPLO CORRECTO:
+EJEMPLO CORRECTO NEGOCIOS:
 ☕ **[Juan Valdez Café](/place/juan-valdez-cafe)**
 Café colombiano premium
 📍 Granada • 💰 $$
 
+EJEMPLO CORRECTO EVENTOS:
+🎉 **[Feria de Cali 2025](/event/feria-de-cali-2025)**
+Festival cultural y musical
+📍 Cali Centro • 📅 Dic 25-30 • 💰 Gratis
+
 NUNCA hagas esto:
 Ver más: /place/abc-123
+Ver más: /event/abc-123
 
 Sé conciso, amigable y útil.`
           },
