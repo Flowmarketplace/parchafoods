@@ -48,6 +48,7 @@ export interface Promotion {
 
 export interface Place {
   id: string;
+  slug?: string;
   name: string;
   category: string;
   address: string;
