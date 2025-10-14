@@ -35,6 +35,12 @@ import BusinessSettings from "./pages/business/BusinessSettings";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminBusinesses from "./pages/admin/AdminBusinesses";
 import AdminPackages from "./pages/admin/AdminPackages";
+import AdminSubscriptions from "./pages/admin/AdminSubscriptions";
+import AdminUsers from "./pages/admin/AdminUsers";
+import AdminAnalytics from "./pages/admin/AdminAnalytics";
+import AdminNotifications from "./pages/admin/AdminNotifications";
+import AdminCustomization from "./pages/admin/AdminCustomization";
+import AdminSettings from "./pages/admin/AdminSettings";
 
 function App() {
   return (
@@ -74,6 +80,12 @@ function App() {
              <Route path="/admin" element={<AdminDashboard />} />
              <Route path="/admin/businesses" element={<AdminBusinesses />} />
              <Route path="/admin/packages" element={<AdminPackages />} />
+             <Route path="/admin/subscriptions" element={<AdminSubscriptions />} />
+             <Route path="/admin/users" element={<AdminUsers />} />
+             <Route path="/admin/analytics" element={<AdminAnalytics />} />
+             <Route path="/admin/notifications" element={<AdminNotifications />} />
+             <Route path="/admin/customization" element={<AdminCustomization />} />
+             <Route path="/admin/settings" element={<AdminSettings />} />
          <Route path="*" element={<NotFound />} />
         </Routes>
       </RoleBasedRedirect>

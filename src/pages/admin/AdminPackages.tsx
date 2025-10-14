@@ -95,8 +95,8 @@ const AdminPackages = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <AdminSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+    <div className="flex min-h-screen w-full">
+      <AdminSidebar />
 
       <div className="lg:pl-64">
         <header className="sticky top-0 z-30 bg-card border-b border-border px-4 py-3">
