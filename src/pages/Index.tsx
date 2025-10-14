@@ -20,6 +20,7 @@ import ShortsCarousel from '@/components/ShortsCarousel';
 import PlaceChat from '@/components/PlaceChat';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
+import { supabase } from '@/integrations/supabase/client';
 import {
   Command,
   CommandEmpty,
@@ -43,7 +44,46 @@ const Index = () => {
   const [isSearching, setIsSearching] = useState(false);
   const [neighborhoodOpen, setNeighborhoodOpen] = useState(false);
   const [isTourActive, setIsTourActive] = useState(false);
+  const [places, setPlaces] = useState<any[]>([]);
+  const [loadingPlaces, setLoadingPlaces] = useState(true);
   const navigate = useNavigate();
+
+  // Load businesses from database
+  useEffect(() => {
+    const loadBusinesses = async () => {
+      setLoadingPlaces(true);
+      const { data, error } = await supabase
+        .from('businesses')
+        .select('*')
+        .order('featured', { ascending: false })
+        .order('name');
+      
+      if (data) {
+        // Transform database format to Place format
+        const transformedPlaces = data.map(business => ({
+          id: business.id,
+          slug: business.slug,
+          name: business.name,
+          category: business.category,
+          address: business.address,
+          neighborhood: business.neighborhood,
+          zone: business.zone,
+          phone: business.phone,
+          description: business.description,
+          images: [business.loyalty_reward_image || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80'],
+          latitude: Number(business.latitude) || 0,
+          longitude: Number(business.longitude) || 0,
+          priceRange: business.price_range,
+          featured: business.featured,
+          rating: 4.5, // Default rating
+        }));
+        setPlaces(transformedPlaces);
+      }
+      setLoadingPlaces(false);
+    };
+    
+    loadBusinesses();
+  }, []);
 
   // Handle search with loading state
   useEffect(() => {
@@ -62,11 +102,12 @@ const Index = () => {
 
   // Get featured/top rated places
   const featuredPlaces = useMemo(() => {
-    return mockPlaces
+    const allPlaces = places.length > 0 ? places : mockPlaces;
+    return allPlaces
       .filter(place => place.featured || (place.rating && place.rating >= 4.5))
       .sort((a, b) => (b.rating || 0) - (a.rating || 0))
       .slice(0, 6);
-  }, []);
+  }, [places]);
 
   // Get featured events
   const featuredEvents = useMemo(() => {
@@ -85,7 +126,8 @@ const Index = () => {
 
   // Filter places based on all criteria (for the filtered view)
   const filteredPlaces = useMemo(() => {
-    return mockPlaces.filter((place) => {
+    const allPlaces = places.length > 0 ? places : mockPlaces;
+    return allPlaces.filter((place) => {
       const categoryMatch = selectedCategory === 'Todos' || place.category === selectedCategory;
       const neighborhoodMatch = selectedNeighborhood === 'Todos' || place.neighborhood === selectedNeighborhood;
       
@@ -101,7 +143,7 @@ const Index = () => {
       
       return categoryMatch && neighborhoodMatch && searchMatch;
     });
-  }, [selectedCategory, selectedNeighborhood, searchQuery]);
+  }, [selectedCategory, selectedNeighborhood, searchQuery, places]);
 
   const showFilters = selectedCategory !== 'Todos' || searchQuery !== '' || selectedNeighborhood !== 'Todos';
 
