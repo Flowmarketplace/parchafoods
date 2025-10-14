@@ -42,7 +42,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
             <div className="bg-gradient-to-br from-primary to-secondary p-2 rounded-lg">
               <MapPin className="h-5 w-5 text-white" />
             </div>
-            <span className="font-bold text-lg">Guía Cali</span>
+            <span className="font-bold text-lg">HandCity</span>
           </div>
           <Button
             variant="ghost"
