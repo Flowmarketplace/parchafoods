@@ -90,9 +90,9 @@ const AdminUsers = () => {
   };
 
   return (
-    <div className="flex min-h-screen w-full">
+    <div className="flex min-h-screen w-full bg-background">
       <AdminSidebar />
-      <div className="flex-1 p-8">
+      <div className="flex-1 lg:ml-64 w-full p-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">Usuarios y Permisos</h1>
           <p className="text-muted-foreground">

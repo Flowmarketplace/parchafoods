@@ -95,10 +95,10 @@ const AdminPackages = () => {
   }
 
   return (
-    <div className="flex min-h-screen w-full">
+    <div className="flex min-h-screen w-full bg-background">
       <AdminSidebar />
 
-      <div className="lg:pl-64">
+      <div className="flex-1 lg:ml-64 w-full">
         <header className="sticky top-0 z-30 bg-card border-b border-border px-4 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
