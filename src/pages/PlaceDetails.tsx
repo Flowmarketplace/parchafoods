@@ -25,12 +25,14 @@ const PlaceDetails = () => {
   const { id } = useParams(); // This could be an ID or a slug
   const navigate = useNavigate();
   const [place, setPlace] = useState<any>(null);
+  const [images, setImages] = useState<any[]>([]);
+  const [menu, setMenu] = useState<any[]>([]);
+  const [promotions, setPromotions] = useState<any[]>([]);
   const [user, setUser] = useState<User | null>(null);
   const [showQRScanner, setShowQRScanner] = useState(false);
   const [loyaltyPoints, setLoyaltyPoints] = useState<number>(0);
   const [loading, setLoading] = useState(true);
 
-  // Load place from database (by slug or ID)
   useEffect(() => {
     const loadPlace = async () => {
       if (!id) return;
@@ -42,7 +44,7 @@ const PlaceDetails = () => {
         .from('businesses')
         .select('*')
         .eq('slug', id)
-        .single();
+        .maybeSingle();
       
       // If not found by slug, try by ID
       if (error || !data) {
@@ -50,17 +52,44 @@ const PlaceDetails = () => {
           .from('businesses')
           .select('*')
           .eq('id', id)
-          .single();
+          .maybeSingle();
         data = result.data;
         error = result.error;
       }
       
       if (data) {
         setPlace(data);
+        
+        // Load related data
+        const [imagesResult, menuResult, promotionsResult] = await Promise.all([
+          supabase
+            .from('business_images')
+            .select('*')
+            .eq('business_id', data.id)
+            .order('display_order'),
+          supabase
+            .from('business_menu')
+            .select('*')
+            .eq('business_id', data.id)
+            .eq('available', true)
+            .order('category, name'),
+          supabase
+            .from('business_promotions')
+            .select('*')
+            .eq('business_id', data.id)
+            .eq('active', true)
+        ]);
+        
+        setImages(imagesResult.data || []);
+        setMenu(menuResult.data || []);
+        setPromotions(promotionsResult.data || []);
       } else {
         // Fallback to mock data
         const mockPlace = mockPlaces.find((p) => p.id === id);
-        setPlace(mockPlace);
+        if (mockPlace) {
+          setPlace(mockPlace);
+          setImages(mockPlace.images?.map((url, index) => ({ image_url: url, display_order: index })) || []);
+        }
       }
       
       setLoading(false);
@@ -154,15 +183,15 @@ const PlaceDetails = () => {
           <CardContent className="p-0">
             {/* Image Carousel */}
             <div className="relative">
-              {place.images && place.images.length > 0 ? (
+              {images && images.length > 0 ? (
                 <Carousel className="w-full">
                   <CarouselContent>
-                    {place.images.map((image, index) => (
+                    {images.map((image, index) => (
                       <CarouselItem key={index}>
                         <div className="relative h-[400px]">
                           <img
-                            src={image}
-                            alt={`${place.name} - Imagen ${index + 1}`}
+                            src={image.image_url}
+                            alt={image.description || `${place.name} - Imagen ${index + 1}`}
                             className="w-full h-full object-cover"
                           />
                         </div>
@@ -301,16 +330,22 @@ const PlaceDetails = () => {
               <Tabs defaultValue="ubicacion" className="w-full">
                 <TabsList className="grid w-full grid-cols-4">
                   <TabsTrigger value="ubicacion">Ubicación</TabsTrigger>
+                  {menu && menu.length > 0 && (
+                    <TabsTrigger value="menu">
+                      <UtensilsCrossed className="h-4 w-4 mr-2" />
+                      Menú
+                    </TabsTrigger>
+                  )}
+                  {promotions && promotions.length > 0 && (
+                    <TabsTrigger value="promociones">
+                      <Tag className="h-4 w-4 mr-2" />
+                      Promo
+                    </TabsTrigger>
+                  )}
                   {place.featuredProducts && place.featuredProducts.length > 0 && (
                     <TabsTrigger value="catalogo">
                       <ShoppingBag className="h-4 w-4 mr-2" />
                       Catálogo
-                    </TabsTrigger>
-                  )}
-                  {place.hasMenu && (
-                    <TabsTrigger value="menu">
-                      <UtensilsCrossed className="h-4 w-4 mr-2" />
-                      Menú
                     </TabsTrigger>
                   )}
                   {place.hasProducts && (
@@ -329,12 +364,6 @@ const PlaceDetails = () => {
                     <TabsTrigger value="clases">
                       <Calendar className="h-4 w-4 mr-2" />
                       Clases
-                    </TabsTrigger>
-                  )}
-                  {place.hasPromotions && (
-                    <TabsTrigger value="promociones">
-                      <Tag className="h-4 w-4 mr-2" />
-                      Promo
                     </TabsTrigger>
                   )}
                   <TabsTrigger value="resenas">Reseñas</TabsTrigger>
@@ -426,10 +455,50 @@ const PlaceDetails = () => {
                   </TabsContent>
                 )}
 
-
-                {place.hasMenu && place.menu && (
+                {menu && menu.length > 0 && (
                   <TabsContent value="menu" className="mt-6">
-                    <PlaceMenu menu={place.menu} />
+                    <div className="space-y-6">
+                      {Object.entries(
+                        menu.reduce((acc: Record<string, any[]>, item: any) => {
+                          const category = item.category || 'Otros';
+                          if (!acc[category]) acc[category] = [];
+                          acc[category].push(item);
+                          return acc;
+                        }, {} as Record<string, any[]>)
+                      ).map(([category, items]: [string, any[]]) => (
+                        <div key={category}>
+                          <h3 className="text-xl font-semibold mb-4">{category}</h3>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {items.map((item) => (
+                              <Card key={item.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+                                <CardContent className="p-0">
+                                  {item.image_url && (
+                                    <div className="relative h-48 w-full overflow-hidden">
+                                      <img
+                                        src={item.image_url}
+                                        alt={item.name}
+                                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                                      />
+                                    </div>
+                                  )}
+                                  <div className="p-4">
+                                    <div className="flex justify-between items-start mb-2">
+                                      <h4 className="font-semibold text-lg">{item.name}</h4>
+                                      <span className="font-bold text-primary whitespace-nowrap ml-2">
+                                        ${item.price.toLocaleString('es-CO')}
+                                      </span>
+                                    </div>
+                                    {item.description && (
+                                      <p className="text-sm text-muted-foreground">{item.description}</p>
+                                    )}
+                                  </div>
+                                </CardContent>
+                              </Card>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </TabsContent>
                 )}
 
@@ -542,7 +611,7 @@ const PlaceDetails = () => {
                   </TabsContent>
                 )}
 
-                {place.hasPromotions && place.promotions && (
+                {promotions && promotions.length > 0 && (
                   <TabsContent value="promociones" className="mt-6">
                     <div className="space-y-6">
                       {/* Loyalty Progress */}
@@ -608,51 +677,36 @@ const PlaceDetails = () => {
                         </Card>
                       )}
 
-                      {place.promotions.map((promotion) => (
+                      {promotions.map((promotion) => (
                         <Card key={promotion.id} className="overflow-hidden">
                           <CardContent className="p-0">
-                            <div className="relative h-64">
-                              <img
-                                src={promotion.image}
-                                alt={promotion.title}
-                                className="w-full h-full object-cover"
-                              />
-                              {promotion.validUntil && (
-                                <Badge className="absolute top-4 right-4 bg-secondary">
-                                  Válida hasta: {new Date(promotion.validUntil).toLocaleDateString('es-CO')}
-                                </Badge>
-                              )}
-                              {promotion.firstTimeOnly && (
-                                <Badge className="absolute top-4 left-4 bg-primary">
-                                  ¡Primera Vez!
-                                </Badge>
-                              )}
-                            </div>
-                            <div className="p-6">
-                              <h3 className="text-2xl font-bold mb-3 text-primary">{promotion.title}</h3>
-                              <p className="text-muted-foreground mb-4">{promotion.description}</p>
-                              <div className="bg-muted p-4 rounded-lg mb-4">
-                                <h4 className="font-semibold mb-2 flex items-center gap-2">
-                                  <Tag className="h-4 w-4" />
-                                  Condiciones
-                                </h4>
-                                <p className="text-sm text-muted-foreground whitespace-pre-line">{promotion.conditions}</p>
+                            {promotion.image_url && (
+                              <div className="relative h-64">
+                                <img
+                                  src={promotion.image_url}
+                                  alt={promotion.title}
+                                  className="w-full h-full object-cover"
+                                />
+                                {promotion.valid_until && (
+                                  <Badge className="absolute top-4 right-4 bg-secondary">
+                                    Válido hasta {new Date(promotion.valid_until).toLocaleDateString('es-CO')}
+                                  </Badge>
+                                )}
                               </div>
-                              {promotion.qrRequired && (
-                                <Button
-                                  onClick={() => {
-                                    if (user) {
-                                      setShowQRScanner(true);
-                                    } else {
-                                      navigate('/auth');
-                                    }
-                                  }}
-                                  className="w-full gap-2"
-                                  size="lg"
-                                >
-                                  <QrCode className="h-5 w-5" />
-                                  {user ? 'Reclamar Promo' : 'Iniciar Sesión para Reclamar'}
-                                </Button>
+                            )}
+                            <div className="p-6">
+                              <h3 className="text-2xl font-bold mb-2">{promotion.title}</h3>
+                              <p className="text-muted-foreground mb-4">{promotion.description}</p>
+                              {promotion.conditions && (
+                                <div className="bg-muted p-4 rounded-lg">
+                                  <p className="text-sm font-medium mb-1">Términos y condiciones:</p>
+                                  <p className="text-sm text-muted-foreground">{promotion.conditions}</p>
+                                </div>
+                              )}
+                              {promotion.first_time_only && (
+                                <Badge variant="outline" className="mt-4">
+                                  Solo primera visita
+                                </Badge>
                               )}
                             </div>
                           </CardContent>
