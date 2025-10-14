@@ -154,23 +154,29 @@ const PlaceDetails = () => {
           <CardContent className="p-0">
             {/* Image Carousel */}
             <div className="relative">
-              <Carousel className="w-full">
-                <CarouselContent>
-                  {place.images.map((image, index) => (
-                    <CarouselItem key={index}>
-                      <div className="relative h-[400px]">
-                        <img
-                          src={image}
-                          alt={`${place.name} - Imagen ${index + 1}`}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-                <CarouselPrevious className="left-4" />
-                <CarouselNext className="right-4" />
-              </Carousel>
+              {place.images && place.images.length > 0 ? (
+                <Carousel className="w-full">
+                  <CarouselContent>
+                    {place.images.map((image, index) => (
+                      <CarouselItem key={index}>
+                        <div className="relative h-[400px]">
+                          <img
+                            src={image}
+                            alt={`${place.name} - Imagen ${index + 1}`}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                  <CarouselPrevious className="left-4" />
+                  <CarouselNext className="right-4" />
+                </Carousel>
+              ) : (
+                <div className="relative h-[400px] bg-muted flex items-center justify-center">
+                  <p className="text-muted-foreground">No hay imágenes disponibles</p>
+                </div>
+              )}
               
               {place.featured && (
                 <Badge className="absolute top-4 right-4 bg-secondary">
