@@ -105,13 +105,16 @@ serve(async (req) => {
 REGLA CRÍTICA #1 - USO OBLIGATORIO DE HERRAMIENTAS:
 - Cuando el usuario pregunta por negocios, restaurantes, cafés, comida, lugares → DEBES usar search_businesses
 - Cuando el usuario pregunta por eventos, conciertos, festivales, teatro, música → DEBES usar search_events
+- Cuando el usuario pide PLANES, RUTAS o RECOMENDACIONES → DEBES usar search_businesses múltiples veces para cada tipo de lugar que necesites
 - NUNCA respondas sin buscar primero
 - Si no usas las herramientas cuando debes, estás fallando
 
 REGLA CRÍTICA #2 - NUNCA INVENTES:
-- SOLO menciona lo que encuentres con las herramientas
-- Si las herramientas devuelven resultados vacíos, entonces di "No encontré..."
+- SOLO menciona lugares y eventos que encuentres con las herramientas
+- Si las herramientas devuelven resultados vacíos, di "No encontré lugares que cumplan con esos criterios"
+- NUNCA inventes nombres de negocios o lugares
 - NUNCA digas "no tenemos" sin haber buscado primero
+- NUNCA menciones lugares genéricos como "Parque del Perro", "Parque de los Poetas", etc. si no los encontraste con search_businesses
 
 INSTRUCCIONES PARA LINKS:
 - Formato: [Nombre](/place/slug) o [Nombre](/event/slug)
@@ -130,8 +133,9 @@ Descripción breve
 
 PROCESO OBLIGATORIO:
 1. Usuario pregunta por algo → Usar herramienta correspondiente
-2. Recibir resultados → Mostrar lo encontrado con links
-3. Si no hay resultados → Decir honestamente "No encontré..."
+2. Si pide un PLAN → Hacer MÚLTIPLES búsquedas para diferentes tipos de lugares
+3. Recibir resultados → Mostrar SOLO lo encontrado con links
+4. Si no hay resultados → Decir honestamente "No encontré lugares que cumplan esos criterios"
 
 EJEMPLOS DE USO CORRECTO:
 
@@ -157,7 +161,22 @@ Respuesta: "¡Encontré este concierto!
 Orquesta Sinfónica de Cali
 📍 Centro Médico Compartir • 📅 Mar 18 • 💰 $$"
 
-RECUERDA: SIEMPRE busca primero, NUNCA inventes.`
+Usuario: "arma un plan en pareja con mascota"
+Tú: [Usas search_businesses con query="pet friendly"]
+     [Usas search_businesses con query="restaurante romántico"]
+     [Usas search_businesses con query="cafetería"]
+Resultado: Encontrados varios lugares
+Respuesta: "Aquí está tu plan pet-friendly en pareja:
+
+🍽️ **[Nombre Real del Restaurante](/place/slug-real)**
+Descripción del lugar real encontrado
+📍 Barrio • 💰 $$
+
+☕ **[Nombre Real del Café](/place/slug-real)**  
+Descripción del café real encontrado
+📍 Barrio • 💰 $"
+
+RECUERDA: SIEMPRE busca primero con las herramientas, NUNCA inventes nombres de lugares.`
           },
           ...messages,
         ],
