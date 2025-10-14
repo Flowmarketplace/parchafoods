@@ -14,6 +14,59 @@ export type Database = {
   }
   public: {
     Tables: {
+      business_ai_config: {
+        Row: {
+          api_key_encrypted: string | null
+          business_id: string
+          created_at: string
+          custom_instructions: string | null
+          enabled: boolean | null
+          greeting_message: string | null
+          id: string
+          max_tokens: number | null
+          provider: string
+          system_prompt: string | null
+          temperature: number | null
+          updated_at: string
+        }
+        Insert: {
+          api_key_encrypted?: string | null
+          business_id: string
+          created_at?: string
+          custom_instructions?: string | null
+          enabled?: boolean | null
+          greeting_message?: string | null
+          id?: string
+          max_tokens?: number | null
+          provider?: string
+          system_prompt?: string | null
+          temperature?: number | null
+          updated_at?: string
+        }
+        Update: {
+          api_key_encrypted?: string | null
+          business_id?: string
+          created_at?: string
+          custom_instructions?: string | null
+          enabled?: boolean | null
+          greeting_message?: string | null
+          id?: string
+          max_tokens?: number | null
+          provider?: string
+          system_prompt?: string | null
+          temperature?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "business_ai_config_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: true
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       business_attributes: {
         Row: {
           attribute_type: string

@@ -11,7 +11,8 @@ import {
   BarChart3,
   Users,
   Settings,
-  Home
+  Home,
+  Brain
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -30,6 +31,7 @@ const BusinessSidebar = ({ isOpen, onClose }: BusinessSidebarProps) => {
     { icon: Gift, label: 'Promociones', path: '/business-promotions' },
     { icon: Film, label: 'Shorts/Reels', path: '/business-shorts' },
     { icon: Gift, label: 'Lealtad', path: '/business-loyalty' },
+    { icon: Brain, label: 'Configuración IA', path: '/business-ai-config' },
     { icon: Bell, label: 'Campañas Push', path: '/business-notifications' },
     { icon: MapPin, label: 'Proximidad GPS', path: '/business-proximity' },
     { icon: BarChart3, label: 'Analíticas', path: '#', disabled: true },
