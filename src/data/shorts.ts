@@ -2,6 +2,23 @@ import { Short } from '@/types/short';
 
 export const mockShorts: Short[] = [
   {
+    id: 's0',
+    title: 'Descubre HandCity Cali 🌆',
+    description: 'La mejor app para descubrir lugares increíbles en Cali 🔥 #handcity #cali #descubre',
+    videoUrl: '/videos/handcity-short-1.mp4',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=400&q=80',
+    creator: {
+      name: 'HandCity',
+      username: '@handcity',
+      avatarUrl: '/handcity-logo.png',
+      verified: true
+    },
+    views: 45000,
+    likes: 8500,
+    category: 'Turismo',
+    createdAt: '2025-10-14'
+  },
+  {
     id: 's1',
     title: 'Tour por Smart Fit Granada 🏋️',
     description: 'Conoce las instalaciones del mejor gym de Cali 💪 #fitness #gym #cali',
