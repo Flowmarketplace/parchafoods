@@ -46,6 +46,7 @@ const Index = () => {
   const [isTourActive, setIsTourActive] = useState(false);
   const [places, setPlaces] = useState<any[]>([]);
   const [loadingPlaces, setLoadingPlaces] = useState(true);
+  const [shorts, setShorts] = useState<any[]>([]);
   const navigate = useNavigate();
 
   // Load businesses from database
@@ -85,6 +86,55 @@ const Index = () => {
     loadBusinesses();
   }, []);
 
+  // Load shorts from database
+  useEffect(() => {
+    const loadShorts = async () => {
+      const { data, error } = await supabase
+        .from('business_shorts')
+        .select(`
+          *,
+          businesses (
+            id,
+            name,
+            category
+          )
+        `)
+        .eq('active', true)
+        .order('created_at', { ascending: false });
+      
+      if (data) {
+        // Transform database format to Short format
+        const transformedShorts = data.map((short: any) => ({
+          id: short.id,
+          title: short.title,
+          description: short.description,
+          videoUrl: short.video_url,
+          thumbnailUrl: short.thumbnail_url,
+          creator: {
+            name: short.businesses.name,
+            username: `@${short.businesses.name.toLowerCase().replace(/\s+/g, '')}`,
+            avatarUrl: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&q=80',
+            verified: true
+          },
+          views: short.views || 0,
+          likes: short.likes || 0,
+          category: short.businesses.category,
+          placeId: short.business_id,
+          placeName: short.businesses.name,
+          createdAt: new Date(short.created_at).toISOString().split('T')[0]
+        }));
+        
+        // Combine with mock shorts
+        setShorts([...transformedShorts, ...mockShorts]);
+      } else {
+        // Fallback to mock data if database query fails
+        setShorts(mockShorts);
+      }
+    };
+    
+    loadShorts();
+  }, []);
+
   // Handle search with loading state
   useEffect(() => {
     if (searchQuery === '' && selectedCategory === 'Todos' && selectedNeighborhood === 'Todos') {
@@ -119,10 +169,10 @@ const Index = () => {
   // Filter shorts by category
   const filteredShorts = useMemo(() => {
     if (selectedCategory === 'Todos') {
-      return mockShorts;
+      return shorts;
     }
-    return mockShorts.filter(short => short.category === selectedCategory);
-  }, [selectedCategory]);
+    return shorts.filter(short => short.category === selectedCategory);
+  }, [selectedCategory, shorts]);
 
   // Filter places based on all criteria (for the filtered view)
   const filteredPlaces = useMemo(() => {

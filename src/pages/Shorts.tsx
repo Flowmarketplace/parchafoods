@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Sidebar from '@/components/Sidebar';
@@ -8,34 +8,85 @@ import ShortsCarousel from '@/components/ShortsCarousel';
 import { mockShorts } from '@/data/shorts';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { supabase } from '@/integrations/supabase/client';
 
 const Shorts = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('Todos');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedNeighborhood, setSelectedNeighborhood] = useState('Todos');
+  const [shorts, setShorts] = useState<any[]>([]);
   const navigate = useNavigate();
+
+  // Load shorts from database
+  useEffect(() => {
+    const loadShorts = async () => {
+      const { data, error } = await supabase
+        .from('business_shorts')
+        .select(`
+          *,
+          businesses (
+            id,
+            name,
+            category
+          )
+        `)
+        .eq('active', true)
+        .order('created_at', { ascending: false });
+      
+      if (data) {
+        // Transform database format to Short format
+        const transformedShorts = data.map((short: any) => ({
+          id: short.id,
+          title: short.title,
+          description: short.description,
+          videoUrl: short.video_url,
+          thumbnailUrl: short.thumbnail_url,
+          creator: {
+            name: short.businesses.name,
+            username: `@${short.businesses.name.toLowerCase().replace(/\s+/g, '')}`,
+            avatarUrl: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&q=80',
+            verified: true
+          },
+          views: short.views || 0,
+          likes: short.likes || 0,
+          category: short.businesses.category,
+          placeId: short.business_id,
+          placeName: short.businesses.name,
+          createdAt: new Date(short.created_at).toISOString().split('T')[0]
+        }));
+        
+        // Combine with mock shorts
+        setShorts([...transformedShorts, ...mockShorts]);
+      } else {
+        // Fallback to mock data if database query fails
+        setShorts(mockShorts);
+      }
+    };
+    
+    loadShorts();
+  }, []);
 
   // Get unique categories from shorts
   const categories = useMemo(() => {
-    const uniqueCategories = new Set(mockShorts.map(short => short.category));
+    const uniqueCategories = new Set(shorts.map(short => short.category));
     return Array.from(uniqueCategories).sort();
-  }, []);
+  }, [shorts]);
 
   // Group shorts by category
   const shortsByCategory = useMemo(() => {
-    const grouped: { [key: string]: typeof mockShorts } = {};
+    const grouped: { [key: string]: any[] } = {};
     
     if (selectedCategory !== 'Todos') {
-      grouped[selectedCategory] = mockShorts.filter(short => short.category === selectedCategory);
+      grouped[selectedCategory] = shorts.filter(short => short.category === selectedCategory);
     } else {
       categories.forEach(category => {
-        grouped[category] = mockShorts.filter(short => short.category === category);
+        grouped[category] = shorts.filter(short => short.category === category);
       });
     }
     
     return grouped;
-  }, [selectedCategory, categories]);
+  }, [selectedCategory, categories, shorts]);
 
   return (
     <div className="min-h-screen w-full flex flex-col bg-background">
