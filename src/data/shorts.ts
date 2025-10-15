@@ -10,7 +10,7 @@ export const mockShorts: Short[] = [
     creator: {
       name: 'HandCity',
       username: '@handcity',
-      avatarUrl: '/handcity-logo.png',
+      avatarUrl: 'src/assets/handcity-logo.png',
       verified: true
     },
     views: 45000,
