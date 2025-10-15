@@ -11,6 +11,8 @@ interface ShortsCarouselProps {
 const ShortsCarousel = ({ shorts }: ShortsCarouselProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
 
+  console.log('ShortsCarousel rendering with shorts:', shorts);
+  console.log('Number of shorts:', shorts.length);
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
@@ -22,6 +24,7 @@ const ShortsCarousel = ({ shorts }: ShortsCarouselProps) => {
   };
 
   if (shorts.length === 0) {
+    console.log('No shorts to display');
     return (
       <div className="text-center py-12 text-muted-foreground">
         <p>No hay videos disponibles para esta categoría</p>
@@ -56,11 +59,14 @@ const ShortsCarousel = ({ shorts }: ShortsCarouselProps) => {
         className="grid grid-flow-col auto-cols-[minmax(45%,1fr)] sm:auto-cols-[minmax(300px,1fr)] gap-4 overflow-x-auto scrollbar-hide scroll-smooth px-2"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
-        {shorts.map((short) => (
-          <div key={short.id}>
-            <ShortCard short={short} />
-          </div>
-        ))}
+        {shorts.map((short, index) => {
+          console.log(`Rendering short ${index}:`, short);
+          return (
+            <div key={short.id}>
+              <ShortCard short={short} />
+            </div>
+          );
+        })}
       </div>
     </div>
   );
