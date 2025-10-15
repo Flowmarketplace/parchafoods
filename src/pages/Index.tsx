@@ -102,6 +102,8 @@ const Index = () => {
         .eq('active', true)
         .order('created_at', { ascending: false });
       
+      console.log('Shorts from DB:', data);
+      
       if (data) {
         // Transform database format to Short format
         const transformedShorts = data.map((short: any) => ({
@@ -124,9 +126,15 @@ const Index = () => {
           createdAt: new Date(short.created_at).toISOString().split('T')[0]
         }));
         
+        console.log('Transformed shorts:', transformedShorts);
+        console.log('Mock shorts:', mockShorts);
+        
         // Combine with mock shorts
-        setShorts([...transformedShorts, ...mockShorts]);
+        const allShorts = [...transformedShorts, ...mockShorts];
+        console.log('All shorts combined:', allShorts);
+        setShorts(allShorts);
       } else {
+        console.log('No data from DB, using mock shorts');
         // Fallback to mock data if database query fails
         setShorts(mockShorts);
       }
