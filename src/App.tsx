@@ -1,5 +1,4 @@
 import { Routes, Route } from "react-router-dom";
-import { Toaster } from "@/components/ui/toaster";
 import RoleBasedRedirect from "./components/RoleBasedRedirect";
 import Index from "./pages/Index";
 import PlaceDetails from "./pages/PlaceDetails";
@@ -46,10 +45,9 @@ import AdminCategories from "./pages/admin/AdminCategories";
 
 function App() {
   return (
-    <>
-      <RoleBasedRedirect>
-        <Routes>
-          <Route path="/" element={<Index />} />
+    <RoleBasedRedirect>
+      <Routes>
+        <Route path="/" element={<Index />} />
         <Route path="/place/:id" element={<PlaceDetails />} />
         <Route path="/event/:id" element={<EventDetails />} />
         <Route path="/events" element={<Events />} />
@@ -68,33 +66,31 @@ function App() {
         <Route path="/business-setup" element={<BusinessSetup />} />
         <Route path="/business-manage" element={<BusinessManage />} />
         <Route path="/business-images" element={<BusinessImages />} />
-         <Route path="/business-menu" element={<BusinessMenu />} />
-         <Route path="/business-promotions" element={<BusinessPromotions />} />
-         <Route path="/business-shorts" element={<BusinessShorts />} />
-             <Route path="/business-loyalty" element={<BusinessLoyalty />} />
-             <Route path="/business-notifications" element={<BusinessNotifications />} />
-             <Route path="/business-proximity" element={<BusinessProximity />} />
-             <Route path="/business-subscription" element={<BusinessSubscription />} />
-             <Route path="/business-analytics" element={<BusinessAnalytics />} />
-             <Route path="/business-customers" element={<BusinessCustomers />} />
-             <Route path="/business-ai-config" element={<BusinessAIConfig />} />
-             <Route path="/business-settings" element={<BusinessSettings />} />
-             <Route path="/admin" element={<AdminDashboard />} />
-             <Route path="/admin/businesses" element={<AdminBusinesses />} />
-             <Route path="/admin/packages" element={<AdminPackages />} />
-             <Route path="/admin/subscriptions" element={<AdminSubscriptions />} />
-             <Route path="/admin/users" element={<AdminUsers />} />
-             <Route path="/admin/events" element={<AdminEvents />} />
-             <Route path="/admin/categories" element={<AdminCategories />} />
-             <Route path="/admin/analytics" element={<AdminAnalytics />} />
-             <Route path="/admin/notifications" element={<AdminNotifications />} />
-             <Route path="/admin/customization" element={<AdminCustomization />} />
-             <Route path="/admin/settings" element={<AdminSettings />} />
-         <Route path="*" element={<NotFound />} />
-        </Routes>
-      </RoleBasedRedirect>
-      <Toaster />
-    </>
+        <Route path="/business-menu" element={<BusinessMenu />} />
+        <Route path="/business-promotions" element={<BusinessPromotions />} />
+        <Route path="/business-shorts" element={<BusinessShorts />} />
+        <Route path="/business-loyalty" element={<BusinessLoyalty />} />
+        <Route path="/business-notifications" element={<BusinessNotifications />} />
+        <Route path="/business-proximity" element={<BusinessProximity />} />
+        <Route path="/business-subscription" element={<BusinessSubscription />} />
+        <Route path="/business-analytics" element={<BusinessAnalytics />} />
+        <Route path="/business-customers" element={<BusinessCustomers />} />
+        <Route path="/business-ai-config" element={<BusinessAIConfig />} />
+        <Route path="/business-settings" element={<BusinessSettings />} />
+        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/admin/businesses" element={<AdminBusinesses />} />
+        <Route path="/admin/packages" element={<AdminPackages />} />
+        <Route path="/admin/subscriptions" element={<AdminSubscriptions />} />
+        <Route path="/admin/users" element={<AdminUsers />} />
+        <Route path="/admin/events" element={<AdminEvents />} />
+        <Route path="/admin/categories" element={<AdminCategories />} />
+        <Route path="/admin/analytics" element={<AdminAnalytics />} />
+        <Route path="/admin/notifications" element={<AdminNotifications />} />
+        <Route path="/admin/customization" element={<AdminCustomization />} />
+        <Route path="/admin/settings" element={<AdminSettings />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </RoleBasedRedirect>
   );
 }
 

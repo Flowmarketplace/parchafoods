@@ -946,14 +946,8 @@ export type Database = {
         Args: { lat1: number; lat2: number; lon1: number; lon2: number }
         Returns: number
       }
-      generate_referral_code: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      generate_slug: {
-        Args: { name: string }
-        Returns: string
-      }
+      generate_referral_code: { Args: never; Returns: string }
+      generate_slug: { Args: { name: string }; Returns: string }
       get_nearby_businesses: {
         Args: { max_radius_km?: number; user_lat: number; user_lon: number }
         Returns: {
