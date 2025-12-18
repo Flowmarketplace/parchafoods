@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
@@ -7,35 +7,45 @@ import { TutorialTour } from "./TutorialTour";
 
 const WELCOME_SEEN_KEY = "handcity_welcome_seen";
 
-export function WelcomeDialog({ onTourChange }: { onTourChange?: (isActive: boolean) => void }) {
+function safeGetItem(key: string) {
+  try {
+    return window.localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+
+function safeSetItem(key: string, value: string) {
+  try {
+    window.localStorage.setItem(key, value);
+  } catch {
+    // storage can be blocked in some browsers/iframes
+  }
+}
+
+export function WelcomeDialog({
+  onTourChange,
+}: {
+  onTourChange?: (isActive: boolean) => void;
+}) {
   const [open, setOpen] = useState(false);
   const [showTour, setShowTour] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    // Solo mostrar si no se ha visto antes
-    const hasSeenWelcome = localStorage.getItem(WELCOME_SEEN_KEY);
-    if (!hasSeenWelcome) {
-      setOpen(true);
-    }
-    
-    // Para pruebas, descomentar esta línea temporalmente:
-    // localStorage.removeItem(WELCOME_SEEN_KEY);
+    const hasSeenWelcome = safeGetItem(WELCOME_SEEN_KEY);
+    if (!hasSeenWelcome) setOpen(true);
   }, []);
 
-  const handleClose = () => {
-    if (videoRef.current) {
-      videoRef.current.pause();
-    }
-    localStorage.setItem(WELCOME_SEEN_KEY, "true");
+  const markSeenAndClose = () => {
+    if (videoRef.current) videoRef.current.pause();
+    safeSetItem(WELCOME_SEEN_KEY, "true");
     setOpen(false);
   };
 
   const handleTutorial = () => {
-    if (videoRef.current) {
-      videoRef.current.pause();
-    }
-    localStorage.setItem(WELCOME_SEEN_KEY, "true");
+    if (videoRef.current) videoRef.current.pause();
+    safeSetItem(WELCOME_SEEN_KEY, "true");
     setOpen(false);
     setTimeout(() => {
       setShowTour(true);
@@ -51,36 +61,43 @@ export function WelcomeDialog({ onTourChange }: { onTourChange?: (isActive: bool
   return (
     <>
       {showTour && <TutorialTour onClose={handleCloseTour} />}
-      
-      <Dialog open={open} onOpenChange={() => {}}>
+
+      <Dialog
+        open={open}
+        onOpenChange={(nextOpen) => {
+          // Permite cerrar con ESC o click afuera; al cerrar marcamos como visto.
+          if (!nextOpen) {
+            markSeenAndClose();
+          } else {
+            setOpen(true);
+          }
+        }}
+      >
         <DialogContent className="max-w-md p-0 bg-background border-2 border-primary rounded-2xl shadow-2xl overflow-hidden [&>button]:hidden">
           <div className="space-y-3">
-            {/* Header with City Background */}
-            <div 
-              className="bg-primary px-4 py-4 relative flex items-center justify-center overflow-hidden"
-            >
-              <div 
+            <div className="bg-primary px-4 py-4 relative flex items-center justify-center overflow-hidden">
+              <div
                 className="absolute inset-0 opacity-20"
                 style={{
                   backgroundImage: `url(${citySkyline})`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'bottom',
-                  backgroundRepeat: 'no-repeat',
-                  filter: 'brightness(0) invert(1)'
+                  backgroundSize: "cover",
+                  backgroundPosition: "bottom",
+                  backgroundRepeat: "no-repeat",
+                  filter: "brightness(0) invert(1)",
                 }}
-              ></div>
+              />
               <h2 className="text-2xl font-bold text-white relative z-10">HandCity</h2>
               <Button
-                onClick={handleClose}
+                onClick={markSeenAndClose}
                 variant="ghost"
                 size="icon"
                 className="absolute right-3 top-3 rounded-full text-white hover:bg-white/20 z-10"
+                aria-label="Cerrar bienvenida"
               >
                 <X className="h-5 w-5" />
               </Button>
             </div>
 
-            {/* Video Container */}
             <div className="px-4">
               <div className="relative rounded-xl overflow-hidden border-2 border-border shadow-lg">
                 <video
@@ -96,21 +113,16 @@ export function WelcomeDialog({ onTourChange }: { onTourChange?: (isActive: bool
               </div>
             </div>
 
-            {/* Buttons */}
             <div className="flex gap-3 px-4 pb-4">
-              <Button 
-                onClick={handleClose} 
+              <Button
+                onClick={markSeenAndClose}
                 variant="outline"
                 size="lg"
                 className="flex-1 rounded-xl"
               >
                 Saltar
               </Button>
-              <Button 
-                onClick={handleTutorial}
-                size="lg"
-                className="flex-1 bg-primary hover:bg-primary/90 rounded-xl"
-              >
+              <Button onClick={handleTutorial} size="lg" className="flex-1 rounded-xl">
                 Ver Tutorial
               </Button>
             </div>
