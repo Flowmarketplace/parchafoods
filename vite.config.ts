@@ -13,24 +13,20 @@ export default defineConfig(({ mode }) => ({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
-      "react": path.resolve(__dirname, "./node_modules/react"),
-      "react-dom": path.resolve(__dirname, "./node_modules/react-dom"),
-      "react-router-dom": path.resolve(__dirname, "./node_modules/react-router-dom"),
     },
     dedupe: ["react", "react-dom", "react-router-dom"],
   },
   optimizeDeps: {
-    include: ["react", "react-dom", "react-router-dom"],
+    // Avoid pre-bundling React which can create duplicate instances and break hooks
+    exclude: [
+      "react",
+      "react-dom",
+      "react/jsx-runtime",
+      "react/jsx-dev-runtime",
+      "react-dom/client",
+      "react-router-dom",
+    ],
     force: true,
-    esbuildOptions: {
-      target: "esnext",
-    },
-  },
-  build: {
-    rollupOptions: {
-      output: {
-        manualChunks: undefined,
-      },
-    },
   },
 }));
+
