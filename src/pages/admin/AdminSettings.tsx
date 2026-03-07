@@ -159,7 +159,7 @@ const AdminSettings = () => {
                   <Label>Email de Remitente</Label>
                   <Input
                     type="email"
-                    defaultValue="noreply@handcity.com"
+                    defaultValue="noreply@sabor360.com"
                     className="max-w-md mt-2"
                   />
                   <p className="text-sm text-muted-foreground mt-1">

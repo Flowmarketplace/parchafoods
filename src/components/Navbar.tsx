@@ -55,11 +55,9 @@ const Navbar = ({ onMenuClick, searchQuery, onSearchChange, selectedNeighborhood
             </Button>
             
             <div className="flex items-center gap-2">
-              <div className="bg-gradient-to-br from-primary to-secondary p-1.5 sm:p-2 rounded-lg">
-                <MapPin className="h-4 w-4 sm:h-6 sm:w-6 text-white" />
-              </div>
+              <img src="/sabor360-logo.png" alt="Sabor 360" className="h-8 sm:h-10 w-auto" />
               <h1 className="text-lg sm:text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                Handcity
+                Sabor 360
               </h1>
             </div>
           </div>

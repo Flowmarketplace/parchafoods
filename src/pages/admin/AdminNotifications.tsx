@@ -229,7 +229,7 @@ const AdminNotifications = () => {
                   variant="outline"
                   className="w-full justify-start"
                   onClick={() => {
-                    setTitle('Bienvenido a HandCity');
+                    setTitle('Bienvenido a Sabor 360');
                     setMessage('Descubre los mejores negocios cerca de ti');
                   }}
                 >

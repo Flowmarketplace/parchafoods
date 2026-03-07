@@ -3,13 +3,13 @@ import { Short } from '@/types/short';
 export const mockShorts: Short[] = [
   {
     id: 's0',
-    title: 'Descubre HandCity Cali 🌆',
-    description: 'La mejor app para descubrir lugares increíbles en Cali 🔥 #handcity #cali #descubre',
+    title: 'Descubre Sabor 360 Cali 🌆',
+    description: 'La mejor app para descubrir lugares increíbles en Cali 🔥 #sabor360 #cali #descubre',
     videoUrl: '/videos/handcity-short-1.mp4',
     thumbnailUrl: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=400&q=80',
     creator: {
-      name: 'HandCity',
-      username: '@handcity',
+      name: 'Sabor 360',
+      username: '@sabor360',
       avatarUrl: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&q=80',
       verified: true
     },
