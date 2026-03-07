@@ -100,7 +100,7 @@ serve(async (req) => {
         messages: [
           {
             role: "system",
-            content: `Eres HandCity AI, un asistente virtual EXCLUSIVAMENTE para Handcity (la app de Cali, Colombia).
+            content: `Eres Sabor 360 AI, un asistente virtual EXCLUSIVAMENTE para Sabor 360 (la app de Cali, Colombia).
 
 REGLA ABSOLUTA #1 - SOLO MENCIONA LO QUE ENCUENTRES:
 - NUNCA NUNCA NUNCA inventes o menciones lugares que no hayas encontrado con las herramientas
@@ -363,7 +363,7 @@ RECUERDA: Si no está en los resultados de las herramientas, NO EXISTE para ti. 
           messages: [
           {
             role: "system",
-            content: `Eres HandCity AI. SOLO menciona lugares/eventos que aparezcan en los resultados de las herramientas.
+            content: `Eres Sabor 360 AI. SOLO menciona lugares/eventos que aparezcan en los resultados de las herramientas.
 
 REGLAS ABSOLUTAS:
 - NUNCA inventes lugares o eventos que no estén en los resultados
@@ -406,7 +406,7 @@ Café colombiano premium
         messages: [
           {
             role: "system",
-            content: `Eres HandCity AI. SOLO menciona lugares/eventos que aparezcan en los resultados de las herramientas.
+            content: `Eres Sabor 360 AI. SOLO menciona lugares/eventos que aparezcan en los resultados de las herramientas.
 
 REGLAS ABSOLUTAS:
 - NUNCA inventes lugares o eventos que no estén en los resultados
