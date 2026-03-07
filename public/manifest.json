@@ -1,14 +1,14 @@
 {
-  "name": "HandCity - Descubre tu ciudad",
-  "short_name": "HandCity",
+  "name": "Sabor 360 - Comer, saber y vivir",
+  "short_name": "Sabor 360",
   "description": "Descubre los mejores lugares de Cali: restaurantes, parques, eventos y más",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#8B5CF6",
+  "theme_color": "#D85A2B",
   "orientation": "portrait-primary",
-  "categories": ["travel", "lifestyle", "navigation"],
+  "categories": ["travel", "lifestyle", "navigation", "food"],
   "lang": "es-CO",
   "dir": "ltr",
   "icons": [
