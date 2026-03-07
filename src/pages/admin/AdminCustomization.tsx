@@ -13,7 +13,7 @@ const AdminCustomization = () => {
   const { toast } = useToast();
   const [primaryColor, setPrimaryColor] = useState('#8B5CF6');
   const [secondaryColor, setSecondaryColor] = useState('#10B981');
-  const [appName, setAppName] = useState('HandCity');
+  const [appName, setAppName] = useState('Sabor 360');
   const [appLogo, setAppLogo] = useState('');
 
   const saveCustomization = useMutation({
