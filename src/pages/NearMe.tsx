@@ -19,18 +19,17 @@ interface PlaceWithDistance extends Place {
 }
 
 const categories: Category[] = [
-  'Restaurante',
+  'Comidas Rápidas',
   'Café',
-  'Parque',
-  'Farmacia',
-  'Banco',
-  'Centro Comercial',
-  'Hospital',
-  'Hotel',
-  'Entretenimiento',
-  'Servicios',
-  'Gym',
-  'Gasolinera',
+  'Food Truck',
+  'Italiana',
+  'Parrilla',
+  'Tradicional',
+  'Saludable',
+  'Mariscos',
+  'Postres',
+  'Panadería',
+  'Asiática',
 ];
 
 const NearMe = () => {

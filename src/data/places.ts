@@ -1,252 +1,88 @@
 import { Place } from '@/types/place';
 
 export const mockPlaces: Place[] = [
+  // === COMIDAS RÁPIDAS ===
   {
     id: '1',
-    name: 'Restaurante El Sabor del Barrio',
-    category: 'Restaurante',
+    name: 'Burger House Express',
+    category: 'Comidas Rápidas',
     address: 'Calle 45 #20-15, Barrio Compartir',
     neighborhood: 'Compartir',
     zone: 'Oriente',
     phone: '+57 2 555 1234',
-    description: 'Deliciosa comida típica caleña con el sazón de casa. Especialidad en sancocho de gallina y bandeja paisa. Horario: Lunes a Sábado 11:00 AM - 9:00 PM, Domingos 11:00 AM - 5:00 PM. Aceptamos efectivo y tarjetas.',
+    description: 'Las mejores hamburguesas artesanales de la zona. Combos con papas y bebida. Servicio rápido y sabor único.',
     images: [
-      'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&q=80',
-      'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80',
-      'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80'
+      'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800&q=80',
+      'https://images.unsplash.com/photo-1550547660-d9450f859349?w=800&q=80',
+      'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=800&q=80'
     ],
     latitude: 3.3951,
     longitude: -76.5197,
     rating: 4.5,
-    priceRange: '$$',
+    priceRange: '$',
     featured: true,
     hasMenu: true,
-    foodType: ['Colombiana'],
+    foodType: ['Hamburguesas', 'Comida Rápida'],
     familyFriendly: true,
     petFriendly: false,
-    goodForCouples: true,
+    goodForCouples: false,
     goodForKids: true,
-    attributes: ['WiFi', 'Estacionamiento', 'Terraza'],
+    attributes: ['WiFi', 'Domicilios'],
     menu: [
-      {
-        id: 'm1',
-        name: 'Sancocho de Gallina',
-        description: 'Tradicional sopa caleña con gallina criolla y plátano',
-        price: '$18.000',
-        category: 'Platos Principales'
-      },
-      {
-        id: 'm2',
-        name: 'Bandeja Paisa',
-        description: 'Carne molida, chicharrón, chorizo, arroz, frijoles, huevo, plátano y aguacate',
-        price: '$25.000',
-        category: 'Platos Principales'
-      },
-      {
-        id: 'm3',
-        name: 'Sudado de Pollo',
-        description: 'Pollo en salsa criolla con papa y yuca',
-        price: '$16.000',
-        category: 'Platos Principales'
-      },
-      {
-        id: 'm4',
-        name: 'Arroz con Pollo',
-        description: 'Arroz amarillo con pollo desmechado y ensalada',
-        price: '$14.000',
-        category: 'Platos Principales'
-      },
-      {
-        id: 'm5',
-        name: 'Jugo Natural',
-        description: 'Lulo, mora, maracuyá o guanábana',
-        price: '$5.000',
-        category: 'Bebidas'
-      }
+      { id: 'm1', name: 'Hamburguesa Clásica', description: 'Carne 150g, lechuga, tomate, cebolla y salsas', price: '$15.000', category: 'Hamburguesas' },
+      { id: 'm2', name: 'Hamburguesa Doble', description: 'Doble carne, queso cheddar, tocineta y jalapeños', price: '$22.000', category: 'Hamburguesas' },
+      { id: 'm3', name: 'Hot Dog Especial', description: 'Salchicha premium con salsas, queso y papitas', price: '$12.000', category: 'Hot Dogs' },
+      { id: 'm4', name: 'Combo Familiar', description: '4 hamburguesas + papas + 4 bebidas', price: '$55.000', category: 'Combos' },
     ],
     hasPromotions: true,
     promotions: [
-      {
-        id: 'p0-1',
-        title: '🎉 ¡Bienvenida! Primera visita con la app',
-        description: '¡Recibe un postre GRATIS por ser tu primera vez usando nuestra app!',
-        image: 'https://images.unsplash.com/photo-1551024601-bec78aea704b?w=800&q=80',
-        conditions: 'Válido solo en tu primera visita\nEscanea el código QR en el restaurante\nNo aplica con otras promociones',
-        validUntil: '2025-12-31',
-        qrRequired: true,
-        firstTimeOnly: true
-      },
-      {
-        id: 'p1',
-        title: '2x1 en Bandeja Paisa los Miércoles',
-        description: 'Disfruta de nuestra deliciosa Bandeja Paisa y lleva la segunda a mitad de precio',
-        image: 'https://images.unsplash.com/photo-1604909052743-94e838986d24?w=800&q=80',
-        conditions: 'Válido solo los miércoles de 12:00 PM a 3:00 PM\nNo aplica con otras promociones\nEscanea el código QR en el restaurante para reclamar',
-        validUntil: '2025-12-31',
-        qrRequired: true
-      },
-      {
-        id: 'p2',
-        title: 'Menú Ejecutivo - Almuerzo Completo',
-        description: 'Sopa + Plato Principal + Jugo + Postre por un precio especial',
-        image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&q=80',
-        conditions: 'Disponible de lunes a viernes de 12:00 PM a 2:00 PM\nPrecio especial: $22.000\nEscanea el código QR en el restaurante para reclamar',
-        validUntil: '2025-12-31',
-        qrRequired: true
-      }
+      { id: 'p1-1', title: '🎉 ¡Bienvenida! Primera visita', description: 'Papas GRATIS con tu primera hamburguesa', image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800&q=80', conditions: 'Válido solo en tu primera visita\nEscanea el código QR', validUntil: '2026-12-31', qrRequired: true, firstTimeOnly: true },
+      { id: 'p1-2', title: '2x1 Martes de Burger', description: 'Lleva 2 hamburguesas clásicas por el precio de 1', image: 'https://images.unsplash.com/photo-1550547660-d9450f859349?w=800&q=80', conditions: 'Solo martes de 5PM a 9PM', validUntil: '2026-12-31', qrRequired: true },
     ],
     reviews: [
-      {
-        id: '1',
-        author: 'María González',
-        rating: 5,
-        comment: '¡Excelente comida y muy buen servicio! El sancocho es el mejor de Cali.',
-        date: '2024-01-15'
-      },
-      {
-        id: '2',
-        author: 'Carlos Rodríguez',
-        rating: 4,
-        comment: 'Buena relación calidad-precio. El ambiente es muy acogedor.',
-        date: '2024-01-10'
-      }
+      { id: 'r1', author: 'Carlos M.', rating: 5, comment: 'Las mejores hamburguesas del barrio!', date: '2026-01-15' },
+      { id: 'r2', author: 'Ana P.', rating: 4, comment: 'Rápido y delicioso. Recomendado.', date: '2026-01-10' },
     ]
   },
   {
     id: '2',
-    name: 'Parque Recreativo Vallegrande',
-    category: 'Parque',
-    address: 'Carrera 30 #80-50, Barrio Vallegrande',
-    neighborhood: 'Vallegrande',
-    zone: 'Norte',
-    phone: '+57 2 555 5678',
-    description: 'Amplio parque con zonas verdes, juegos infantiles y canchas deportivas. Ideal para pasar el día en familia.',
-    images: [
-      'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=80',
-      'https://images.unsplash.com/photo-1585223700402-dcfee7eedb12?w=800&q=80',
-      'https://images.unsplash.com/photo-1587502536575-6dfba0a6e017?w=800&q=80'
-    ],
-    latitude: 3.4372,
-    longitude: -76.5225,
-    rating: 4.2,
-    priceRange: 'Gratis',
-    featured: true,
-    familyFriendly: true,
-    petFriendly: true,
-    goodForKids: true,
-    goodForCouples: false,
-    attributes: ['Juegos Infantiles', 'Canchas Deportivas', 'Zona Verde'],
-    reviews: [
-      {
-        id: '3',
-        author: 'Ana Martínez',
-        rating: 5,
-        comment: 'Perfecto para ir con los niños. Muy limpio y seguro.',
-        date: '2024-01-20'
-      },
-      {
-        id: '4',
-        author: 'Luis Hernández',
-        rating: 4,
-        comment: 'Buen lugar para hacer ejercicio por las mañanas.',
-        date: '2024-01-18'
-      }
-    ]
-  },
-  // Restaurantes
-  {
-    id: '3',
-    name: 'Asadero La Brasa Vallecaucana',
-    category: 'Restaurante',
-    address: 'Calle 50 #22-30, Barrio Decepaz',
+    name: 'Empanadas La Criolla',
+    category: 'Comidas Rápidas',
+    address: 'Carrera 28 #50-22, Barrio Decepaz',
     neighborhood: 'Decepaz',
     zone: 'Sur',
     phone: '+57 2 555 2345',
-    description: 'Especialistas en carnes a la parrilla y platos típicos del Valle del Cauca. Ambiente familiar y acogedor.',
+    description: 'Empanadas criollas, aborrajados, marranitas y más antojitos colombianos. Hechos al momento.',
     images: [
-      'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800&q=80',
-      'https://images.unsplash.com/photo-1558030006-450675393462?w=800&q=80',
-      'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=800&q=80'
+      'https://images.unsplash.com/photo-1601050690117-94f5f6fa8bd7?w=800&q=80',
+      'https://images.unsplash.com/photo-1604909052743-94e838986d24?w=800&q=80'
     ],
     latitude: 3.4105,
     longitude: -76.5175,
-    rating: 4.6,
-    priceRange: '$$',
+    rating: 4.3,
+    priceRange: '$',
     featured: false,
     hasMenu: true,
-    foodType: ['Colombiana', 'Parrilla'],
+    foodType: ['Colombiana', 'Fritanga'],
     familyFriendly: true,
-    petFriendly: false,
-    goodForCouples: true,
-    goodForKids: true,
-    attributes: ['Estacionamiento', 'Terraza', 'Aire Acondicionado'],
     menu: [
-      {
-        id: 'm6',
-        name: 'Parrillada Valluna',
-        description: 'Carne, chorizo, morcilla, papa criolla y plátano',
-        price: '$32.000',
-        category: 'Especialidades'
-      },
-      {
-        id: 'm7',
-        name: 'Churrasco',
-        description: 'Corte de carne premium con chimichurri',
-        price: '$28.000',
-        category: 'Especialidades'
-      }
+      { id: 'm5', name: 'Empanada de Carne', description: 'Empanada crocante rellena de carne desmechada', price: '$3.000', category: 'Empanadas' },
+      { id: 'm6', name: 'Aborrajado', description: 'Plátano maduro relleno de queso', price: '$4.500', category: 'Frituras' },
+      { id: 'm7', name: 'Marranita', description: 'Plátano verde con chicharrón', price: '$4.000', category: 'Frituras' },
     ],
-    hasPromotions: true,
-    promotions: [
-      {
-        id: 'p0-3',
-        title: '🎉 ¡Bienvenida! Primera visita con la app',
-        description: '¡Recibe una entrada GRATIS por ser tu primera vez usando nuestra app!',
-        image: 'https://images.unsplash.com/photo-1633436375094-77d8e5f0d2b2?w=800&q=80',
-        conditions: 'Válido solo en tu primera visita\nEscanea el código QR en el restaurante\nNo aplica con otras promociones',
-        validUntil: '2025-12-31',
-        qrRequired: true,
-        firstTimeOnly: true
-      },
-      {
-        id: 'p3-1',
-        title: 'Happy Hour - 2x1 en Bebidas',
-        description: 'Lleva dos bebidas al precio de una en nuestro happy hour',
-        image: 'https://images.unsplash.com/photo-1566554273541-37a9ca77b91f?w=800&q=80',
-        conditions: 'Válido de lunes a viernes de 5:00 PM a 7:00 PM\nEscanea el código QR para reclamar',
-        validUntil: '2025-12-31',
-        qrRequired: true
-      },
-      {
-        id: 'p3-2',
-        title: 'Parrillada Familiar Especial',
-        description: 'Parrillada para 4 personas con descuento del 20%',
-        image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=800&q=80',
-        conditions: 'Válido fines de semana\nReserva con anticipación\nEscanea el código QR para reclamar',
-        validUntil: '2025-12-31',
-        qrRequired: true
-      }
-    ],
-    reviews: [
-      {
-        id: '5',
-        author: 'Pedro Sánchez',
-        rating: 5,
-        comment: 'La mejor carne que he probado en Cali. Muy recomendado.',
-        date: '2024-01-22'
-      }
-    ]
+    reviews: []
   },
-  // Cafés
+
+  // === CAFÉS ===
   {
-    id: '4',
+    id: '3',
     name: 'Café Aroma del Valle',
     category: 'Café',
     address: 'Carrera 28 #45-12, Barrio Compartir',
     neighborhood: 'Compartir',
     zone: 'Oriente',
     phone: '+57 2 555 3456',
-    description: 'Café de especialidad con granos 100% colombianos. Ofrecemos desayunos, repostería artesanal y Wi-Fi gratis.',
+    description: 'Café de especialidad con granos 100% colombianos. Desayunos, repostería artesanal y Wi-Fi gratis.',
     images: [
       'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&q=80',
       'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800&q=80',
@@ -262,693 +98,110 @@ export const mockPlaces: Place[] = [
     familyFriendly: true,
     petFriendly: true,
     goodForCouples: true,
-    goodForKids: false,
     attributes: ['WiFi', 'Aire Acondicionado', 'Música en Vivo'],
     menu: [
-      {
-        id: 'm8',
-        name: 'Café Americano',
-        description: 'Café colombiano de origen único',
-        price: '$4.000',
-        category: 'Bebidas Calientes'
-      },
-      {
-        id: 'm9',
-        name: 'Capuchino',
-        description: 'Espresso con leche espumada y canela',
-        price: '$5.500',
-        category: 'Bebidas Calientes'
-      },
-      {
-        id: 'm10',
-        name: 'Croissant de Almendras',
-        description: 'Recién horneado con almendras tostadas',
-        price: '$6.000',
-        category: 'Repostería'
-      }
+      { id: 'm8', name: 'Café Americano', description: 'Café colombiano de origen único', price: '$4.000', category: 'Bebidas Calientes' },
+      { id: 'm9', name: 'Capuchino', description: 'Espresso con leche espumada y canela', price: '$5.500', category: 'Bebidas Calientes' },
+      { id: 'm10', name: 'Croissant de Almendras', description: 'Recién horneado con almendras tostadas', price: '$6.000', category: 'Repostería' },
     ],
     hasPromotions: true,
     promotions: [
-      {
-        id: 'p0-4',
-        title: '🎉 ¡Bienvenida! Primera visita con la app',
-        description: '¡Recibe un pastelito GRATIS por ser tu primera vez usando nuestra app!',
-        image: 'https://images.unsplash.com/photo-1587049352846-4a222e784422?w=800&q=80',
-        conditions: 'Válido solo en tu primera visita\nEscanea el código QR en la cafetería\nNo aplica con otras promociones',
-        validUntil: '2025-12-31',
-        qrRequired: true,
-        firstTimeOnly: true
-      },
-      {
-        id: 'p4-1',
-        title: 'Desayuno Completo + Café',
-        description: 'Croissant + Café americano por precio especial',
-        image: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&q=80',
-        conditions: 'Disponible hasta las 11:00 AM\nPrecio especial: $8.000\nEscanea el código QR para reclamar',
-        validUntil: '2025-12-31',
-        qrRequired: true
-      }
+      { id: 'p3-1', title: '🎉 ¡Bienvenida! Pastelito GRATIS', description: 'Recibe un pastelito GRATIS en tu primera visita', image: 'https://images.unsplash.com/photo-1587049352846-4a222e784422?w=800&q=80', conditions: 'Primera visita\nEscanea QR', validUntil: '2026-12-31', qrRequired: true, firstTimeOnly: true },
     ],
     reviews: [
-      {
-        id: '6',
-        author: 'Laura Jiménez',
-        rating: 5,
-        comment: 'Excelente café y un ambiente muy agradable para trabajar.',
-        date: '2024-01-25'
-      }
+      { id: 'r3', author: 'Laura J.', rating: 5, comment: 'Excelente café y ambiente para trabajar.', date: '2026-01-25' },
     ]
   },
   {
-    id: '5',
-    name: 'Cafetería Dulce Momento',
+    id: '4',
+    name: 'Cafetería Artesanal Origen',
     category: 'Café',
-    address: 'Calle 85 #32-20, Barrio Vallegrande',
-    neighborhood: 'Vallegrande',
-    phone: '+57 2 555 3567',
-    description: 'Cafetería boutique con repostería francesa y bebidas especiales. Terraza con vista panorámica.',
+    address: 'Calle 5 #38-20, Barrio San Fernando',
+    neighborhood: 'San Fernando',
+    zone: 'Centro',
+    phone: '+57 2 555 5345',
+    description: 'Café de especialidad con métodos de extracción manuales. Barista certificado y granos de origen único.',
     images: [
-      'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800&q=80',
-      'https://images.unsplash.com/photo-1559305616-3005c2fc2d7f?w=800&q=80',
-      'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=800&q=80'
+      'https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=800&q=80',
+      'https://images.unsplash.com/photo-1453614512568-c4024d13c247?w=800&q=80'
     ],
-    latitude: 3.4380,
-    longitude: -76.5230,
-    rating: 4.5,
+    latitude: 3.4210,
+    longitude: -76.5380,
+    rating: 4.9,
     priceRange: '$$',
-    featured: false,
+    featured: true,
     hasMenu: true,
     menu: [
-      {
-        id: 'm11',
-        name: 'Latte Macchiato',
-        description: 'Espresso con leche vaporizada',
-        price: '$6.500',
-        category: 'Bebidas Calientes'
-      },
-      {
-        id: 'm12',
-        name: 'Tarta de Chocolate',
-        description: 'Tarta belga con chocolate 70% cacao',
-        price: '$8.000',
-        category: 'Postres'
-      }
+      { id: 'm11', name: 'V60 Pour Over', description: 'Café de origen único con método manual', price: '$8.000', category: 'Métodos de Extracción' },
+      { id: 'm12', name: 'Cold Brew', description: 'Café en frío extraído por 16 horas', price: '$9.000', category: 'Bebidas Frías' },
     ],
     reviews: []
   },
-  // Parques
+
+  // === FOOD TRUCK ===
+  {
+    id: '5',
+    name: 'Taco Loco Food Truck',
+    category: 'Food Truck',
+    address: 'Calle 70 con Carrera 1, Barrio El Peñón',
+    neighborhood: 'El Peñón',
+    zone: 'Norte',
+    phone: '+57 315 555 7890',
+    description: 'Tacos mexicanos auténticos sobre ruedas. Carne asada, pastor, pollo y opciones vegetarianas.',
+    images: [
+      'https://images.unsplash.com/photo-1565123409695-7b5ef63a2efb?w=800&q=80',
+      'https://images.unsplash.com/photo-1551504734-5ee1c4a1479b?w=800&q=80'
+    ],
+    latitude: 3.4520,
+    longitude: -76.5280,
+    rating: 4.6,
+    priceRange: '$',
+    featured: true,
+    hasMenu: true,
+    foodType: ['Mexicana', 'Tacos'],
+    familyFriendly: true,
+    menu: [
+      { id: 'm13', name: 'Taco al Pastor', description: '3 tacos con piña, cilantro y cebolla', price: '$15.000', category: 'Tacos' },
+      { id: 'm14', name: 'Burrito Bowl', description: 'Arroz, frijoles, carne, guacamole y pico de gallo', price: '$18.000', category: 'Burritos' },
+      { id: 'm15', name: 'Quesadilla de Pollo', description: 'Tortilla de harina con pollo y queso fundido', price: '$14.000', category: 'Quesadillas' },
+    ],
+    reviews: []
+  },
   {
     id: '6',
-    name: 'Parque Ecológico Decepaz',
-    category: 'Parque',
-    address: 'Carrera 25 #52-10, Barrio Decepaz',
-    neighborhood: 'Decepaz',
-    phone: '+57 2 555 4678',
-    description: 'Espacio verde con senderos ecológicos, zona de picnic y área de ejercicios al aire libre.',
+    name: 'Wok on Wheels',
+    category: 'Food Truck',
+    address: 'Parque del Perro, San Fernando',
+    neighborhood: 'San Fernando',
+    zone: 'Centro',
+    phone: '+57 310 555 4567',
+    description: 'Cocina asiática callejera: noodles, arroz frito, dumplings y bubble tea. Todo hecho al momento.',
     images: [
-      'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&q=80',
-      'https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?w=800&q=80',
-      'https://images.unsplash.com/photo-1535332371349-a5d229f49cb5?w=800&q=80'
+      'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=800&q=80',
+      'https://images.unsplash.com/photo-1526318896980-cf78c088247c?w=800&q=80'
     ],
-    latitude: 3.4095,
-    longitude: -76.5185,
-    rating: 4.3,
-    priceRange: 'Gratis',
+    latitude: 3.4215,
+    longitude: -76.5375,
+    rating: 4.4,
+    priceRange: '$',
     featured: false,
-    reviews: [
-      {
-        id: '7',
-        author: 'Diana Torres',
-        rating: 4,
-        comment: 'Hermoso lugar para caminar y respirar aire puro.',
-        date: '2024-01-28'
-      }
-    ]
+    hasMenu: true,
+    foodType: ['Asiática', 'Street Food'],
+    menu: [
+      { id: 'm16', name: 'Pad Thai', description: 'Noodles salteados con camarones y maní', price: '$18.000', category: 'Noodles' },
+      { id: 'm17', name: 'Arroz Frito Especial', description: 'Arroz con vegetales, huevo y salsa de soja', price: '$15.000', category: 'Arroces' },
+    ],
+    reviews: []
   },
-  // Farmacias
+
+  // === ITALIANA ===
   {
     id: '7',
-    name: 'Droguería San Rafael',
-    category: 'Farmacia',
-    address: 'Calle 46 #21-45, Barrio Compartir',
-    neighborhood: 'Compartir',
-    phone: '+57 2 555 5789',
-    description: 'Farmacia con servicio 24 horas. Medicamentos genéricos y de marca, productos de cuidado personal y atención personalizada.',
-    images: [
-      'https://images.unsplash.com/photo-1576602976047-174e57a47881?w=800&q=80',
-      'https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=800&q=80',
-      'https://images.unsplash.com/photo-1631549916768-4119b2e5f926?w=800&q=80'
-    ],
-    latitude: 3.3955,
-    longitude: -76.5200,
-    rating: 4.4,
-    priceRange: '$$',
-    featured: false,
-    hasProducts: true,
-    products: [
-      {
-        id: 'p4',
-        name: 'Acetaminofén 500mg',
-        description: 'Caja x 10 tabletas - Analgésico y antipirético',
-        price: '$3.500',
-        category: 'Medicamentos'
-      },
-      {
-        id: 'p5',
-        name: 'Alcohol Antiséptico',
-        description: 'Frasco de 250ml al 70%',
-        price: '$8.000',
-        category: 'Cuidado Personal'
-      },
-      {
-        id: 'p6',
-        name: 'Vitamina C 1000mg',
-        description: 'Frasco x 30 cápsulas',
-        price: '$25.000',
-        category: 'Suplementos'
-      }
-    ],
-    reviews: [
-      {
-        id: '8',
-        author: 'Roberto Mendoza',
-        rating: 5,
-        comment: 'Excelente atención y siempre tienen los medicamentos que necesito.',
-        date: '2024-01-30'
-      }
-    ]
-  },
-  {
-    id: '8',
-    name: 'Farmacia Salud Total',
-    category: 'Farmacia',
-    address: 'Carrera 29 #82-35, Barrio Vallegrande',
-    neighborhood: 'Vallegrande',
-    phone: '+57 2 555 5890',
-    description: 'Cadena de farmacias con precios competitivos. Servicio de domicilios sin costo adicional.',
-    images: [
-      'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=800&q=80',
-      'https://images.unsplash.com/photo-1585435557343-3b092031a831?w=800&q=80',
-      'https://images.unsplash.com/photo-1471864190281-a93a3070b6de?w=800&q=80'
-    ],
-    latitude: 3.4368,
-    longitude: -76.5220,
-    rating: 4.1,
-    priceRange: '$',
-    featured: false,
-    hasProducts: true,
-    products: [
-      {
-        id: 'p7',
-        name: 'Ibuprofeno 400mg',
-        description: 'Caja x 20 tabletas - Antiinflamatorio',
-        price: '$6.000',
-        category: 'Medicamentos'
-      },
-      {
-        id: 'p8',
-        name: 'Crema Dental',
-        description: 'Tubo de 150ml con flúor',
-        price: '$9.500',
-        category: 'Cuidado Personal'
-      },
-      {
-        id: 'p9',
-        name: 'Termómetro Digital',
-        description: 'Lectura rápida en 60 segundos',
-        price: '$18.000',
-        category: 'Equipos Médicos'
-      }
-    ],
-    reviews: []
-  },
-  // Bancos
-  {
-    id: '9',
-    name: 'Banco Popular Decepaz',
-    category: 'Banco',
-    address: 'Calle 51 #24-18, Barrio Decepaz',
-    neighborhood: 'Decepaz',
-    phone: '+57 2 555 6901',
-    description: 'Sucursal bancaria con cajeros automáticos, corresponsal bancario y atención personalizada. Horario: Lunes a Viernes 8:00 AM - 4:30 PM.',
-    images: [
-      'https://images.unsplash.com/photo-1541354329998-f4d9a9f9297f?w=800&q=80',
-      'https://images.unsplash.com/photo-1556740758-90de374c12ad?w=800&q=80',
-      'https://images.unsplash.com/photo-1554224311-beee2f986c00?w=800&q=80'
-    ],
-    latitude: 3.4110,
-    longitude: -76.5180,
-    rating: 3.9,
-    priceRange: 'N/A',
-    featured: false,
-    reviews: [
-      {
-        id: '9',
-        author: 'Sandra Gómez',
-        rating: 4,
-        comment: 'Buen servicio aunque a veces hay que esperar un poco.',
-        date: '2024-02-01'
-      }
-    ]
-  },
-  {
-    id: '10',
-    name: 'Bancolombia Compartir',
-    category: 'Banco',
-    address: 'Carrera 26 #44-25, Barrio Compartir',
-    neighborhood: 'Compartir',
-    phone: '+57 2 555 7012',
-    description: 'Oficina bancaria completa con zona de cajeros 24/7, asesoría financiera y seguros.',
-    images: [
-      'https://images.unsplash.com/photo-1565372195458-9de0b320ef04?w=800&q=80',
-      'https://images.unsplash.com/photo-1607863680198-23d4b2565df0?w=800&q=80',
-      'https://images.unsplash.com/photo-1601597111158-2fceff292cdc?w=800&q=80'
-    ],
-    latitude: 3.3945,
-    longitude: -76.5195,
-    rating: 4.0,
-    priceRange: 'N/A',
-    featured: false,
-    reviews: []
-  },
-  // Centros Comerciales
-  {
-    id: '11',
-    name: 'Centro Comercial Plaza Vallegrande',
-    category: 'Centro Comercial',
-    address: 'Carrera 31 #83-50, Barrio Vallegrande',
-    neighborhood: 'Vallegrande',
-    phone: '+57 2 555 8123',
-    description: 'Moderno centro comercial con tiendas de ropa, tecnología, supermercado, cines y patio de comidas. Parqueadero gratis las primeras 2 horas.',
-    images: [
-      'https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?w=800&q=80',
-      'https://images.unsplash.com/photo-1519567241046-7f570eee3ce6?w=800&q=80',
-      'https://images.unsplash.com/photo-1519558260268-cde7e03a0152?w=800&q=80'
-    ],
-    latitude: 3.4375,
-    longitude: -76.5228,
-    rating: 4.4,
-    priceRange: '$$',
-    featured: true,
-    hasPromotions: true,
-    promotions: [
-      {
-        id: 'p0-11',
-        title: '🎉 ¡Bienvenida! Primera visita con la app',
-        description: '¡Recibe un cupón de $20.000 en compras por ser tu primera vez usando nuestra app!',
-        image: 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=800&q=80',
-        conditions: 'Válido solo en tu primera visita\nEscanea el código QR en el centro comercial\nMínimo de compra: $100.000',
-        validUntil: '2025-12-31',
-        qrRequired: true,
-        firstTimeOnly: true
-      },
-      {
-        id: 'p11-1',
-        title: 'Black Friday - Descuentos hasta 70%',
-        description: 'Aprovecha descuentos increíbles en todas las tiendas del centro comercial',
-        image: 'https://images.unsplash.com/photo-1607083206968-13611e3d76db?w=800&q=80',
-        conditions: 'Válido del 23 al 27 de noviembre\nEscanea el código QR para acceso anticipado',
-        validUntil: '2025-11-27',
-        qrRequired: true
-      }
-    ],
-    featuredProducts: [
-      {
-        id: 'fp11-1',
-        name: 'Smart TV 55" 4K',
-        description: 'Televisor inteligente Samsung con tecnología QLED',
-        price: '$2.499.000',
-        category: 'Tecnología',
-        image: 'https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=400&q=80'
-      },
-      {
-        id: 'fp11-2',
-        name: 'Zapatos Deportivos Nike',
-        description: 'Tenis para running con tecnología Air Max',
-        price: '$389.900',
-        category: 'Ropa y Calzado',
-        image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=80'
-      },
-      {
-        id: 'fp11-3',
-        name: 'Perfume Importado',
-        description: 'Fragancia exclusiva para mujer 100ml',
-        price: '$259.000',
-        category: 'Perfumería',
-        image: 'https://images.unsplash.com/photo-1541643600914-78b084683601?w=400&q=80'
-      },
-      {
-        id: 'fp11-4',
-        name: 'Audífonos Bluetooth Sony',
-        description: 'Audífonos inalámbricos con cancelación de ruido',
-        price: '$599.000',
-        category: 'Tecnología',
-        image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&q=80'
-      },
-      {
-        id: 'fp11-5',
-        name: 'Reloj Inteligente',
-        description: 'Smartwatch con monitor de salud y fitness',
-        price: '$899.000',
-        category: 'Tecnología',
-        image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=80'
-      }
-    ],
-    catalogUrl: 'https://www.plazavallegrande.com/catalogo',
-    reviews: [
-      {
-        id: '10',
-        author: 'Camilo Vargas',
-        rating: 5,
-        comment: 'Muy completo y con buenas opciones de entretenimiento.',
-        date: '2024-02-03'
-      }
-    ]
-  },
-  {
-    id: '12',
-    name: 'Mercado Local Decepaz',
-    category: 'Centro Comercial',
-    address: 'Calle 49 #23-40, Barrio Decepaz',
-    neighborhood: 'Decepaz',
-    phone: '+57 2 555 8234',
-    description: 'Centro comercial de barrio con supermercado, ferreterías, almacenes de ropa y servicios varios.',
-    images: [
-      'https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=800&q=80',
-      'https://images.unsplash.com/photo-1583258292688-d0213dc5a3a8?w=800&q=80',
-      'https://images.unsplash.com/photo-1583623025817-d180a2221d0a?w=800&q=80'
-    ],
-    latitude: 3.4100,
-    longitude: -76.5178,
-    rating: 3.8,
-    priceRange: '$',
-    featured: false,
-    hasProducts: true,
-    products: [
-      {
-        id: 'p1',
-        name: 'Kit de Herramientas Básicas',
-        description: 'Set completo con martillo, destornilladores, alicates y llave inglesa',
-        price: '$85.000',
-        category: 'Ferretería'
-      },
-      {
-        id: 'p2',
-        name: 'Camiseta Deportiva',
-        description: 'Tela transpirable, varios colores disponibles',
-        price: '$35.000',
-        category: 'Ropa'
-      },
-      {
-        id: 'p3',
-        name: 'Aceite de Cocina (1L)',
-        description: 'Aceite vegetal premium',
-        price: '$12.000',
-        category: 'Supermercado'
-      }
-    ],
-    reviews: []
-  },
-  // Hospitales
-  {
-    id: '13',
-    name: 'Centro Médico Compartir',
-    category: 'Hospital',
-    address: 'Calle 47 #22-10, Barrio Compartir',
-    neighborhood: 'Compartir',
-    phone: '+57 2 555 9345',
-    description: 'Centro de salud con medicina general, odontología, laboratorio clínico y farmacia. Atiende EPS y particulares.',
-    images: [
-      'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800&q=80',
-      'https://images.unsplash.com/photo-1538108149393-fbbd81895907?w=800&q=80',
-      'https://images.unsplash.com/photo-1516841273335-e39b37888115?w=800&q=80'
-    ],
-    latitude: 3.3958,
-    longitude: -76.5192,
-    rating: 4.2,
-    priceRange: '$$',
-    featured: false,
-    reviews: [
-      {
-        id: '11',
-        author: 'Patricia Ruiz',
-        rating: 4,
-        comment: 'Buena atención médica y los tiempos de espera son razonables.',
-        date: '2024-02-05'
-      }
-    ]
-  },
-  {
-    id: '14',
-    name: 'Clínica Vallegrande',
-    category: 'Hospital',
-    address: 'Carrera 32 #81-25, Barrio Vallegrande',
-    neighborhood: 'Vallegrande',
-    phone: '+57 2 555 9456',
-    description: 'Clínica de mediana complejidad con urgencias 24 horas, hospitalización, cirugía y especialistas.',
-    images: [
-      'https://images.unsplash.com/photo-1631815589968-fdb09a223b1e?w=800&q=80',
-      'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800&q=80',
-      'https://images.unsplash.com/photo-1519494080410-f9aa76cb4283?w=800&q=80'
-    ],
-    latitude: 3.4370,
-    longitude: -76.5232,
-    rating: 4.5,
-    priceRange: '$$$',
-    featured: false,
-    reviews: []
-  },
-  // Hoteles
-  {
-    id: '15',
-    name: 'Hotel Colonial Decepaz',
-    category: 'Hotel',
-    address: 'Calle 52 #25-15, Barrio Decepaz',
-    neighborhood: 'Decepaz',
-    phone: '+57 2 555 0567',
-    description: 'Hotel familiar con habitaciones cómodas, Wi-Fi gratis, desayuno incluido y parqueadero privado.',
-    images: [
-      'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80',
-      'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&q=80',
-      'https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800&q=80'
-    ],
-    latitude: 3.4108,
-    longitude: -76.5182,
-    rating: 4.1,
-    priceRange: '$$',
-    featured: false,
-    hasServices: true,
-    services: [
-      {
-        id: 'h1',
-        name: 'Habitación Sencilla',
-        description: 'Cama doble, baño privado, TV, Wi-Fi, desayuno incluido',
-        price: '$120.000/noche'
-      },
-      {
-        id: 'h2',
-        name: 'Habitación Doble',
-        description: 'Dos camas, baño privado, TV, Wi-Fi, desayuno incluido',
-        price: '$150.000/noche'
-      },
-      {
-        id: 'h3',
-        name: 'Suite Ejecutiva',
-        description: 'Cama king, sala de estar, baño con jacuzzi, desayuno y cena incluidos',
-        price: '$250.000/noche'
-      }
-    ],
-    airbnbUrl: 'https://www.airbnb.com',
-    reviews: [
-      {
-        id: '12',
-        author: 'Miguel Ángel Castro',
-        rating: 4,
-        comment: 'Buen hotel, limpio y con buena ubicación.',
-        date: '2024-02-07'
-      }
-    ]
-  },
-  {
-    id: '16',
-    name: 'Hotel Ejecutivo Compartir',
-    category: 'Hotel',
-    address: 'Carrera 27 #46-30, Barrio Compartir',
-    neighborhood: 'Compartir',
-    phone: '+57 2 555 0678',
-    description: 'Hotel boutique con habitaciones ejecutivas, sala de reuniones, restaurante y servicio de lavandería.',
-    images: [
-      'https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=800&q=80',
-      'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800&q=80',
-      'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&q=80'
-    ],
-    latitude: 3.3950,
-    longitude: -76.5198,
-    rating: 4.6,
-    priceRange: '$$$',
-    featured: true,
-    hasServices: true,
-    services: [
-      {
-        id: 'h4',
-        name: 'Habitación Ejecutiva',
-        description: 'Cama queen, escritorio de trabajo, Wi-Fi de alta velocidad, desayuno buffet',
-        price: '$180.000/noche'
-      },
-      {
-        id: 'h5',
-        name: 'Suite Junior',
-        description: 'Cama king, sala de estar, minibar, desayuno y acceso al lounge ejecutivo',
-        price: '$280.000/noche'
-      },
-      {
-        id: 'h6',
-        name: 'Alquiler de Sala de Reuniones',
-        description: 'Sala con capacidad para 12 personas, proyector, Wi-Fi, servicio de café',
-        price: '$100.000/hora',
-        duration: 'Por hora'
-      }
-    ],
-    airbnbUrl: 'https://www.airbnb.com',
-    reviews: []
-  },
-  // Entretenimiento
-  {
-    id: '17',
-    name: 'Cine Teatro Vallegrande',
-    category: 'Entretenimiento',
-    address: 'Carrera 30 #84-20, Barrio Vallegrande',
-    neighborhood: 'Vallegrande',
-    phone: '+57 2 555 1789',
-    description: 'Complejo de cine con 5 salas, sonido Dolby Atmos, confitería y estrenos cada semana.',
-    images: [
-      'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=800&q=80',
-      'https://images.unsplash.com/photo-1542204165-65bf26472b9b?w=800&q=80',
-      'https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=800&q=80'
-    ],
-    latitude: 3.4378,
-    longitude: -76.5225,
-    rating: 4.7,
-    priceRange: '$$',
-    featured: true,
-    reviews: [
-      {
-        id: '13',
-        author: 'Juliana Pérez',
-        rating: 5,
-        comment: 'Excelentes instalaciones y muy cómodo. Las palomitas son deliciosas.',
-        date: '2024-02-09'
-      }
-    ]
-  },
-  {
-    id: '18',
-    name: 'Zona de Juegos GameZone',
-    category: 'Entretenimiento',
-    address: 'Calle 48 #23-50, Barrio Decepaz',
-    neighborhood: 'Decepaz',
-    phone: '+57 2 555 1890',
-    description: 'Centro de entretenimiento con videojuegos, billar, futbolín y simuladores de realidad virtual.',
-    images: [
-      'https://images.unsplash.com/photo-1511882150382-421056c89033?w=800&q=80',
-      'https://images.unsplash.com/photo-1556369376-92e5d19e95c6?w=800&q=80',
-      'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=80'
-    ],
-    latitude: 3.4102,
-    longitude: -76.5177,
-    rating: 4.3,
-    priceRange: '$',
-    featured: false,
-    reviews: []
-  },
-  // Servicios
-  {
-    id: '19',
-    name: 'Taller Mecánico El Experto',
-    category: 'Servicios',
-    address: 'Carrera 28 #47-10, Barrio Compartir',
-    neighborhood: 'Compartir',
-    phone: '+57 2 555 2901',
-    description: 'Taller mecánico especializado en mantenimiento preventivo y correctivo. Diagnóstico computarizado, cambio de aceite y frenos.',
-    images: [
-      'https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=800&q=80',
-      'https://images.unsplash.com/photo-1487754180451-c456f719a1fc?w=800&q=80',
-      'https://images.unsplash.com/photo-1632823469850-1b70e43d5d4f?w=800&q=80'
-    ],
-    latitude: 3.3953,
-    longitude: -76.5193,
-    rating: 4.4,
-    priceRange: '$$',
-    featured: false,
-    hasServices: true,
-    services: [
-      {
-        id: 's1',
-        name: 'Cambio de Aceite',
-        description: 'Cambio de aceite y filtro, incluye revisión de niveles',
-        price: '$80.000',
-        duration: '30 min'
-      },
-      {
-        id: 's2',
-        name: 'Diagnóstico Computarizado',
-        description: 'Escaneo completo del sistema electrónico del vehículo',
-        price: '$50.000',
-        duration: '45 min'
-      },
-      {
-        id: 's3',
-        name: 'Cambio de Frenos',
-        description: 'Cambio de pastillas y discos de freno',
-        price: '$250.000',
-        duration: '2 horas'
-      }
-    ],
-    reviews: [
-      {
-        id: '14',
-        author: 'Fernando López',
-        rating: 5,
-        comment: 'Muy profesionales y honestos con sus diagnósticos.',
-        date: '2024-02-11'
-      }
-    ]
-  },
-  {
-    id: '20',
-    name: 'Peluquería & Spa Bella Vista',
-    category: 'Servicios',
-    address: 'Calle 82 #31-40, Barrio Vallegrande',
-    neighborhood: 'Vallegrande',
-    phone: '+57 2 555 3012',
-    description: 'Salón de belleza con servicios de peluquería, manicure, pedicure, tratamientos faciales y masajes relajantes.',
-    images: [
-      'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800&q=80',
-      'https://images.unsplash.com/photo-1562322140-8baeececf3df?w=800&q=80',
-      'https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?w=800&q=80'
-    ],
-    latitude: 3.4365,
-    longitude: -76.5227,
-    rating: 4.8,
-    priceRange: '$$',
-    featured: false,
-    reviews: [
-      {
-        id: '15',
-        author: 'Carolina Morales',
-        rating: 5,
-        comment: 'Increíble servicio y las estilistas son muy profesionales.',
-        date: '2024-02-13'
-      }
-    ]
-  },
-  // Ciudad Jardín
-  {
-    id: '21',
     name: 'Pizzería Napolitana',
-    category: 'Restaurante',
+    category: 'Italiana',
     address: 'Calle 18 #100-45, Barrio Ciudad Jardín',
     neighborhood: 'Ciudad Jardín',
+    zone: 'Sur',
     phone: '+57 2 555 4123',
     description: 'Auténtica pizza napolitana con ingredientes importados. Horno de leña tradicional y ambiente italiano.',
     images: [
@@ -962,111 +215,193 @@ export const mockPlaces: Place[] = [
     priceRange: '$$',
     featured: true,
     hasMenu: true,
+    foodType: ['Pizza', 'Pasta'],
+    goodForCouples: true,
+    familyFriendly: true,
+    attributes: ['Horno de Leña', 'Terraza'],
     menu: [
-      {
-        id: 'm13',
-        name: 'Pizza Margherita',
-        description: 'Tomate San Marzano, mozzarella di bufala, albahaca fresca',
-        price: '$32.000',
-        category: 'Pizzas'
-      },
-      {
-        id: 'm14',
-        name: 'Pizza Quattro Formaggi',
-        description: 'Mozzarella, gorgonzola, parmesano y provolone',
-        price: '$35.000',
-        category: 'Pizzas'
-      }
+      { id: 'm18', name: 'Pizza Margherita', description: 'Tomate San Marzano, mozzarella di bufala, albahaca', price: '$32.000', category: 'Pizzas' },
+      { id: 'm19', name: 'Pizza Quattro Formaggi', description: 'Mozzarella, gorgonzola, parmesano y provolone', price: '$35.000', category: 'Pizzas' },
+      { id: 'm20', name: 'Pasta Carbonara', description: 'Spaghetti con guanciale, huevo y pecorino', price: '$28.000', category: 'Pastas' },
+      { id: 'm21', name: 'Lasagna Bolognesa', description: 'Capas de pasta, ragú y bechamel gratinada', price: '$30.000', category: 'Pastas' },
     ],
     reviews: []
   },
   {
-    id: '22',
-    name: 'Gimnasio FitZone',
-    category: 'Servicios',
-    address: 'Carrera 102 #19-30, Barrio Ciudad Jardín',
-    neighborhood: 'Ciudad Jardín',
-    phone: '+57 2 555 4234',
-    description: 'Gimnasio completo con equipos de última generación, clases grupales, entrenadores personales y zona de crossfit.',
+    id: '8',
+    name: 'Trattoria Don Luigi',
+    category: 'Italiana',
+    address: 'Carrera 51 #8-30, Barrio Granada',
+    neighborhood: 'Granada',
+    zone: 'Occidente',
+    phone: '+57 2 555 6789',
+    description: 'Cocina italiana casera con recetas familiares. Pastas frescas hechas a diario. Vinos italianos seleccionados.',
     images: [
-      'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80',
-      'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=800&q=80',
-      'https://images.unsplash.com/photo-1623874514711-0f321325f318?w=800&q=80'
+      'https://images.unsplash.com/photo-1498579150354-977475b7ea0b?w=800&q=80',
+      'https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=800&q=80'
     ],
-    latitude: 3.3790,
-    longitude: -76.5320,
+    latitude: 3.4320,
+    longitude: -76.5410,
+    rating: 4.7,
+    priceRange: '$$$',
+    featured: false,
+    hasMenu: true,
+    foodType: ['Italiana', 'Pasta'],
+    goodForCouples: true,
+    attributes: ['Vinos', 'Reservas'],
+    menu: [
+      { id: 'm22', name: 'Risotto ai Funghi', description: 'Risotto cremoso con hongos porcini', price: '$35.000', category: 'Risottos' },
+      { id: 'm23', name: 'Ossobuco alla Milanese', description: 'Osobuco estofado con gremolata', price: '$42.000', category: 'Segundos' },
+    ],
+    reviews: []
+  },
+
+  // === PARRILLA ===
+  {
+    id: '9',
+    name: 'Asadero La Brasa Vallecaucana',
+    category: 'Parrilla',
+    address: 'Calle 50 #22-30, Barrio Decepaz',
+    neighborhood: 'Decepaz',
+    zone: 'Sur',
+    phone: '+57 2 555 2345',
+    description: 'Especialistas en carnes a la parrilla y platos típicos. Cortes premium, chorizos artesanales y ambiente familiar.',
+    images: [
+      'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800&q=80',
+      'https://images.unsplash.com/photo-1558030006-450675393462?w=800&q=80',
+      'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=800&q=80'
+    ],
+    latitude: 3.4105,
+    longitude: -76.5175,
     rating: 4.6,
     priceRange: '$$',
     featured: true,
+    hasMenu: true,
+    foodType: ['Parrilla', 'Colombiana'],
+    familyFriendly: true,
+    goodForCouples: true,
+    attributes: ['Estacionamiento', 'Terraza'],
+    menu: [
+      { id: 'm24', name: 'Parrillada Valluna', description: 'Carne, chorizo, morcilla, papa criolla y plátano', price: '$32.000', category: 'Especialidades' },
+      { id: 'm25', name: 'Churrasco', description: 'Corte premium con chimichurri', price: '$28.000', category: 'Carnes' },
+      { id: 'm26', name: 'Costillas BBQ', description: 'Costillas de cerdo en salsa BBQ ahumada', price: '$35.000', category: 'Carnes' },
+    ],
+    hasPromotions: true,
+    promotions: [
+      { id: 'p9-1', title: '🎉 Entrada GRATIS en primera visita', description: 'Recibe una entrada GRATIS con tu primera compra', image: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800&q=80', conditions: 'Primera visita\nEscanea QR', validUntil: '2026-12-31', qrRequired: true, firstTimeOnly: true },
+      { id: 'p9-2', title: 'Parrillada Familiar 20% OFF', description: 'Parrillada para 4 personas con descuento', image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=800&q=80', conditions: 'Fines de semana', validUntil: '2026-12-31', qrRequired: true },
+    ],
+    reviews: [
+      { id: 'r4', author: 'Pedro S.', rating: 5, comment: 'La mejor carne de Cali.', date: '2026-01-22' },
+    ]
+  },
+  {
+    id: '10',
+    name: 'Leños & Carbón',
+    category: 'Parrilla',
+    address: 'Calle 23N #5N-40, Versalles',
+    neighborhood: 'Versalles',
+    zone: 'Norte',
+    phone: '+57 2 555 8901',
+    description: 'Parrilla argentina con cortes de exportación. Provoleta, empanadas argentinas y vinos Malbec.',
+    images: [
+      'https://images.unsplash.com/photo-1544025162-d76694265947?w=800&q=80',
+      'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=800&q=80'
+    ],
+    latitude: 3.4580,
+    longitude: -76.5360,
+    rating: 4.5,
+    priceRange: '$$$',
+    featured: false,
+    hasMenu: true,
+    foodType: ['Argentina', 'Parrilla'],
+    goodForCouples: true,
+    menu: [
+      { id: 'm27', name: 'Bife de Chorizo', description: 'Corte argentino 400g con guarnición', price: '$45.000', category: 'Cortes' },
+      { id: 'm28', name: 'Provoleta', description: 'Queso provolone a la parrilla con orégano', price: '$18.000', category: 'Entradas' },
+    ],
     reviews: []
   },
-  // San Fernando
+
+  // === TRADICIONAL ===
   {
-    id: '23',
-    name: 'Cafetería Artesanal Origen',
-    category: 'Café',
-    address: 'Calle 5 #38-20, Barrio San Fernando',
-    neighborhood: 'San Fernando',
-    phone: '+57 2 555 5345',
-    description: 'Café de especialidad con métodos de extracción manuales. Barista certificado y granos de origen único.',
+    id: '11',
+    name: 'Restaurante El Sabor del Barrio',
+    category: 'Tradicional',
+    address: 'Calle 45 #20-15, Barrio Compartir',
+    neighborhood: 'Compartir',
+    zone: 'Oriente',
+    phone: '+57 2 555 1234',
+    description: 'Deliciosa comida típica caleña con sazón de casa. Sancocho de gallina, bandeja paisa y almuerzo ejecutivo.',
     images: [
-      'https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=800&q=80',
-      'https://images.unsplash.com/photo-1453614512568-c4024d13c247?w=800&q=80',
-      'https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=800&q=80'
+      'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&q=80',
+      'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80',
+      'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80'
     ],
-    latitude: 3.4210,
-    longitude: -76.5380,
-    rating: 4.9,
+    latitude: 3.3951,
+    longitude: -76.5197,
+    rating: 4.5,
     priceRange: '$$',
     featured: true,
     hasMenu: true,
+    foodType: ['Colombiana', 'Casera'],
+    familyFriendly: true,
+    goodForKids: true,
+    attributes: ['WiFi', 'Estacionamiento', 'Terraza'],
     menu: [
-      {
-        id: 'm15',
-        name: 'V60 Pour Over',
-        description: 'Café de origen único con método manual',
-        price: '$8.000',
-        category: 'Métodos de Extracción'
-      },
-      {
-        id: 'm16',
-        name: 'Cold Brew',
-        description: 'Café en frío extraído por 16 horas',
-        price: '$9.000',
-        category: 'Bebidas Frías'
-      }
+      { id: 'm29', name: 'Sancocho de Gallina', description: 'Sopa tradicional con gallina criolla y plátano', price: '$18.000', category: 'Platos Principales' },
+      { id: 'm30', name: 'Bandeja Paisa', description: 'Carne, chicharrón, chorizo, arroz, frijoles, huevo y plátano', price: '$25.000', category: 'Platos Principales' },
+      { id: 'm31', name: 'Almuerzo Ejecutivo', description: 'Sopa + plato fuerte + jugo + postre', price: '$14.000', category: 'Almuerzos' },
     ],
-    reviews: []
+    hasPromotions: true,
+    promotions: [
+      { id: 'p11-1', title: '🎉 Postre GRATIS primera visita', description: 'Recibe un postre GRATIS en tu primera visita', image: 'https://images.unsplash.com/photo-1551024601-bec78aea704b?w=800&q=80', conditions: 'Primera visita\nEscanea QR', validUntil: '2026-12-31', qrRequired: true, firstTimeOnly: true },
+      { id: 'p11-2', title: '2x1 Bandeja Paisa los Miércoles', description: 'Dos bandejas por el precio de una', image: 'https://images.unsplash.com/photo-1604909052743-94e838986d24?w=800&q=80', conditions: 'Miércoles de 12PM a 3PM', validUntil: '2026-12-31', qrRequired: true },
+    ],
+    reviews: [
+      { id: 'r5', author: 'María G.', rating: 5, comment: 'El mejor sancocho de Cali!', date: '2026-01-15' },
+    ]
   },
   {
-    id: '24',
-    name: 'Panadería La Espiga Dorada',
-    category: 'Restaurante',
-    address: 'Carrera 39 #6-15, Barrio San Fernando',
-    neighborhood: 'San Fernando',
-    phone: '+57 2 555 5456',
-    description: 'Panadería tradicional con pan recién horneado todos los días. Especialidad en pan francés y pastelería.',
+    id: '12',
+    name: 'Fogón Valluno Doña Rosa',
+    category: 'Tradicional',
+    address: 'Carrera 30 #80-50, Barrio Vallegrande',
+    neighborhood: 'Vallegrande',
+    zone: 'Norte',
+    phone: '+57 2 555 5678',
+    description: 'Cocina vallecaucana de tradición familiar. Tamales, empanadas, pandebono y champús los fines de semana.',
     images: [
-      'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800&q=80',
-      'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=800&q=80',
-      'https://images.unsplash.com/photo-1550617931-e17a7b70dce2?w=800&q=80'
+      'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800&q=80',
+      'https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=800&q=80'
     ],
-    latitude: 3.4215,
-    longitude: -76.5375,
-    rating: 4.7,
+    latitude: 3.4372,
+    longitude: -76.5225,
+    rating: 4.4,
     priceRange: '$',
-    featured: true,
+    featured: false,
+    hasMenu: true,
+    foodType: ['Colombiana', 'Valluna'],
+    familyFriendly: true,
+    goodForKids: true,
+    menu: [
+      { id: 'm32', name: 'Tamal Valluno', description: 'Tamal con masa de maíz, pollo y cerdo', price: '$10.000', category: 'Antojitos' },
+      { id: 'm33', name: 'Arroz Atollado', description: 'Arroz jugoso con cerdo, pollo y papas', price: '$16.000', category: 'Platos Principales' },
+      { id: 'm34', name: 'Champús', description: 'Bebida típica con maíz, lulo y piña', price: '$5.000', category: 'Bebidas' },
+    ],
     reviews: []
   },
-  // Granada
+
+  // === SALUDABLE ===
   {
-    id: '25',
-    name: 'Restaurante Vegetariano Raíces',
-    category: 'Restaurante',
+    id: '13',
+    name: 'Green Bowl Cali',
+    category: 'Saludable',
     address: 'Calle 8 #50-25, Barrio Granada',
     neighborhood: 'Granada',
+    zone: 'Occidente',
     phone: '+57 2 555 6567',
-    description: 'Cocina vegetariana y vegana con ingredientes orgánicos locales. Opciones sin gluten disponibles.',
+    description: 'Cocina saludable, vegetariana y vegana con ingredientes orgánicos. Bowls, smoothies y wraps.',
     images: [
       'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=800&q=80',
       'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&q=80',
@@ -1078,97 +413,175 @@ export const mockPlaces: Place[] = [
     priceRange: '$$',
     featured: true,
     hasMenu: true,
+    foodType: ['Vegetariana', 'Vegana', 'Saludable'],
+    petFriendly: true,
+    goodForCouples: true,
+    attributes: ['WiFi', 'Opciones Veganas', 'Sin Gluten'],
     menu: [
-      {
-        id: 'm17',
-        name: 'Bowl Buddha',
-        description: 'Quinoa, vegetales asados, hummus y tahini',
-        price: '$22.000',
-        category: 'Platos Principales'
-      },
-      {
-        id: 'm18',
-        name: 'Hamburguesa Vegana',
-        description: 'Hamburguesa de lentejas con aguacate y chips',
-        price: '$19.000',
-        category: 'Platos Principales'
-      }
+      { id: 'm35', name: 'Buddha Bowl', description: 'Quinoa, vegetales asados, hummus y tahini', price: '$22.000', category: 'Bowls' },
+      { id: 'm36', name: 'Smoothie Verde', description: 'Espinaca, mango, banana y leche de almendras', price: '$12.000', category: 'Smoothies' },
+      { id: 'm37', name: 'Wrap de Falafel', description: 'Falafel casero con tahini y vegetales frescos', price: '$18.000', category: 'Wraps' },
     ],
     reviews: []
   },
   {
-    id: '26',
-    name: 'Librería Café Páginas',
-    category: 'Café',
-    address: 'Carrera 51 #9-40, Barrio Granada',
-    neighborhood: 'Granada',
-    phone: '+57 2 555 6678',
-    description: 'Librería independiente con cafetería. Eventos literarios, clubes de lectura y música en vivo los fines de semana.',
+    id: '14',
+    name: 'Açaí & Juice Bar',
+    category: 'Saludable',
+    address: 'Carrera 102 #19-30, Ciudad Jardín',
+    neighborhood: 'Ciudad Jardín',
+    zone: 'Sur',
+    phone: '+57 315 555 2222',
+    description: 'Bowls de açaí, jugos cold pressed, ensaladas y opciones proteicas. Ideal para después del gym.',
     images: [
-      'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&q=80',
-      'https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=800&q=80',
-      'https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=800&q=80'
+      'https://images.unsplash.com/photo-1590301157890-4810ed352733?w=800&q=80',
+      'https://images.unsplash.com/photo-1502741224143-90386d7f8c82?w=800&q=80'
     ],
-    latitude: 3.4325,
-    longitude: -76.5405,
-    rating: 4.8,
-    priceRange: '$$',
-    featured: false,
-    reviews: []
-  },
-  // El Peñón
-  {
-    id: '27',
-    name: 'Mercado Campesino El Peñón',
-    category: 'Centro Comercial',
-    address: 'Calle 70 #8A-50, Barrio El Peñón',
-    neighborhood: 'El Peñón',
-    phone: '+57 2 555 7789',
-    description: 'Mercado local con productos frescos del campo. Frutas, verduras, lácteos y carnes de productores locales.',
-    images: [
-      'https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=800&q=80',
-      'https://images.unsplash.com/photo-1542838132-92c53300491e?w=800&q=80',
-      'https://images.unsplash.com/photo-1506617564039-2f3b650b7010?w=800&q=80'
-    ],
-    latitude: 3.4520,
-    longitude: -76.5280,
-    rating: 4.3,
-    priceRange: '$',
-    featured: false,
-    reviews: []
-  },
-  {
-    id: '28',
-    name: 'Clínica Dental Sonrisa Perfecta',
-    category: 'Hospital',
-    address: 'Carrera 9 #71-15, Barrio El Peñón',
-    neighborhood: 'El Peñón',
-    phone: '+57 2 555 7890',
-    description: 'Clínica odontológica especializada en tratamientos estéticos y ortodoncia. Tecnología de punta.',
-    images: [
-      'https://images.unsplash.com/photo-1588776814546-daab30f310ce?w=800&q=80',
-      'https://images.unsplash.com/photo-1606811971618-4486d14f3f99?w=800&q=80',
-      'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=800&q=80'
-    ],
-    latitude: 3.4525,
-    longitude: -76.5275,
+    latitude: 3.3790,
+    longitude: -76.5320,
     rating: 4.5,
     priceRange: '$$',
     featured: false,
+    hasMenu: true,
+    foodType: ['Saludable', 'Jugos'],
+    menu: [
+      { id: 'm38', name: 'Açaí Bowl', description: 'Açaí con granola, frutas y miel', price: '$16.000', category: 'Bowls' },
+      { id: 'm39', name: 'Jugo Detox', description: 'Apio, pepino, manzana verde y jengibre', price: '$10.000', category: 'Jugos' },
+    ],
     reviews: []
   },
-  // Versalles
+
+  // === MARISCOS ===
   {
-    id: '29',
+    id: '15',
+    name: 'Cevichería El Pacífico',
+    category: 'Mariscos',
+    address: 'Calle 82 #31-40, Barrio Vallegrande',
+    neighborhood: 'Vallegrande',
+    zone: 'Norte',
+    phone: '+57 2 555 3012',
+    description: 'Pescados y mariscos frescos del Pacífico colombiano. Ceviches, cazuelas y arroz con camarones.',
+    images: [
+      'https://images.unsplash.com/photo-1615141982883-c7ad0e69fd62?w=800&q=80',
+      'https://images.unsplash.com/photo-1534080564583-6be75777b70a?w=800&q=80'
+    ],
+    latitude: 3.4365,
+    longitude: -76.5227,
+    rating: 4.7,
+    priceRange: '$$',
+    featured: true,
+    hasMenu: true,
+    foodType: ['Mariscos', 'Pacífico'],
+    familyFriendly: true,
+    menu: [
+      { id: 'm40', name: 'Ceviche Mixto', description: 'Camarones, pulpo y pescado en limón', price: '$22.000', category: 'Ceviches' },
+      { id: 'm41', name: 'Cazuela de Mariscos', description: 'Sopa cremosa con variedad de mariscos', price: '$28.000', category: 'Sopas' },
+      { id: 'm42', name: 'Arroz con Camarones', description: 'Arroz con camarones en salsa criolla', price: '$25.000', category: 'Arroces' },
+    ],
+    reviews: [
+      { id: 'r6', author: 'Carolina M.', rating: 5, comment: 'Los mariscos más frescos de la ciudad!', date: '2026-02-13' },
+    ]
+  },
+
+  // === POSTRES ===
+  {
+    id: '16',
+    name: 'Dulce Tentación',
+    category: 'Postres',
+    address: 'Calle 85 #32-20, Barrio Vallegrande',
+    neighborhood: 'Vallegrande',
+    zone: 'Norte',
+    phone: '+57 2 555 3567',
+    description: 'Repostería francesa y colombiana. Tortas personalizadas, macarons, éclairs y helados artesanales.',
+    images: [
+      'https://images.unsplash.com/photo-1551024601-bec78aea704b?w=800&q=80',
+      'https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?w=800&q=80',
+      'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=800&q=80'
+    ],
+    latitude: 3.4380,
+    longitude: -76.5230,
+    rating: 4.8,
+    priceRange: '$$',
+    featured: true,
+    hasMenu: true,
+    foodType: ['Postres', 'Repostería'],
+    goodForCouples: true,
+    menu: [
+      { id: 'm43', name: 'Macarons (6 und)', description: 'Variedad de sabores: pistacho, frambuesa, chocolate', price: '$18.000', category: 'Macarons' },
+      { id: 'm44', name: 'Cheesecake de Maracuyá', description: 'Cheesecake con coulis de maracuyá', price: '$14.000', category: 'Tortas' },
+      { id: 'm45', name: 'Helado Artesanal', description: 'Dos bolas del sabor que prefieras', price: '$8.000', category: 'Helados' },
+    ],
+    reviews: []
+  },
+  {
+    id: '17',
+    name: 'Heladería Tropical',
+    category: 'Postres',
+    address: 'Carrera 9 #71-15, El Peñón',
+    neighborhood: 'El Peñón',
+    zone: 'Norte',
+    phone: '+57 2 555 7890',
+    description: 'Helados artesanales con frutas tropicales colombianas. Sabores únicos como chontaduro, borojó y lulo.',
+    images: [
+      'https://images.unsplash.com/photo-1501443762994-82bd5dace89a?w=800&q=80',
+      'https://images.unsplash.com/photo-1497034825429-c343d7c6a68f?w=800&q=80'
+    ],
+    latitude: 3.4525,
+    longitude: -76.5275,
+    rating: 4.4,
+    priceRange: '$',
+    featured: false,
+    hasMenu: true,
+    menu: [
+      { id: 'm46', name: 'Copa Tropical', description: '3 bolas con frutas frescas y crema', price: '$12.000', category: 'Copas' },
+      { id: 'm47', name: 'Paleta Artesanal', description: 'Paleta de fruta natural', price: '$5.000', category: 'Paletas' },
+    ],
+    reviews: []
+  },
+
+  // === PANADERÍA ===
+  {
+    id: '18',
+    name: 'Panadería La Espiga Dorada',
+    category: 'Panadería',
+    address: 'Carrera 39 #6-15, Barrio San Fernando',
+    neighborhood: 'San Fernando',
+    zone: 'Centro',
+    phone: '+57 2 555 5456',
+    description: 'Panadería tradicional con pan recién horneado. Pandebono, buñuelos, pan francés y pastelería.',
+    images: [
+      'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800&q=80',
+      'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=800&q=80',
+      'https://images.unsplash.com/photo-1550617931-e17a7b70dce2?w=800&q=80'
+    ],
+    latitude: 3.4215,
+    longitude: -76.5375,
+    rating: 4.7,
+    priceRange: '$',
+    featured: true,
+    hasMenu: true,
+    foodType: ['Panadería', 'Repostería'],
+    familyFriendly: true,
+    menu: [
+      { id: 'm48', name: 'Pandebono (4 und)', description: 'Pandebono caleño recién horneado', price: '$6.000', category: 'Panes' },
+      { id: 'm49', name: 'Buñuelos (6 und)', description: 'Buñuelos crocantes y esponjosos', price: '$8.000', category: 'Panes' },
+      { id: 'm50', name: 'Torta de Chocolate', description: 'Torta húmeda de chocolate con ganache', price: '$45.000', category: 'Tortas' },
+    ],
+    reviews: []
+  },
+
+  // === ASIÁTICA ===
+  {
+    id: '19',
     name: 'Sushi Bar Tokio',
-    category: 'Restaurante',
+    category: 'Asiática',
     address: 'Calle 23N #5N-63, Barrio Versalles',
     neighborhood: 'Versalles',
+    zone: 'Norte',
     phone: '+57 2 555 8901',
     description: 'Restaurante japonés con sushi fresco y cocina nikkei. Chef con experiencia internacional.',
     images: [
       'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=800&q=80',
-      'https://images.unsplash.com/photo-1583623025817-d180a2221d0a?w=800&q=80',
       'https://images.unsplash.com/photo-1617196034796-73dfa7b1fd56?w=800&q=80'
     ],
     latitude: 3.4580,
@@ -1177,278 +590,63 @@ export const mockPlaces: Place[] = [
     priceRange: '$$$',
     featured: true,
     hasMenu: true,
+    foodType: ['Japonesa', 'Sushi'],
+    goodForCouples: true,
+    attributes: ['Reservas', 'Aire Acondicionado'],
     menu: [
-      {
-        id: 'm19',
-        name: 'Sushi Roll California',
-        description: 'Cangrejo, aguacate, pepino y sésamo',
-        price: '$28.000',
-        category: 'Rolls'
-      },
-      {
-        id: 'm20',
-        name: 'Sashimi Variado',
-        description: 'Selección de pescado fresco del día',
-        price: '$42.000',
-        category: 'Sashimi'
-      }
+      { id: 'm51', name: 'Sushi Roll California', description: 'Cangrejo, aguacate, pepino y sésamo', price: '$28.000', category: 'Rolls' },
+      { id: 'm52', name: 'Sashimi Variado', description: 'Selección de pescado fresco del día', price: '$42.000', category: 'Sashimi' },
+      { id: 'm53', name: 'Ramen de Cerdo', description: 'Ramen con caldo de cerdo, huevo y nori', price: '$25.000', category: 'Sopas' },
     ],
     hasPromotions: true,
     promotions: [
-      {
-        id: 'p0-29',
-        title: '🎉 ¡Bienvenida! Primera visita con la app',
-        description: '¡Recibe un roll especial GRATIS por ser tu primera vez usando nuestra app!',
-        image: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=800&q=80',
-        conditions: 'Válido solo en tu primera visita\nEscanea el código QR en el restaurante\nNo aplica con otras promociones',
-        validUntil: '2025-12-31',
-        qrRequired: true,
-        firstTimeOnly: true
-      },
-      {
-        id: 'p29-1',
-        title: 'Combo Sushi para 2 Personas',
-        description: '20 piezas de sushi variado + 2 bebidas por precio especial',
-        image: 'https://images.unsplash.com/photo-1583623025817-d180a2221d0a?w=800&q=80',
-        conditions: 'Válido de domingo a jueves\nPrecio especial: $65.000\nEscanea el código QR para reclamar',
-        validUntil: '2025-12-31',
-        qrRequired: true
-      },
-      {
-        id: 'p29-2',
-        title: 'Happy Hour Sake & Rolls',
-        description: '25% de descuento en rolls seleccionados y sake',
-        image: 'https://images.unsplash.com/photo-1617196034796-73dfa7b1fd56?w=800&q=80',
-        conditions: 'Válido de lunes a viernes de 3:00 PM a 6:00 PM\nEscanea el código QR para reclamar',
-        validUntil: '2025-12-31',
-        qrRequired: true
-      }
+      { id: 'p19-1', title: '🎉 Roll GRATIS primera visita', description: 'Recibe un roll especial GRATIS', image: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=800&q=80', conditions: 'Primera visita\nEscanea QR', validUntil: '2026-12-31', qrRequired: true, firstTimeOnly: true },
+      { id: 'p19-2', title: 'Combo Sushi para 2', description: '20 piezas + 2 bebidas por $65.000', image: 'https://images.unsplash.com/photo-1617196034796-73dfa7b1fd56?w=800&q=80', conditions: 'Domingo a jueves', validUntil: '2026-12-31', qrRequired: true },
     ],
     reviews: []
   },
   {
-    id: '30',
-    name: 'Parque de los Poetas',
-    category: 'Parque',
-    address: 'Avenida 4N con Calle 24N, Barrio Versalles',
-    neighborhood: 'Versalles',
-    phone: '+57 2 555 9012',
-    description: 'Hermoso parque urbano con esculturas, zonas verdes y senderos para caminar. Perfecto para ejercicio matutino.',
-    images: [
-      'https://images.unsplash.com/photo-1519331379826-f10be5486c6f?w=800&q=80',
-      'https://images.unsplash.com/photo-1572198166687-ea769c66c1aa?w=800&q=80',
-      'https://images.unsplash.com/photo-1516302752625-fcc3c50ae61f?w=800&q=80'
-    ],
-    latitude: 3.4585,
-    longitude: -76.5365,
-    rating: 4.4,
-    priceRange: 'Gratis',
-    featured: false,
-    reviews: []
-  },
-  {
-    id: '31',
-    name: 'Smart Fit Granada',
-    category: 'Gym',
-    address: 'Carrera 36 #5A-100, Centro Comercial Unicentro',
+    id: '20',
+    name: 'Thai Garden',
+    category: 'Asiática',
+    address: 'Carrera 51 #9-40, Barrio Granada',
     neighborhood: 'Granada',
-    phone: '+57 2 555 4500',
-    description: 'Moderno gimnasio con equipos de última generación. Clases grupales de spinning, yoga, funcional y zumba. Horario: Lunes a Viernes 5:00 AM - 11:00 PM, Sábados y Domingos 7:00 AM - 9:00 PM. Área de pesas libres, máquinas cardiovasculares y zona de estiramiento.',
+    zone: 'Occidente',
+    phone: '+57 2 555 6678',
+    description: 'Auténtica cocina tailandesa con sabores picantes y aromáticos. Curries, pad thai y platos al wok.',
     images: [
-      'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80',
-      'https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=800&q=80',
-      'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=800&q=80'
+      'https://images.unsplash.com/photo-1562565652-a0d8f0c59eb4?w=800&q=80',
+      'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=800&q=80'
     ],
-    latitude: 3.4236,
-    longitude: -76.5295,
-    rating: 4.6,
-    priceRange: '$$',
-    featured: true,
-    attributes: ['WiFi', 'Estacionamiento', 'Casilleros', 'Duchas'],
-    hasPromotions: true,
-    promotions: [
-      {
-        id: 'gym-p1',
-        title: '🎉 ¡Bienvenido! Primera clase gratis',
-        description: 'Prueba cualquier clase grupal GRATIS en tu primera visita con la app',
-        image: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=800&q=80',
-        conditions: 'Válido solo en tu primera visita\nEscanea el código QR en recepción\nAplica para cualquier clase grupal',
-        validUntil: '2025-12-31',
-        qrRequired: true,
-        firstTimeOnly: true
-      },
-      {
-        id: 'gym-p2',
-        title: 'Membresía Semestral - 20% OFF',
-        description: 'Adquiere tu membresía de 6 meses con descuento especial',
-        image: 'https://images.unsplash.com/photo-1540497077202-7c8a3999166f?w=800&q=80',
-        conditions: 'Precio especial: $450.000 (antes $540.000)\nIncluye todas las clases grupales\nAcceso 7 días a la semana\nEscanea el código QR para reclamar',
-        validUntil: '2025-12-31',
-        qrRequired: true
-      },
-      {
-        id: 'gym-p3',
-        title: 'Pack Nutrición + Gym',
-        description: 'Membresía mensual + plan nutricional personalizado',
-        image: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&q=80',
-        conditions: 'Precio combo: $180.000/mes\nIncluye valoración nutricional\nPlan de alimentación personalizado\nEscanea el código QR en recepción',
-        validUntil: '2025-12-31',
-        qrRequired: true
-      },
-      {
-        id: 'gym-p4',
-        title: 'Proteína y Suplementos - 15% OFF',
-        description: 'Descuento en nuestra línea de productos de nutrición deportiva',
-        image: 'https://images.unsplash.com/photo-1593095948071-474c5cc2989d?w=800&q=80',
-        conditions: 'Aplica en proteínas, creatina, pre-entrenos y más\nSolo para miembros activos\nEscanea el código QR en la tienda del gym',
-        validUntil: '2025-12-31',
-        qrRequired: true
-      }
-    ],
-    hasGymClasses: true,
-    gymClasses: [
-      {
-        id: 'gc1',
-        name: 'Zumba',
-        description: 'Baila y quema calorías con ritmos latinos. Clase energética y divertida para todos los niveles.',
-        instructor: 'Carolina Rodríguez',
-        schedule: 'Lunes, Miércoles y Viernes 6:00 PM',
-        duration: '60 min',
-        level: 'Todos los niveles',
-        image: 'https://images.unsplash.com/photo-1524594152303-9fd13543fe6e?w=800&q=80'
-      },
-      {
-        id: 'gc2',
-        name: 'Spinning',
-        description: 'Cardio intenso sobre bicicleta estática. Fortalece piernas y mejora resistencia cardiovascular.',
-        instructor: 'Miguel Ángel Torres',
-        schedule: 'Martes y Jueves 7:00 AM, Sábados 9:00 AM',
-        duration: '45 min',
-        level: 'Intermedio - Avanzado',
-        image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80'
-      },
-      {
-        id: 'gc3',
-        name: 'Yoga',
-        description: 'Conecta cuerpo y mente. Mejora flexibilidad, fuerza y reduce el estrés.',
-        instructor: 'Andrea Gómez',
-        schedule: 'Lunes, Miércoles y Viernes 8:00 AM',
-        duration: '60 min',
-        level: 'Todos los niveles',
-        image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&q=80'
-      },
-      {
-        id: 'gc4',
-        name: 'Entrenamiento Funcional',
-        description: 'Ejercicios con peso corporal y equipamiento variado. Mejora fuerza, agilidad y coordinación.',
-        instructor: 'Andrés Martínez',
-        schedule: 'Martes y Jueves 6:30 PM',
-        duration: '50 min',
-        level: 'Intermedio',
-        image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80'
-      },
-      {
-        id: 'gc5',
-        name: 'Aeróbicos',
-        description: 'Clase clásica de cardio con pasos coreografiados. Perfecta para quemar grasa y tonificar.',
-        instructor: 'Laura Sánchez',
-        schedule: 'Lunes y Viernes 5:30 PM',
-        duration: '55 min',
-        level: 'Principiante - Intermedio',
-        image: 'https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=800&q=80'
-      },
-      {
-        id: 'gc6',
-        name: 'CrossFit',
-        description: 'Entrenamientos de alta intensidad variados. Combina fuerza, cardio y gimnasia.',
-        instructor: 'Daniel Vargas',
-        schedule: 'Lunes a Viernes 7:00 PM, Sábados 10:00 AM',
-        duration: '60 min',
-        level: 'Avanzado',
-        image: 'https://images.unsplash.com/photo-1534258936925-c58bed479fcb?w=800&q=80'
-      }
-    ],
-    reviews: []
-  },
-  {
-    id: '32',
-    name: 'Bodytech San Fernando',
-    category: 'Gym',
-    address: 'Calle 13 #100-10, Barrio San Fernando',
-    neighborhood: 'San Fernando',
-    phone: '+57 2 555 7800',
-    description: 'Gimnasio premium con entrenadores personales certificados. Incluye piscina, sauna, spa y cafetería saludable. Horario: Lunes a Viernes 5:30 AM - 10:30 PM, Sábados y Domingos 7:00 AM - 8:00 PM. Clases incluidas: CrossFit, pilates, natación y más.',
-    images: [
-      'https://images.unsplash.com/photo-1540497077202-7c8a3999166f?w=800&q=80',
-      'https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=800&q=80',
-      'https://images.unsplash.com/photo-1593079831268-3381b0db4a77?w=800&q=80'
-    ],
-    latitude: 3.3845,
-    longitude: -76.5425,
-    rating: 4.8,
-    priceRange: '$$$',
-    featured: true,
-    attributes: ['WiFi', 'Estacionamiento', 'Piscina', 'Sauna', 'Spa', 'Cafetería'],
-    reviews: []
-  },
-  {
-    id: '33',
-    name: 'Gasolinera Terpel Ciudad Jardín',
-    category: 'Gasolinera',
-    address: 'Calle 16 Norte #6N-25, Ciudad Jardín',
-    neighborhood: 'Ciudad Jardín',
-    phone: '+57 2 555 3300',
-    description: 'Estación de servicio 24 horas con tienda de conveniencia, baños limpios y servicio de lavado express. Combustibles: Gasolina corriente, extra y diesel. Métodos de pago: efectivo, tarjetas débito/crédito. Servicio de aire y agua gratis.',
-    images: [
-      'https://images.unsplash.com/photo-1545262810-77515befe149?w=800&q=80',
-      'https://images.unsplash.com/photo-1529688499411-262f191fe29e?w=800&q=80',
-      'https://images.unsplash.com/photo-1626668011687-8a114d2e0b61?w=800&q=80'
-    ],
-    latitude: 3.4156,
-    longitude: -76.5389,
-    rating: 4.3,
-    priceRange: '$$',
-    featured: false,
-    attributes: ['Abierto 24h', 'Tienda', 'Baños', 'Lavado'],
-    reviews: []
-  },
-  {
-    id: '34',
-    name: 'Estación de Servicio Mobil Versalles',
-    category: 'Gasolinera',
-    address: 'Avenida 4N #24-50, Versalles',
-    neighborhood: 'Versalles',
-    phone: '+57 2 555 6700',
-    description: 'Gasolinera moderna con servicio rápido y eficiente. Abierto 24/7. Ofrece programa de puntos y descuentos. Tienda con snacks, bebidas y productos básicos. Área de descanso para conductores. Combustibles certificados y de alta calidad.',
-    images: [
-      'https://images.unsplash.com/photo-1594919121168-ba8b5cb35de6?w=800&q=80',
-      'https://images.unsplash.com/photo-1529688499411-262f191fe29e?w=800&q=80',
-      'https://images.unsplash.com/photo-1618090584126-30a1b610d651?w=800&q=80'
-    ],
-    latitude: 3.4573,
-    longitude: -76.5378,
+    latitude: 3.4325,
+    longitude: -76.5405,
     rating: 4.5,
     priceRange: '$$',
     featured: false,
-    attributes: ['Abierto 24h', 'Tienda', 'WiFi', 'Programa de puntos'],
+    hasMenu: true,
+    foodType: ['Tailandesa', 'Asiática'],
+    goodForCouples: true,
+    menu: [
+      { id: 'm54', name: 'Pad Thai de Camarones', description: 'Noodles con camarones, maní y tamarindo', price: '$24.000', category: 'Noodles' },
+      { id: 'm55', name: 'Curry Verde', description: 'Curry con leche de coco, pollo y vegetales', price: '$22.000', category: 'Curries' },
+    ],
     reviews: []
-  }
+  },
 ];
 
 export const categories: string[] = [
   'Todos',
-  'Restaurante',
+  'Comidas Rápidas',
   'Café',
-  'Parque',
-  'Farmacia',
-  'Banco',
-  'Centro Comercial',
-  'Hospital',
-  'Hotel',
-  'Entretenimiento',
-  'Servicios',
-  'Gym',
-  'Gasolinera'
+  'Food Truck',
+  'Italiana',
+  'Parrilla',
+  'Tradicional',
+  'Saludable',
+  'Mariscos',
+  'Postres',
+  'Panadería',
+  'Asiática',
 ];
 
 export const neighborhoods: string[] = [
@@ -1500,26 +698,22 @@ export const neighborhoods: string[] = [
   'Piloto',
   'Poblado',
   'Poblado II',
-  'Primero de Mayo',
-  'Quintas de Don Simón',
   'San Antonio',
-  'San Cayetano',
   'San Fernando',
-  'San Fernando Nuevo',
-  'San Fernando Viejo',
-  'San Joaquín',
-  'San Luis',
-  'San Nicolás',
-  'San Vicente',
-  'Santa Anita',
+  'San Judas',
   'Santa Elena',
+  'Santa Isabel',
   'Santa Mónica',
-  'Santa Rita',
-  'Santa Teresita',
-  'Terrón Colorado',
+  'Santiago de Cali',
+  'Siloé',
   'Tequendama',
-  'Unicentro',
+  'Terrón Colorado',
+  'Unidad Residencial',
+  'Urbanización Nápoles',
+  'Valle del Lili',
   'Vallegrande',
   'Versalles',
-  'Villa Colombia'
+  'Villa Colombia',
+  'Villa del Prado',
+  'Villa del Sur',
 ];
