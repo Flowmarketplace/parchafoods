@@ -3,15 +3,15 @@ import {
   Grid, 
   Utensils, 
   Coffee, 
-  ShoppingBag, 
-  Hotel, 
-  Dumbbell, 
-  Heart, 
-  Landmark,
-  Stethoscope,
-  Car,
-  Fuel,
-  Film
+  Pizza, 
+  Flame, 
+  Truck, 
+  Soup, 
+  Salad, 
+  Fish, 
+  Sandwich, 
+  IceCream,
+  Cookie
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -29,23 +29,22 @@ interface CategoryBarProps {
 
 const categories: CategoryItem[] = [
   { id: 'Todos', name: 'Todos', icon: Grid },
-  { id: 'Restaurante', name: 'Restaurante', icon: Utensils },
-  { id: 'Café', name: 'Café', icon: Coffee },
-  { id: 'Centro Comercial', name: 'Tiendas', icon: ShoppingBag },
-  { id: 'Hotel', name: 'Hotel', icon: Hotel },
-  { id: 'Gym', name: 'Gym', icon: Dumbbell },
-  { id: 'Parque', name: 'Parque', icon: Heart },
-  { id: 'Hospital', name: 'Salud', icon: Stethoscope },
-  { id: 'Banco', name: 'Banco', icon: Landmark },
-  { id: 'Gasolinera', name: 'Gasolinera', icon: Fuel },
-  { id: 'Entretenimiento', name: 'Ocio', icon: Film },
-  { id: 'Servicios', name: 'Servicios', icon: Car },
+  { id: 'Comidas Rápidas', name: 'Rápidas', icon: Sandwich },
+  { id: 'Café', name: 'Cafés', icon: Coffee },
+  { id: 'Food Truck', name: 'Food Truck', icon: Truck },
+  { id: 'Italiana', name: 'Italiana', icon: Pizza },
+  { id: 'Parrilla', name: 'Parrilla', icon: Flame },
+  { id: 'Tradicional', name: 'Tradicional', icon: Soup },
+  { id: 'Saludable', name: 'Saludable', icon: Salad },
+  { id: 'Mariscos', name: 'Mariscos', icon: Fish },
+  { id: 'Postres', name: 'Postres', icon: IceCream },
+  { id: 'Panadería', name: 'Panadería', icon: Cookie },
+  { id: 'Asiática', name: 'Asiática', icon: Utensils },
 ];
 
 const CategoryBar = ({ selectedCategory, onCategoryChange }: CategoryBarProps) => {
   const [showAll, setShowAll] = useState(false);
   
-  // Show only first 7 categories on mobile when not expanded
   const visibleCategories = showAll ? categories : categories.slice(0, 7);
   
   return (
@@ -73,7 +72,6 @@ const CategoryBar = ({ selectedCategory, onCategoryChange }: CategoryBarProps) =
             );
           })}
           
-          {/* Ver todos button - 8th position */}
           {!showAll && (
             <Button
               variant="outline"
