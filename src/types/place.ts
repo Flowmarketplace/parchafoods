@@ -29,9 +29,9 @@ export interface GymClass {
   name: string;
   description: string;
   instructor?: string;
-  schedule: string; // e.g., "Lunes y Miércoles 6:00 PM"
+  schedule: string;
   duration?: string;
-  level?: string; // Principiante, Intermedio, Avanzado
+  level?: string;
   image?: string;
 }
 
@@ -53,7 +53,7 @@ export interface Place {
   category: string;
   address: string;
   neighborhood: string;
-  zone?: string; // 'Norte', 'Sur', 'Oriente', 'Occidente', 'Centro'
+  zone?: string;
   phone?: string;
   description?: string;
   images: string[];
@@ -67,22 +67,21 @@ export interface Place {
   hasMenu?: boolean;
   products?: Product[];
   hasProducts?: boolean;
-  featuredProducts?: Product[]; // Top 5 productos destacados para tiendas
+  featuredProducts?: Product[];
   services?: Service[];
   hasServices?: boolean;
   promotions?: Promotion[];
   hasPromotions?: boolean;
-  catalogUrl?: string; // URL del catálogo completo
+  catalogUrl?: string;
   airbnbUrl?: string;
-  gymClasses?: GymClass[]; // Clases del gimnasio
+  gymClasses?: GymClass[];
   hasGymClasses?: boolean;
-  // Características y filtros
-  foodType?: string[]; // Para restaurantes: ['Colombiana', 'Internacional', etc.]
+  foodType?: string[];
   familyFriendly?: boolean;
   petFriendly?: boolean;
   goodForCouples?: boolean;
   goodForKids?: boolean;
-  attributes?: string[]; // Otros atributos específicos: ['WiFi', 'Parking', 'Terraza', etc.]
+  attributes?: string[];
 }
 
 export interface Review {
@@ -94,16 +93,15 @@ export interface Review {
 }
 
 export type Category = 
-  | 'Restaurante'
+  | 'Comidas Rápidas'
   | 'Café'
-  | 'Parque'
-  | 'Farmacia'
-  | 'Banco'
-  | 'Centro Comercial'
-  | 'Hospital'
-  | 'Hotel'
-  | 'Entretenimiento'
-  | 'Servicios'
-  | 'Gym'
-  | 'Gasolinera'
+  | 'Food Truck'
+  | 'Italiana'
+  | 'Parrilla'
+  | 'Tradicional'
+  | 'Saludable'
+  | 'Mariscos'
+  | 'Postres'
+  | 'Panadería'
+  | 'Asiática'
   | 'Otro';

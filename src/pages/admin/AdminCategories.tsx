@@ -25,16 +25,18 @@ const AdminCategories = () => {
   const [icon, setIcon] = useState('');
   const [description, setDescription] = useState('');
 
-  // Categorías iniciales (esto eventualmente debería venir de la base de datos)
   const [categories, setCategories] = useState<Category[]>([
-    { id: '1', name: 'Restaurantes', icon: 'UtensilsCrossed', description: 'Lugares para comer' },
-    { id: '2', name: 'Bares', icon: 'Beer', description: 'Bares y discotecas' },
-    { id: '3', name: 'Cafés', icon: 'Coffee', description: 'Cafeterías y cafés' },
-    { id: '4', name: 'Tiendas', icon: 'ShoppingBag', description: 'Tiendas y comercios' },
-    { id: '5', name: 'Servicios', icon: 'Briefcase', description: 'Servicios profesionales' },
-    { id: '6', name: 'Entretenimiento', icon: 'Ticket', description: 'Ocio y entretenimiento' },
-    { id: '7', name: 'Salud', icon: 'Heart', description: 'Salud y bienestar' },
-    { id: '8', name: 'Educación', icon: 'GraduationCap', description: 'Centros educativos' },
+    { id: '1', name: 'Comidas Rápidas', icon: 'Sandwich', description: 'Hamburguesas, hot dogs, empanadas y más' },
+    { id: '2', name: 'Cafés', icon: 'Coffee', description: 'Cafeterías y café de especialidad' },
+    { id: '3', name: 'Food Truck', icon: 'Truck', description: 'Comida callejera sobre ruedas' },
+    { id: '4', name: 'Italiana', icon: 'Pizza', description: 'Pizzas, pastas y cocina italiana' },
+    { id: '5', name: 'Parrilla', icon: 'Flame', description: 'Carnes a la brasa y asados' },
+    { id: '6', name: 'Tradicional', icon: 'Soup', description: 'Comida típica colombiana y casera' },
+    { id: '7', name: 'Saludable', icon: 'Salad', description: 'Comida vegetariana, vegana y healthy' },
+    { id: '8', name: 'Mariscos', icon: 'Fish', description: 'Pescados y mariscos frescos' },
+    { id: '9', name: 'Postres', icon: 'IceCream', description: 'Repostería, helados y dulces' },
+    { id: '10', name: 'Panadería', icon: 'Cookie', description: 'Pan artesanal y pastelería' },
+    { id: '11', name: 'Asiática', icon: 'Utensils', description: 'Sushi, ramen, thai y más' },
   ]);
 
   const resetForm = () => {
@@ -55,7 +57,6 @@ const AdminCategories = () => {
     e.preventDefault();
 
     if (editingCategory) {
-      // Update category
       setCategories(categories.map(cat =>
         cat.id === editingCategory.id
           ? { ...cat, name, icon, description }
@@ -63,7 +64,6 @@ const AdminCategories = () => {
       ));
       toast.success('Categoría actualizada');
     } else {
-      // Create new category
       const newCategory: Category = {
         id: Date.now().toString(),
         name,
@@ -89,52 +89,22 @@ const AdminCategories = () => {
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="space-y-2">
         <Label htmlFor="name">Nombre *</Label>
-        <Input
-          id="name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="Ej: Restaurantes"
-          required
-        />
+        <Input id="name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Ej: Comidas Rápidas" required />
       </div>
-
       <div className="space-y-2">
         <Label htmlFor="icon">Ícono (Lucide React) *</Label>
-        <Input
-          id="icon"
-          value={icon}
-          onChange={(e) => setIcon(e.target.value)}
-          placeholder="Ej: UtensilsCrossed"
-          required
-        />
+        <Input id="icon" value={icon} onChange={(e) => setIcon(e.target.value)} placeholder="Ej: Sandwich" required />
         <p className="text-xs text-muted-foreground">
           Nombre del ícono de Lucide React (ver{' '}
-          <a
-            href="https://lucide.dev/icons"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-primary hover:underline"
-          >
-            lucide.dev
-          </a>
-          )
+          <a href="https://lucide.dev/icons" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">lucide.dev</a>)
         </p>
       </div>
-
       <div className="space-y-2">
         <Label htmlFor="description">Descripción</Label>
-        <Input
-          id="description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          placeholder="Breve descripción de la categoría"
-        />
+        <Input id="description" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Breve descripción" />
       </div>
-
       <DialogFooter>
-        <Button type="submit">
-          {editingCategory ? 'Actualizar' : 'Crear'} Categoría
-        </Button>
+        <Button type="submit">{editingCategory ? 'Actualizar' : 'Crear'} Categoría</Button>
       </DialogFooter>
     </form>
   );
@@ -142,49 +112,34 @@ const AdminCategories = () => {
   return (
     <div className="flex min-h-screen w-full bg-background">
       <AdminSidebarDesktop />
-
       <div className="flex-1 lg:ml-64 w-full">
         <header className="sticky top-0 z-30 bg-card border-b border-border px-4 py-3">
           <div className="flex items-center gap-3">
             <Sheet>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="lg:hidden">
-                  <Menu className="h-5 w-5" />
-                </Button>
+                <Button variant="ghost" size="icon" className="lg:hidden"><Menu className="h-5 w-5" /></Button>
               </SheetTrigger>
-              <SheetContent side="left" className="p-0 w-64">
-                <AdminSidebar />
-              </SheetContent>
+              <SheetContent side="left" className="p-0 w-64"><AdminSidebar /></SheetContent>
             </Sheet>
-            <Button variant="ghost" size="icon" onClick={() => navigate('/admin')}>
-              <ArrowLeft className="h-5 w-5" />
-            </Button>
+            <Button variant="ghost" size="icon" onClick={() => navigate('/admin')}><ArrowLeft className="h-5 w-5" /></Button>
             <div className="flex-1">
               <h1 className="text-xl font-bold">Gestión de Categorías</h1>
-              <p className="text-sm text-muted-foreground">
-                {categories.length} categorías
-              </p>
+              <p className="text-sm text-muted-foreground">{categories.length} categorías de comida</p>
             </div>
             <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
               <DialogTrigger asChild>
-                <Button onClick={resetForm}>
-                  <Plus className="h-4 w-4 mr-2" />
-                  Nueva Categoría
-                </Button>
+                <Button onClick={resetForm}><Plus className="h-4 w-4 mr-2" />Nueva Categoría</Button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
                   <DialogTitle>Crear Nueva Categoría</DialogTitle>
-                  <DialogDescription>
-                    Define una nueva categoría para clasificar negocios
-                  </DialogDescription>
+                  <DialogDescription>Define una nueva categoría de comida</DialogDescription>
                 </DialogHeader>
                 <CategoryForm />
               </DialogContent>
             </Dialog>
           </div>
         </header>
-
         <main className="p-6">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {categories.map((category) => (
@@ -192,48 +147,28 @@ const AdminCategories = () => {
                 <CardHeader>
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-2">
-                      <div className="p-2 bg-primary/10 rounded-lg">
-                        <Tag className="h-5 w-5 text-primary" />
-                      </div>
+                      <div className="p-2 bg-primary/10 rounded-lg"><Tag className="h-5 w-5 text-primary" /></div>
                       <div>
                         <CardTitle className="text-lg">{category.name}</CardTitle>
-                        <CardDescription className="text-xs">
-                          Ícono: {category.icon}
-                        </CardDescription>
+                        <CardDescription className="text-xs">Ícono: {category.icon}</CardDescription>
                       </div>
                     </div>
                     <div className="flex gap-1">
                       <Dialog>
                         <DialogTrigger asChild>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => loadCategoryForEdit(category)}
-                          >
-                            <Edit className="h-4 w-4" />
-                          </Button>
+                          <Button variant="ghost" size="sm" onClick={() => loadCategoryForEdit(category)}><Edit className="h-4 w-4" /></Button>
                         </DialogTrigger>
                         <DialogContent>
-                          <DialogHeader>
-                            <DialogTitle>Editar Categoría</DialogTitle>
-                          </DialogHeader>
+                          <DialogHeader><DialogTitle>Editar Categoría</DialogTitle></DialogHeader>
                           <CategoryForm />
                         </DialogContent>
                       </Dialog>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleDelete(category.id)}
-                      >
-                        <Trash2 className="h-4 w-4 text-destructive" />
-                      </Button>
+                      <Button variant="ghost" size="sm" onClick={() => handleDelete(category.id)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
                     </div>
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-muted-foreground">
-                    {category.description || 'Sin descripción'}
-                  </p>
+                  <p className="text-sm text-muted-foreground">{category.description || 'Sin descripción'}</p>
                 </CardContent>
               </Card>
             ))}
