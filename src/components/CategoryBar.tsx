@@ -49,9 +49,9 @@ const CategoryBar = ({ selectedCategory, onCategoryChange }: CategoryBarProps) =
   
   return (
     <div className="w-full bg-card border-y border-border shadow-sm" data-tour="category-bar">
-      <div className="w-full max-w-screen-2xl mx-auto px-4 sm:px-4 md:px-6 py-3 sm:py-3">
+      <div className="w-full max-w-screen-2xl mx-auto px-3 sm:px-4 md:px-6 py-2 sm:py-3">
         {/* Mobile: 2 rows of 4 (7 categories + Ver todos) */}
-        <div className="grid grid-cols-4 gap-2 sm:hidden">
+        <div className="grid grid-cols-4 gap-1.5 sm:hidden">
           {visibleCategories.map((category) => {
             const Icon = category.icon;
             const isActive = selectedCategory === category.id;
@@ -62,12 +62,12 @@ const CategoryBar = ({ selectedCategory, onCategoryChange }: CategoryBarProps) =
                 variant={isActive ? 'default' : 'outline'}
                 onClick={() => onCategoryChange(category.id)}
                 className={cn(
-                  'flex flex-col items-center justify-center gap-1 h-auto py-3 px-2 whitespace-nowrap active:scale-95 transition-transform touch-manipulation',
+                  'flex flex-col items-center justify-center gap-0.5 h-auto py-2 px-1 whitespace-nowrap active:scale-95 transition-transform touch-manipulation',
                   isActive && 'shadow-md'
                 )}
               >
-                <Icon className="h-5 w-5" />
-                <span className="text-[10px] font-medium leading-tight text-center">{category.name}</span>
+                <Icon className="h-4 w-4" />
+                <span className="text-[9px] font-medium leading-tight text-center">{category.name}</span>
               </Button>
             );
           })}

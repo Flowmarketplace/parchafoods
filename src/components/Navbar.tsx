@@ -41,23 +41,23 @@ const Navbar = ({ onMenuClick, searchQuery, onSearchChange, selectedNeighborhood
   
   return (
     <header className="bg-background border-b border-border">
-      <div className="w-full max-w-screen-2xl mx-auto px-4 sm:px-4 md:px-6">
+      <div className="w-full max-w-screen-2xl mx-auto px-3 sm:px-4 md:px-6">
         <div className="flex items-center justify-between h-14 sm:h-16">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
             <Button
               variant="ghost"
               size="icon"
               onClick={onMenuClick}
-              className="lg:hidden active:scale-95 transition-transform touch-manipulation"
+              className="lg:hidden active:scale-95 transition-transform touch-manipulation shrink-0 h-9 w-9"
               data-tour="sidebar-trigger"
             >
-              <Menu className="h-6 w-6" />
+              <Menu className="h-5 w-5" />
             </Button>
             
-            <div className="flex items-center gap-2">
-              <img src="/sabor360-logo.png" alt="El Mundial del Sabor 2026" className="h-8 sm:h-10 w-auto" />
-              <h1 className="text-base sm:text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent leading-tight">
-                El Mundial<br className="sm:hidden" /> del Sabor
+            <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+              <img src="/sabor360-logo.png" alt="El Mundial del Sabor 2026" className="h-7 sm:h-10 w-auto shrink-0" />
+              <h1 className="text-sm sm:text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent leading-tight truncate">
+                El Mundial del Sabor
               </h1>
             </div>
           </div>
@@ -111,12 +111,12 @@ const Navbar = ({ onMenuClick, searchQuery, onSearchChange, selectedNeighborhood
         
         {/* Search Bar only - no neighborhood selector */}
         {showFilter && onSearchChange && (
-          <div className="pb-3" data-tour="navbar-search">
+          <div className="pb-2 sm:pb-3" data-tour="navbar-search">
             <div className="relative">
               {isSearching ? (
-                <Loader2 className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary animate-spin" />
+                <Loader2 className="absolute left-2.5 sm:left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary animate-spin" />
               ) : (
-                <Search className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
+                <Search className="absolute left-2.5 sm:left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
               )}
               <Input
                 type="search"

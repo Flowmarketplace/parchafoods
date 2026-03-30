@@ -275,7 +275,7 @@ const Index = () => {
         
         <main className="flex-1 lg:ml-64">
           {/* Map Section */}
-          <div className="h-[35vh] sm:h-[35vh] md:h-[40vh] lg:h-[60vh] w-full">
+          <div className="h-[30vh] sm:h-[35vh] md:h-[40vh] lg:h-[60vh] w-full">
             <MapComponent 
               selectedNeighborhood={selectedNeighborhood}
               selectedCategory={selectedCategory}
@@ -284,14 +284,14 @@ const Index = () => {
 
           {/* Neighborhood Selector below map */}
           <div className="w-full bg-card border-b border-border" data-tour="neighborhood-selector">
-            <div className="w-full max-w-screen-2xl mx-auto px-4 sm:px-4 md:px-6 py-3">
+            <div className="w-full max-w-screen-2xl mx-auto px-3 sm:px-4 md:px-6 py-2 sm:py-3">
               <Popover open={neighborhoodOpen} onOpenChange={setNeighborhoodOpen}>
                 <PopoverTrigger asChild>
                   <Button
                     variant="outline"
                     role="combobox"
                     aria-expanded={neighborhoodOpen}
-                    className="w-full sm:w-auto justify-between min-w-[200px]"
+                    className="w-full sm:w-auto justify-between min-w-0 sm:min-w-[200px] h-9 text-sm"
                   >
                     <div className="flex items-center gap-2">
                       <MapPin className="h-4 w-4" />
@@ -341,10 +341,10 @@ const Index = () => {
 
           {/* Content Sections */}
           {!showFilters ? (
-            <div className="w-full max-w-screen-2xl mx-auto px-4 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8 space-y-6 sm:space-y-8 pb-20 md:pb-8">
+            <div className="w-full max-w-screen-2xl mx-auto px-3 sm:px-4 md:px-6 py-3 sm:py-6 md:py-8 space-y-4 sm:space-y-6 pb-20 md:pb-8">
               
               {/* 🏆 World Cup Hero Banner — compact */}
-              <section className="relative -mx-4 sm:-mx-4 md:-mx-6 px-4 sm:px-6 md:px-8 py-5 sm:py-6 rounded-xl overflow-hidden bg-gradient-to-r from-primary via-primary/90 to-secondary text-primary-foreground">
+              <section className="relative -mx-3 sm:-mx-4 md:-mx-6 px-3 sm:px-6 md:px-8 py-4 sm:py-6 rounded-none sm:rounded-xl overflow-hidden bg-gradient-to-r from-primary via-primary/90 to-secondary text-primary-foreground">
                 <div className="absolute inset-0 opacity-[0.07]" style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, white 1px, transparent 1px), radial-gradient(circle at 80% 50%, white 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
                 <div className="relative z-10 flex flex-col sm:flex-row items-center gap-3 sm:gap-5">
                   <span className="text-4xl sm:text-5xl">⚽</span>
@@ -370,109 +370,85 @@ const Index = () => {
 
               {/* 🍽️ Restaurantes Destacados — PRIMERO */}
               <section>
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-2 sm:gap-3">
-                    <div className="p-2 bg-accent/10 rounded-lg">
-                      <Star className="h-5 w-5 sm:h-6 sm:w-6 text-accent" />
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <div className="p-1.5 bg-accent/10 rounded-lg">
+                      <Star className="h-4 w-4 sm:h-5 sm:w-5 text-accent" />
                     </div>
-                    <div>
-                      <h2 className="text-lg sm:text-xl md:text-2xl font-bold">Restaurantes Destacados</h2>
-                      <p className="text-xs sm:text-sm text-muted-foreground hidden sm:block">Los mejores lugares para disfrutar la comida en Cali</p>
-                    </div>
+                    <h2 className="text-base sm:text-xl font-bold">Restaurantes Destacados</h2>
                   </div>
                   <Button 
                     variant="ghost" 
-                    className="gap-1 sm:gap-2 h-8 sm:h-10 text-xs sm:text-sm"
+                    className="gap-1 h-8 text-xs shrink-0"
                     onClick={() => navigate('/listings')}
                   >
                     Ver todos
-                    <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4" />
+                    <ChevronRight className="h-3 w-3" />
                   </Button>
                 </div>
                 <PlacesList places={featuredPlaces} />
               </section>
 
               {/* 📹 Shorts / Recomendados */}
-              <section className="bg-muted/30 -mx-4 sm:-mx-4 md:-mx-6 px-4 sm:px-4 md:px-6 py-5 sm:py-6 rounded-xl border border-border">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-2 sm:gap-3">
-                    <div className="p-2 bg-primary/10 rounded-lg">
-                      <Video className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+              <section className="bg-muted/30 -mx-3 sm:-mx-4 md:-mx-6 px-3 sm:px-4 md:px-6 py-4 sm:py-5 rounded-none sm:rounded-xl border-y sm:border border-border">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <div className="p-1.5 bg-primary/10 rounded-lg">
+                      <Video className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
                     </div>
-                    <div>
-                      <h2 className="text-lg sm:text-xl font-bold">Videos Recomendados</h2>
-                      <p className="text-xs sm:text-sm text-muted-foreground hidden sm:block">
-                        {selectedCategory === 'Todos' 
-                          ? 'Descubre sabores en video'
-                          : `Videos de ${selectedCategory}`
-                        }
-                      </p>
-                    </div>
+                    <h2 className="text-base sm:text-xl font-bold">Videos Recomendados</h2>
                   </div>
                   <Button 
                     variant="ghost" 
-                    className="gap-1 sm:gap-2 h-8 sm:h-10 text-xs sm:text-sm"
+                    className="gap-1 h-8 text-xs shrink-0"
                     onClick={() => navigate('/shorts')}
                   >
                     Ver todos
-                    <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4" />
+                    <ChevronRight className="h-3 w-3" />
                   </Button>
                 </div>
                 <ShortsCarousel shorts={filteredShorts} />
               </section>
 
               {/* ⚽ Partidos de Colombia — compacto con CTA a restaurantes */}
-              <section className="bg-card -mx-4 sm:-mx-4 md:-mx-6 px-4 sm:px-4 md:px-6 py-5 sm:py-6 rounded-xl border border-border shadow-sm">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-2 sm:gap-3">
-                    <span className="text-2xl">🇨🇴</span>
-                    <div>
-                      <h2 className="text-lg sm:text-xl font-bold">Colombia en el Mundial</h2>
-                      <p className="text-xs sm:text-sm text-muted-foreground hidden sm:block">Próximos partidos y tabla de posiciones</p>
-                    </div>
-                  </div>
+              <section className="bg-card -mx-3 sm:-mx-4 md:-mx-6 px-3 sm:px-4 md:px-6 py-4 sm:py-5 rounded-none sm:rounded-xl border-y sm:border border-border">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-xl sm:text-2xl">🇨🇴</span>
+                  <h2 className="text-base sm:text-xl font-bold">Colombia en el Mundial</h2>
                 </div>
                 <ColombiaProgress />
               </section>
 
               {/* 📅 Calendario general */}
-              <section className="bg-muted/20 -mx-4 sm:-mx-4 md:-mx-6 px-4 sm:px-4 md:px-6 py-5 sm:py-6 rounded-xl border border-border">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-2 sm:gap-3">
-                    <div className="p-2 bg-secondary/10 rounded-lg">
-                      <Calendar className="h-5 w-5 sm:h-6 sm:w-6 text-secondary" />
-                    </div>
-                    <div>
-                      <h2 className="text-lg sm:text-xl font-bold">Calendario de Partidos</h2>
-                      <p className="text-xs sm:text-sm text-muted-foreground hidden sm:block">Todos los encuentros del Mundial 2026</p>
-                    </div>
+              <section className="bg-muted/20 -mx-3 sm:-mx-4 md:-mx-6 px-3 sm:px-4 md:px-6 py-4 sm:py-5 rounded-none sm:rounded-xl border-y sm:border border-border">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="p-1.5 bg-secondary/10 rounded-lg">
+                    <Calendar className="h-4 w-4 sm:h-5 sm:w-5 text-secondary" />
                   </div>
+                  <h2 className="text-base sm:text-xl font-bold">Calendario de Partidos</h2>
                 </div>
                 <WorldCupCalendar />
               </section>
 
               {/* 🎉 Eventos gastronómicos */}
               <section>
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-2 sm:gap-3">
-                    <div className="p-2 bg-primary/10 rounded-lg">
-                      <Calendar className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <div className="p-1.5 bg-primary/10 rounded-lg">
+                      <Calendar className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
                     </div>
-                    <div>
-                      <h2 className="text-lg sm:text-xl font-bold">Eventos en Cali</h2>
-                      <p className="text-xs sm:text-sm text-muted-foreground hidden sm:block">Eventos gastronómicos y actividades</p>
-                    </div>
+                    <h2 className="text-base sm:text-xl font-bold">Eventos en Cali</h2>
                   </div>
                   <Button 
                     variant="ghost" 
-                    className="gap-1 sm:gap-2 h-8 sm:h-10 text-xs sm:text-sm"
+                    className="gap-1 h-8 text-xs shrink-0"
                     onClick={() => navigate('/events-all')}
                   >
                     Ver todos
-                    <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4" />
+                    <ChevronRight className="h-3 w-3" />
                   </Button>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">
                   {featuredEvents.map(event => (
                     <EventCard key={event.id} event={event} />
                   ))}
