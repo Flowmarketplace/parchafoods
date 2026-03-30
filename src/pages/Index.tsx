@@ -35,6 +35,8 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
+import WorldCupCalendar from '@/components/WorldCupCalendar';
+import ColombiaProgress from '@/components/ColombiaProgress';
 
 const Index = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
