@@ -9,7 +9,8 @@ import {
   Fish,
   Beer,
   Building2,
-  UtensilsCrossed
+  UtensilsCrossed,
+  PartyPopper
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
