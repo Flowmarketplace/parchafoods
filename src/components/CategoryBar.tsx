@@ -9,7 +9,8 @@ import {
   Fish,
   Beer,
   Building2,
-  UtensilsCrossed
+  UtensilsCrossed,
+  PartyPopper
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -36,6 +37,8 @@ const categories: CategoryItem[] = [
   { id: 'Italiana', name: 'Italiana', icon: Pizza },
   { id: 'Bar', name: 'Cerveza', icon: Beer },
   { id: 'Rooftop', name: 'Rooftop', icon: Building2 },
+  { id: 'Tradicional', name: 'Tradicional', icon: UtensilsCrossed },
+  { id: 'Remate', name: 'Remate', icon: PartyPopper },
 ];
 
 const CategoryBar = ({ selectedCategory, onCategoryChange }: CategoryBarProps) => {
