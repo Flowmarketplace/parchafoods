@@ -341,10 +341,10 @@ const Index = () => {
 
           {/* Content Sections */}
           {!showFilters ? (
-            <div className="w-full max-w-screen-2xl mx-auto px-4 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8 space-y-6 sm:space-y-8 pb-20 md:pb-8">
+            <div className="w-full max-w-screen-2xl mx-auto px-3 sm:px-4 md:px-6 py-3 sm:py-6 md:py-8 space-y-4 sm:space-y-6 pb-20 md:pb-8">
               
               {/* 🏆 World Cup Hero Banner — compact */}
-              <section className="relative -mx-4 sm:-mx-4 md:-mx-6 px-4 sm:px-6 md:px-8 py-5 sm:py-6 rounded-xl overflow-hidden bg-gradient-to-r from-primary via-primary/90 to-secondary text-primary-foreground">
+              <section className="relative -mx-3 sm:-mx-4 md:-mx-6 px-3 sm:px-6 md:px-8 py-4 sm:py-6 rounded-none sm:rounded-xl overflow-hidden bg-gradient-to-r from-primary via-primary/90 to-secondary text-primary-foreground">
                 <div className="absolute inset-0 opacity-[0.07]" style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, white 1px, transparent 1px), radial-gradient(circle at 80% 50%, white 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
                 <div className="relative z-10 flex flex-col sm:flex-row items-center gap-3 sm:gap-5">
                   <span className="text-4xl sm:text-5xl">⚽</span>
