@@ -26,7 +26,6 @@ import WorldCupCalendar from '@/components/WorldCupCalendar';
 import ColombiaProgress from '@/components/ColombiaProgress';
 import WorldCupProgress from '@/components/WorldCupProgress';
 import WorldCupRoutes from '@/components/WorldCupRoutes';
-import WorldCupParticles from '@/components/WorldCupParticles';
 
 const Index = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
