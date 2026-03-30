@@ -530,8 +530,8 @@ const PlaceDetails = () => {
                   </TabsContent>
                 )}
 
-                {menu && menu.length > 0 && (
-                  <TabsContent value="menu" className="mt-6">
+                <TabsContent value="menu" className="mt-4">
+                  {menu && menu.length > 0 ? (
                     <div className="space-y-6">
                       {Object.entries(
                         menu.reduce((acc: Record<string, any[]>, item: any) => {
@@ -542,13 +542,13 @@ const PlaceDetails = () => {
                         }, {} as Record<string, any[]>)
                       ).map(([category, items]: [string, any[]]) => (
                         <div key={category}>
-                          <h3 className="text-xl font-semibold mb-4">{category}</h3>
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <h3 className="text-lg font-semibold mb-3">{category}</h3>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                             {items.map((item) => (
                               <Card key={item.id} className="overflow-hidden hover:shadow-lg transition-shadow">
                                 <CardContent className="p-0">
                                   {item.image_url && (
-                                    <div className="relative h-48 w-full overflow-hidden">
+                                    <div className="relative h-40 w-full overflow-hidden">
                                       <img
                                         src={item.image_url}
                                         alt={item.name}
@@ -556,15 +556,15 @@ const PlaceDetails = () => {
                                       />
                                     </div>
                                   )}
-                                  <div className="p-4">
-                                    <div className="flex justify-between items-start mb-2">
-                                      <h4 className="font-semibold text-lg">{item.name}</h4>
-                                      <span className="font-bold text-primary whitespace-nowrap ml-2">
+                                  <div className="p-3">
+                                    <div className="flex justify-between items-start mb-1">
+                                      <h4 className="font-semibold">{item.name}</h4>
+                                      <span className="font-bold text-primary whitespace-nowrap ml-2 text-sm">
                                         ${item.price.toLocaleString('es-CO')}
                                       </span>
                                     </div>
                                     {item.description && (
-                                      <p className="text-sm text-muted-foreground">{item.description}</p>
+                                      <p className="text-xs text-muted-foreground">{item.description}</p>
                                     )}
                                   </div>
                                 </CardContent>
@@ -574,8 +574,14 @@ const PlaceDetails = () => {
                         </div>
                       ))}
                     </div>
-                  </TabsContent>
-                )}
+                  ) : (
+                    <div className="text-center py-8">
+                      <UtensilsCrossed className="h-8 w-8 mx-auto mb-2 text-muted-foreground/40" />
+                      <p className="text-muted-foreground text-sm">Menú no disponible aún</p>
+                      <p className="text-xs text-muted-foreground mt-1">Contacta al restaurante para más info</p>
+                    </div>
+                  )}
+                </TabsContent>
 
                 {place.hasProducts && place.products && (
                   <TabsContent value="productos" className="mt-6">
