@@ -25,6 +25,7 @@ import { cn } from '@/lib/utils';
 import WorldCupCalendar from '@/components/WorldCupCalendar';
 import ColombiaProgress from '@/components/ColombiaProgress';
 import WorldCupProgress from '@/components/WorldCupProgress';
+import WorldCupRoutes from '@/components/WorldCupRoutes';
 
 const Index = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -295,24 +296,18 @@ const Index = () => {
                 <WorldCupCalendar />
               </section>
 
-              {/* Eventos */}
+              {/* Rutas Mundialistas */}
               <section>
                 <div className="flex items-center justify-between mb-2.5">
                   <div className="flex items-center gap-2">
-                    <div className="p-1 bg-primary/10 rounded-md">
-                      <Calendar className="h-4 w-4 text-primary" />
-                    </div>
-                    <h2 className="text-sm sm:text-lg font-bold">Eventos en Cali</h2>
+                    <span className="text-lg">🗺️</span>
+                    <h2 className="text-sm sm:text-lg font-bold">Las Rutas Mundialistas</h2>
                   </div>
-                  <Button variant="ghost" className="gap-1 h-7 text-[11px] shrink-0 px-2" onClick={() => navigate('/events-all')}>
-                    Ver todos <ChevronRight className="h-3 w-3" />
+                  <Button variant="ghost" className="gap-1 h-7 text-[11px] shrink-0 px-2" onClick={() => navigate('/listings')}>
+                    Ver todas <ChevronRight className="h-3 w-3" />
                   </Button>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
-                  {featuredEvents.map(event => (
-                    <EventCard key={event.id} event={event} />
-                  ))}
-                </div>
+                <WorldCupRoutes />
               </section>
             </div>
           ) : (
