@@ -55,9 +55,9 @@ const Navbar = ({ onMenuClick, searchQuery, onSearchChange, selectedNeighborhood
             </Button>
             
             <div className="flex items-center gap-2">
-              <img src="/sabor360-logo.png" alt="Sabor 360" className="h-8 sm:h-10 w-auto" />
-              <h1 className="text-lg sm:text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                Sabor 360
+              <img src="/sabor360-logo.png" alt="El Mundial del Sabor 2026" className="h-8 sm:h-10 w-auto" />
+              <h1 className="text-base sm:text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent leading-tight">
+                El Mundial<br className="sm:hidden" /> del Sabor
               </h1>
             </div>
           </div>
