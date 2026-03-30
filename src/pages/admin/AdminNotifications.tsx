@@ -229,7 +229,7 @@ const AdminNotifications = () => {
                   variant="outline"
                   className="w-full justify-start"
                   onClick={() => {
-                    setTitle('Bienvenido a Sabor 360');
+                    setTitle('Bienvenido al Mundial del Sabor');
                     setMessage('Descubre los mejores negocios cerca de ti');
                   }}
                 >

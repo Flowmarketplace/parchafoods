@@ -225,7 +225,7 @@ const FloatingAIChat = ({ isHidden }: { isHidden?: boolean }) => {
             <div className="flex items-center gap-2">
               <Bot className="h-5 w-5" />
               <CardTitle className="text-lg font-semibold">
-                Asistente Sabor 360
+                Asistente Mundial del Sabor
               </CardTitle>
             </div>
             <div className="flex items-center gap-2">
