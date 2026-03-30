@@ -4,13 +4,13 @@ export const mockPlaces: Place[] = [
   // === COMIDAS RÁPIDAS ===
   {
     id: '1',
-    name: 'Burger House Express',
+    name: 'Burger Stadium ⚽',
     category: 'Comidas Rápidas',
     address: 'Calle 45 #20-15, Barrio Compartir',
     neighborhood: 'Compartir',
     zone: 'Oriente',
     phone: '+57 2 555 1234',
-    description: 'Las mejores hamburguesas artesanales de la zona. Combos con papas y bebida. Servicio rápido y sabor único.',
+    description: 'La hamburguesa mundialista: doble carne, queso cheddar y salsa gol. Pantallas gigantes para ver los partidos.',
     images: [
       'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800&q=80',
       'https://images.unsplash.com/photo-1550547660-d9450f859349?w=800&q=80',
@@ -18,109 +18,97 @@ export const mockPlaces: Place[] = [
     ],
     latitude: 3.3951,
     longitude: -76.5197,
-    rating: 4.5,
+    rating: 4.7,
     priceRange: '$',
     featured: true,
     hasMenu: true,
     foodType: ['Hamburguesas', 'Comida Rápida'],
     familyFriendly: true,
-    petFriendly: false,
-    goodForCouples: false,
     goodForKids: true,
-    attributes: ['WiFi', 'Domicilios'],
+    attributes: ['Pantallas', 'Domicilios', 'WiFi'],
     menu: [
-      { id: 'm1', name: 'Hamburguesa Clásica', description: 'Carne 150g, lechuga, tomate, cebolla y salsas', price: '$15.000', category: 'Hamburguesas' },
-      { id: 'm2', name: 'Hamburguesa Doble', description: 'Doble carne, queso cheddar, tocineta y jalapeños', price: '$22.000', category: 'Hamburguesas' },
-      { id: 'm3', name: 'Hot Dog Especial', description: 'Salchicha premium con salsas, queso y papitas', price: '$12.000', category: 'Hot Dogs' },
-      { id: 'm4', name: 'Combo Familiar', description: '4 hamburguesas + papas + 4 bebidas', price: '$55.000', category: 'Combos' },
+      { id: 'm1', name: 'Burger Mundialista', description: 'Doble carne, cheddar, tocineta y salsa gol', price: '$22.000', category: 'Hamburguesas' },
+      { id: 'm2', name: 'Hot Dog del Campeón', description: 'Salchicha premium con queso y salsas especiales', price: '$15.000', category: 'Hot Dogs' },
+      { id: 'm3', name: 'Combo Hinchada', description: '4 burgers + papas + 4 bebidas para la barra', price: '$65.000', category: 'Combos' },
     ],
     hasPromotions: true,
     promotions: [
-      { id: 'p1-1', title: '🎉 ¡Bienvenida! Primera visita', description: 'Papas GRATIS con tu primera hamburguesa', image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800&q=80', conditions: 'Válido solo en tu primera visita\nEscanea el código QR', validUntil: '2026-12-31', qrRequired: true, firstTimeOnly: true },
-      { id: 'p1-2', title: '2x1 Martes de Burger', description: 'Lleva 2 hamburguesas clásicas por el precio de 1', image: 'https://images.unsplash.com/photo-1550547660-d9450f859349?w=800&q=80', conditions: 'Solo martes de 5PM a 9PM', validUntil: '2026-12-31', qrRequired: true },
+      { id: 'p1-1', title: '⚽ Gol = Papas GRATIS', description: 'Si Colombia mete gol mientras comes, ¡papas gratis!', image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800&q=80', conditions: 'Durante partidos de Colombia', validUntil: '2026-12-31', qrRequired: true },
     ],
     reviews: [
-      { id: 'r1', author: 'Carlos M.', rating: 5, comment: 'Las mejores hamburguesas del barrio!', date: '2026-01-15' },
-      { id: 'r2', author: 'Ana P.', rating: 4, comment: 'Rápido y delicioso. Recomendado.', date: '2026-01-10' },
+      { id: 'r1', author: 'Carlos M.', rating: 5, comment: 'Ambiente mundialista increíble!', date: '2026-03-15' },
     ]
   },
   {
     id: '2',
-    name: 'Empanadas La Criolla',
+    name: 'Empanadas La Tricolor 🇨🇴',
     category: 'Comidas Rápidas',
     address: 'Carrera 28 #50-22, Barrio Decepaz',
     neighborhood: 'Decepaz',
     zone: 'Sur',
     phone: '+57 2 555 2345',
-    description: 'Empanadas criollas, aborrajados, marranitas y más antojitos colombianos. Hechos al momento.',
+    description: 'Empanadas criollas edición mundial. Aborrajados, marranitas y combo mundialista para ver los partidos.',
     images: [
       'https://images.unsplash.com/photo-1601050690117-94f5f6fa8bd7?w=800&q=80',
       'https://images.unsplash.com/photo-1604909052743-94e838986d24?w=800&q=80'
     ],
     latitude: 3.4105,
     longitude: -76.5175,
-    rating: 4.3,
+    rating: 4.4,
     priceRange: '$',
     featured: false,
     hasMenu: true,
     foodType: ['Colombiana', 'Fritanga'],
     familyFriendly: true,
     menu: [
-      { id: 'm5', name: 'Empanada de Carne', description: 'Empanada crocante rellena de carne desmechada', price: '$3.000', category: 'Empanadas' },
-      { id: 'm6', name: 'Aborrajado', description: 'Plátano maduro relleno de queso', price: '$4.500', category: 'Frituras' },
-      { id: 'm7', name: 'Marranita', description: 'Plátano verde con chicharrón', price: '$4.000', category: 'Frituras' },
+      { id: 'm5', name: 'Empanada Tricolor', description: 'Empanada especial con guacamole colombiano', price: '$4.000', category: 'Empanadas' },
+      { id: 'm6', name: 'Combo Hincha', description: '6 empanadas + aborrajado + bebida', price: '$18.000', category: 'Combos' },
     ],
     reviews: []
   },
 
-  // === CAFÉS ===
+  // === CAFÉ ===
   {
     id: '3',
-    name: 'Café Aroma del Valle',
+    name: 'Café Gol de Media Cancha ☕⚽',
     category: 'Café',
     address: 'Carrera 28 #45-12, Barrio Compartir',
     neighborhood: 'Compartir',
     zone: 'Oriente',
     phone: '+57 2 555 3456',
-    description: 'Café de especialidad con granos 100% colombianos. Desayunos, repostería artesanal y Wi-Fi gratis.',
+    description: 'Café de especialidad con temática mundialista. Latte art con escudos de selecciones y ambiente para ver partidos.',
     images: [
       'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&q=80',
-      'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800&q=80',
-      'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=800&q=80'
+      'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800&q=80'
     ],
     latitude: 3.3960,
     longitude: -76.5190,
-    rating: 4.7,
+    rating: 4.8,
     priceRange: '$',
     featured: true,
     hasMenu: true,
     foodType: ['Café', 'Repostería'],
     familyFriendly: true,
     petFriendly: true,
-    goodForCouples: true,
-    attributes: ['WiFi', 'Aire Acondicionado', 'Música en Vivo'],
+    attributes: ['WiFi', 'Pantallas', 'Terraza'],
     menu: [
-      { id: 'm8', name: 'Café Americano', description: 'Café colombiano de origen único', price: '$4.000', category: 'Bebidas Calientes' },
-      { id: 'm9', name: 'Capuchino', description: 'Espresso con leche espumada y canela', price: '$5.500', category: 'Bebidas Calientes' },
-      { id: 'm10', name: 'Croissant de Almendras', description: 'Recién horneado con almendras tostadas', price: '$6.000', category: 'Repostería' },
-    ],
-    hasPromotions: true,
-    promotions: [
-      { id: 'p3-1', title: '🎉 ¡Bienvenida! Pastelito GRATIS', description: 'Recibe un pastelito GRATIS en tu primera visita', image: 'https://images.unsplash.com/photo-1587049352846-4a222e784422?w=800&q=80', conditions: 'Primera visita\nEscanea QR', validUntil: '2026-12-31', qrRequired: true, firstTimeOnly: true },
+      { id: 'm8', name: 'Latte del 10', description: 'Latte art con la camiseta de Colombia', price: '$6.500', category: 'Bebidas Calientes' },
+      { id: 'm9', name: 'Café Campeón', description: 'Doble espresso con leche de avena', price: '$7.000', category: 'Bebidas Calientes' },
+      { id: 'm10', name: 'Muffin Mundialista', description: 'Muffin de chocolate con decoración de balón', price: '$5.500', category: 'Repostería' },
     ],
     reviews: [
-      { id: 'r3', author: 'Laura J.', rating: 5, comment: 'Excelente café y ambiente para trabajar.', date: '2026-01-25' },
+      { id: 'r3', author: 'Laura J.', rating: 5, comment: 'El mejor café para ver los partidos!', date: '2026-03-20' },
     ]
   },
   {
     id: '4',
-    name: 'Cafetería Artesanal Origen',
+    name: 'Café Origen Mundial',
     category: 'Café',
     address: 'Calle 5 #38-20, Barrio San Fernando',
     neighborhood: 'San Fernando',
     zone: 'Centro',
     phone: '+57 2 555 5345',
-    description: 'Café de especialidad con métodos de extracción manuales. Barista certificado y granos de origen único.',
+    description: 'Café de especialidad con granos de los países mundialistas. Prueba el café de cada selección.',
     images: [
       'https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=800&q=80',
       'https://images.unsplash.com/photo-1453614512568-c4024d13c247?w=800&q=80'
@@ -132,8 +120,8 @@ export const mockPlaces: Place[] = [
     featured: true,
     hasMenu: true,
     menu: [
-      { id: 'm11', name: 'V60 Pour Over', description: 'Café de origen único con método manual', price: '$8.000', category: 'Métodos de Extracción' },
-      { id: 'm12', name: 'Cold Brew', description: 'Café en frío extraído por 16 horas', price: '$9.000', category: 'Bebidas Frías' },
+      { id: 'm11', name: 'V60 Colombia', description: 'Café de origen Huila, notas de panela y cacao', price: '$8.000', category: 'Métodos' },
+      { id: 'm12', name: 'Cold Brew Brasil', description: 'Café brasileño en frío 16h con limón', price: '$9.000', category: 'Bebidas Frías' },
     ],
     reviews: []
   },
@@ -141,13 +129,13 @@ export const mockPlaces: Place[] = [
   // === FOOD TRUCK ===
   {
     id: '5',
-    name: 'Taco Loco Food Truck',
+    name: 'Food Truck La Cancha 🚚⚽',
     category: 'Food Truck',
     address: 'Calle 70 con Carrera 1, Barrio El Peñón',
     neighborhood: 'El Peñón',
     zone: 'Norte',
     phone: '+57 315 555 7890',
-    description: 'Tacos mexicanos auténticos sobre ruedas. Carne asada, pastor, pollo y opciones vegetarianas.',
+    description: 'El food truck más mundialista de Cali. Hot dogs del campeón, nachos de la tribuna y más.',
     images: [
       'https://images.unsplash.com/photo-1565123409695-7b5ef63a2efb?w=800&q=80',
       'https://images.unsplash.com/photo-1551504734-5ee1c4a1479b?w=800&q=80'
@@ -158,24 +146,23 @@ export const mockPlaces: Place[] = [
     priceRange: '$',
     featured: true,
     hasMenu: true,
-    foodType: ['Mexicana', 'Tacos'],
+    foodType: ['Street Food', 'Hot Dogs'],
     familyFriendly: true,
     menu: [
-      { id: 'm13', name: 'Taco al Pastor', description: '3 tacos con piña, cilantro y cebolla', price: '$15.000', category: 'Tacos' },
-      { id: 'm14', name: 'Burrito Bowl', description: 'Arroz, frijoles, carne, guacamole y pico de gallo', price: '$18.000', category: 'Burritos' },
-      { id: 'm15', name: 'Quesadilla de Pollo', description: 'Tortilla de harina con pollo y queso fundido', price: '$14.000', category: 'Quesadillas' },
+      { id: 'm13', name: 'Hot Dog Mundialista', description: 'Perro con cheddar, jalapeño y salsa gol', price: '$14.000', category: 'Hot Dogs' },
+      { id: 'm14', name: 'Nachos de Tribuna', description: 'Nachos con carne, guacamole y queso', price: '$18.000', category: 'Snacks' },
     ],
     reviews: []
   },
   {
     id: '6',
-    name: 'Wok on Wheels',
+    name: 'Wok sobre Ruedas 🚚',
     category: 'Food Truck',
     address: 'Parque del Perro, San Fernando',
     neighborhood: 'San Fernando',
     zone: 'Centro',
     phone: '+57 310 555 4567',
-    description: 'Cocina asiática callejera: noodles, arroz frito, dumplings y bubble tea. Todo hecho al momento.',
+    description: 'Comida asiática callejera con sabor mundialista. Noodles del gol, arroz frito de la victoria.',
     images: [
       'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=800&q=80',
       'https://images.unsplash.com/photo-1526318896980-cf78c088247c?w=800&q=80'
@@ -188,26 +175,26 @@ export const mockPlaces: Place[] = [
     hasMenu: true,
     foodType: ['Asiática', 'Street Food'],
     menu: [
-      { id: 'm16', name: 'Pad Thai', description: 'Noodles salteados con camarones y maní', price: '$18.000', category: 'Noodles' },
-      { id: 'm17', name: 'Arroz Frito Especial', description: 'Arroz con vegetales, huevo y salsa de soja', price: '$15.000', category: 'Arroces' },
+      { id: 'm16', name: 'Noodles del Gol', description: 'Noodles salteados con camarones y salsa teriyaki', price: '$18.000', category: 'Noodles' },
+      { id: 'm17', name: 'Arroz de la Victoria', description: 'Arroz frito con vegetales, huevo y soja', price: '$15.000', category: 'Arroces' },
     ],
     reviews: []
   },
 
-  // === ITALIANA ===
+  // === MEXICANA ===
   {
     id: '7',
-    name: 'Pizzería Napolitana',
-    category: 'Italiana',
+    name: 'La Taquería Mundialista 🌮🏆',
+    category: 'Mexicana',
     address: 'Calle 18 #100-45, Barrio Ciudad Jardín',
     neighborhood: 'Ciudad Jardín',
     zone: 'Sur',
     phone: '+57 2 555 4123',
-    description: 'Auténtica pizza napolitana con ingredientes importados. Horno de leña tradicional y ambiente italiano.',
+    description: 'Tacos, burritos y nachos con sabor mundialista. Margaritas de la victoria y pantallas para cada partido.',
     images: [
-      'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=800&q=80',
-      'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800&q=80',
-      'https://images.unsplash.com/photo-1571407970349-bc81e7e96c47?w=800&q=80'
+      'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=800&q=80',
+      'https://images.unsplash.com/photo-1551504734-5ee1c4a1479b?w=800&q=80',
+      'https://images.unsplash.com/photo-1599974579688-8dbdd335c77f?w=800&q=80'
     ],
     latitude: 3.3783,
     longitude: -76.5317,
@@ -215,405 +202,95 @@ export const mockPlaces: Place[] = [
     priceRange: '$$',
     featured: true,
     hasMenu: true,
-    foodType: ['Pizza', 'Pasta'],
+    foodType: ['Mexicana', 'Tacos'],
     goodForCouples: true,
     familyFriendly: true,
-    attributes: ['Horno de Leña', 'Terraza'],
+    attributes: ['Pantallas', 'Terraza', 'Cócteles'],
     menu: [
-      { id: 'm18', name: 'Pizza Margherita', description: 'Tomate San Marzano, mozzarella di bufala, albahaca', price: '$32.000', category: 'Pizzas' },
-      { id: 'm19', name: 'Pizza Quattro Formaggi', description: 'Mozzarella, gorgonzola, parmesano y provolone', price: '$35.000', category: 'Pizzas' },
-      { id: 'm20', name: 'Pasta Carbonara', description: 'Spaghetti con guanciale, huevo y pecorino', price: '$28.000', category: 'Pastas' },
-      { id: 'm21', name: 'Lasagna Bolognesa', description: 'Capas de pasta, ragú y bechamel gratinada', price: '$30.000', category: 'Pastas' },
+      { id: 'm18', name: 'Tacos al Pastor', description: '3 tacos con piña, cilantro y cebolla', price: '$16.000', category: 'Tacos' },
+      { id: 'm19', name: 'Burrito Mundialista', description: 'Burrito XXL con carne, guacamole y pico de gallo', price: '$22.000', category: 'Burritos' },
+      { id: 'm20', name: 'Nachos del Estadio', description: 'Nachos con queso, jalapeños, carne y crema', price: '$20.000', category: 'Snacks' },
+      { id: 'm21', name: 'Margarita de la Victoria', description: 'Margarita clásica con sal y limón', price: '$18.000', category: 'Bebidas' },
+    ],
+    hasPromotions: true,
+    promotions: [
+      { id: 'p7-1', title: '⚽ Margarita GRATIS si gana Colombia', description: 'Si Colombia gana, tu margarita va por la casa', image: 'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=800&q=80', conditions: 'Partidos de Colombia\nConsumo mínimo $20.000', validUntil: '2026-12-31', qrRequired: true },
     ],
     reviews: []
   },
   {
     id: '8',
-    name: 'Trattoria Don Luigi',
-    category: 'Italiana',
+    name: 'El Azteca Deportivo 🌯',
+    category: 'Mexicana',
     address: 'Carrera 51 #8-30, Barrio Granada',
     neighborhood: 'Granada',
     zone: 'Occidente',
     phone: '+57 2 555 6789',
-    description: 'Cocina italiana casera con recetas familiares. Pastas frescas hechas a diario. Vinos italianos seleccionados.',
+    description: 'Auténtica comida mexicana con ambiente deportivo. Quesadillas, enchiladas y micheladas para el mundial.',
     images: [
-      'https://images.unsplash.com/photo-1498579150354-977475b7ea0b?w=800&q=80',
-      'https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=800&q=80'
+      'https://images.unsplash.com/photo-1599974579688-8dbdd335c77f?w=800&q=80',
+      'https://images.unsplash.com/photo-1625398407796-82650a8c135f?w=800&q=80'
     ],
     latitude: 3.4320,
     longitude: -76.5410,
-    rating: 4.7,
-    priceRange: '$$$',
+    rating: 4.5,
+    priceRange: '$$',
     featured: false,
     hasMenu: true,
-    foodType: ['Italiana', 'Pasta'],
+    foodType: ['Mexicana', 'Enchiladas'],
     goodForCouples: true,
-    attributes: ['Vinos', 'Reservas'],
+    attributes: ['Pantallas', 'Cócteles'],
     menu: [
-      { id: 'm22', name: 'Risotto ai Funghi', description: 'Risotto cremoso con hongos porcini', price: '$35.000', category: 'Risottos' },
-      { id: 'm23', name: 'Ossobuco alla Milanese', description: 'Osobuco estofado con gremolata', price: '$42.000', category: 'Segundos' },
+      { id: 'm22', name: 'Enchiladas Suizas', description: 'Enchiladas con salsa verde y crema', price: '$20.000', category: 'Platos' },
+      { id: 'm23', name: 'Michelada Mundialista', description: 'Cerveza con limón, salsa y chile', price: '$14.000', category: 'Bebidas' },
     ],
     reviews: []
   },
 
-  // === PARRILLA ===
+  // === ASIÁTICA / SUSHI ===
   {
     id: '9',
-    name: 'Asadero La Brasa Vallecaucana',
-    category: 'Parrilla',
-    address: 'Calle 50 #22-30, Barrio Decepaz',
-    neighborhood: 'Decepaz',
-    zone: 'Sur',
-    phone: '+57 2 555 2345',
-    description: 'Especialistas en carnes a la parrilla y platos típicos. Cortes premium, chorizos artesanales y ambiente familiar.',
-    images: [
-      'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800&q=80',
-      'https://images.unsplash.com/photo-1558030006-450675393462?w=800&q=80',
-      'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=800&q=80'
-    ],
-    latitude: 3.4105,
-    longitude: -76.5175,
-    rating: 4.6,
-    priceRange: '$$',
-    featured: true,
-    hasMenu: true,
-    foodType: ['Parrilla', 'Colombiana'],
-    familyFriendly: true,
-    goodForCouples: true,
-    attributes: ['Estacionamiento', 'Terraza'],
-    menu: [
-      { id: 'm24', name: 'Parrillada Valluna', description: 'Carne, chorizo, morcilla, papa criolla y plátano', price: '$32.000', category: 'Especialidades' },
-      { id: 'm25', name: 'Churrasco', description: 'Corte premium con chimichurri', price: '$28.000', category: 'Carnes' },
-      { id: 'm26', name: 'Costillas BBQ', description: 'Costillas de cerdo en salsa BBQ ahumada', price: '$35.000', category: 'Carnes' },
-    ],
-    hasPromotions: true,
-    promotions: [
-      { id: 'p9-1', title: '🎉 Entrada GRATIS en primera visita', description: 'Recibe una entrada GRATIS con tu primera compra', image: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800&q=80', conditions: 'Primera visita\nEscanea QR', validUntil: '2026-12-31', qrRequired: true, firstTimeOnly: true },
-      { id: 'p9-2', title: 'Parrillada Familiar 20% OFF', description: 'Parrillada para 4 personas con descuento', image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=800&q=80', conditions: 'Fines de semana', validUntil: '2026-12-31', qrRequired: true },
-    ],
-    reviews: [
-      { id: 'r4', author: 'Pedro S.', rating: 5, comment: 'La mejor carne de Cali.', date: '2026-01-22' },
-    ]
-  },
-  {
-    id: '10',
-    name: 'Leños & Carbón',
-    category: 'Parrilla',
-    address: 'Calle 23N #5N-40, Versalles',
-    neighborhood: 'Versalles',
-    zone: 'Norte',
-    phone: '+57 2 555 8901',
-    description: 'Parrilla argentina con cortes de exportación. Provoleta, empanadas argentinas y vinos Malbec.',
-    images: [
-      'https://images.unsplash.com/photo-1544025162-d76694265947?w=800&q=80',
-      'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=800&q=80'
-    ],
-    latitude: 3.4580,
-    longitude: -76.5360,
-    rating: 4.5,
-    priceRange: '$$$',
-    featured: false,
-    hasMenu: true,
-    foodType: ['Argentina', 'Parrilla'],
-    goodForCouples: true,
-    menu: [
-      { id: 'm27', name: 'Bife de Chorizo', description: 'Corte argentino 400g con guarnición', price: '$45.000', category: 'Cortes' },
-      { id: 'm28', name: 'Provoleta', description: 'Queso provolone a la parrilla con orégano', price: '$18.000', category: 'Entradas' },
-    ],
-    reviews: []
-  },
-
-  // === TRADICIONAL ===
-  {
-    id: '11',
-    name: 'Restaurante El Sabor del Barrio',
-    category: 'Tradicional',
-    address: 'Calle 45 #20-15, Barrio Compartir',
-    neighborhood: 'Compartir',
-    zone: 'Oriente',
-    phone: '+57 2 555 1234',
-    description: 'Deliciosa comida típica caleña con sazón de casa. Sancocho de gallina, bandeja paisa y almuerzo ejecutivo.',
-    images: [
-      'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&q=80',
-      'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80',
-      'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80'
-    ],
-    latitude: 3.3951,
-    longitude: -76.5197,
-    rating: 4.5,
-    priceRange: '$$',
-    featured: true,
-    hasMenu: true,
-    foodType: ['Colombiana', 'Casera'],
-    familyFriendly: true,
-    goodForKids: true,
-    attributes: ['WiFi', 'Estacionamiento', 'Terraza'],
-    menu: [
-      { id: 'm29', name: 'Sancocho de Gallina', description: 'Sopa tradicional con gallina criolla y plátano', price: '$18.000', category: 'Platos Principales' },
-      { id: 'm30', name: 'Bandeja Paisa', description: 'Carne, chicharrón, chorizo, arroz, frijoles, huevo y plátano', price: '$25.000', category: 'Platos Principales' },
-      { id: 'm31', name: 'Almuerzo Ejecutivo', description: 'Sopa + plato fuerte + jugo + postre', price: '$14.000', category: 'Almuerzos' },
-    ],
-    hasPromotions: true,
-    promotions: [
-      { id: 'p11-1', title: '🎉 Postre GRATIS primera visita', description: 'Recibe un postre GRATIS en tu primera visita', image: 'https://images.unsplash.com/photo-1551024601-bec78aea704b?w=800&q=80', conditions: 'Primera visita\nEscanea QR', validUntil: '2026-12-31', qrRequired: true, firstTimeOnly: true },
-      { id: 'p11-2', title: '2x1 Bandeja Paisa los Miércoles', description: 'Dos bandejas por el precio de una', image: 'https://images.unsplash.com/photo-1604909052743-94e838986d24?w=800&q=80', conditions: 'Miércoles de 12PM a 3PM', validUntil: '2026-12-31', qrRequired: true },
-    ],
-    reviews: [
-      { id: 'r5', author: 'María G.', rating: 5, comment: 'El mejor sancocho de Cali!', date: '2026-01-15' },
-    ]
-  },
-  {
-    id: '12',
-    name: 'Fogón Valluno Doña Rosa',
-    category: 'Tradicional',
-    address: 'Carrera 30 #80-50, Barrio Vallegrande',
-    neighborhood: 'Vallegrande',
-    zone: 'Norte',
-    phone: '+57 2 555 5678',
-    description: 'Cocina vallecaucana de tradición familiar. Tamales, empanadas, pandebono y champús los fines de semana.',
-    images: [
-      'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800&q=80',
-      'https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=800&q=80'
-    ],
-    latitude: 3.4372,
-    longitude: -76.5225,
-    rating: 4.4,
-    priceRange: '$',
-    featured: false,
-    hasMenu: true,
-    foodType: ['Colombiana', 'Valluna'],
-    familyFriendly: true,
-    goodForKids: true,
-    menu: [
-      { id: 'm32', name: 'Tamal Valluno', description: 'Tamal con masa de maíz, pollo y cerdo', price: '$10.000', category: 'Antojitos' },
-      { id: 'm33', name: 'Arroz Atollado', description: 'Arroz jugoso con cerdo, pollo y papas', price: '$16.000', category: 'Platos Principales' },
-      { id: 'm34', name: 'Champús', description: 'Bebida típica con maíz, lulo y piña', price: '$5.000', category: 'Bebidas' },
-    ],
-    reviews: []
-  },
-
-  // === SALUDABLE ===
-  {
-    id: '13',
-    name: 'Green Bowl Cali',
-    category: 'Saludable',
-    address: 'Calle 8 #50-25, Barrio Granada',
-    neighborhood: 'Granada',
-    zone: 'Occidente',
-    phone: '+57 2 555 6567',
-    description: 'Cocina saludable, vegetariana y vegana con ingredientes orgánicos. Bowls, smoothies y wraps.',
-    images: [
-      'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=800&q=80',
-      'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&q=80',
-      'https://images.unsplash.com/photo-1540914124281-342587941389?w=800&q=80'
-    ],
-    latitude: 3.4320,
-    longitude: -76.5410,
-    rating: 4.6,
-    priceRange: '$$',
-    featured: true,
-    hasMenu: true,
-    foodType: ['Vegetariana', 'Vegana', 'Saludable'],
-    petFriendly: true,
-    goodForCouples: true,
-    attributes: ['WiFi', 'Opciones Veganas', 'Sin Gluten'],
-    menu: [
-      { id: 'm35', name: 'Buddha Bowl', description: 'Quinoa, vegetales asados, hummus y tahini', price: '$22.000', category: 'Bowls' },
-      { id: 'm36', name: 'Smoothie Verde', description: 'Espinaca, mango, banana y leche de almendras', price: '$12.000', category: 'Smoothies' },
-      { id: 'm37', name: 'Wrap de Falafel', description: 'Falafel casero con tahini y vegetales frescos', price: '$18.000', category: 'Wraps' },
-    ],
-    reviews: []
-  },
-  {
-    id: '14',
-    name: 'Açaí & Juice Bar',
-    category: 'Saludable',
-    address: 'Carrera 102 #19-30, Ciudad Jardín',
-    neighborhood: 'Ciudad Jardín',
-    zone: 'Sur',
-    phone: '+57 315 555 2222',
-    description: 'Bowls de açaí, jugos cold pressed, ensaladas y opciones proteicas. Ideal para después del gym.',
-    images: [
-      'https://images.unsplash.com/photo-1590301157890-4810ed352733?w=800&q=80',
-      'https://images.unsplash.com/photo-1502741224143-90386d7f8c82?w=800&q=80'
-    ],
-    latitude: 3.3790,
-    longitude: -76.5320,
-    rating: 4.5,
-    priceRange: '$$',
-    featured: false,
-    hasMenu: true,
-    foodType: ['Saludable', 'Jugos'],
-    menu: [
-      { id: 'm38', name: 'Açaí Bowl', description: 'Açaí con granola, frutas y miel', price: '$16.000', category: 'Bowls' },
-      { id: 'm39', name: 'Jugo Detox', description: 'Apio, pepino, manzana verde y jengibre', price: '$10.000', category: 'Jugos' },
-    ],
-    reviews: []
-  },
-
-  // === MARISCOS ===
-  {
-    id: '15',
-    name: 'Cevichería El Pacífico',
-    category: 'Mariscos',
-    address: 'Calle 82 #31-40, Barrio Vallegrande',
-    neighborhood: 'Vallegrande',
-    zone: 'Norte',
-    phone: '+57 2 555 3012',
-    description: 'Pescados y mariscos frescos del Pacífico colombiano. Ceviches, cazuelas y arroz con camarones.',
-    images: [
-      'https://images.unsplash.com/photo-1615141982883-c7ad0e69fd62?w=800&q=80',
-      'https://images.unsplash.com/photo-1534080564583-6be75777b70a?w=800&q=80'
-    ],
-    latitude: 3.4365,
-    longitude: -76.5227,
-    rating: 4.7,
-    priceRange: '$$',
-    featured: true,
-    hasMenu: true,
-    foodType: ['Mariscos', 'Pacífico'],
-    familyFriendly: true,
-    menu: [
-      { id: 'm40', name: 'Ceviche Mixto', description: 'Camarones, pulpo y pescado en limón', price: '$22.000', category: 'Ceviches' },
-      { id: 'm41', name: 'Cazuela de Mariscos', description: 'Sopa cremosa con variedad de mariscos', price: '$28.000', category: 'Sopas' },
-      { id: 'm42', name: 'Arroz con Camarones', description: 'Arroz con camarones en salsa criolla', price: '$25.000', category: 'Arroces' },
-    ],
-    reviews: [
-      { id: 'r6', author: 'Carolina M.', rating: 5, comment: 'Los mariscos más frescos de la ciudad!', date: '2026-02-13' },
-    ]
-  },
-
-  // === POSTRES ===
-  {
-    id: '16',
-    name: 'Dulce Tentación',
-    category: 'Postres',
-    address: 'Calle 85 #32-20, Barrio Vallegrande',
-    neighborhood: 'Vallegrande',
-    zone: 'Norte',
-    phone: '+57 2 555 3567',
-    description: 'Repostería francesa y colombiana. Tortas personalizadas, macarons, éclairs y helados artesanales.',
-    images: [
-      'https://images.unsplash.com/photo-1551024601-bec78aea704b?w=800&q=80',
-      'https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?w=800&q=80',
-      'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=800&q=80'
-    ],
-    latitude: 3.4380,
-    longitude: -76.5230,
-    rating: 4.8,
-    priceRange: '$$',
-    featured: true,
-    hasMenu: true,
-    foodType: ['Postres', 'Repostería'],
-    goodForCouples: true,
-    menu: [
-      { id: 'm43', name: 'Macarons (6 und)', description: 'Variedad de sabores: pistacho, frambuesa, chocolate', price: '$18.000', category: 'Macarons' },
-      { id: 'm44', name: 'Cheesecake de Maracuyá', description: 'Cheesecake con coulis de maracuyá', price: '$14.000', category: 'Tortas' },
-      { id: 'm45', name: 'Helado Artesanal', description: 'Dos bolas del sabor que prefieras', price: '$8.000', category: 'Helados' },
-    ],
-    reviews: []
-  },
-  {
-    id: '17',
-    name: 'Heladería Tropical',
-    category: 'Postres',
-    address: 'Carrera 9 #71-15, El Peñón',
-    neighborhood: 'El Peñón',
-    zone: 'Norte',
-    phone: '+57 2 555 7890',
-    description: 'Helados artesanales con frutas tropicales colombianas. Sabores únicos como chontaduro, borojó y lulo.',
-    images: [
-      'https://images.unsplash.com/photo-1501443762994-82bd5dace89a?w=800&q=80',
-      'https://images.unsplash.com/photo-1497034825429-c343d7c6a68f?w=800&q=80'
-    ],
-    latitude: 3.4525,
-    longitude: -76.5275,
-    rating: 4.4,
-    priceRange: '$',
-    featured: false,
-    hasMenu: true,
-    menu: [
-      { id: 'm46', name: 'Copa Tropical', description: '3 bolas con frutas frescas y crema', price: '$12.000', category: 'Copas' },
-      { id: 'm47', name: 'Paleta Artesanal', description: 'Paleta de fruta natural', price: '$5.000', category: 'Paletas' },
-    ],
-    reviews: []
-  },
-
-  // === PANADERÍA ===
-  {
-    id: '18',
-    name: 'Panadería La Espiga Dorada',
-    category: 'Panadería',
-    address: 'Carrera 39 #6-15, Barrio San Fernando',
-    neighborhood: 'San Fernando',
-    zone: 'Centro',
-    phone: '+57 2 555 5456',
-    description: 'Panadería tradicional con pan recién horneado. Pandebono, buñuelos, pan francés y pastelería.',
-    images: [
-      'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800&q=80',
-      'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=800&q=80',
-      'https://images.unsplash.com/photo-1550617931-e17a7b70dce2?w=800&q=80'
-    ],
-    latitude: 3.4215,
-    longitude: -76.5375,
-    rating: 4.7,
-    priceRange: '$',
-    featured: true,
-    hasMenu: true,
-    foodType: ['Panadería', 'Repostería'],
-    familyFriendly: true,
-    menu: [
-      { id: 'm48', name: 'Pandebono (4 und)', description: 'Pandebono caleño recién horneado', price: '$6.000', category: 'Panes' },
-      { id: 'm49', name: 'Buñuelos (6 und)', description: 'Buñuelos crocantes y esponjosos', price: '$8.000', category: 'Panes' },
-      { id: 'm50', name: 'Torta de Chocolate', description: 'Torta húmeda de chocolate con ganache', price: '$45.000', category: 'Tortas' },
-    ],
-    reviews: []
-  },
-
-  // === ASIÁTICA ===
-  {
-    id: '19',
-    name: 'Sushi Bar Tokio',
+    name: 'Sushi Gol 🍣⚽',
     category: 'Asiática',
     address: 'Calle 23N #5N-63, Barrio Versalles',
     neighborhood: 'Versalles',
     zone: 'Norte',
     phone: '+57 2 555 8901',
-    description: 'Restaurante japonés con sushi fresco y cocina nikkei. Chef con experiencia internacional.',
+    description: 'Sushi premium con rolls mundialistas: Roll Colombia, Roll Brasil, Roll Japón. Ve los partidos con los mejores rolls.',
     images: [
       'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=800&q=80',
       'https://images.unsplash.com/photo-1617196034796-73dfa7b1fd56?w=800&q=80'
     ],
     latitude: 3.4580,
     longitude: -76.5360,
-    rating: 4.7,
+    rating: 4.8,
     priceRange: '$$$',
     featured: true,
     hasMenu: true,
     foodType: ['Japonesa', 'Sushi'],
     goodForCouples: true,
-    attributes: ['Reservas', 'Aire Acondicionado'],
+    attributes: ['Pantallas', 'Reservas', 'Aire Acondicionado'],
     menu: [
-      { id: 'm51', name: 'Sushi Roll California', description: 'Cangrejo, aguacate, pepino y sésamo', price: '$28.000', category: 'Rolls' },
-      { id: 'm52', name: 'Sashimi Variado', description: 'Selección de pescado fresco del día', price: '$42.000', category: 'Sashimi' },
-      { id: 'm53', name: 'Ramen de Cerdo', description: 'Ramen con caldo de cerdo, huevo y nori', price: '$25.000', category: 'Sopas' },
+      { id: 'm24', name: 'Roll Colombia 🇨🇴', description: 'Camarón tempura, aguacate, salsa de maracuyá', price: '$32.000', category: 'Rolls Mundialistas' },
+      { id: 'm25', name: 'Roll Brasil 🇧🇷', description: 'Salmón, mango, queso crema y salsa acaí', price: '$30.000', category: 'Rolls Mundialistas' },
+      { id: 'm26', name: 'Roll Japón 🇯🇵', description: 'Atún fresco, pepino, wasabi y sésamo', price: '$35.000', category: 'Rolls Mundialistas' },
+      { id: 'm27', name: 'Combo Mundialista', description: '30 piezas variadas + 2 bebidas', price: '$75.000', category: 'Combos' },
     ],
     hasPromotions: true,
     promotions: [
-      { id: 'p19-1', title: '🎉 Roll GRATIS primera visita', description: 'Recibe un roll especial GRATIS', image: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=800&q=80', conditions: 'Primera visita\nEscanea QR', validUntil: '2026-12-31', qrRequired: true, firstTimeOnly: true },
-      { id: 'p19-2', title: 'Combo Sushi para 2', description: '20 piezas + 2 bebidas por $65.000', image: 'https://images.unsplash.com/photo-1617196034796-73dfa7b1fd56?w=800&q=80', conditions: 'Domingo a jueves', validUntil: '2026-12-31', qrRequired: true },
+      { id: 'p9-1', title: '🍣 Roll GRATIS en tu primera visita', description: 'Recibe un roll especial GRATIS', image: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=800&q=80', conditions: 'Primera visita\nEscanea QR', validUntil: '2026-12-31', qrRequired: true, firstTimeOnly: true },
     ],
     reviews: []
   },
   {
-    id: '20',
-    name: 'Thai Garden',
+    id: '10',
+    name: 'Ramen & Rolls del Estadio',
     category: 'Asiática',
     address: 'Carrera 51 #9-40, Barrio Granada',
     neighborhood: 'Granada',
     zone: 'Occidente',
     phone: '+57 2 555 6678',
-    description: 'Auténtica cocina tailandesa con sabores picantes y aromáticos. Curries, pad thai y platos al wok.',
+    description: 'Ramen caliente y rolls frescos para acompañar cada partido. Ambiente nipón con espíritu mundialista.',
     images: [
       'https://images.unsplash.com/photo-1562565652-a0d8f0c59eb4?w=800&q=80',
       'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=800&q=80'
@@ -624,11 +301,269 @@ export const mockPlaces: Place[] = [
     priceRange: '$$',
     featured: false,
     hasMenu: true,
-    foodType: ['Tailandesa', 'Asiática'],
+    foodType: ['Japonesa', 'Ramen'],
     goodForCouples: true,
     menu: [
-      { id: 'm54', name: 'Pad Thai de Camarones', description: 'Noodles con camarones, maní y tamarindo', price: '$24.000', category: 'Noodles' },
-      { id: 'm55', name: 'Curry Verde', description: 'Curry con leche de coco, pollo y vegetales', price: '$22.000', category: 'Curries' },
+      { id: 'm28', name: 'Ramen del Goleador', description: 'Ramen con cerdo, huevo y nori', price: '$25.000', category: 'Ramen' },
+      { id: 'm29', name: 'Gyozas de la Suerte', description: '6 gyozas de cerdo y vegetales', price: '$16.000', category: 'Entradas' },
+    ],
+    reviews: []
+  },
+
+  // === PARRILLA ===
+  {
+    id: '11',
+    name: 'Parrilla Mundialista 🥩🔥',
+    category: 'Parrilla',
+    address: 'Calle 50 #22-30, Barrio Decepaz',
+    neighborhood: 'Decepaz',
+    zone: 'Sur',
+    phone: '+57 2 555 2345',
+    description: 'El mejor asado para ver el mundial. Cortes premium, chorizos artesanales y parrillada del hincha con pantalla gigante.',
+    images: [
+      'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800&q=80',
+      'https://images.unsplash.com/photo-1558030006-450675393462?w=800&q=80',
+      'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=800&q=80'
+    ],
+    latitude: 3.4105,
+    longitude: -76.5175,
+    rating: 4.7,
+    priceRange: '$$',
+    featured: true,
+    hasMenu: true,
+    foodType: ['Parrilla', 'Carnes'],
+    familyFriendly: true,
+    goodForCouples: true,
+    attributes: ['Pantalla Gigante', 'Estacionamiento', 'Terraza'],
+    menu: [
+      { id: 'm30', name: 'Parrillada del Hincha', description: 'Carne, chorizo, morcilla, papa y plátano para 4', price: '$85.000', category: 'Parrilladas' },
+      { id: 'm31', name: 'Churrasco Mundialista', description: 'Corte premium 400g con chimichurri', price: '$35.000', category: 'Carnes' },
+      { id: 'm32', name: 'Costillas del Campeón', description: 'Costillas BBQ ahumadas con salsa especial', price: '$38.000', category: 'Carnes' },
+    ],
+    hasPromotions: true,
+    promotions: [
+      { id: 'p11-1', title: '🥩 Chorizo GRATIS con gol de Colombia', description: 'Cada gol de Colombia = chorizo gratis para la mesa', image: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800&q=80', conditions: 'Durante partidos de Colombia', validUntil: '2026-12-31', qrRequired: true },
+    ],
+    reviews: [
+      { id: 'r4', author: 'Pedro S.', rating: 5, comment: 'La parrillada con el partido fue épica!', date: '2026-03-18' },
+    ]
+  },
+  {
+    id: '12',
+    name: 'Leños & Goles 🔥',
+    category: 'Parrilla',
+    address: 'Calle 23N #5N-40, Versalles',
+    neighborhood: 'Versalles',
+    zone: 'Norte',
+    phone: '+57 2 555 8901',
+    description: 'Parrilla argentina mundialista. Provoleta, empanadas y Malbec mientras ves los mejores partidos.',
+    images: [
+      'https://images.unsplash.com/photo-1544025162-d76694265947?w=800&q=80',
+      'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=800&q=80'
+    ],
+    latitude: 3.4580,
+    longitude: -76.5360,
+    rating: 4.6,
+    priceRange: '$$$',
+    featured: false,
+    hasMenu: true,
+    foodType: ['Argentina', 'Parrilla'],
+    goodForCouples: true,
+    menu: [
+      { id: 'm33', name: 'Bife de Chorizo', description: 'Corte argentino 400g con guarnición', price: '$45.000', category: 'Cortes' },
+      { id: 'm34', name: 'Provoleta a la Parrilla', description: 'Queso provolone con orégano y chimichurri', price: '$18.000', category: 'Entradas' },
+    ],
+    reviews: []
+  },
+
+  // === ITALIANA ===
+  {
+    id: '13',
+    name: 'Pizza Stadium 🍕⚽',
+    category: 'Italiana',
+    address: 'Calle 8 #50-25, Barrio Granada',
+    neighborhood: 'Granada',
+    zone: 'Occidente',
+    phone: '+57 2 555 6567',
+    description: 'Pizza en horno de leña con ediciones mundialistas. Cada pizza representa un país. ¡Pantallas en cada mesa!',
+    images: [
+      'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=800&q=80',
+      'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800&q=80',
+      'https://images.unsplash.com/photo-1571407970349-bc81e7e96c47?w=800&q=80'
+    ],
+    latitude: 3.4320,
+    longitude: -76.5410,
+    rating: 4.8,
+    priceRange: '$$',
+    featured: true,
+    hasMenu: true,
+    foodType: ['Pizza', 'Pasta'],
+    familyFriendly: true,
+    goodForCouples: true,
+    attributes: ['Horno de Leña', 'Pantallas', 'Terraza'],
+    menu: [
+      { id: 'm35', name: 'Pizza Colombia 🇨🇴', description: 'Chorizo, plátano maduro y hogao', price: '$32.000', category: 'Pizzas Mundialistas' },
+      { id: 'm36', name: 'Pizza Italia 🇮🇹', description: 'Margherita clásica con albahaca fresca', price: '$28.000', category: 'Pizzas Mundialistas' },
+      { id: 'm37', name: 'Pizza Argentina 🇦🇷', description: 'Carne, chimichurri y mozzarella', price: '$34.000', category: 'Pizzas Mundialistas' },
+      { id: 'm38', name: 'Pasta Carbonara', description: 'Spaghetti con guanciale y pecorino', price: '$28.000', category: 'Pastas' },
+    ],
+    reviews: []
+  },
+  {
+    id: '14',
+    name: 'Trattoria del Gol',
+    category: 'Italiana',
+    address: 'Carrera 102 #19-30, Ciudad Jardín',
+    neighborhood: 'Ciudad Jardín',
+    zone: 'Sur',
+    phone: '+57 315 555 2222',
+    description: 'Cocina italiana casera con espíritu mundialista. Pastas frescas y vinos para celebrar cada partido.',
+    images: [
+      'https://images.unsplash.com/photo-1498579150354-977475b7ea0b?w=800&q=80',
+      'https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=800&q=80'
+    ],
+    latitude: 3.3790,
+    longitude: -76.5320,
+    rating: 4.7,
+    priceRange: '$$$',
+    featured: false,
+    hasMenu: true,
+    foodType: ['Italiana', 'Pasta'],
+    goodForCouples: true,
+    attributes: ['Vinos', 'Reservas', 'Pantallas'],
+    menu: [
+      { id: 'm39', name: 'Risotto ai Funghi', description: 'Risotto cremoso con hongos porcini', price: '$35.000', category: 'Risottos' },
+      { id: 'm40', name: 'Lasagna Bolognesa', description: 'Capas de pasta, ragú y bechamel gratinada', price: '$30.000', category: 'Pastas' },
+    ],
+    reviews: []
+  },
+
+  // === BAR / CERVEZA ===
+  {
+    id: '15',
+    name: 'Cervecería Gol ⚽🍺',
+    category: 'Bar',
+    address: 'Calle 82 #31-40, Barrio Vallegrande',
+    neighborhood: 'Vallegrande',
+    zone: 'Norte',
+    phone: '+57 2 555 3012',
+    description: 'Cervecería artesanal con cervezas edición mundial. 8 pantallas, ambiente de estadio y la mejor barra.',
+    images: [
+      'https://images.unsplash.com/photo-1535958636474-b021ee887b13?w=800&q=80',
+      'https://images.unsplash.com/photo-1436076863939-06870fe779c2?w=800&q=80'
+    ],
+    latitude: 3.4365,
+    longitude: -76.5227,
+    rating: 4.7,
+    priceRange: '$$',
+    featured: true,
+    hasMenu: true,
+    foodType: ['Cerveza Artesanal', 'Bar'],
+    attributes: ['8 Pantallas', 'Barra', 'Música'],
+    menu: [
+      { id: 'm41', name: 'Cerveza Gol Dorado', description: 'Lager artesanal suave y refrescante', price: '$12.000', category: 'Cervezas' },
+      { id: 'm42', name: 'IPA del Campeón', description: 'IPA intensa con lúpulos colombianos', price: '$14.000', category: 'Cervezas' },
+      { id: 'm43', name: 'Tabla Mundialista', description: 'Degustación de 6 cervezas mundialistas', price: '$35.000', category: 'Degustaciones' },
+      { id: 'm44', name: 'Alitas BBQ', description: 'Alitas en salsa BBQ ahumada', price: '$22.000', category: 'Snacks' },
+    ],
+    hasPromotions: true,
+    promotions: [
+      { id: 'p15-1', title: '🍺 2x1 en cervezas durante partidos', description: 'Mientras suena el himno, 2x1 en tu primera ronda', image: 'https://images.unsplash.com/photo-1535958636474-b021ee887b13?w=800&q=80', conditions: 'Durante partidos del mundial', validUntil: '2026-12-31', qrRequired: true },
+    ],
+    reviews: [
+      { id: 'r6', author: 'Andrés R.', rating: 5, comment: 'El mejor lugar para ver los partidos con cerveza artesanal!', date: '2026-03-22' },
+    ]
+  },
+  {
+    id: '16',
+    name: 'Sports Bar La Tribuna 🏟️',
+    category: 'Bar',
+    address: 'Calle 85 #32-20, Barrio Vallegrande',
+    neighborhood: 'Vallegrande',
+    zone: 'Norte',
+    phone: '+57 2 555 3567',
+    description: 'Bar deportivo 100% mundialista. Pantalla gigante, cócteles temáticos y la mejor energía de barra.',
+    images: [
+      'https://images.unsplash.com/photo-1436076863939-06870fe779c2?w=800&q=80',
+      'https://images.unsplash.com/photo-1572116469696-31de0f17cc34?w=800&q=80'
+    ],
+    latitude: 3.4380,
+    longitude: -76.5230,
+    rating: 4.5,
+    priceRange: '$$',
+    featured: false,
+    hasMenu: true,
+    foodType: ['Bar', 'Cócteles'],
+    attributes: ['Pantalla Gigante', 'DJ', 'Terraza'],
+    menu: [
+      { id: 'm45', name: 'Cóctel La Selección', description: 'Aguardiente, maracuyá y soda', price: '$16.000', category: 'Cócteles' },
+      { id: 'm46', name: 'Bucket Mundialista', description: '5 cervezas nacionales en balde de hielo', price: '$40.000', category: 'Cervezas' },
+    ],
+    reviews: []
+  },
+
+  // === ROOFTOP ===
+  {
+    id: '17',
+    name: 'Sky Gol Rooftop 🏙️⚽',
+    category: 'Rooftop',
+    address: 'Carrera 39 #6-15, Barrio San Fernando',
+    neighborhood: 'San Fernando',
+    zone: 'Centro',
+    phone: '+57 2 555 5456',
+    description: 'La terraza más alta de Cali para vivir el mundial. Vista panorámica, pantalla LED gigante y cócteles premium.',
+    images: [
+      'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80',
+      'https://images.unsplash.com/photo-1470337458703-46ad1756a187?w=800&q=80',
+      'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80'
+    ],
+    latitude: 3.4215,
+    longitude: -76.5375,
+    rating: 4.9,
+    priceRange: '$$$',
+    featured: true,
+    hasMenu: true,
+    foodType: ['Rooftop', 'Cócteles', 'Fusión'],
+    goodForCouples: true,
+    attributes: ['Vista Panorámica', 'Pantalla LED', 'Reservas', 'DJ'],
+    menu: [
+      { id: 'm47', name: 'Cóctel Gol de Oro', description: 'Whiskey, miel, limón y gold flakes', price: '$28.000', category: 'Cócteles Premium' },
+      { id: 'm48', name: 'Tabla de Quesos Mundial', description: 'Quesos de 4 países con frutas y crackers', price: '$45.000', category: 'Para Compartir' },
+      { id: 'm49', name: 'Carpaccio del Campeón', description: 'Láminas de res con rúgula y parmesano', price: '$32.000', category: 'Entradas' },
+    ],
+    hasPromotions: true,
+    promotions: [
+      { id: 'p17-1', title: '🏙️ Cóctel de bienvenida GRATIS', description: 'Primer cóctel gratis en tu primera visita', image: 'https://images.unsplash.com/photo-1470337458703-46ad1756a187?w=800&q=80', conditions: 'Primera visita\nEscanea QR\nReserva requerida', validUntil: '2026-12-31', qrRequired: true, firstTimeOnly: true },
+    ],
+    reviews: [
+      { id: 'r7', author: 'Valentina P.', rating: 5, comment: 'Vista increíble y el partido se siente épico desde arriba!', date: '2026-03-25' },
+    ]
+  },
+  {
+    id: '18',
+    name: 'Terraza Mundial 🌅',
+    category: 'Rooftop',
+    address: 'Calle 23N #5N-63, Barrio Versalles',
+    neighborhood: 'Versalles',
+    zone: 'Norte',
+    phone: '+57 2 555 8901',
+    description: 'Rooftop con ambiente lounge y pantallas para el mundial. Cocina fusión, cócteles artesanales y sunset sessions.',
+    images: [
+      'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80',
+      'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80'
+    ],
+    latitude: 3.4580,
+    longitude: -76.5360,
+    rating: 4.6,
+    priceRange: '$$$',
+    featured: false,
+    hasMenu: true,
+    foodType: ['Rooftop', 'Fusión'],
+    goodForCouples: true,
+    attributes: ['Terraza', 'Pantallas', 'Lounge', 'Reservas'],
+    menu: [
+      { id: 'm50', name: 'Sunset Spritz', description: 'Aperol, prosecco y naranja', price: '$24.000', category: 'Cócteles' },
+      { id: 'm51', name: 'Sliders del Partido', description: '4 mini burgers gourmet con papas truffle', price: '$35.000', category: 'Para Compartir' },
     ],
     reviews: []
   },
@@ -639,14 +574,12 @@ export const categories: string[] = [
   'Comidas Rápidas',
   'Café',
   'Food Truck',
-  'Italiana',
-  'Parrilla',
-  'Tradicional',
-  'Saludable',
-  'Mariscos',
-  'Postres',
-  'Panadería',
+  'Mexicana',
   'Asiática',
+  'Parrilla',
+  'Italiana',
+  'Bar',
+  'Rooftop',
 ];
 
 export const neighborhoods: string[] = [
