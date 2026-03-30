@@ -284,14 +284,14 @@ const Index = () => {
 
           {/* Neighborhood Selector below map */}
           <div className="w-full bg-card border-b border-border" data-tour="neighborhood-selector">
-            <div className="w-full max-w-screen-2xl mx-auto px-4 sm:px-4 md:px-6 py-3">
+            <div className="w-full max-w-screen-2xl mx-auto px-3 sm:px-4 md:px-6 py-2 sm:py-3">
               <Popover open={neighborhoodOpen} onOpenChange={setNeighborhoodOpen}>
                 <PopoverTrigger asChild>
                   <Button
                     variant="outline"
                     role="combobox"
                     aria-expanded={neighborhoodOpen}
-                    className="w-full sm:w-auto justify-between min-w-[200px]"
+                    className="w-full sm:w-auto justify-between min-w-0 sm:min-w-[200px] h-9 text-sm"
                   >
                     <div className="flex items-center gap-2">
                       <MapPin className="h-4 w-4" />
