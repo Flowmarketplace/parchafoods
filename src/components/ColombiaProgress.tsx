@@ -6,28 +6,25 @@ import { Trophy, Users, Star, Calendar, MapPin, Clock } from 'lucide-react';
 
 export default function ColombiaProgress() {
   return (
-    <div className="space-y-4 sm:space-y-6">
-      {/* Team Hero */}
-      <Card className="overflow-hidden border-accent/30 bg-gradient-to-br from-accent/5 via-primary/5 to-secondary/5">
-        <CardContent className="p-4 sm:p-6">
-          <div className="flex flex-col sm:flex-row items-center gap-4">
-            <div className="text-6xl sm:text-7xl">🇨🇴</div>
-            <div className="text-center sm:text-left flex-1">
-              <h3 className="text-xl sm:text-2xl font-bold text-foreground">
+    <div className="space-y-3 sm:space-y-4">
+      {/* Team Hero — compact */}
+      <Card className="overflow-hidden border-accent/20">
+        <CardContent className="p-3 sm:p-4">
+          <div className="flex items-center gap-3">
+            <div className="text-4xl sm:text-5xl shrink-0">🇨🇴</div>
+            <div className="flex-1 min-w-0">
+              <h3 className="text-base sm:text-lg font-bold text-foreground">
                 Selección Colombia
               </h3>
-              <p className="text-sm text-muted-foreground">
-                DT: {colombiaTeamInfo.coach} • Ranking FIFA: #{colombiaTeamInfo.fifaRanking}
+              <p className="text-xs text-muted-foreground truncate">
+                DT: {colombiaTeamInfo.coach} · Ranking FIFA #{colombiaTeamInfo.fifaRanking}
               </p>
-              <div className="flex flex-wrap gap-2 mt-2 justify-center sm:justify-start">
-                <Badge variant="secondary" className="gap-1">
-                  <Trophy className="h-3 w-3" />
+              <div className="flex flex-wrap gap-1.5 mt-1.5">
+                <Badge variant="secondary" className="text-[10px] gap-0.5 px-1.5 py-0">
+                  <Trophy className="h-2.5 w-2.5" />
                   {colombiaTeamInfo.bestResult}
                 </Badge>
-                <Badge variant="outline">
-                  {colombiaTeamInfo.worldCupHistory}
-                </Badge>
-                <Badge className="bg-accent text-accent-foreground">
+                <Badge variant="outline" className="text-[10px] px-1.5 py-0">
                   Grupo {colombiaTeamInfo.group}
                 </Badge>
               </div>
@@ -36,128 +33,116 @@ export default function ColombiaProgress() {
         </CardContent>
       </Card>
 
-      {/* Key Players */}
-      <Card>
-        <CardHeader className="pb-2">
-          <CardTitle className="text-base sm:text-lg flex items-center gap-2">
-            <Users className="h-5 w-5 text-primary" />
-            Jugadores Clave
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-3">
-            {colombiaTeamInfo.keyPlayers.map((player) => (
-              <div
-                key={player.name}
-                className="text-center p-2 sm:p-3 rounded-lg bg-muted/50 border"
-              >
-                <div className="text-2xl mb-1">⚽</div>
-                <p className="text-xs sm:text-sm font-semibold leading-tight">{player.name}</p>
-                <p className="text-[10px] sm:text-xs text-muted-foreground">{player.position}</p>
-                <p className="text-[10px] sm:text-xs text-primary font-medium">{player.club}</p>
-              </div>
-            ))}
+      {/* Key Players — horizontal scroll on mobile */}
+      <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-1 -mx-1 px-1">
+        {colombiaTeamInfo.keyPlayers.map((player) => (
+          <div
+            key={player.name}
+            className="text-center p-2 sm:p-3 rounded-lg bg-card border shrink-0 w-[100px] sm:w-[120px]"
+          >
+            <div className="text-lg sm:text-xl mb-0.5">⚽</div>
+            <p className="text-[11px] sm:text-xs font-semibold leading-tight truncate">{player.name}</p>
+            <p className="text-[9px] sm:text-[10px] text-muted-foreground">{player.position}</p>
+            <p className="text-[9px] sm:text-[10px] text-primary font-medium truncate">{player.club}</p>
           </div>
-        </CardContent>
-      </Card>
+        ))}
+      </div>
 
-      {/* Colombia's Matches */}
-      <Card>
-        <CardHeader className="pb-2">
-          <CardTitle className="text-base sm:text-lg flex items-center gap-2">
-            <Calendar className="h-5 w-5 text-primary" />
-            Partidos de Colombia
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          {colombiaMatches.map((match) => {
-            const dateObj = new Date(match.date + 'T12:00:00');
-            const formattedDate = dateObj.toLocaleDateString('es-CO', {
-              weekday: 'long',
-              day: 'numeric',
-              month: 'long',
-            });
+      {/* Colombia's Matches — stacked cards */}
+      <div className="space-y-2">
+        <h4 className="text-sm font-semibold flex items-center gap-1.5 text-foreground">
+          <Calendar className="h-4 w-4 text-primary" />
+          Partidos de Colombia
+        </h4>
+        {colombiaMatches.map((match) => {
+          const dateObj = new Date(match.date + 'T12:00:00');
+          const formattedDate = dateObj.toLocaleDateString('es-CO', {
+            weekday: 'short',
+            day: 'numeric',
+            month: 'short',
+          });
 
-            return (
-              <div
-                key={match.id}
-                className="flex items-center gap-3 p-3 rounded-lg bg-muted/30 border hover:border-accent/50 transition-colors"
-              >
-                <div className="flex items-center gap-2 flex-1">
-                  <span className="text-xl sm:text-2xl">{match.homeFlag}</span>
-                  <span className="text-xs sm:text-sm font-semibold">{match.homeTeam}</span>
-                </div>
-                <div className="flex flex-col items-center px-2 sm:px-4">
-                  <span className="text-xs font-bold text-muted-foreground">VS</span>
-                  <div className="flex items-center gap-1 text-muted-foreground">
-                    <Clock className="h-2.5 w-2.5" />
-                    <span className="text-[10px]">{match.time}</span>
+          return (
+            <Card key={match.id} className="border-accent/20 hover:border-accent/40 transition-colors">
+              <CardContent className="p-3">
+                <div className="flex items-center gap-2">
+                  {/* Home */}
+                  <div className="flex items-center gap-1.5 flex-1 min-w-0">
+                    <span className="text-lg sm:text-xl shrink-0">{match.homeFlag}</span>
+                    <span className="text-xs font-semibold truncate">{match.homeTeam}</span>
+                  </div>
+                  {/* VS + time */}
+                  <div className="flex flex-col items-center shrink-0 px-1">
+                    <span className="text-[10px] font-bold text-muted-foreground">VS</span>
+                    <span className="text-[9px] text-muted-foreground">{match.time} COT</span>
+                  </div>
+                  {/* Away */}
+                  <div className="flex items-center gap-1.5 flex-1 min-w-0 justify-end">
+                    <span className="text-xs font-semibold truncate text-right">{match.awayTeam}</span>
+                    <span className="text-lg sm:text-xl shrink-0">{match.awayFlag}</span>
                   </div>
                 </div>
-                <div className="flex items-center gap-2 flex-1 justify-end">
-                  <span className="text-xs sm:text-sm font-semibold">{match.awayTeam}</span>
-                  <span className="text-xl sm:text-2xl">{match.awayFlag}</span>
+                <div className="flex items-center gap-3 mt-1.5 text-muted-foreground">
+                  <span className="flex items-center gap-1 text-[10px]">
+                    <Calendar className="h-2.5 w-2.5" />
+                    {formattedDate}
+                  </span>
+                  <span className="flex items-center gap-1 text-[10px] truncate">
+                    <MapPin className="h-2.5 w-2.5 shrink-0" />
+                    {match.city}
+                  </span>
                 </div>
-                <div className="hidden sm:flex flex-col items-end text-right ml-4">
-                  <span className="text-[10px] sm:text-xs text-muted-foreground capitalize">{formattedDate}</span>
-                  <div className="flex items-center gap-1 text-muted-foreground">
-                    <MapPin className="h-2.5 w-2.5" />
-                    <span className="text-[10px]">{match.city}</span>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </CardContent>
-      </Card>
+              </CardContent>
+            </Card>
+          );
+        })}
+      </div>
 
-      {/* Group Standing */}
+      {/* Group Standing — responsive table */}
       <Card>
-        <CardHeader className="pb-2">
-          <CardTitle className="text-base sm:text-lg flex items-center gap-2">
-            <Star className="h-5 w-5 text-accent" />
-            {colombiaGroup.name} - Tabla de Posiciones
+        <CardHeader className="pb-2 px-3 pt-3">
+          <CardTitle className="text-sm flex items-center gap-1.5">
+            <Star className="h-4 w-4 text-accent" />
+            {colombiaGroup.name} - Posiciones
           </CardTitle>
         </CardHeader>
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-8">#</TableHead>
-                <TableHead>Equipo</TableHead>
-                <TableHead className="text-center">PJ</TableHead>
-                <TableHead className="text-center">G</TableHead>
-                <TableHead className="text-center">E</TableHead>
-                <TableHead className="text-center">P</TableHead>
-                <TableHead className="text-center hidden sm:table-cell">GF</TableHead>
-                <TableHead className="text-center hidden sm:table-cell">GC</TableHead>
-                <TableHead className="text-center font-bold">Pts</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {colombiaGroup.standings.map((team, idx) => (
-                <TableRow
-                  key={team.team}
-                  className={team.team === 'Colombia' ? 'bg-accent/10 font-semibold' : ''}
-                >
-                  <TableCell>{idx + 1}</TableCell>
-                  <TableCell>
-                    <span className="flex items-center gap-2">
-                      <span>{team.flag}</span>
-                      <span className="text-xs sm:text-sm">{team.team}</span>
-                    </span>
-                  </TableCell>
-                  <TableCell className="text-center">{team.played}</TableCell>
-                  <TableCell className="text-center">{team.won}</TableCell>
-                  <TableCell className="text-center">{team.drawn}</TableCell>
-                  <TableCell className="text-center">{team.lost}</TableCell>
-                  <TableCell className="text-center hidden sm:table-cell">{team.goalsFor}</TableCell>
-                  <TableCell className="text-center hidden sm:table-cell">{team.goalsAgainst}</TableCell>
-                  <TableCell className="text-center font-bold">{team.points}</TableCell>
+        <CardContent className="px-2 pb-3">
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-6 px-1 text-[10px]">#</TableHead>
+                  <TableHead className="px-1 text-[10px]">Equipo</TableHead>
+                  <TableHead className="text-center px-1 text-[10px]">PJ</TableHead>
+                  <TableHead className="text-center px-1 text-[10px]">G</TableHead>
+                  <TableHead className="text-center px-1 text-[10px]">E</TableHead>
+                  <TableHead className="text-center px-1 text-[10px]">P</TableHead>
+                  <TableHead className="text-center px-1 text-[10px] font-bold">Pts</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {colombiaGroup.standings.map((team, idx) => (
+                  <TableRow
+                    key={team.team}
+                    className={team.team === 'Colombia' ? 'bg-accent/10' : ''}
+                  >
+                    <TableCell className="px-1 py-1.5 text-xs">{idx + 1}</TableCell>
+                    <TableCell className="px-1 py-1.5">
+                      <span className="flex items-center gap-1.5">
+                        <span className="text-sm">{team.flag}</span>
+                        <span className="text-xs font-medium">{team.team}</span>
+                      </span>
+                    </TableCell>
+                    <TableCell className="text-center px-1 py-1.5 text-xs">{team.played}</TableCell>
+                    <TableCell className="text-center px-1 py-1.5 text-xs">{team.won}</TableCell>
+                    <TableCell className="text-center px-1 py-1.5 text-xs">{team.drawn}</TableCell>
+                    <TableCell className="text-center px-1 py-1.5 text-xs">{team.lost}</TableCell>
+                    <TableCell className="text-center px-1 py-1.5 text-xs font-bold">{team.points}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
         </CardContent>
       </Card>
     </div>
