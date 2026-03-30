@@ -334,47 +334,115 @@ const PlaceDetails = () => {
               </div>
 
               {/* Tabs Section */}
-              <Tabs defaultValue="ubicacion" className="w-full">
-                <TabsList className="grid w-full grid-cols-4">
-                  <TabsTrigger value="ubicacion">Ubicación</TabsTrigger>
-                  {menu && menu.length > 0 && (
-                    <TabsTrigger value="menu">
-                      <UtensilsCrossed className="h-4 w-4 mr-2" />
-                      Menú
-                    </TabsTrigger>
-                  )}
+              <Tabs defaultValue="mundialista" className="w-full">
+                <TabsList className="w-full overflow-x-auto flex justify-start gap-1 h-auto flex-wrap">
+                  <TabsTrigger value="mundialista" className="text-xs gap-1 px-2.5 py-1.5">
+                    <Trophy className="h-3.5 w-3.5" />
+                    Mundialista
+                  </TabsTrigger>
+                  <TabsTrigger value="menu" className="text-xs gap-1 px-2.5 py-1.5">
+                    <UtensilsCrossed className="h-3.5 w-3.5" />
+                    Menú
+                  </TabsTrigger>
+                  <TabsTrigger value="horarios" className="text-xs gap-1 px-2.5 py-1.5">
+                    <Clock className="h-3.5 w-3.5" />
+                    Horarios
+                  </TabsTrigger>
+                  <TabsTrigger value="ubicacion" className="text-xs gap-1 px-2.5 py-1.5">
+                    <MapPin className="h-3.5 w-3.5" />
+                    Ubicación
+                  </TabsTrigger>
                   {promotions && promotions.length > 0 && (
-                    <TabsTrigger value="promociones">
-                      <Tag className="h-4 w-4 mr-2" />
+                    <TabsTrigger value="promociones" className="text-xs gap-1 px-2.5 py-1.5">
+                      <Tag className="h-3.5 w-3.5" />
                       Promo
                     </TabsTrigger>
                   )}
-                  {place.featuredProducts && place.featuredProducts.length > 0 && (
-                    <TabsTrigger value="catalogo">
-                      <ShoppingBag className="h-4 w-4 mr-2" />
-                      Catálogo
-                    </TabsTrigger>
-                  )}
-                  {place.hasProducts && (
-                    <TabsTrigger value="productos">
-                      <ShoppingBag className="h-4 w-4 mr-2" />
-                      Productos
-                    </TabsTrigger>
-                  )}
-                  {place.hasServices && (
-                    <TabsTrigger value="servicios">
-                      <Briefcase className="h-4 w-4 mr-2" />
-                      Servicios
-                    </TabsTrigger>
-                  )}
-                  {place.hasGymClasses && (
-                    <TabsTrigger value="clases">
-                      <Calendar className="h-4 w-4 mr-2" />
-                      Clases
-                    </TabsTrigger>
-                  )}
-                  <TabsTrigger value="resenas">Reseñas</TabsTrigger>
+                  <TabsTrigger value="resenas" className="text-xs gap-1 px-2.5 py-1.5">Reseñas</TabsTrigger>
                 </TabsList>
+
+                {/* Plato Mundialista */}
+                <TabsContent value="mundialista" className="mt-4">
+                  <Card className="overflow-hidden border-primary/20 bg-gradient-to-br from-primary/5 to-secondary/5">
+                    <CardContent className="p-4 sm:p-6">
+                      <div className="flex items-center gap-2 mb-4">
+                        <span className="text-2xl">⚽</span>
+                        <h3 className="text-lg sm:text-xl font-bold">Plato Mundialista</h3>
+                      </div>
+                      {place.worldCupSpecial || place.loyalty_reward_description ? (
+                        <>
+                          <div className="bg-background/80 rounded-lg p-4 mb-3 border border-primary/10">
+                            <p className="font-semibold text-primary mb-1">
+                              🍽️ {place.worldCupSpecial || 'Plato especial del Mundial'}
+                            </p>
+                            <p className="text-sm text-muted-foreground">
+                              {place.loyalty_reward_description || 'Pregunta por nuestro plato mundialista y acumula goles en tu pasaporte.'}
+                            </p>
+                          </div>
+                          {place.loyalty_reward_image && (
+                            <div className="rounded-lg overflow-hidden h-48 mb-3">
+                              <img src={place.loyalty_reward_image} alt="Plato mundialista" className="w-full h-full object-cover" />
+                            </div>
+                          )}
+                          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                            <Trophy className="h-3.5 w-3.5 text-secondary" />
+                            <span>Pide este plato y gana goles para tu pasaporte mundialista</span>
+                          </div>
+                        </>
+                      ) : (
+                        <div className="text-center py-6">
+                          <span className="text-3xl mb-2 block">🏟️</span>
+                          <p className="text-muted-foreground text-sm">
+                            Próximamente el plato mundialista de {place.name}
+                          </p>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+
+                {/* Horarios */}
+                <TabsContent value="horarios" className="mt-4">
+                  <Card>
+                    <CardContent className="p-4 sm:p-6">
+                      <div className="flex items-center gap-2 mb-4">
+                        <Clock className="h-5 w-5 text-primary" />
+                        <h3 className="text-lg font-bold">Horarios de Atención</h3>
+                      </div>
+                      {hours.length > 0 ? (
+                        <div className="space-y-2">
+                          {hours.map((h) => {
+                            const dayNames = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+                            const today = new Date().getDay();
+                            const isToday = h.day_of_week === today;
+                            return (
+                              <div
+                                key={h.id}
+                                className={`flex justify-between items-center p-2.5 rounded-lg text-sm ${
+                                  isToday ? 'bg-primary/10 border border-primary/20 font-semibold' : 'bg-muted/30'
+                                }`}
+                              >
+                                <span className="flex items-center gap-2">
+                                  {isToday && <span className="h-2 w-2 rounded-full bg-green-500" />}
+                                  {dayNames[h.day_of_week]}
+                                </span>
+                                <span className={h.is_closed ? 'text-destructive' : 'text-muted-foreground'}>
+                                  {h.is_closed ? 'Cerrado' : `${h.open_time?.slice(0,5)} - ${h.close_time?.slice(0,5)}`}
+                                </span>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      ) : (
+                        <div className="text-center py-6 text-muted-foreground text-sm">
+                          <Clock className="h-8 w-8 mx-auto mb-2 opacity-40" />
+                          <p>Horarios no disponibles</p>
+                          <p className="text-xs mt-1">Contacta directamente al restaurante</p>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                </TabsContent>
 
                 <TabsContent value="ubicacion" className="mt-6">
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
