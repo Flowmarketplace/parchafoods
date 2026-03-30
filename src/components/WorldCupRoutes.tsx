@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
-import { MapPin, ChevronRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { useEffect, useRef, useState } from 'react';
+import { MapPin } from 'lucide-react';
 
 const routes = [
   {
