@@ -89,6 +89,7 @@ const PlaceDetails = () => {
         setImages(imagesResult.data || []);
         setMenu(menuResult.data || []);
         setPromotions(promotionsResult.data || []);
+        setHours(hoursResult.data || []);
       } else {
         // Fallback to mock data
         const mockPlace = mockPlaces.find((p) => p.id === id);
