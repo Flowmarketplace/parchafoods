@@ -432,26 +432,23 @@ const Index = () => {
 
               {/* 🎉 Eventos gastronómicos */}
               <section>
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-2 sm:gap-3">
-                    <div className="p-2 bg-primary/10 rounded-lg">
-                      <Calendar className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <div className="p-1.5 bg-primary/10 rounded-lg">
+                      <Calendar className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
                     </div>
-                    <div>
-                      <h2 className="text-lg sm:text-xl font-bold">Eventos en Cali</h2>
-                      <p className="text-xs sm:text-sm text-muted-foreground hidden sm:block">Eventos gastronómicos y actividades</p>
-                    </div>
+                    <h2 className="text-base sm:text-xl font-bold">Eventos en Cali</h2>
                   </div>
                   <Button 
                     variant="ghost" 
-                    className="gap-1 sm:gap-2 h-8 sm:h-10 text-xs sm:text-sm"
+                    className="gap-1 h-8 text-xs shrink-0"
                     onClick={() => navigate('/events-all')}
                   >
                     Ver todos
-                    <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4" />
+                    <ChevronRight className="h-3 w-3" />
                   </Button>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">
                   {featuredEvents.map(event => (
                     <EventCard key={event.id} event={event} />
                   ))}
