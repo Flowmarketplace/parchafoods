@@ -342,19 +342,72 @@ const Index = () => {
           {/* Content Sections */}
           {!showFilters ? (
             <div className="w-full max-w-screen-2xl mx-auto px-4 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8 space-y-6 sm:space-y-8 md:space-y-12 pb-20 md:pb-8">
+              
+              {/* 🏆 World Cup Hero Banner */}
+              <section className="bg-gradient-to-br from-primary/15 via-accent/10 to-secondary/15 -mx-4 sm:-mx-4 md:-mx-6 px-4 sm:px-4 md:px-6 py-6 sm:py-8 rounded-lg border border-primary/20 relative overflow-hidden">
+                <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 80 80\'%3E%3Ccircle cx=\'40\' cy=\'40\' r=\'30\' fill=\'none\' stroke=\'%23000\' stroke-width=\'2\'/%3E%3Cpath d=\'M40 10 L48 28 L40 22 L32 28Z\' fill=\'%23000\'/%3E%3C/svg%3E")', backgroundSize: '60px' }} />
+                <div className="relative z-10 text-center space-y-3">
+                  <div className="flex items-center justify-center gap-2">
+                    <span className="text-3xl sm:text-4xl">⚽</span>
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent">
+                      El Mundial del Sabor 2026
+                    </h2>
+                    <span className="text-3xl sm:text-4xl">🔥</span>
+                  </div>
+                  <p className="text-sm sm:text-base text-muted-foreground max-w-lg mx-auto">
+                    Vive el mundial con los mejores sabores de Cali. ¡Cada gol se celebra con buena comida!
+                  </p>
+                  <div className="flex items-center justify-center gap-2 flex-wrap">
+                    <span className="text-2xl">🇨🇴</span>
+                    <span className="text-sm font-semibold text-primary">¡Vamos Colombia!</span>
+                    <span className="text-2xl">🇨🇴</span>
+                  </div>
+                </div>
+              </section>
+
+              {/* 🇨🇴 Colombia Progress Section */}
+              <section className="-mx-4 sm:-mx-4 md:-mx-6 px-4 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
+                <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
+                  <div className="p-2 bg-accent/10 rounded-lg">
+                    <Flag className="h-5 w-5 sm:h-6 sm:w-6 text-accent" />
+                  </div>
+                  <div>
+                    <h2 className="text-lg sm:text-xl md:text-2xl font-bold">🇨🇴 Nuestra Selección</h2>
+                    <p className="text-xs sm:text-sm text-muted-foreground">Sigue el camino de Colombia en el mundial</p>
+                  </div>
+                </div>
+                <ColombiaProgress />
+              </section>
+
+              {/* 📅 Match Calendar Section */}
+              <section className="bg-gradient-to-br from-secondary/5 to-primary/5 -mx-4 sm:-mx-4 md:-mx-6 px-4 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8 rounded-lg border-t-2 border-secondary/20">
+                <div className="flex items-center justify-between mb-3 sm:mb-4 md:mb-6">
+                  <div className="flex items-center gap-2 sm:gap-3">
+                    <div className="p-2 bg-secondary/10 rounded-lg">
+                      <Calendar className="h-5 w-5 sm:h-6 sm:w-6 text-secondary" />
+                    </div>
+                    <div>
+                      <h2 className="text-lg sm:text-xl md:text-2xl font-bold">Calendario de Partidos</h2>
+                      <p className="text-xs sm:text-sm text-muted-foreground hidden sm:block">Próximos encuentros del Mundial 2026</p>
+                    </div>
+                  </div>
+                </div>
+                <WorldCupCalendar />
+              </section>
+
               {/* Nuestros Recomendados Button */}
-              <section className="bg-gradient-to-br from-primary/10 via-secondary/5 to-purple-500/10 -mx-4 sm:-mx-4 md:-mx-6 px-4 sm:px-4 md:px-6 py-6 sm:py-8 rounded-lg border-t-2 border-primary/20">
+              <section className="bg-gradient-to-br from-primary/10 via-secondary/5 to-accent/10 -mx-4 sm:-mx-4 md:-mx-6 px-4 sm:px-4 md:px-6 py-6 sm:py-8 rounded-lg border-t-2 border-primary/20">
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
                   <div className="flex items-center gap-2 sm:gap-3">
-                    <div className="p-2 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-lg">
-                      <Calendar className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+                    <div className="p-2 bg-gradient-to-br from-primary/20 to-accent/20 rounded-lg">
+                      <Trophy className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
                     </div>
                     <div className="text-center sm:text-left">
-                      <h2 className="text-lg sm:text-xl md:text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                        Nuestros Recomendados
+                      <h2 className="text-lg sm:text-xl md:text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                        ¿Dónde ver los partidos?
                       </h2>
                       <p className="text-xs sm:text-sm text-muted-foreground">
-                        Descubre qué hacer cada día de la semana en Cali
+                        Restaurantes recomendados para vivir el mundial
                       </p>
                     </div>
                   </div>
@@ -370,19 +423,19 @@ const Index = () => {
               </section>
 
               {/* Recomendados - Shorts Section */}
-              <section className="bg-gradient-to-br from-purple-500/5 via-pink-500/5 to-primary/5 -mx-4 sm:-mx-4 md:-mx-6 px-4 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8 rounded-lg border-t-2 border-purple-500/20">
+              <section className="bg-gradient-to-br from-primary/5 via-accent/5 to-secondary/5 -mx-4 sm:-mx-4 md:-mx-6 px-4 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8 rounded-lg border-t-2 border-accent/20">
                 <div className="flex items-center justify-between mb-3 sm:mb-4 md:mb-6">
                   <div className="flex items-center gap-2 sm:gap-3">
-                    <div className="p-2 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-lg">
-                      <Video className="h-5 w-5 sm:h-6 sm:w-6 text-purple-600 dark:text-purple-400" />
+                    <div className="p-2 bg-gradient-to-br from-accent/20 to-primary/20 rounded-lg">
+                      <Video className="h-5 w-5 sm:h-6 sm:w-6 text-accent" />
                     </div>
                     <div>
-                      <h2 className="text-lg sm:text-xl md:text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                      <h2 className="text-lg sm:text-xl md:text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                         Recomendados
                       </h2>
                       <p className="text-xs sm:text-sm text-muted-foreground hidden sm:block">
                         {selectedCategory === 'Todos' 
-                          ? 'Videos cortos de creadores locales'
+                          ? 'Videos de los mejores sabores mundialistas'
                           : `Videos de ${selectedCategory}`
                         }
                       </p>
@@ -408,8 +461,8 @@ const Index = () => {
                       <Calendar className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
                     </div>
                     <div>
-                      <h2 className="text-lg sm:text-xl md:text-2xl font-bold">¿Qué hay para hacer?</h2>
-                      <p className="text-xs sm:text-sm text-muted-foreground hidden sm:block">Eventos, conciertos, teatro, cine y más</p>
+                      <h2 className="text-lg sm:text-xl md:text-2xl font-bold">Eventos Mundialistas</h2>
+                      <p className="text-xs sm:text-sm text-muted-foreground hidden sm:block">Eventos gastronómicos y actividades en Cali</p>
                     </div>
                   </div>
                   <Button 
@@ -435,7 +488,7 @@ const Index = () => {
                     <div className="p-2 bg-secondary/10 rounded-lg">
                       <Star className="h-5 w-5 sm:h-6 sm:w-6 text-secondary" />
                     </div>
-                    <h2 className="text-lg sm:text-xl md:text-2xl font-bold">Lugares Destacados</h2>
+                    <h2 className="text-lg sm:text-xl md:text-2xl font-bold">Restaurantes Destacados ⚽</h2>
                   </div>
                   <Button 
                     variant="ghost" 
