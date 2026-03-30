@@ -420,17 +420,12 @@ const Index = () => {
               </section>
 
               {/* 📅 Calendario general */}
-              <section className="bg-muted/20 -mx-4 sm:-mx-4 md:-mx-6 px-4 sm:px-4 md:px-6 py-5 sm:py-6 rounded-xl border border-border">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-2 sm:gap-3">
-                    <div className="p-2 bg-secondary/10 rounded-lg">
-                      <Calendar className="h-5 w-5 sm:h-6 sm:w-6 text-secondary" />
-                    </div>
-                    <div>
-                      <h2 className="text-lg sm:text-xl font-bold">Calendario de Partidos</h2>
-                      <p className="text-xs sm:text-sm text-muted-foreground hidden sm:block">Todos los encuentros del Mundial 2026</p>
-                    </div>
+              <section className="bg-muted/20 -mx-3 sm:-mx-4 md:-mx-6 px-3 sm:px-4 md:px-6 py-4 sm:py-5 rounded-none sm:rounded-xl border-y sm:border border-border">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="p-1.5 bg-secondary/10 rounded-lg">
+                    <Calendar className="h-4 w-4 sm:h-5 sm:w-5 text-secondary" />
                   </div>
+                  <h2 className="text-base sm:text-xl font-bold">Calendario de Partidos</h2>
                 </div>
                 <WorldCupCalendar />
               </section>
