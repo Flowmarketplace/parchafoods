@@ -13,7 +13,7 @@ import { mockPlaces, neighborhoods } from '@/data/places';
 import { mockEvents } from '@/data/events';
 import { mockShorts } from '@/data/shorts';
 import { Button } from '@/components/ui/button';
-import { ChevronRight, Home, Star, Calendar, Video, MapPin, Check } from 'lucide-react';
+import { ChevronRight, Home, Star, Calendar, Video, MapPin, Check, Trophy, Flag } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import ShortCard from '@/components/ShortCard';
 import ShortsCarousel from '@/components/ShortsCarousel';
