@@ -239,6 +239,20 @@ const Index = () => {
                 </Button>
               </section>
 
+              {/* Rutas Mundialistas */}
+              <section>
+                <div className="flex items-center justify-between mb-2.5">
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg">🗺️</span>
+                    <h2 className="text-sm sm:text-lg font-bold">Las Rutas Mundialistas</h2>
+                  </div>
+                  <Button variant="ghost" className="gap-1 h-7 text-[11px] shrink-0 px-2" onClick={() => navigate('/listings')}>
+                    Ver todas <ChevronRight className="h-3 w-3" />
+                  </Button>
+                </div>
+                <WorldCupRoutes />
+              </section>
+
               {/* Restaurantes Destacados */}
               <section>
                 <div className="flex items-center justify-between mb-2.5">
