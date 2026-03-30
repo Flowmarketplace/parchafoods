@@ -275,7 +275,7 @@ const Index = () => {
         
         <main className="flex-1 lg:ml-64">
           {/* Map Section */}
-          <div className="h-[35vh] sm:h-[35vh] md:h-[40vh] lg:h-[60vh] w-full">
+          <div className="h-[30vh] sm:h-[35vh] md:h-[40vh] lg:h-[60vh] w-full">
             <MapComponent 
               selectedNeighborhood={selectedNeighborhood}
               selectedCategory={selectedCategory}
