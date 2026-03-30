@@ -51,7 +51,7 @@ const CategoryBar = ({ selectedCategory, onCategoryChange }: CategoryBarProps) =
     <div className="w-full bg-card border-y border-border shadow-sm" data-tour="category-bar">
       <div className="w-full max-w-screen-2xl mx-auto px-3 sm:px-4 md:px-6 py-2 sm:py-3">
         {/* Mobile: 2 rows of 4 (7 categories + Ver todos) */}
-        <div className="grid grid-cols-4 gap-2 sm:hidden">
+        <div className="grid grid-cols-4 gap-1.5 sm:hidden">
           {visibleCategories.map((category) => {
             const Icon = category.icon;
             const isActive = selectedCategory === category.id;
