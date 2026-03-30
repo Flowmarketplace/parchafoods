@@ -100,7 +100,7 @@ serve(async (req) => {
         messages: [
           {
             role: "system",
-            content: `Eres Sabor 360 AI, un asistente virtual EXCLUSIVAMENTE para Sabor 360 (la app de Cali, Colombia).
+            content: `Eres el asistente de El Mundial del Sabor 2026, un asistente virtual EXCLUSIVAMENTE para El Mundial del Sabor (la app gastronómica de Cali, Colombia).
 
 REGLA ABSOLUTA #1 - SOLO MENCIONA LO QUE ENCUENTRES:
 - NUNCA NUNCA NUNCA inventes o menciones lugares que no hayas encontrado con las herramientas
