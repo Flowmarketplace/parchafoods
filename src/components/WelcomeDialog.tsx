@@ -5,7 +5,7 @@ import { X } from "lucide-react";
 import citySkyline from "@/assets/city-skyline.png";
 import { TutorialTour } from "./TutorialTour";
 
-const WELCOME_SEEN_KEY = "sabor360_welcome_seen";
+const WELCOME_SEEN_KEY = "mundialdelsabor_welcome_seen";
 
 function safeGetItem(key: string) {
   try {
@@ -86,7 +86,7 @@ export function WelcomeDialog({
                   filter: "brightness(0) invert(1)",
                 }}
               />
-              <h2 className="text-2xl font-bold text-white relative z-10">Sabor 360</h2>
+              <h2 className="text-2xl font-bold text-white relative z-10">El Mundial del Sabor</h2>
               <Button
                 onClick={markSeenAndClose}
                 variant="ghost"
