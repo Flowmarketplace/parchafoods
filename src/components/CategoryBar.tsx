@@ -1,17 +1,15 @@
 import { useState } from 'react';
 import { 
   Grid, 
-  Utensils, 
   Coffee, 
   Pizza, 
   Flame, 
   Truck, 
-  Soup, 
-  Salad, 
-  Fish, 
   Sandwich, 
-  IceCream,
-  Cookie
+  Fish,
+  Beer,
+  Building2,
+  UtensilsCrossed
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -32,14 +30,12 @@ const categories: CategoryItem[] = [
   { id: 'Comidas Rápidas', name: 'Rápidas', icon: Sandwich },
   { id: 'Café', name: 'Cafés', icon: Coffee },
   { id: 'Food Truck', name: 'Food Truck', icon: Truck },
-  { id: 'Italiana', name: 'Italiana', icon: Pizza },
+  { id: 'Mexicana', name: 'Mexicana', icon: UtensilsCrossed },
+  { id: 'Asiática', name: 'Sushi', icon: Fish },
   { id: 'Parrilla', name: 'Parrilla', icon: Flame },
-  { id: 'Tradicional', name: 'Tradicional', icon: Soup },
-  { id: 'Saludable', name: 'Saludable', icon: Salad },
-  { id: 'Mariscos', name: 'Mariscos', icon: Fish },
-  { id: 'Postres', name: 'Postres', icon: IceCream },
-  { id: 'Panadería', name: 'Panadería', icon: Cookie },
-  { id: 'Asiática', name: 'Asiática', icon: Utensils },
+  { id: 'Italiana', name: 'Italiana', icon: Pizza },
+  { id: 'Bar', name: 'Cerveza', icon: Beer },
+  { id: 'Rooftop', name: 'Rooftop', icon: Building2 },
 ];
 
 const CategoryBar = ({ selectedCategory, onCategoryChange }: CategoryBarProps) => {
