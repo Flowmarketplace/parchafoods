@@ -5,7 +5,7 @@ import { X } from "lucide-react";
 import citySkyline from "@/assets/city-skyline.png";
 import { TutorialTour } from "./TutorialTour";
 
-const WELCOME_SEEN_KEY = "sabor360_welcome_seen";
+const WELCOME_SEEN_KEY = "mundialdelsabor_welcome_seen";
 
 function safeGetItem(key: string) {
   try {
