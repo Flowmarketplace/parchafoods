@@ -370,23 +370,20 @@ const Index = () => {
 
               {/* 🍽️ Restaurantes Destacados — PRIMERO */}
               <section>
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-2 sm:gap-3">
-                    <div className="p-2 bg-accent/10 rounded-lg">
-                      <Star className="h-5 w-5 sm:h-6 sm:w-6 text-accent" />
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <div className="p-1.5 bg-accent/10 rounded-lg">
+                      <Star className="h-4 w-4 sm:h-5 sm:w-5 text-accent" />
                     </div>
-                    <div>
-                      <h2 className="text-lg sm:text-xl md:text-2xl font-bold">Restaurantes Destacados</h2>
-                      <p className="text-xs sm:text-sm text-muted-foreground hidden sm:block">Los mejores lugares para disfrutar la comida en Cali</p>
-                    </div>
+                    <h2 className="text-base sm:text-xl font-bold">Restaurantes Destacados</h2>
                   </div>
                   <Button 
                     variant="ghost" 
-                    className="gap-1 sm:gap-2 h-8 sm:h-10 text-xs sm:text-sm"
+                    className="gap-1 h-8 text-xs shrink-0"
                     onClick={() => navigate('/listings')}
                   >
                     Ver todos
-                    <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4" />
+                    <ChevronRight className="h-3 w-3" />
                   </Button>
                 </div>
                 <PlacesList places={featuredPlaces} />
