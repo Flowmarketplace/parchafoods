@@ -54,11 +54,14 @@ const Navbar = ({ onMenuClick, searchQuery, onSearchChange, selectedNeighborhood
               <Menu className="h-5 w-5" />
             </Button>
             
-            <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
-              <img src="/sabor360-logo.png" alt="El Mundial del Sabor 2026" className="h-7 sm:h-10 w-auto shrink-0" />
-              <h1 className="text-sm sm:text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent leading-tight truncate">
-                El Mundial del Sabor
-              </h1>
+            <div className="flex items-center gap-1.5 sm:gap-2 min-w-0" onClick={() => navigate('/')} role="button">
+              <img src="/mundial-sabor-icon.png" alt="El Mundial del Sabor" className="h-9 sm:h-12 w-auto shrink-0 drop-shadow-md" />
+              <div className="flex flex-col leading-none min-w-0">
+                <span className="text-[10px] sm:text-xs font-semibold text-muted-foreground">🏆 2026</span>
+                <h1 className="text-xs sm:text-base font-extrabold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent truncate">
+                  El Mundial del Sabor
+                </h1>
+              </div>
             </div>
           </div>
 
