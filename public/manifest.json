@@ -6,7 +6,7 @@
   "scope": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#D85A2B",
+  "theme_color": "#1B7A3D",
   "orientation": "portrait-primary",
   "categories": ["travel", "lifestyle", "navigation", "food"],
   "lang": "es-CO",

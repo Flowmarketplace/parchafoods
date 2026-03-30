@@ -258,7 +258,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen w-full flex flex-col">
-      <WelcomeDialog onTourChange={setIsTourActive} />
+      
       <Navbar
         onMenuClick={() => setSidebarOpen(!sidebarOpen)}
         searchQuery={searchQuery}
