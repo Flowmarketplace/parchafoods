@@ -16,55 +16,55 @@ const MatchCard = ({ match }: { match: WorldCupMatch }) => {
 
   return (
     <Card
-      className={`overflow-hidden transition-all hover:shadow-sm ${
+      className={`overflow-hidden transition-all ${
         isColombiaMatch ? 'border-accent ring-1 ring-accent/20' : ''
       }`}
     >
-      <CardContent className="p-3">
+      <CardContent className="p-2.5 sm:p-3">
         <Badge
           variant={isColombiaMatch ? 'default' : 'secondary'}
-          className="text-[9px] sm:text-[10px] mb-2 px-1.5 py-0"
+          className="text-[8px] sm:text-[9px] mb-1.5 px-1.5 py-0 leading-tight"
         >
           {match.stage}
         </Badge>
 
-        <div className="flex items-center justify-between gap-1 my-2">
+        <div className="flex items-center justify-between gap-1 my-1.5">
           <div className="flex flex-col items-center gap-0.5 flex-1 min-w-0">
-            <span className="text-xl sm:text-2xl">{match.homeFlag}</span>
-            <span className="text-[10px] sm:text-xs font-semibold text-center leading-tight truncate w-full">
+            <span className="text-lg sm:text-xl">{match.homeFlag}</span>
+            <span className="text-[9px] sm:text-[10px] font-semibold text-center leading-tight truncate w-full">
               {match.homeTeam}
             </span>
           </div>
 
-          <div className="flex flex-col items-center shrink-0 px-1">
+          <div className="flex flex-col items-center shrink-0">
             {match.status === 'finished' ? (
-              <span className="text-lg font-bold">
+              <span className="text-sm sm:text-base font-bold">
                 {match.homeScore} - {match.awayScore}
               </span>
             ) : (
-              <span className="text-xs font-bold text-muted-foreground">VS</span>
+              <span className="text-[10px] font-bold text-muted-foreground">VS</span>
             )}
-            <span className="text-[9px] text-muted-foreground flex items-center gap-0.5">
-              <Clock className="h-2.5 w-2.5" />
+            <span className="text-[8px] sm:text-[9px] text-muted-foreground flex items-center gap-0.5">
+              <Clock className="h-2 w-2 sm:h-2.5 sm:w-2.5" />
               {match.time}
             </span>
           </div>
 
           <div className="flex flex-col items-center gap-0.5 flex-1 min-w-0">
-            <span className="text-xl sm:text-2xl">{match.awayFlag}</span>
-            <span className="text-[10px] sm:text-xs font-semibold text-center leading-tight truncate w-full">
+            <span className="text-lg sm:text-xl">{match.awayFlag}</span>
+            <span className="text-[9px] sm:text-[10px] font-semibold text-center leading-tight truncate w-full">
               {match.awayTeam}
             </span>
           </div>
         </div>
 
-        <div className="flex items-center gap-2 text-muted-foreground justify-center flex-wrap">
-          <span className="flex items-center gap-0.5 text-[9px] sm:text-[10px]">
-            <Calendar className="h-2.5 w-2.5" />
+        <div className="flex items-center gap-1.5 text-muted-foreground justify-center flex-wrap">
+          <span className="flex items-center gap-0.5 text-[8px] sm:text-[9px]">
+            <Calendar className="h-2 w-2 sm:h-2.5 sm:w-2.5" />
             {formattedDate}
           </span>
-          <span className="flex items-center gap-0.5 text-[9px] sm:text-[10px] truncate">
-            <MapPin className="h-2.5 w-2.5 shrink-0" />
+          <span className="flex items-center gap-0.5 text-[8px] sm:text-[9px] truncate">
+            <MapPin className="h-2 w-2 sm:h-2.5 sm:w-2.5 shrink-0" />
             {match.city}
           </span>
         </div>
@@ -79,7 +79,7 @@ export default function WorldCupCalendar() {
   );
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3">
+    <div className="grid grid-cols-2 gap-2">
       {sorted.slice(0, 6).map((m) => (
         <MatchCard key={m.id} match={m} />
       ))}

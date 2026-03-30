@@ -1,10 +1,8 @@
 import { useState, useMemo, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Sidebar from '@/components/Sidebar';
-
 import MapComponent from '@/components/MapComponent';
 import CategoryBar from '@/components/CategoryBar';
-import FilterBar from '@/components/FilterBar';
 import PlacesList from '@/components/PlacesList';
 import EventCard from '@/components/EventCard';
 import BottomNav from '@/components/BottomNav';
@@ -13,30 +11,20 @@ import { mockPlaces, neighborhoods } from '@/data/places';
 import { mockEvents } from '@/data/events';
 import { mockShorts } from '@/data/shorts';
 import { Button } from '@/components/ui/button';
-import { ChevronRight, Home, Star, Calendar, Video, MapPin, Check, Trophy, Flag } from 'lucide-react';
+import { ChevronRight, Star, Calendar, Video, MapPin, Check, Trophy } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import ShortCard from '@/components/ShortCard';
 import ShortsCarousel from '@/components/ShortsCarousel';
-import PlaceChat from '@/components/PlaceChat';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { supabase } from '@/integrations/supabase/client';
 import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
+  Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList,
 } from '@/components/ui/command';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
 import WorldCupCalendar from '@/components/WorldCupCalendar';
 import ColombiaProgress from '@/components/ColombiaProgress';
+import WorldCupProgress from '@/components/WorldCupProgress';
 
 const Index = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -51,18 +39,16 @@ const Index = () => {
   const [shorts, setShorts] = useState<any[]>([]);
   const navigate = useNavigate();
 
-  // Load businesses from database
   useEffect(() => {
     const loadBusinesses = async () => {
       setLoadingPlaces(true);
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from('businesses')
         .select('*')
         .order('featured', { ascending: false })
         .order('name');
       
       if (data) {
-        // Transform database format to Place format
         const transformedPlaces = data.map(business => ({
           id: business.id,
           slug: business.slug,
@@ -78,36 +64,24 @@ const Index = () => {
           longitude: Number(business.longitude) || 0,
           priceRange: business.price_range,
           featured: business.featured,
-          rating: 4.5, // Default rating
+          rating: 4.5,
         }));
         setPlaces(transformedPlaces);
       }
       setLoadingPlaces(false);
     };
-    
     loadBusinesses();
   }, []);
 
-  // Load shorts from database
   useEffect(() => {
     const loadShorts = async () => {
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from('business_shorts')
-        .select(`
-          *,
-          businesses (
-            id,
-            name,
-            category
-          )
-        `)
+        .select(`*, businesses (id, name, category)`)
         .eq('active', true)
         .order('created_at', { ascending: false });
       
-      console.log('Shorts from DB:', data);
-      
       if (data) {
-        // Transform database format to Short format
         const transformedShorts = data.map((short: any) => ({
           id: short.id,
           title: short.title,
@@ -127,40 +101,24 @@ const Index = () => {
           placeName: short.businesses.name,
           createdAt: new Date(short.created_at).toISOString().split('T')[0]
         }));
-        
-        console.log('Transformed shorts:', transformedShorts);
-        console.log('Mock shorts:', mockShorts);
-        
-        // Combine with mock shorts
-        const allShorts = [...transformedShorts, ...mockShorts];
-        console.log('All shorts combined:', allShorts);
-        setShorts(allShorts);
+        setShorts([...transformedShorts, ...mockShorts]);
       } else {
-        console.log('No data from DB, using mock shorts');
-        // Fallback to mock data if database query fails
         setShorts(mockShorts);
       }
     };
-    
     loadShorts();
   }, []);
 
-  // Handle search with loading state
   useEffect(() => {
     if (searchQuery === '' && selectedCategory === 'Todos' && selectedNeighborhood === 'Todos') {
       setIsSearching(false);
       return;
     }
-
     setIsSearching(true);
-    const timer = setTimeout(() => {
-      setIsSearching(false);
-    }, 800); // Increased to make loading more visible
-
+    const timer = setTimeout(() => setIsSearching(false), 800);
     return () => clearTimeout(timer);
   }, [searchQuery, selectedCategory, selectedNeighborhood]);
 
-  // Get featured/top rated places
   const featuredPlaces = useMemo(() => {
     const allPlaces = places.length > 0 ? places : mockPlaces;
     return allPlaces
@@ -169,98 +127,38 @@ const Index = () => {
       .slice(0, 6);
   }, [places]);
 
-  // Get featured events
-  const featuredEvents = useMemo(() => {
-    return mockEvents
-      .filter(event => event.featured)
-      .slice(0, 4);
-  }, []);
+  const featuredEvents = useMemo(() => mockEvents.filter(e => e.featured).slice(0, 4), []);
 
-  // Filter shorts by category
   const filteredShorts = useMemo(() => {
-    if (selectedCategory === 'Todos') {
-      return shorts;
-    }
-    return shorts.filter(short => short.category === selectedCategory);
+    if (selectedCategory === 'Todos') return shorts;
+    return shorts.filter(s => s.category === selectedCategory);
   }, [selectedCategory, shorts]);
 
-  // Filter places based on all criteria (for the filtered view)
   const filteredPlaces = useMemo(() => {
     const allPlaces = places.length > 0 ? places : mockPlaces;
-    
-    // Si no hay búsqueda activa, aplicar solo filtros de categoría y barrio
+    const normalizeText = (t: string) => t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
     if (!searchQuery || searchQuery.trim() === '') {
-      return allPlaces.filter((place) => {
-        const categoryMatch = selectedCategory === 'Todos' || place.category === selectedCategory;
-        const neighborhoodMatch = selectedNeighborhood === 'Todos' || place.neighborhood === selectedNeighborhood;
-        return categoryMatch && neighborhoodMatch;
+      return allPlaces.filter((p) => {
+        const catMatch = selectedCategory === 'Todos' || p.category === selectedCategory;
+        const nMatch = selectedNeighborhood === 'Todos' || p.neighborhood === selectedNeighborhood;
+        return catMatch && nMatch;
       });
     }
-    
-    // Mapeo de términos de búsqueda comunes a categorías
-    const categoryAliases: { [key: string]: string[] } = {
-      'cafe': ['café', 'cafetería', 'coffee'],
-      'gym': ['gimnasio', 'gym', 'fitness'],
-      'gasolinera': ['gasolinera', 'gas', 'estación de servicio'],
-      'restaurante': ['restaurante', 'comida', 'restaurant'],
-      'parque': ['parque', 'park'],
-      'farmacia': ['farmacia', 'droguería', 'pharmacy'],
-      'banco': ['banco', 'bank'],
-      'supermercado': ['supermercado', 'super', 'market'],
-      'hospital': ['hospital', 'clínica', 'clinic'],
-      'hotel': ['hotel', 'hospedaje'],
-      'bar': ['bar', 'pub', 'cantina'],
-      'pizza': ['pizza', 'pizzería'],
-      'panaderia': ['panadería', 'bakery', 'pan'],
-      'peluqueria': ['peluquería', 'barbería', 'salon']
-    };
-    
-    // Normalizar texto (quitar acentos y convertir a minúsculas)
-    const normalizeText = (text: string) => {
-      return text.toLowerCase()
-        .normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-    };
-    
+
     const searchLower = normalizeText(searchQuery.trim());
-    
-    return allPlaces.filter((place) => {
-      // Cuando hay búsqueda activa, los filtros son opcionales
-      const categoryMatch = selectedCategory === 'Todos' || place.category === selectedCategory;
-      const neighborhoodMatch = selectedNeighborhood === 'Todos' || place.neighborhood === selectedNeighborhood;
-      
-      // Combinar todos los campos buscables
-      const searchableText = normalizeText([
-        place.name,
-        place.category,
-        place.address,
-        place.neighborhood,
-        place.description || '',
-        ...(place.foodType || [])
-      ].join(' '));
-      
-      // Buscar coincidencias directas en el texto
-      let searchMatch = searchableText.includes(searchLower);
-      
-      // Si no hay coincidencia directa, buscar por aliases de categoría
-      if (!searchMatch) {
-        for (const [key, aliases] of Object.entries(categoryAliases)) {
-          if (normalizeText(key).includes(searchLower) || aliases.some(alias => normalizeText(alias).includes(searchLower))) {
-            // Si encontramos un alias, verificar si la categoría del lugar coincide
-            searchMatch = aliases.some(alias => searchableText.includes(normalizeText(alias)));
-            if (searchMatch) break;
-          }
-        }
-      }
-      
-      return searchMatch && categoryMatch && neighborhoodMatch;
+    return allPlaces.filter((p) => {
+      const catMatch = selectedCategory === 'Todos' || p.category === selectedCategory;
+      const nMatch = selectedNeighborhood === 'Todos' || p.neighborhood === selectedNeighborhood;
+      const text = normalizeText([p.name, p.category, p.address, p.neighborhood, p.description || '', ...(p.foodType || [])].join(' '));
+      return text.includes(searchLower) && catMatch && nMatch;
     });
   }, [selectedCategory, selectedNeighborhood, searchQuery, places]);
 
   const showFilters = selectedCategory !== 'Todos' || searchQuery !== '' || selectedNeighborhood !== 'Todos';
 
   return (
-    <div className="min-h-screen w-full flex flex-col">
-      
+    <div className="min-h-screen w-full max-w-[100vw] overflow-x-hidden flex flex-col">
       <Navbar
         onMenuClick={() => setSidebarOpen(!sidebarOpen)}
         searchQuery={searchQuery}
@@ -270,59 +168,37 @@ const Index = () => {
         isSearching={isSearching}
       />
       
-      <div className="flex flex-1">
+      <div className="flex flex-1 overflow-x-hidden">
         <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
         
-        <main className="flex-1 lg:ml-64">
-          {/* Map Section */}
-          <div className="h-[30vh] sm:h-[35vh] md:h-[40vh] lg:h-[60vh] w-full">
-            <MapComponent 
-              selectedNeighborhood={selectedNeighborhood}
-              selectedCategory={selectedCategory}
-            />
+        <main className="flex-1 min-w-0 lg:ml-64">
+          {/* Map */}
+          <div className="h-[28vh] sm:h-[35vh] md:h-[40vh] lg:h-[60vh] w-full">
+            <MapComponent selectedNeighborhood={selectedNeighborhood} selectedCategory={selectedCategory} />
           </div>
 
-          {/* Neighborhood Selector below map */}
-          <div className="w-full bg-card border-b border-border" data-tour="neighborhood-selector">
-            <div className="w-full max-w-screen-2xl mx-auto px-3 sm:px-4 md:px-6 py-2 sm:py-3">
+          {/* Neighborhood Selector */}
+          <div className="w-full bg-card border-b border-border">
+            <div className="px-3 sm:px-4 md:px-6 py-2">
               <Popover open={neighborhoodOpen} onOpenChange={setNeighborhoodOpen}>
                 <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    role="combobox"
-                    aria-expanded={neighborhoodOpen}
-                    className="w-full sm:w-auto justify-between min-w-0 sm:min-w-[200px] h-9 text-sm"
-                  >
-                    <div className="flex items-center gap-2">
-                      <MapPin className="h-4 w-4" />
-                      <span>{selectedNeighborhood || "Todos los barrios"}</span>
+                  <Button variant="outline" role="combobox" className="w-full sm:w-auto justify-between h-8 text-xs sm:text-sm">
+                    <div className="flex items-center gap-1.5">
+                      <MapPin className="h-3.5 w-3.5" />
+                      <span className="truncate">{selectedNeighborhood || "Todos los barrios"}</span>
                     </div>
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-[300px] p-0" align="start">
+                <PopoverContent className="w-[280px] p-0" align="start">
                   <Command>
                     <CommandInput placeholder="Buscar barrio..." className="h-9" />
                     <CommandList>
                       <CommandEmpty>No se encontró barrio.</CommandEmpty>
                       <CommandGroup>
-                        {neighborhoods.map((neighborhood) => (
-                          <CommandItem
-                            key={neighborhood}
-                            value={neighborhood}
-                            onSelect={() => {
-                              setSelectedNeighborhood(neighborhood);
-                              setNeighborhoodOpen(false);
-                            }}
-                          >
-                            <Check
-                              className={cn(
-                                "mr-2 h-4 w-4",
-                                selectedNeighborhood === neighborhood
-                                  ? "opacity-100"
-                                  : "opacity-0"
-                              )}
-                            />
-                            {neighborhood}
+                        {neighborhoods.map((n) => (
+                          <CommandItem key={n} value={n} onSelect={() => { setSelectedNeighborhood(n); setNeighborhoodOpen(false); }}>
+                            <Check className={cn("mr-2 h-4 w-4", selectedNeighborhood === n ? "opacity-100" : "opacity-0")} />
+                            {n}
                           </CommandItem>
                         ))}
                       </CommandGroup>
@@ -333,122 +209,106 @@ const Index = () => {
             </div>
           </div>
 
-          {/* Category Bar */}
-          <CategoryBar 
-            selectedCategory={selectedCategory}
-            onCategoryChange={setSelectedCategory}
-          />
+          <CategoryBar selectedCategory={selectedCategory} onCategoryChange={setSelectedCategory} />
 
-          {/* Content Sections */}
           {!showFilters ? (
-            <div className="w-full max-w-screen-2xl mx-auto px-3 sm:px-4 md:px-6 py-3 sm:py-6 md:py-8 space-y-4 sm:space-y-6 pb-20 md:pb-8">
-              
-              {/* 🏆 World Cup Hero Banner — compact */}
-              <section className="relative -mx-3 sm:-mx-4 md:-mx-6 px-3 sm:px-6 md:px-8 py-4 sm:py-6 rounded-none sm:rounded-xl overflow-hidden bg-gradient-to-r from-primary via-primary/90 to-secondary text-primary-foreground">
-                <div className="absolute inset-0 opacity-[0.07]" style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, white 1px, transparent 1px), radial-gradient(circle at 80% 50%, white 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
-                <div className="relative z-10 flex flex-col sm:flex-row items-center gap-3 sm:gap-5">
-                  <span className="text-4xl sm:text-5xl">⚽</span>
-                  <div className="text-center sm:text-left flex-1">
-                    <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold leading-tight">
+            <div className="px-3 sm:px-4 md:px-6 py-3 sm:py-5 space-y-4 sm:space-y-6 pb-20 md:pb-8">
+
+              {/* World Cup Hero Banner */}
+              <section className="relative rounded-xl overflow-hidden bg-gradient-to-r from-primary via-primary/90 to-secondary text-primary-foreground p-3 sm:p-5">
+                <div className="absolute inset-0 opacity-[0.06]" style={{ backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '24px 24px' }} />
+                <div className="relative z-10 flex items-center gap-3">
+                  <span className="text-3xl sm:text-4xl shrink-0">⚽</span>
+                  <div className="flex-1 min-w-0">
+                    <h2 className="text-base sm:text-xl md:text-2xl font-extrabold leading-tight">
                       El Mundial del Sabor 2026
                     </h2>
-                    <p className="text-xs sm:text-sm opacity-90 mt-1">
-                      Vive cada partido con los mejores restaurantes de Cali 🇨🇴
+                    <p className="text-[10px] sm:text-xs opacity-90 mt-0.5">
+                      Vive cada partido con los mejores restaurantes 🇨🇴
                     </p>
                   </div>
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    onClick={() => navigate('/recommendations')}
-                    className="gap-1.5 whitespace-nowrap"
-                  >
-                    ¿Dónde ver los partidos?
-                    <ChevronRight className="h-4 w-4" />
-                  </Button>
                 </div>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  onClick={() => navigate('/recommendations')}
+                  className="gap-1 mt-2 w-full sm:w-auto text-xs"
+                >
+                  ¿Dónde ver los partidos? <ChevronRight className="h-3.5 w-3.5" />
+                </Button>
               </section>
 
-              {/* 🍽️ Restaurantes Destacados — PRIMERO */}
+              {/* Restaurantes Destacados */}
               <section>
-                <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center justify-between mb-2.5">
                   <div className="flex items-center gap-2">
-                    <div className="p-1.5 bg-accent/10 rounded-lg">
-                      <Star className="h-4 w-4 sm:h-5 sm:w-5 text-accent" />
+                    <div className="p-1 bg-accent/10 rounded-md">
+                      <Star className="h-4 w-4 text-accent" />
                     </div>
-                    <h2 className="text-base sm:text-xl font-bold">Restaurantes Destacados</h2>
+                    <h2 className="text-sm sm:text-lg font-bold">Restaurantes Destacados</h2>
                   </div>
-                  <Button 
-                    variant="ghost" 
-                    className="gap-1 h-8 text-xs shrink-0"
-                    onClick={() => navigate('/listings')}
-                  >
-                    Ver todos
-                    <ChevronRight className="h-3 w-3" />
+                  <Button variant="ghost" className="gap-1 h-7 text-[11px] shrink-0 px-2" onClick={() => navigate('/listings')}>
+                    Ver todos <ChevronRight className="h-3 w-3" />
                   </Button>
                 </div>
                 <PlacesList places={featuredPlaces} />
               </section>
 
-              {/* 📹 Shorts / Recomendados */}
-              <section className="bg-muted/30 -mx-3 sm:-mx-4 md:-mx-6 px-3 sm:px-4 md:px-6 py-4 sm:py-5 rounded-none sm:rounded-xl border-y sm:border border-border">
-                <div className="flex items-center justify-between mb-3">
+              {/* Mi Avance Mundialista */}
+              <section>
+                <WorldCupProgress />
+              </section>
+
+              {/* Videos Recomendados */}
+              <section className="bg-muted/30 -mx-3 sm:mx-0 px-3 sm:px-0 py-3 sm:py-0 sm:bg-transparent">
+                <div className="flex items-center justify-between mb-2.5">
                   <div className="flex items-center gap-2">
-                    <div className="p-1.5 bg-primary/10 rounded-lg">
-                      <Video className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+                    <div className="p-1 bg-primary/10 rounded-md">
+                      <Video className="h-4 w-4 text-primary" />
                     </div>
-                    <h2 className="text-base sm:text-xl font-bold">Videos Recomendados</h2>
+                    <h2 className="text-sm sm:text-lg font-bold">Videos Recomendados</h2>
                   </div>
-                  <Button 
-                    variant="ghost" 
-                    className="gap-1 h-8 text-xs shrink-0"
-                    onClick={() => navigate('/shorts')}
-                  >
-                    Ver todos
-                    <ChevronRight className="h-3 w-3" />
+                  <Button variant="ghost" className="gap-1 h-7 text-[11px] shrink-0 px-2" onClick={() => navigate('/shorts')}>
+                    Ver todos <ChevronRight className="h-3 w-3" />
                   </Button>
                 </div>
                 <ShortsCarousel shorts={filteredShorts} />
               </section>
 
-              {/* ⚽ Partidos de Colombia — compacto con CTA a restaurantes */}
-              <section className="bg-card -mx-3 sm:-mx-4 md:-mx-6 px-3 sm:px-4 md:px-6 py-4 sm:py-5 rounded-none sm:rounded-xl border-y sm:border border-border">
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="text-xl sm:text-2xl">🇨🇴</span>
-                  <h2 className="text-base sm:text-xl font-bold">Colombia en el Mundial</h2>
+              {/* Colombia en el Mundial */}
+              <section>
+                <div className="flex items-center gap-2 mb-2.5">
+                  <span className="text-lg sm:text-xl">🇨🇴</span>
+                  <h2 className="text-sm sm:text-lg font-bold">Colombia en el Mundial</h2>
                 </div>
                 <ColombiaProgress />
               </section>
 
-              {/* 📅 Calendario general */}
-              <section className="bg-muted/20 -mx-3 sm:-mx-4 md:-mx-6 px-3 sm:px-4 md:px-6 py-4 sm:py-5 rounded-none sm:rounded-xl border-y sm:border border-border">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="p-1.5 bg-secondary/10 rounded-lg">
-                    <Calendar className="h-4 w-4 sm:h-5 sm:w-5 text-secondary" />
+              {/* Calendario */}
+              <section>
+                <div className="flex items-center gap-2 mb-2.5">
+                  <div className="p-1 bg-secondary/10 rounded-md">
+                    <Calendar className="h-4 w-4 text-secondary" />
                   </div>
-                  <h2 className="text-base sm:text-xl font-bold">Calendario de Partidos</h2>
+                  <h2 className="text-sm sm:text-lg font-bold">Calendario de Partidos</h2>
                 </div>
                 <WorldCupCalendar />
               </section>
 
-              {/* 🎉 Eventos gastronómicos */}
+              {/* Eventos */}
               <section>
-                <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center justify-between mb-2.5">
                   <div className="flex items-center gap-2">
-                    <div className="p-1.5 bg-primary/10 rounded-lg">
-                      <Calendar className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+                    <div className="p-1 bg-primary/10 rounded-md">
+                      <Calendar className="h-4 w-4 text-primary" />
                     </div>
-                    <h2 className="text-base sm:text-xl font-bold">Eventos en Cali</h2>
+                    <h2 className="text-sm sm:text-lg font-bold">Eventos en Cali</h2>
                   </div>
-                  <Button 
-                    variant="ghost" 
-                    className="gap-1 h-8 text-xs shrink-0"
-                    onClick={() => navigate('/events-all')}
-                  >
-                    Ver todos
-                    <ChevronRight className="h-3 w-3" />
+                  <Button variant="ghost" className="gap-1 h-7 text-[11px] shrink-0 px-2" onClick={() => navigate('/events-all')}>
+                    Ver todos <ChevronRight className="h-3 w-3" />
                   </Button>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
                   {featuredEvents.map(event => (
                     <EventCard key={event.id} event={event} />
                   ))}
@@ -456,65 +316,35 @@ const Index = () => {
               </section>
             </div>
           ) : (
-            /* Filtered Results */
-            <div className="w-full max-w-screen-2xl mx-auto px-4 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8 pb-20 md:pb-8">
+            <div className="px-3 sm:px-4 md:px-6 py-3 sm:py-5 pb-20 md:pb-8">
               {isSearching ? (
-                <div className="space-y-6">
-                  <div className="flex items-center justify-center py-12 bg-gradient-to-br from-primary/5 to-secondary/5 rounded-lg border border-primary/20">
-                    <div className="flex flex-col items-center gap-4">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-center py-10 bg-muted/30 rounded-lg border border-border">
+                    <div className="flex flex-col items-center gap-3">
                       <div className="relative">
-                        <div className="animate-spin rounded-full h-16 w-16 border-4 border-primary/20"></div>
-                        <div className="absolute top-0 left-0 animate-spin rounded-full h-16 w-16 border-4 border-transparent border-t-primary"></div>
+                        <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary/20" />
+                        <div className="absolute top-0 left-0 animate-spin rounded-full h-12 w-12 border-4 border-transparent border-t-primary" />
                       </div>
-                      <div className="text-center">
-                        <p className="text-lg font-semibold text-foreground">Buscando lugares...</p>
-                        <p className="text-sm text-muted-foreground mt-1">Esto tomará solo un momento</p>
-                      </div>
+                      <p className="text-sm font-semibold">Buscando lugares...</p>
                     </div>
-                  </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 animate-pulse">
-                    {[1, 2, 3, 4, 5, 6].map((i) => (
-                      <div key={i} className="space-y-3 bg-card rounded-lg p-4 border">
-                        <Skeleton className="h-48 w-full rounded-lg" />
-                        <Skeleton className="h-5 w-3/4" />
-                        <Skeleton className="h-4 w-1/2" />
-                        <div className="flex gap-2">
-                          <Skeleton className="h-4 w-16" />
-                          <Skeleton className="h-4 w-20" />
-                        </div>
-                      </div>
-                    ))}
                   </div>
                 </div>
               ) : (
                 <>
                   {(selectedCategory !== 'Todos' || searchQuery) && (
-                    <div className="mb-4 sm:mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between bg-card border rounded-lg p-3 sm:p-4 gap-3 animate-fade-in">
-                      <div>
-                        <p className="text-sm sm:text-base text-muted-foreground font-normal">
-                          {filteredPlaces.length} {filteredPlaces.length === 1 ? 'lugar encontrado' : 'lugares encontrados'}
-                        </p>
-                        {searchQuery && (
-                          <p className="text-xs text-muted-foreground mt-1">
-                            Búsqueda: "{searchQuery}"
-                          </p>
-                        )}
-                      </div>
+                    <div className="mb-3 flex items-center justify-between bg-card border rounded-lg p-2.5 gap-2">
+                      <p className="text-xs text-muted-foreground">
+                        {filteredPlaces.length} {filteredPlaces.length === 1 ? 'lugar' : 'lugares'}
+                        {searchQuery && <span className="block text-[10px]">"{searchQuery}"</span>}
+                      </p>
                       {selectedCategory !== 'Todos' && (
-                        <Button
-                          size="sm"
-                          onClick={() => navigate(`/listings?category=${selectedCategory}`)}
-                          className="gap-1.5 sm:gap-2 w-full sm:w-auto text-xs sm:text-sm"
-                        >
-                          Ver todas con filtros
-                          <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5" />
+                        <Button size="sm" className="gap-1 text-[11px] h-7" onClick={() => navigate(`/listings?category=${selectedCategory}`)}>
+                          Ver todos <ChevronRight className="h-3 w-3" />
                         </Button>
                       )}
                     </div>
                   )}
-                  <div className="animate-fade-in">
-                    <PlacesList places={filteredPlaces} />
-                  </div>
+                  <PlacesList places={filteredPlaces} />
                 </>
               )}
             </div>
@@ -522,10 +352,7 @@ const Index = () => {
         </main>
       </div>
       
-      {/* Bottom Navigation for mobile */}
       <BottomNav />
-      
-      {/* Floating AI Chat */}
       <FloatingAIChat isHidden={isTourActive} />
     </div>
   );
