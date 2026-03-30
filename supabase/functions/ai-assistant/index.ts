@@ -363,7 +363,7 @@ RECUERDA: Si no está en los resultados de las herramientas, NO EXISTE para ti. 
           messages: [
           {
             role: "system",
-            content: `Eres Sabor 360 AI. SOLO menciona lugares/eventos que aparezcan en los resultados de las herramientas.
+            content: `Eres el asistente de El Mundial del Sabor 2026. SOLO menciona lugares/eventos que aparezcan en los resultados de las herramientas.
 
 REGLAS ABSOLUTAS:
 - NUNCA inventes lugares o eventos que no estén en los resultados
