@@ -62,7 +62,7 @@ const PlaceDetails = () => {
         setPlace(data);
         
         // Load related data
-        const [imagesResult, menuResult, promotionsResult] = await Promise.all([
+        const [imagesResult, menuResult, promotionsResult, hoursResult] = await Promise.all([
           supabase
             .from('business_images')
             .select('*')
@@ -78,7 +78,12 @@ const PlaceDetails = () => {
             .from('business_promotions')
             .select('*')
             .eq('business_id', data.id)
-            .eq('active', true)
+            .eq('active', true),
+          supabase
+            .from('business_hours')
+            .select('*')
+            .eq('business_id', data.id)
+            .order('day_of_week')
         ]);
         
         setImages(imagesResult.data || []);
