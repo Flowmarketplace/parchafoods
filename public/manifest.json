@@ -1,7 +1,7 @@
 {
-  "name": "Sabor 360 - Comer, saber y vivir",
-  "short_name": "Sabor 360",
-  "description": "Descubre los mejores lugares de Cali: restaurantes, parques, eventos y más",
+  "name": "El Mundial del Sabor 2026",
+  "short_name": "Mundial Sabor",
+  "description": "El Mundial del Sabor 2026 - Descubre los mejores restaurantes y sabores de Cali",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
