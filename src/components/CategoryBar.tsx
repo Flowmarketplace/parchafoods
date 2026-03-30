@@ -62,12 +62,12 @@ const CategoryBar = ({ selectedCategory, onCategoryChange }: CategoryBarProps) =
                 variant={isActive ? 'default' : 'outline'}
                 onClick={() => onCategoryChange(category.id)}
                 className={cn(
-                  'flex flex-col items-center justify-center gap-1 h-auto py-3 px-2 whitespace-nowrap active:scale-95 transition-transform touch-manipulation',
+                  'flex flex-col items-center justify-center gap-0.5 h-auto py-2 px-1 whitespace-nowrap active:scale-95 transition-transform touch-manipulation',
                   isActive && 'shadow-md'
                 )}
               >
-                <Icon className="h-5 w-5" />
-                <span className="text-[10px] font-medium leading-tight text-center">{category.name}</span>
+                <Icon className="h-4 w-4" />
+                <span className="text-[9px] font-medium leading-tight text-center">{category.name}</span>
               </Button>
             );
           })}

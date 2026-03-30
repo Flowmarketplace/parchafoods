@@ -111,12 +111,12 @@ const Navbar = ({ onMenuClick, searchQuery, onSearchChange, selectedNeighborhood
         
         {/* Search Bar only - no neighborhood selector */}
         {showFilter && onSearchChange && (
-          <div className="pb-3" data-tour="navbar-search">
+          <div className="pb-2 sm:pb-3" data-tour="navbar-search">
             <div className="relative">
               {isSearching ? (
-                <Loader2 className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary animate-spin" />
+                <Loader2 className="absolute left-2.5 sm:left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary animate-spin" />
               ) : (
-                <Search className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
+                <Search className="absolute left-2.5 sm:left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
               )}
               <Input
                 type="search"
