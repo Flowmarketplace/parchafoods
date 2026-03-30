@@ -161,6 +161,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen w-full max-w-[100vw] overflow-x-hidden flex flex-col">
+      <WorldCupParticles />
       <Navbar
         onMenuClick={() => setSidebarOpen(!sidebarOpen)}
         searchQuery={searchQuery}
