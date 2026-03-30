@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Sidebar from '@/components/Sidebar';
-import { WelcomeDialog } from '@/components/WelcomeDialog';
+
 import MapComponent from '@/components/MapComponent';
 import CategoryBar from '@/components/CategoryBar';
 import FilterBar from '@/components/FilterBar';
