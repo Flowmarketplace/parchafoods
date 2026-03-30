@@ -411,15 +411,10 @@ const Index = () => {
               </section>
 
               {/* ⚽ Partidos de Colombia — compacto con CTA a restaurantes */}
-              <section className="bg-card -mx-4 sm:-mx-4 md:-mx-6 px-4 sm:px-4 md:px-6 py-5 sm:py-6 rounded-xl border border-border shadow-sm">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-2 sm:gap-3">
-                    <span className="text-2xl">🇨🇴</span>
-                    <div>
-                      <h2 className="text-lg sm:text-xl font-bold">Colombia en el Mundial</h2>
-                      <p className="text-xs sm:text-sm text-muted-foreground hidden sm:block">Próximos partidos y tabla de posiciones</p>
-                    </div>
-                  </div>
+              <section className="bg-card -mx-3 sm:-mx-4 md:-mx-6 px-3 sm:px-4 md:px-6 py-4 sm:py-5 rounded-none sm:rounded-xl border-y sm:border border-border">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-xl sm:text-2xl">🇨🇴</span>
+                  <h2 className="text-base sm:text-xl font-bold">Colombia en el Mundial</h2>
                 </div>
                 <ColombiaProgress />
               </section>
