@@ -390,29 +390,21 @@ const Index = () => {
               </section>
 
               {/* 📹 Shorts / Recomendados */}
-              <section className="bg-muted/30 -mx-4 sm:-mx-4 md:-mx-6 px-4 sm:px-4 md:px-6 py-5 sm:py-6 rounded-xl border border-border">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-2 sm:gap-3">
-                    <div className="p-2 bg-primary/10 rounded-lg">
-                      <Video className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+              <section className="bg-muted/30 -mx-3 sm:-mx-4 md:-mx-6 px-3 sm:px-4 md:px-6 py-4 sm:py-5 rounded-none sm:rounded-xl border-y sm:border border-border">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <div className="p-1.5 bg-primary/10 rounded-lg">
+                      <Video className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
                     </div>
-                    <div>
-                      <h2 className="text-lg sm:text-xl font-bold">Videos Recomendados</h2>
-                      <p className="text-xs sm:text-sm text-muted-foreground hidden sm:block">
-                        {selectedCategory === 'Todos' 
-                          ? 'Descubre sabores en video'
-                          : `Videos de ${selectedCategory}`
-                        }
-                      </p>
-                    </div>
+                    <h2 className="text-base sm:text-xl font-bold">Videos Recomendados</h2>
                   </div>
                   <Button 
                     variant="ghost" 
-                    className="gap-1 sm:gap-2 h-8 sm:h-10 text-xs sm:text-sm"
+                    className="gap-1 h-8 text-xs shrink-0"
                     onClick={() => navigate('/shorts')}
                   >
                     Ver todos
-                    <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4" />
+                    <ChevronRight className="h-3 w-3" />
                   </Button>
                 </div>
                 <ShortsCarousel shorts={filteredShorts} />
