@@ -28,6 +28,7 @@ const PlaceDetails = () => {
   const [images, setImages] = useState<any[]>([]);
   const [menu, setMenu] = useState<any[]>([]);
   const [promotions, setPromotions] = useState<any[]>([]);
+  const [hours, setHours] = useState<any[]>([]);
   const [user, setUser] = useState<User | null>(null);
   const [showQRScanner, setShowQRScanner] = useState(false);
   const [loyaltyPoints, setLoyaltyPoints] = useState<number>(0);
