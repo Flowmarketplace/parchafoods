@@ -192,7 +192,7 @@ const PlaceDetails = () => {
             {/* Image Carousel */}
             <div className="relative">
               {images && images.length > 0 ? (
-                <Carousel className="w-full">
+                <Carousel className="w-full" opts={{ loop: true }} plugins={[Autoplay({ delay: 3000, stopOnInteraction: false })]}>
                   <CarouselContent>
                     {images.map((image, index) => (
                       <CarouselItem key={index}>
