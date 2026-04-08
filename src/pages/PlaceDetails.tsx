@@ -1,4 +1,5 @@
 import { useParams, useNavigate } from 'react-router-dom';
+import Autoplay from 'embla-carousel-autoplay';
 import { ArrowLeft, MapPin, Phone, Star, UtensilsCrossed, Facebook, Instagram, Twitter, Share2, ShoppingBag, Briefcase, Home as HomeIcon, Tag, QrCode, ExternalLink, Calendar, Users, Clock, Trophy } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
