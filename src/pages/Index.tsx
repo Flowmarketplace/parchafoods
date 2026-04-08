@@ -191,7 +191,7 @@ const Index = () => {
         <main className="flex-1 min-w-0 lg:ml-64">
           {/* Map */}
           <div className="h-[28vh] sm:h-[35vh] md:h-[40vh] lg:h-[60vh] w-full">
-            <MapComponent selectedNeighborhood={selectedNeighborhood} selectedCategory={selectedCategory} />
+            <MapComponent selectedNeighborhood={selectedNeighborhood} selectedCategory={selectedCategory} places={places as any} />
           </div>
 
           {/* Neighborhood Selector */}
