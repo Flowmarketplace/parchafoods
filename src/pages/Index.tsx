@@ -290,6 +290,19 @@ const Index = () => {
                 <PlacesList places={featuredPlaces} />
               </section>
 
+              {/* Ver todos los restaurantes */}
+              <section className="flex justify-center">
+                <Button
+                  size="lg"
+                  className="w-full sm:w-auto gap-2 text-sm font-semibold rounded-full shadow-md hover:shadow-lg transition-all"
+                  onClick={() => navigate('/listings')}
+                >
+                  <MapPin className="h-4 w-4" />
+                  Ver todos los restaurantes
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              </section>
+
               {/* Mi Avance Mundialista */}
               <section>
                 <WorldCupProgress />
@@ -331,18 +344,6 @@ const Index = () => {
                 <WorldCupCalendar />
               </section>
 
-              {/* Ver todos los restaurantes */}
-              <section className="text-center pt-2 pb-4">
-                <Button
-                  size="lg"
-                  className="w-full sm:w-auto gap-2 text-sm font-semibold"
-                  onClick={() => navigate('/listings')}
-                >
-                  <MapPin className="h-4 w-4" />
-                  Ver todos los restaurantes
-                  <ChevronRight className="h-4 w-4" />
-                </Button>
-              </section>
 
             </div>
           ) : (
