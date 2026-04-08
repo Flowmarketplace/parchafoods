@@ -11,6 +11,8 @@ export const categoryIcons: Record<string, string> = {
   'Postres': `<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>`,
   'Panadería': `<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>`,
   'Asiática': `<path d="M3 2v10c0 1.1.9 2 2 2h2v5a1 1 0 002 0v-5h2a2 2 0 002-2V2a1 1 0 00-2 0v8H5V2a1 1 0 00-2 0zm16 0a1 1 0 00-1 1v5c0 1.66-1.34 3-3 3v8a1 1 0 002 0v-6.1c1.49-.44 3-1.89 3-3.9V3a1 1 0 00-1-1z"/>`,
+  'Mexicana': `<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" fill="none" stroke="white" stroke-width="1.5"/><path d="M8 14c0-2 2-3 4-3s4 1 4 3M7 10l1-3 2 2 2-4 2 4 2-2 1 3" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>`,
+  'Sushi': `<path d="M2 12c0 3.5 4.5 6 10 6s10-2.5 10-6-4.5-6-10-6S2 8.5 2 12z" fill="none" stroke="white" stroke-width="1.5"/><ellipse cx="12" cy="12" rx="4" ry="2.5" fill="none" stroke="white" stroke-width="1.5"/><circle cx="12" cy="12" r="1" fill="white"/>`,
   'Otro': `<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>`
 };
 
@@ -31,6 +33,8 @@ export const getCategoryColor = (category: string): string => {
     'Postres': '#9c27b0',
     'Panadería': '#ff8f00',
     'Asiática': '#f44336',
+    'Mexicana': '#e65100',
+    'Sushi': '#1565c0',
     'Otro': '#9e9e9e'
   };
   
