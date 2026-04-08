@@ -113,7 +113,10 @@ const BusinessShorts = () => {
 
       const { error: uploadError } = await supabase.storage
         .from('business-content')
-        .upload(fileName, file);
+        .upload(fileName, file, {
+          contentType: file.type,
+          upsert: false,
+        });
 
       if (uploadError) throw uploadError;
 
