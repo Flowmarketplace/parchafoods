@@ -138,10 +138,15 @@ const Index = () => {
 
   const featuredPlaces = useMemo(() => {
     const allPlaces = places.length > 0 ? places : mockPlaces;
-    return allPlaces
-      .filter(place => place.featured || (place.rating && place.rating >= 4.5))
-      .sort((a, b) => (b.rating || 0) - (a.rating || 0))
-      .slice(0, 6);
+    const featured = allPlaces
+      .filter(place => place.featured || (place.rating && place.rating >= 4.5));
+    // Perreiranos siempre de primero
+    featured.sort((a, b) => {
+      if (a.name === 'Perreiranos') return -1;
+      if (b.name === 'Perreiranos') return 1;
+      return (b.rating || 0) - (a.rating || 0);
+    });
+    return featured.slice(0, 6);
   }, [places]);
 
   const featuredEvents = useMemo(() => mockEvents.filter(e => e.featured).slice(0, 4), []);
