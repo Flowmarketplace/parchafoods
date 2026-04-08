@@ -84,13 +84,38 @@ const BusinessProximity = () => {
         return;
       }
 
+      // Validar rango de coordenadas
+      if (formData.latitude !== null && (formData.latitude < -90 || formData.latitude > 90)) {
+        toast({
+          title: "Error",
+          description: "La latitud debe estar entre -90 y 90",
+          variant: "destructive",
+        });
+        setSaving(false);
+        return;
+      }
+
+      if (formData.longitude !== null && (formData.longitude < -180 || formData.longitude > 180)) {
+        toast({
+          title: "Error",
+          description: "La longitud debe estar entre -180 y 180. Para Cali, usa un valor como -76.53",
+          variant: "destructive",
+        });
+        setSaving(false);
+        return;
+      }
+
+      // Truncar a 6 decimales para evitar numeric overflow
+      const lat = formData.latitude !== null ? Math.round(formData.latitude * 1000000) / 1000000 : null;
+      const lng = formData.longitude !== null ? Math.round(formData.longitude * 1000000) / 1000000 : null;
+
       const { error } = await supabase
         .from('businesses')
         .update({
-          latitude: formData.latitude,
-          longitude: formData.longitude,
+          latitude: lat,
+          longitude: lng,
           geo_notifications_enabled: formData.geo_notifications_enabled,
-          notification_radius_km: formData.notification_radius_km
+          notification_radius_km: Math.round(formData.notification_radius_km * 10) / 10
         })
         .eq('id', businessId);
 
