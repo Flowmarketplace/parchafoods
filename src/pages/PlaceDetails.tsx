@@ -1,4 +1,5 @@
 import { useParams, useNavigate } from 'react-router-dom';
+import Autoplay from 'embla-carousel-autoplay';
 import { ArrowLeft, MapPin, Phone, Star, UtensilsCrossed, Facebook, Instagram, Twitter, Share2, ShoppingBag, Briefcase, Home as HomeIcon, Tag, QrCode, ExternalLink, Calendar, Users, Clock, Trophy } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
@@ -191,7 +192,7 @@ const PlaceDetails = () => {
             {/* Image Carousel */}
             <div className="relative">
               {images && images.length > 0 ? (
-                <Carousel className="w-full">
+                <Carousel className="w-full" opts={{ loop: true }} plugins={[Autoplay({ delay: 3000, stopOnInteraction: false })]}>
                   <CarouselContent>
                     {images.map((image, index) => (
                       <CarouselItem key={index}>
