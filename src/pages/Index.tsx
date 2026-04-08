@@ -45,28 +45,44 @@ const Index = () => {
       setLoadingPlaces(true);
       const { data } = await supabase
         .from('businesses')
-        .select('*')
+        .select(`
+          *,
+          business_images (
+            image_url,
+            image_type,
+            is_primary,
+            display_order
+          )
+        `)
         .order('featured', { ascending: false })
         .order('name');
       
       if (data) {
-        const transformedPlaces = data.map(business => ({
-          id: business.id,
-          slug: business.slug,
-          name: business.name,
-          category: business.category,
-          address: business.address,
-          neighborhood: business.neighborhood,
-          zone: business.zone,
-          phone: business.phone,
-          description: business.description,
-          images: [business.loyalty_reward_image || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80'],
-          latitude: Number(business.latitude) || 0,
-          longitude: Number(business.longitude) || 0,
-          priceRange: business.price_range,
-          featured: business.featured,
-          rating: 4.5,
-        }));
+        const transformedPlaces = data.map((business: any) => {
+          // Get profile image first, then gallery images, then fallback
+          const profileImg = business.business_images?.find((img: any) => img.image_type === 'profile');
+          const primaryImg = business.business_images?.find((img: any) => img.is_primary);
+          const firstGallery = business.business_images?.sort((a: any, b: any) => (a.display_order || 0) - (b.display_order || 0))[0];
+          const imageUrl = profileImg?.image_url || primaryImg?.image_url || firstGallery?.image_url || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80';
+          
+          return {
+            id: business.id,
+            slug: business.slug,
+            name: business.name,
+            category: business.category,
+            address: business.address,
+            neighborhood: business.neighborhood,
+            zone: business.zone,
+            phone: business.phone,
+            description: business.description,
+            images: [imageUrl],
+            latitude: Number(business.latitude) || 0,
+            longitude: Number(business.longitude) || 0,
+            priceRange: business.price_range,
+            featured: business.featured,
+            rating: 4.5,
+          };
+        });
         setPlaces(transformedPlaces);
       }
       setLoadingPlaces(false);
