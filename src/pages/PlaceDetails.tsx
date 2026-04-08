@@ -195,11 +195,28 @@ const PlaceDetails = () => {
                   <CarouselContent>
                     {images.map((image, index) => (
                       <CarouselItem key={index}>
-                        <div className="relative h-[400px] bg-muted flex items-center justify-center">
+                        <div className="relative h-[400px] bg-muted flex items-center justify-center overflow-hidden">
+                          {/* Decorative watermark pattern for lateral spaces */}
+                          <div className="absolute inset-0 opacity-[0.04] pointer-events-none flex items-center justify-between px-4">
+                            <div className="flex flex-col gap-6 items-center">
+                              <UtensilsCrossed className="h-10 w-10" />
+                              <Star className="h-8 w-8" />
+                              <MapPin className="h-10 w-10" />
+                              <Trophy className="h-8 w-8" />
+                              <UtensilsCrossed className="h-10 w-10" />
+                            </div>
+                            <div className="flex flex-col gap-6 items-center">
+                              <Trophy className="h-8 w-8" />
+                              <MapPin className="h-10 w-10" />
+                              <Star className="h-8 w-8" />
+                              <UtensilsCrossed className="h-10 w-10" />
+                              <Trophy className="h-8 w-8" />
+                            </div>
+                          </div>
                           <img
                             src={image.image_url}
                             alt={image.description || `${place.name} - Imagen ${index + 1}`}
-                            className="max-w-full max-h-full object-contain"
+                            className="max-w-full max-h-full object-contain relative z-10"
                           />
                         </div>
                       </CarouselItem>
