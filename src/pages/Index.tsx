@@ -115,10 +115,10 @@ const Index = () => {
           likes: short.likes || 0,
           category: short.businesses.category,
           placeId: short.business_id,
-          placeName: short.businesses.name,
+          placeName: 'Cali',
           createdAt: new Date(short.created_at).toISOString().split('T')[0]
         }));
-        setShorts([...transformedShorts, ...mockShorts]);
+        setShorts(transformedShorts);
       } else {
         setShorts(mockShorts);
       }
