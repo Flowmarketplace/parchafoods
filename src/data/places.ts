@@ -580,6 +580,8 @@ export const categories: string[] = [
   'Italiana',
   'Bar',
   'Rooftop',
+  'Tradicional',
+  'Remate',
 ];
 
 export const neighborhoods: string[] = [
