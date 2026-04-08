@@ -40,6 +40,7 @@ export const getCategoryColor = (category: string): string => {
     'Sushi': '#1565c0',
     'Bar': '#f9a825',
     'Rooftop': '#7c4dff',
+    'Remate': '#e91e63',
     'Otro': '#9e9e9e'
   };
   
