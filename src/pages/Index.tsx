@@ -326,6 +326,19 @@ const Index = () => {
                 <WorldCupCalendar />
               </section>
 
+              {/* Ver todos los restaurantes */}
+              <section className="text-center pt-2 pb-4">
+                <Button
+                  size="lg"
+                  className="w-full sm:w-auto gap-2 text-sm font-semibold"
+                  onClick={() => navigate('/listings')}
+                >
+                  <MapPin className="h-4 w-4" />
+                  Ver todos los restaurantes
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              </section>
+
             </div>
           ) : (
             <div className="px-3 sm:px-4 md:px-6 py-3 sm:py-5 pb-20 md:pb-8">
