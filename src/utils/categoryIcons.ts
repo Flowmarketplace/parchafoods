@@ -37,6 +37,8 @@ export const getCategoryColor = (category: string): string => {
     'Asiática': '#f44336',
     'Mexicana': '#e65100',
     'Sushi': '#1565c0',
+    'Bar': '#f9a825',
+    'Rooftop': '#7c4dff',
     'Otro': '#9e9e9e'
   };
   
