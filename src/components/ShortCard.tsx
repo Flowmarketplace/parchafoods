@@ -34,14 +34,30 @@ const ShortCard = ({ short }: ShortCardProps) => {
     >
       {/* Video Thumbnail */}
       <div className="relative aspect-[9/16] overflow-hidden bg-muted">
-        <img 
-          src={short.thumbnailUrl} 
-          alt={short.title}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-        />
+        {short.thumbnailUrl ? (
+          <img 
+            src={short.thumbnailUrl} 
+            alt={short.title}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+        ) : short.videoUrl ? (
+          <video
+            src={short.videoUrl}
+            muted
+            playsInline
+            preload="metadata"
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            onMouseEnter={(e) => (e.target as HTMLVideoElement).play().catch(() => {})}
+            onMouseLeave={(e) => { const v = e.target as HTMLVideoElement; v.pause(); v.currentTime = 0; }}
+          />
+        ) : (
+          <div className="w-full h-full bg-muted flex items-center justify-center">
+            <Play className="h-12 w-12 text-muted-foreground" />
+          </div>
+        )}
         
         {/* Play Overlay */}
-        <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
           <div className="w-16 h-16 rounded-full bg-primary/90 flex items-center justify-center">
             <Play className="h-8 w-8 text-white fill-white ml-1" />
           </div>
