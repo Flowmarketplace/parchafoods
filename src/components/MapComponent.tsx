@@ -174,7 +174,7 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
       console.log('Updating markers for category:', selectedCategory);
       updateMarkers();
     }
-  }, [selectedCategory, mapLoaded]);
+  }, [selectedCategory, mapLoaded, places]);
 
   // Effect to center map on selected neighborhood
   useEffect(() => {
