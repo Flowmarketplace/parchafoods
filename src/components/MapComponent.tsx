@@ -12,9 +12,10 @@ const MAPBOX_TOKEN = 'pk.eyJ1IjoiaGFuZGNpdHkiLCJhIjoiY2syNmp3ZjUxMzJkMzNtcGl6dXR
 interface MapComponentProps {
   selectedNeighborhood?: string;
   selectedCategory?: string;
+  places?: Place[];
 }
 
-const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todos' }: MapComponentProps) => {
+const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todos', places }: MapComponentProps) => {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
   const markers = useRef<mapboxgl.Marker[]>([]);
@@ -103,10 +104,11 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
       return;
     }
 
-    // Filter places based on category
+    // Use provided places or fallback to mock
+    const allPlaces = places && places.length > 0 ? places : mockPlaces;
     const filteredPlaces = selectedCategory === 'Todos' 
-      ? mockPlaces 
-      : mockPlaces.filter(place => place.category === selectedCategory);
+      ? allPlaces 
+      : allPlaces.filter(place => place.category === selectedCategory);
 
     // Add new markers
     filteredPlaces.forEach((place: Place) => {
