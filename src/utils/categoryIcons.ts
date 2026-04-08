@@ -15,6 +15,7 @@ export const categoryIcons: Record<string, string> = {
   'Sushi': `<path d="M2 12c0 3.5 4.5 6 10 6s10-2.5 10-6-4.5-6-10-6S2 8.5 2 12z" fill="none" stroke="white" stroke-width="1.5"/><ellipse cx="12" cy="12" rx="4" ry="2.5" fill="none" stroke="white" stroke-width="1.5"/><circle cx="12" cy="12" r="1" fill="white"/>`,
   'Bar': `<path d="M17 11h1a3 3 0 0 1 0 6h-1m-6-6v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-6h12zM4 7h16M7 7V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`,
   'Rooftop': `<path d="M3 21h18M9 21V12h6v9M3 12l9-9 9 9" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 21V16h3v5M15 21V16h3v5" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round"/>`,
+  'Remate': `<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`,
   'Otro': `<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>`
 };
 
@@ -39,6 +40,7 @@ export const getCategoryColor = (category: string): string => {
     'Sushi': '#1565c0',
     'Bar': '#f9a825',
     'Rooftop': '#7c4dff',
+    'Remate': '#e91e63',
     'Otro': '#9e9e9e'
   };
   
