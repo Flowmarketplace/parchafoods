@@ -106,8 +106,8 @@ const Index = () => {
           videoUrl: short.video_url,
           thumbnailUrl: short.thumbnail_url,
           creator: {
-            name: short.businesses.name,
-            username: `@${short.businesses.name.toLowerCase().replace(/\s+/g, '')}`,
+            name: 'Sabor 360',
+            username: '@sabor360',
             avatarUrl: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&q=80',
             verified: true
           },
