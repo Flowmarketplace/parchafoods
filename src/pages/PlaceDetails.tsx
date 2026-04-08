@@ -195,11 +195,28 @@ const PlaceDetails = () => {
                   <CarouselContent>
                     {images.map((image, index) => (
                       <CarouselItem key={index}>
-                        <div className="relative h-[400px] bg-muted flex items-center justify-center">
+                        <div className="relative h-[400px] bg-muted flex items-center justify-center overflow-hidden">
+                          {/* Decorative watermark pattern for lateral spaces */}
+                          <div className="absolute inset-0 opacity-[0.04] pointer-events-none flex items-center justify-between px-4">
+                            <div className="flex flex-col gap-6 items-center">
+                              <UtensilsCrossed className="h-10 w-10" />
+                              <Star className="h-8 w-8" />
+                              <MapPin className="h-10 w-10" />
+                              <Trophy className="h-8 w-8" />
+                              <UtensilsCrossed className="h-10 w-10" />
+                            </div>
+                            <div className="flex flex-col gap-6 items-center">
+                              <Trophy className="h-8 w-8" />
+                              <MapPin className="h-10 w-10" />
+                              <Star className="h-8 w-8" />
+                              <UtensilsCrossed className="h-10 w-10" />
+                              <Trophy className="h-8 w-8" />
+                            </div>
+                          </div>
                           <img
                             src={image.image_url}
                             alt={image.description || `${place.name} - Imagen ${index + 1}`}
-                            className="max-w-full max-h-full object-contain"
+                            className="max-w-full max-h-full object-contain relative z-10"
                           />
                         </div>
                       </CarouselItem>
@@ -369,34 +386,66 @@ const PlaceDetails = () => {
                         <span className="text-2xl">⚽</span>
                         <h3 className="text-lg sm:text-xl font-bold">Plato Mundialista</h3>
                       </div>
-                      {place.worldCupSpecial || place.loyalty_reward_description ? (
-                        <>
-                          <div className="bg-background/80 rounded-lg p-4 mb-3 border border-primary/10">
-                            <p className="font-semibold text-primary mb-1">
-                              🍽️ {place.worldCupSpecial || 'Plato especial del Mundial'}
-                            </p>
-                            <p className="text-sm text-muted-foreground">
-                              {place.loyalty_reward_description || 'Pregunta por nuestro plato mundialista y acumula goles en tu pasaporte.'}
+                      {(() => {
+                        const mundialItem = menu.find(m => m.category === 'Plato Mundialista');
+                        if (mundialItem) {
+                          return (
+                            <>
+                              {mundialItem.image_url && (
+                                <div className="rounded-lg overflow-hidden h-56 mb-4 bg-muted flex items-center justify-center">
+                                  <img src={mundialItem.image_url} alt={mundialItem.name} className="max-w-full max-h-full object-contain" />
+                                </div>
+                              )}
+                              <div className="bg-background/80 rounded-lg p-4 mb-3 border border-primary/10">
+                                <p className="font-bold text-primary text-lg mb-1">
+                                  🍽️ {mundialItem.name}
+                                </p>
+                                {mundialItem.description && (
+                                  <p className="text-sm text-muted-foreground mb-2">{mundialItem.description}</p>
+                                )}
+                                <p className="text-xl font-bold text-secondary">
+                                  ${Number(mundialItem.price).toLocaleString('es-CO')}
+                                </p>
+                              </div>
+                              <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                                <Trophy className="h-3.5 w-3.5 text-secondary" />
+                                <span>Pide este plato y gana goles para tu pasaporte mundialista</span>
+                              </div>
+                            </>
+                          );
+                        }
+                        if (place.worldCupSpecial || place.loyalty_reward_description) {
+                          return (
+                            <>
+                              <div className="bg-background/80 rounded-lg p-4 mb-3 border border-primary/10">
+                                <p className="font-semibold text-primary mb-1">
+                                  🍽️ {place.worldCupSpecial || 'Plato especial del Mundial'}
+                                </p>
+                                <p className="text-sm text-muted-foreground">
+                                  {place.loyalty_reward_description || 'Pregunta por nuestro plato mundialista y acumula goles en tu pasaporte.'}
+                                </p>
+                              </div>
+                              {place.loyalty_reward_image && (
+                                <div className="rounded-lg overflow-hidden h-48 mb-3">
+                                  <img src={place.loyalty_reward_image} alt="Plato mundialista" className="w-full h-full object-cover" />
+                                </div>
+                              )}
+                              <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                                <Trophy className="h-3.5 w-3.5 text-secondary" />
+                                <span>Pide este plato y gana goles para tu pasaporte mundialista</span>
+                              </div>
+                            </>
+                          );
+                        }
+                        return (
+                          <div className="text-center py-6">
+                            <span className="text-3xl mb-2 block">🏟️</span>
+                            <p className="text-muted-foreground text-sm">
+                              Próximamente el plato mundialista de {place.name}
                             </p>
                           </div>
-                          {place.loyalty_reward_image && (
-                            <div className="rounded-lg overflow-hidden h-48 mb-3">
-                              <img src={place.loyalty_reward_image} alt="Plato mundialista" className="w-full h-full object-cover" />
-                            </div>
-                          )}
-                          <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                            <Trophy className="h-3.5 w-3.5 text-secondary" />
-                            <span>Pide este plato y gana goles para tu pasaporte mundialista</span>
-                          </div>
-                        </>
-                      ) : (
-                        <div className="text-center py-6">
-                          <span className="text-3xl mb-2 block">🏟️</span>
-                          <p className="text-muted-foreground text-sm">
-                            Próximamente el plato mundialista de {place.name}
-                          </p>
-                        </div>
-                      )}
+                        );
+                      })()}
                     </CardContent>
                   </Card>
                 </TabsContent>
