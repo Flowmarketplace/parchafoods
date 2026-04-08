@@ -250,23 +250,43 @@ const BusinessProximity = () => {
                         <Label htmlFor="latitude">Latitud *</Label>
                         <Input
                           id="latitude"
-                          type="number"
-                          step="0.000001"
-                          value={formData.latitude || ''}
-                          onChange={(e) => setFormData({ ...formData, latitude: parseFloat(e.target.value) || null })}
+                          type="text"
+                          inputMode="decimal"
+                          value={formData.latitude !== null ? String(formData.latitude) : ''}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            if (val === '' || val === '-') {
+                              setFormData({ ...formData, latitude: val === '-' ? -0.000001 : null });
+                              return;
+                            }
+                            const num = parseFloat(val);
+                            if (!isNaN(num)) {
+                              setFormData({ ...formData, latitude: num });
+                            }
+                          }}
                           placeholder="Ej: 3.451647"
                           required={formData.geo_notifications_enabled}
                         />
                       </div>
 
                       <div className="space-y-2">
-                        <Label htmlFor="longitude">Longitud *</Label>
+                        <Label htmlFor="longitude">Longitud * (para Cali usa signo negativo: -76.xx)</Label>
                         <Input
                           id="longitude"
-                          type="number"
-                          step="0.000001"
-                          value={formData.longitude || ''}
-                          onChange={(e) => setFormData({ ...formData, longitude: parseFloat(e.target.value) || null })}
+                          type="text"
+                          inputMode="decimal"
+                          value={formData.longitude !== null ? String(formData.longitude) : ''}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            if (val === '' || val === '-') {
+                              setFormData({ ...formData, longitude: val === '-' ? -0.000001 : null });
+                              return;
+                            }
+                            const num = parseFloat(val);
+                            if (!isNaN(num)) {
+                              setFormData({ ...formData, longitude: num });
+                            }
+                          }}
                           placeholder="Ej: -76.531835"
                           required={formData.geo_notifications_enabled}
                         />
