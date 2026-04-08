@@ -195,11 +195,11 @@ const PlaceDetails = () => {
                   <CarouselContent>
                     {images.map((image, index) => (
                       <CarouselItem key={index}>
-                        <div className="relative h-[400px]">
+                        <div className="relative h-[400px] bg-muted flex items-center justify-center">
                           <img
                             src={image.image_url}
                             alt={image.description || `${place.name} - Imagen ${index + 1}`}
-                            className="w-full h-full object-cover"
+                            className="max-w-full max-h-full object-contain"
                           />
                         </div>
                       </CarouselItem>
