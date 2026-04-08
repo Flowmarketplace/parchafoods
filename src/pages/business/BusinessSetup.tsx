@@ -29,15 +29,9 @@ const categories = [
   'Otro'
 ];
 
-const neighborhoods = [
-  'Aguablanca', 'Alameda', 'Alfonso López', 'Alférez Real', 'Arboleda', 
-  'Bellavista', 'Bosques de Limonar', 'Caldas', 'Caney', 'Centenario',
-  'Ciudad Córdoba', 'Ciudad Jardín', 'El Ingenio', 'El Limonar', 'Flora Industrial',
-  'Granada', 'Juanchito', 'La Base', 'La Flora', 'Limonar',
-  'Los Andes', 'Meléndez', 'Normandía', 'Pance', 'Parque Residencial del Sur',
-  'Prados del Limonar', 'San Antonio', 'San Fernando', 'San Nicolás', 'Santa Mónica',
-  'Santa Rita', 'Tequendama', 'Valle del Lili', 'Versalles'
-];
+// Importar barrios desde la fuente centralizada (sin 'Todos')
+import { neighborhoods as allNeighborhoods } from '@/data/places';
+const neighborhoods = allNeighborhoods.filter(n => n !== 'Todos');
 
 const BusinessSetup = () => {
   const navigate = useNavigate();
