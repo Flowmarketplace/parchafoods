@@ -315,7 +315,7 @@ const Index = () => {
                     <div className="p-1 bg-primary/10 rounded-md">
                       <Video className="h-4 w-4 text-primary" />
                     </div>
-                    <h2 className="text-sm sm:text-lg font-bold">Platos Mundialistas 🍽️⚽</h2>
+                    <h2 className="text-sm sm:text-lg font-bold">Videos Mundialistas 🎬⚽</h2>
                   </div>
                   <Button variant="ghost" className="gap-1 h-7 text-[11px] shrink-0 px-2" onClick={() => navigate('/shorts')}>
                     Ver todos <ChevronRight className="h-3 w-3" />
