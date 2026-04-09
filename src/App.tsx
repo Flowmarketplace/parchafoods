@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import RoleBasedRedirect from "./components/RoleBasedRedirect";
+import InstallPWA from "./components/InstallPWA";
 import Index from "./pages/Index";
 import PlaceDetails from "./pages/PlaceDetails";
 import EventDetails from "./pages/EventDetails";
@@ -92,6 +93,7 @@ function App() {
         <Route path="/admin/settings" element={<AdminSettings />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
+      <InstallPWA />
     </RoleBasedRedirect>
   );
 }
