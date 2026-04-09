@@ -267,7 +267,7 @@ const Index = () => {
                     <span className="text-lg">🗺️</span>
                     <h2 className="text-sm sm:text-lg font-bold">Las Rutas Mundialistas</h2>
                   </div>
-                  <Button variant="ghost" className="gap-1 h-7 text-[11px] shrink-0 px-2" onClick={() => navigate('/listings')}>
+                  <Button variant="ghost" className="gap-1 h-7 text-[11px] shrink-0 px-2" onClick={() => navigate('/rutas')}>
                     Ver todas <ChevronRight className="h-3 w-3" />
                   </Button>
                 </div>
