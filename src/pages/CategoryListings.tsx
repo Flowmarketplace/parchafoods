@@ -106,7 +106,7 @@ const CategoryListings = () => {
     <div className="min-h-screen flex flex-col">
       <Navbar onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
 
-      <div className="flex flex-1 pt-16 md:pt-28">
+      <div className="flex flex-1 pt-14 md:pt-16">
         <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
         <main className="flex-1 lg:ml-64">
