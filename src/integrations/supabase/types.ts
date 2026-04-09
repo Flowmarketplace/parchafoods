@@ -859,6 +859,53 @@ export type Database = {
           },
         ]
       }
+      route_visits: {
+        Row: {
+          business_id: string
+          created_at: string
+          goals_earned: number | null
+          id: string
+          qr_scanned: boolean | null
+          receipt_image_url: string | null
+          route_category: string
+          user_id: string
+          verified: boolean | null
+          visited_at: string
+        }
+        Insert: {
+          business_id: string
+          created_at?: string
+          goals_earned?: number | null
+          id?: string
+          qr_scanned?: boolean | null
+          receipt_image_url?: string | null
+          route_category: string
+          user_id: string
+          verified?: boolean | null
+          visited_at?: string
+        }
+        Update: {
+          business_id?: string
+          created_at?: string
+          goals_earned?: number | null
+          id?: string
+          qr_scanned?: boolean | null
+          receipt_image_url?: string | null
+          route_category?: string
+          user_id?: string
+          verified?: boolean | null
+          visited_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "route_visits_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       subscription_plans: {
         Row: {
           analytics: boolean
