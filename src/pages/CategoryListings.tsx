@@ -6,6 +6,7 @@ import PlaceCard from '@/components/PlaceCard';
 import Navbar from '@/components/Navbar';
 import Sidebar from '@/components/Sidebar';
 import BottomNav from '@/components/BottomNav';
+import RouteMap from '@/components/RouteMap';
 import { supabase } from '@/integrations/supabase/client';
 import { Skeleton } from '@/components/ui/skeleton';
 import { categories, neighborhoods } from '@/data/places';
@@ -17,6 +18,20 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
+
+const ROUTE_META: Record<string, { name: string; emoji: string }> = {
+  'Comidas Rápidas': { name: 'Ruta de las Comidas Rápidas', emoji: '🍔' },
+  'Tradicional': { name: 'Ruta de la Comida Tradicional', emoji: '🍲' },
+  'Café': { name: 'La Ruta del Café', emoji: '☕' },
+  'Mexicana': { name: 'Ruta de la Comida Mexicana', emoji: '🌮' },
+  'Asiática': { name: 'La Ruta del Sushi', emoji: '🍣' },
+  'Food Truck': { name: 'Ruta de los Food Trucks', emoji: '🚚' },
+  'Bar': { name: 'La Ruta de la Cerveza', emoji: '🍺' },
+  'Parrilla': { name: 'Ruta Mundialista del Asado', emoji: '🥩' },
+  'Italiana': { name: 'La Ruta Italiana', emoji: '🍕' },
+  'Rooftop': { name: 'La Ruta de los Rooftops', emoji: '🏙️' },
+  'Remate': { name: 'La Ruta del Remate', emoji: '🎉' },
+};
 
 const CategoryListings = () => {
   const [searchParams] = useSearchParams();
@@ -84,6 +99,9 @@ const CategoryListings = () => {
     });
   }, [places, selectedCategory, selectedNeighborhood]);
 
+  const routeMeta = ROUTE_META[selectedCategory];
+  const hasRoute = routeMeta && selectedCategory !== 'Todos';
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
@@ -133,6 +151,16 @@ const CategoryListings = () => {
                 </Button>
               </div>
             </div>
+
+            {/* Route Map - shown at top when a specific category is selected */}
+            {hasRoute && !loading && filteredPlaces.length > 0 && (
+              <RouteMap
+                places={filteredPlaces}
+                category={selectedCategory}
+                routeName={routeMeta.name}
+                routeEmoji={routeMeta.emoji}
+              />
+            )}
 
             {/* Filters */}
             <div className="flex flex-wrap gap-3 mb-4">
