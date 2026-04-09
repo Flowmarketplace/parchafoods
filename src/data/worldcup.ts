@@ -1,9 +1,9 @@
-// FIFA World Cup 2026 - Real data from FIFA.com
+// FIFA World Cup 2026 - Data updated from FIFA.com & Sporting News (April 2026)
 
 export interface WorldCupMatch {
   id: string;
   date: string;
-  time: string; // hora Colombia (COT = ET - 0, same timezone)
+  time: string; // hora ET (Eastern Time)
   homeTeam: string;
   awayTeam: string;
   homeFlag: string;
@@ -28,38 +28,38 @@ export interface GroupStanding {
   points: number;
 }
 
-// Colombia's real group stage matches (Group K)
+// Colombia's real group stage matches (Group K) — Updated from Sporting News
 export const colombiaMatches: WorldCupMatch[] = [
   {
     id: 'col-1',
     date: '2026-06-17',
-    time: '22:00',
+    time: '10:00 PM',
     homeTeam: 'Uzbekistán',
     awayTeam: 'Colombia',
     homeFlag: '🇺🇿',
     awayFlag: '🇨🇴',
     stage: 'Grupo K - Jornada 1',
-    venue: 'Estadio Ciudad de México',
-    city: 'Ciudad de México',
+    venue: 'Estadio Azteca',
+    city: 'Ciudad de México, MEX',
     status: 'upcoming',
   },
   {
     id: 'col-2',
     date: '2026-06-23',
-    time: '22:00',
+    time: '10:00 PM',
     homeTeam: 'Colombia',
-    awayTeam: 'Por definir',
+    awayTeam: 'R.D. Congo',
     homeFlag: '🇨🇴',
-    awayFlag: '🏳️',
+    awayFlag: '🇨🇩',
     stage: 'Grupo K - Jornada 2',
-    venue: 'Estadio Guadalajara',
-    city: 'Zapopán, México',
+    venue: 'Estadio Akron',
+    city: 'Guadalajara, MEX',
     status: 'upcoming',
   },
   {
     id: 'col-3',
     date: '2026-06-27',
-    time: '19:30',
+    time: '7:30 PM',
     homeTeam: 'Colombia',
     awayTeam: 'Portugal',
     homeFlag: '🇨🇴',
@@ -76,12 +76,12 @@ export const featuredMatches: WorldCupMatch[] = [
   {
     id: 'fm-1',
     date: '2026-06-11',
-    time: '20:00',
+    time: '3:00 PM',
     homeTeam: 'México',
-    awayTeam: 'Serbia',
+    awayTeam: 'Sudáfrica',
     homeFlag: '🇲🇽',
-    awayFlag: '🇷🇸',
-    stage: 'Partido Inaugural',
+    awayFlag: '🇿🇦',
+    stage: 'Partido Inaugural - Grupo A',
     venue: 'Estadio Azteca',
     city: 'Ciudad de México',
     status: 'upcoming',
@@ -89,70 +89,72 @@ export const featuredMatches: WorldCupMatch[] = [
   {
     id: 'fm-2',
     date: '2026-06-12',
-    time: '18:00',
-    homeTeam: 'Argentina',
-    awayTeam: 'Canadá',
-    homeFlag: '🇦🇷',
-    awayFlag: '🇨🇦',
-    stage: 'Grupo A',
-    venue: 'Hard Rock Stadium',
-    city: 'Miami',
-    status: 'upcoming',
-  },
-  {
-    id: 'fm-3',
-    date: '2026-06-13',
-    time: '14:00',
-    homeTeam: 'Brasil',
-    awayTeam: 'Albania',
-    homeFlag: '🇧🇷',
-    awayFlag: '🇦🇱',
-    stage: 'Grupo E',
+    time: '9:00 PM',
+    homeTeam: 'Estados Unidos',
+    awayTeam: 'Paraguay',
+    homeFlag: '🇺🇸',
+    awayFlag: '🇵🇾',
+    stage: 'Grupo D',
     venue: 'SoFi Stadium',
     city: 'Los Ángeles',
     status: 'upcoming',
   },
   {
-    id: 'fm-4',
-    date: '2026-06-14',
-    time: '16:00',
-    homeTeam: 'España',
-    awayTeam: 'Países Bajos',
-    homeFlag: '🇪🇸',
-    awayFlag: '🇳🇱',
+    id: 'fm-3',
+    date: '2026-06-13',
+    time: '6:00 PM',
+    homeTeam: 'Brasil',
+    awayTeam: 'Marruecos',
+    homeFlag: '🇧🇷',
+    awayFlag: '🇲🇦',
     stage: 'Grupo C',
     venue: 'MetLife Stadium',
     city: 'Nueva Jersey',
     status: 'upcoming',
   },
+  {
+    id: 'fm-4',
+    date: '2026-06-14',
+    time: '4:00 PM',
+    homeTeam: 'Países Bajos',
+    awayTeam: 'Japón',
+    homeFlag: '🇳🇱',
+    awayFlag: '🇯🇵',
+    stage: 'Grupo F',
+    venue: 'AT&T Stadium',
+    city: 'Arlington, TX',
+    status: 'upcoming',
+  },
   ...colombiaMatches,
 ];
 
-// Colombia's group K standing
+// Colombia's group K standing — Updated
 export const colombiaGroup: { name: string; standings: GroupStanding[] } = {
   name: 'Grupo K',
   standings: [
     { team: 'Portugal', flag: '🇵🇹', played: 0, won: 0, drawn: 0, lost: 0, goalsFor: 0, goalsAgainst: 0, points: 0 },
     { team: 'Colombia', flag: '🇨🇴', played: 0, won: 0, drawn: 0, lost: 0, goalsFor: 0, goalsAgainst: 0, points: 0 },
+    { team: 'R.D. Congo', flag: '🇨🇩', played: 0, won: 0, drawn: 0, lost: 0, goalsFor: 0, goalsAgainst: 0, points: 0 },
     { team: 'Uzbekistán', flag: '🇺🇿', played: 0, won: 0, drawn: 0, lost: 0, goalsFor: 0, goalsAgainst: 0, points: 0 },
-    { team: 'Por definir', flag: '🏳️', played: 0, won: 0, drawn: 0, lost: 0, goalsFor: 0, goalsAgainst: 0, points: 0 },
   ],
 };
 
-// Colombia team info
+// Colombia team info — Updated April 2026
 export const colombiaTeamInfo = {
   name: 'Colombia',
   flag: '🇨🇴',
-  fifaRanking: 12,
+  fifaRanking: 11,
   group: 'K',
   coach: 'Néstor Lorenzo',
   keyPlayers: [
-    { name: 'Luis Díaz', position: 'Delantero', club: 'Liverpool' },
+    { name: 'Luis Díaz', position: 'Extremo', club: 'Liverpool' },
     { name: 'James Rodríguez', position: 'Mediocampista', club: 'León' },
     { name: 'Jhon Durán', position: 'Delantero', club: 'Aston Villa' },
     { name: 'Richard Ríos', position: 'Mediocampista', club: 'Palmeiras' },
     { name: 'Davinson Sánchez', position: 'Defensa', club: 'Galatasaray' },
+    { name: 'Jhon Arias', position: 'Extremo', club: 'Zenit' },
   ],
   worldCupHistory: '7ª participación mundialista',
   bestResult: 'Cuartos de Final (2014)',
+  qualifyingPosition: '4° en Eliminatorias CONMEBOL',
 };
