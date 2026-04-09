@@ -137,6 +137,18 @@ export default function WorldCupProgress() {
             <p>⚽ +{GOAL_VALUES.content} gol por subir contenido a redes</p>
           </div>
         </div>
+
+        {/* CTA Button */}
+        <Button
+          className="w-full gap-1.5 text-xs font-semibold"
+          onClick={() => navigate(userId ? '/my-loyalty' : '/auth')}
+        >
+          {userId ? (
+            <>Ver todo mi progreso <ChevronRight className="h-3.5 w-3.5" /></>
+          ) : (
+            <>Regístrate y acumula goles ⚽ <ChevronRight className="h-3.5 w-3.5" /></>
+          )}
+        </Button>
       </CardContent>
     </Card>
   );
