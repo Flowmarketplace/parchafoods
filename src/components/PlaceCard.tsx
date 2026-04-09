@@ -91,9 +91,16 @@ const PlaceCard = ({ place }: PlaceCardProps) => {
           )}
         </div>
 
-        <Badge variant="outline" className="mb-1.5 sm:mb-2 text-xs">
-          {place.category}
-        </Badge>
+        <div className="flex flex-wrap gap-1.5 mb-1.5 sm:mb-2">
+          <Badge variant="outline" className="text-xs">
+            {place.category}
+          </Badge>
+          {place.priceRange && (
+            <Badge variant="secondary" className="text-[10px] sm:text-xs">
+              💰 {place.priceRange}
+            </Badge>
+          )}
+        </div>
 
         {place.foodType && place.foodType.length > 0 && (
           <div className="flex flex-wrap gap-1 mb-1.5 sm:mb-2">
