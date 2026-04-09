@@ -12,9 +12,10 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
   Menu, Search, Eye, Edit, Trash2, ArrowLeft, Plus, Store, Image as ImageIcon,
-  UtensilsCrossed, MapPin, Star, ChevronRight, X
+  UtensilsCrossed, MapPin, Star, ChevronRight, X, Video, Tag, Megaphone
 } from 'lucide-react';
 import AdminSidebar, { AdminSidebarDesktop } from '@/components/admin/AdminSidebar';
 import { toast } from 'sonner';
@@ -27,6 +28,13 @@ const PRICE_RANGES = [
   '$25.000 - $50.000',
   '$40.000 - $80.000',
   '$70.000 - $150.000',
+];
+
+const ATTRIBUTE_OPTIONS = [
+  { type: 'ambiente', values: ['Pet Friendly', 'Familiar', 'Romántico', 'Terraza', 'Rooftop', 'Live Music', 'WiFi Gratis', 'Parqueadero'] },
+  { type: 'tipo_comida', values: ['Comida Rápida', 'Gourmet', 'Fusión', 'Tradicional', 'Internacional', 'Vegano', 'Vegetariano'] },
+  { type: 'ruta', values: ['Ruta del Café', 'Ruta de la Parrilla', 'Ruta Italiana', 'Ruta Mexicana', 'Ruta del Sushi', 'Ruta Food Truck', 'Ruta Cervecera', 'Ruta Tradicional', 'Ruta del Remate'] },
+  { type: 'mundial', values: ['Plato Mundialista', 'Fan Zone', 'Pantalla Gigante', 'Menú Copa del Mundo'] },
 ];
 
 const AdminBusinesses = () => {
@@ -53,6 +61,22 @@ const AdminBusinesses = () => {
   // Images state
   const [images, setImages] = useState<any[]>([]);
   const [uploading, setUploading] = useState(false);
+
+  // Shorts/Videos state
+  const [shorts, setShorts] = useState<any[]>([]);
+  const [shortDialogOpen, setShortDialogOpen] = useState(false);
+  const [editingShort, setEditingShort] = useState<any>(null);
+  const [shortForm, setShortForm] = useState({ title: '', description: '', video_url: '', thumbnail_url: '', active: true });
+  const [uploadingVideo, setUploadingVideo] = useState(false);
+
+  // Promotions state
+  const [promotions, setPromotions] = useState<any[]>([]);
+  const [promoDialogOpen, setPromoDialogOpen] = useState(false);
+  const [editingPromo, setEditingPromo] = useState<any>(null);
+  const [promoForm, setPromoForm] = useState({ title: '', description: '', conditions: '', image_url: '', valid_until: '', first_time_only: false, active: true });
+
+  // Attributes state
+  const [attributes, setAttributes] = useState<any[]>([]);
 
   // Form
   const [formData, setFormData] = useState({
@@ -112,12 +136,18 @@ const AdminBusinesses = () => {
   };
 
   const loadBusinessDetails = async (businessId: string) => {
-    const [menuRes, imgRes] = await Promise.all([
+    const [menuRes, imgRes, shortsRes, promoRes, attrRes] = await Promise.all([
       supabase.from('business_menu').select('*').eq('business_id', businessId).order('category, name'),
       supabase.from('business_images').select('*').eq('business_id', businessId).order('display_order'),
+      supabase.from('business_shorts').select('*').eq('business_id', businessId).order('created_at', { ascending: false }),
+      supabase.from('business_promotions').select('*').eq('business_id', businessId).order('created_at', { ascending: false }),
+      supabase.from('business_attributes').select('*').eq('business_id', businessId),
     ]);
     setMenuItems(menuRes.data || []);
     setImages(imgRes.data || []);
+    setShorts(shortsRes.data || []);
+    setPromotions(promoRes.data || []);
+    setAttributes(attrRes.data || []);
   };
 
   const handleNew = () => {
@@ -129,6 +159,9 @@ const AdminBusinesses = () => {
     });
     setMenuItems([]);
     setImages([]);
+    setShorts([]);
+    setPromotions([]);
+    setAttributes([]);
     setShowForm(true);
     setActiveTab('info');
   };
@@ -172,6 +205,8 @@ const AdminBusinesses = () => {
       await supabase.from('business_menu').delete().eq('business_id', id);
       await supabase.from('business_images').delete().eq('business_id', id);
       await supabase.from('business_shorts').delete().eq('business_id', id);
+      await supabase.from('business_promotions').delete().eq('business_id', id);
+      await supabase.from('business_attributes').delete().eq('business_id', id);
       const { error } = await supabase.from('businesses').delete().eq('id', id);
       if (error) throw error;
       toast.success('Restaurante eliminado');
@@ -195,7 +230,6 @@ const AdminBusinesses = () => {
       const { data: { publicUrl } } = supabase.storage.from('business-content').getPublicUrl(path);
 
       if (type === 'profile') {
-        // Remove old profile image
         const existing = images.find(i => i.image_type === 'profile');
         if (existing) {
           await supabase.from('business_images').delete().eq('id', existing.id);
@@ -277,6 +311,162 @@ const AdminBusinesses = () => {
     } finally {
       setUploading(false);
     }
+  };
+
+  // SHORTS/VIDEO HANDLERS
+  const handleVideoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files?.length || !editingBusiness) return;
+    setUploadingVideo(true);
+    try {
+      const file = e.target.files[0];
+      const ext = file.name.split('.').pop();
+      const path = `${editingBusiness.id}/${Date.now()}.${ext}`;
+      const { error } = await supabase.storage.from('shorts-videos').upload(path, file);
+      if (error) throw error;
+      const { data: { publicUrl } } = supabase.storage.from('shorts-videos').getPublicUrl(path);
+      setShortForm(prev => ({ ...prev, video_url: publicUrl }));
+      toast.success('Video subido');
+    } catch (error: any) {
+      toast.error(error.message || 'Error al subir video');
+    } finally {
+      setUploadingVideo(false);
+    }
+  };
+
+  const handleThumbnailUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files?.length || !editingBusiness) return;
+    setUploadingVideo(true);
+    try {
+      const file = e.target.files[0];
+      const ext = file.name.split('.').pop();
+      const path = `${editingBusiness.id}/thumb_${Date.now()}.${ext}`;
+      const { error } = await supabase.storage.from('shorts-videos').upload(path, file);
+      if (error) throw error;
+      const { data: { publicUrl } } = supabase.storage.from('shorts-videos').getPublicUrl(path);
+      setShortForm(prev => ({ ...prev, thumbnail_url: publicUrl }));
+      toast.success('Miniatura subida');
+    } catch (error: any) {
+      toast.error(error.message || 'Error');
+    } finally {
+      setUploadingVideo(false);
+    }
+  };
+
+  const handleSaveShort = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingBusiness) { toast.error('Guarda el restaurante primero'); return; }
+    if (!shortForm.video_url) { toast.error('Sube un video primero'); return; }
+    try {
+      const payload = {
+        business_id: editingBusiness.id,
+        title: shortForm.title,
+        description: shortForm.description || null,
+        video_url: shortForm.video_url,
+        thumbnail_url: shortForm.thumbnail_url || null,
+        active: shortForm.active,
+      };
+      if (editingShort) {
+        await supabase.from('business_shorts').update(payload).eq('id', editingShort.id);
+        toast.success('Video actualizado');
+      } else {
+        await supabase.from('business_shorts').insert(payload);
+        toast.success('Video agregado');
+      }
+      setShortDialogOpen(false);
+      setEditingShort(null);
+      setShortForm({ title: '', description: '', video_url: '', thumbnail_url: '', active: true });
+      await loadBusinessDetails(editingBusiness.id);
+    } catch (error: any) {
+      toast.error(error.message || 'Error');
+    }
+  };
+
+  const handleDeleteShort = async (id: string) => {
+    await supabase.from('business_shorts').delete().eq('id', id);
+    toast.success('Video eliminado');
+    if (editingBusiness) await loadBusinessDetails(editingBusiness.id);
+  };
+
+  // PROMOTION HANDLERS
+  const handlePromoImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files?.length || !editingBusiness) return;
+    setUploading(true);
+    try {
+      const file = e.target.files[0];
+      const ext = file.name.split('.').pop();
+      const path = `${userId}/${editingBusiness.id}/promos/${Date.now()}.${ext}`;
+      const { error } = await supabase.storage.from('business-content').upload(path, file);
+      if (error) throw error;
+      const { data: { publicUrl } } = supabase.storage.from('business-content').getPublicUrl(path);
+      setPromoForm(prev => ({ ...prev, image_url: publicUrl }));
+      toast.success('Imagen subida');
+    } catch (error: any) {
+      toast.error(error.message || 'Error');
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleSavePromo = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingBusiness) { toast.error('Guarda el restaurante primero'); return; }
+    try {
+      const payload = {
+        business_id: editingBusiness.id,
+        title: promoForm.title,
+        description: promoForm.description,
+        conditions: promoForm.conditions || null,
+        image_url: promoForm.image_url || null,
+        valid_until: promoForm.valid_until || null,
+        first_time_only: promoForm.first_time_only,
+        active: promoForm.active,
+      };
+      if (editingPromo) {
+        await supabase.from('business_promotions').update(payload).eq('id', editingPromo.id);
+        toast.success('Promoción actualizada');
+      } else {
+        await supabase.from('business_promotions').insert(payload);
+        toast.success('Promoción creada');
+      }
+      setPromoDialogOpen(false);
+      setEditingPromo(null);
+      setPromoForm({ title: '', description: '', conditions: '', image_url: '', valid_until: '', first_time_only: false, active: true });
+      await loadBusinessDetails(editingBusiness.id);
+    } catch (error: any) {
+      toast.error(error.message || 'Error');
+    }
+  };
+
+  const handleDeletePromo = async (id: string) => {
+    await supabase.from('business_promotions').delete().eq('id', id);
+    toast.success('Promoción eliminada');
+    if (editingBusiness) await loadBusinessDetails(editingBusiness.id);
+  };
+
+  // ATTRIBUTE HANDLERS
+  const toggleAttribute = async (type: string, value: string) => {
+    if (!editingBusiness) { toast.error('Guarda el restaurante primero'); return; }
+    const existing = attributes.find(a => a.attribute_type === type && a.attribute_value === value);
+    try {
+      if (existing) {
+        await supabase.from('business_attributes').delete().eq('id', existing.id);
+        toast.success(`${value} removido`);
+      } else {
+        await supabase.from('business_attributes').insert({
+          business_id: editingBusiness.id,
+          attribute_type: type,
+          attribute_value: value,
+        });
+        toast.success(`${value} agregado`);
+      }
+      await loadBusinessDetails(editingBusiness.id);
+    } catch (error: any) {
+      toast.error(error.message || 'Error');
+    }
+  };
+
+  const hasAttribute = (type: string, value: string) => {
+    return attributes.some(a => a.attribute_type === type && a.attribute_value === value);
   };
 
   const filteredBusinesses = businesses.filter(b =>
@@ -388,10 +578,13 @@ const AdminBusinesses = () => {
           ) : (
             /* ======= EDIT/CREATE FORM ======= */
             <Tabs value={activeTab} onValueChange={setActiveTab}>
-              <TabsList className="w-full grid grid-cols-3 mb-4">
-                <TabsTrigger value="info" className="text-xs sm:text-sm gap-1"><Store className="h-3.5 w-3.5" /> Info</TabsTrigger>
-                <TabsTrigger value="images" className="text-xs sm:text-sm gap-1" disabled={!editingBusiness}><ImageIcon className="h-3.5 w-3.5" /> Fotos</TabsTrigger>
-                <TabsTrigger value="menu" className="text-xs sm:text-sm gap-1" disabled={!editingBusiness}><UtensilsCrossed className="h-3.5 w-3.5" /> Menú</TabsTrigger>
+              <TabsList className="w-full flex overflow-x-auto mb-4">
+                <TabsTrigger value="info" className="text-xs gap-1 flex-1"><Store className="h-3.5 w-3.5 hidden sm:block" /> Info</TabsTrigger>
+                <TabsTrigger value="images" className="text-xs gap-1 flex-1" disabled={!editingBusiness}><ImageIcon className="h-3.5 w-3.5 hidden sm:block" /> Fotos</TabsTrigger>
+                <TabsTrigger value="menu" className="text-xs gap-1 flex-1" disabled={!editingBusiness}><UtensilsCrossed className="h-3.5 w-3.5 hidden sm:block" /> Menú</TabsTrigger>
+                <TabsTrigger value="videos" className="text-xs gap-1 flex-1" disabled={!editingBusiness}><Video className="h-3.5 w-3.5 hidden sm:block" /> Videos</TabsTrigger>
+                <TabsTrigger value="promos" className="text-xs gap-1 flex-1" disabled={!editingBusiness}><Megaphone className="h-3.5 w-3.5 hidden sm:block" /> Promos</TabsTrigger>
+                <TabsTrigger value="attrs" className="text-xs gap-1 flex-1" disabled={!editingBusiness}><Tag className="h-3.5 w-3.5 hidden sm:block" /> Filtros</TabsTrigger>
               </TabsList>
 
               {/* INFO TAB */}
@@ -660,6 +853,266 @@ const AdminBusinesses = () => {
                     </form>
                   </DialogContent>
                 </Dialog>
+              </TabsContent>
+
+              {/* VIDEOS TAB */}
+              <TabsContent value="videos">
+                <Card>
+                  <CardHeader className="pb-3">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <CardTitle className="text-base">Videos / Shorts</CardTitle>
+                        <CardDescription>{shorts.length} videos</CardDescription>
+                      </div>
+                      <Button size="sm" onClick={() => {
+                        setEditingShort(null);
+                        setShortForm({ title: '', description: '', video_url: '', thumbnail_url: '', active: true });
+                        setShortDialogOpen(true);
+                      }}>
+                        <Plus className="h-3.5 w-3.5 mr-1" /> Agregar
+                      </Button>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    {shorts.length === 0 ? (
+                      <div className="text-center py-8 text-muted-foreground">
+                        <Video className="h-8 w-8 mx-auto mb-2" />
+                        <p className="text-sm">Sin videos</p>
+                      </div>
+                    ) : (
+                      <div className="space-y-2">
+                        {shorts.map(s => (
+                          <div key={s.id} className="flex items-center gap-3 p-3 border rounded-lg">
+                            {s.thumbnail_url ? (
+                              <img src={s.thumbnail_url} alt="" className="w-16 h-12 rounded-lg object-cover shrink-0" />
+                            ) : (
+                              <div className="w-16 h-12 rounded-lg bg-muted flex items-center justify-center shrink-0">
+                                <Video className="h-5 w-5 text-muted-foreground" />
+                              </div>
+                            )}
+                            <div className="flex-1 min-w-0">
+                              <p className="font-medium text-sm truncate">{s.title}</p>
+                              <div className="flex gap-2 text-xs text-muted-foreground">
+                                <span>{s.views || 0} vistas</span>
+                                <span>{s.likes || 0} likes</span>
+                                {!s.active && <Badge variant="outline" className="text-[10px]">Inactivo</Badge>}
+                              </div>
+                            </div>
+                            <div className="flex gap-1 shrink-0">
+                              <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => {
+                                setEditingShort(s);
+                                setShortForm({
+                                  title: s.title, description: s.description || '',
+                                  video_url: s.video_url, thumbnail_url: s.thumbnail_url || '', active: s.active,
+                                });
+                                setShortDialogOpen(true);
+                              }}>
+                                <Edit className="h-3.5 w-3.5" />
+                              </Button>
+                              <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => handleDeleteShort(s.id)}>
+                                <Trash2 className="h-3.5 w-3.5 text-destructive" />
+                              </Button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+
+                {/* Short Dialog */}
+                <Dialog open={shortDialogOpen} onOpenChange={setShortDialogOpen}>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>{editingShort ? 'Editar' : 'Nuevo'} Video</DialogTitle>
+                      <DialogDescription>Sube un video corto del restaurante</DialogDescription>
+                    </DialogHeader>
+                    <form onSubmit={handleSaveShort} className="space-y-4">
+                      <div className="space-y-2">
+                        <Label>Título *</Label>
+                        <Input value={shortForm.title} onChange={e => setShortForm({ ...shortForm, title: e.target.value })} required placeholder="Título del video" />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Descripción</Label>
+                        <Textarea value={shortForm.description} onChange={e => setShortForm({ ...shortForm, description: e.target.value })} rows={2} />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Video *</Label>
+                        {shortForm.video_url ? (
+                          <div className="space-y-2">
+                            <video src={shortForm.video_url} className="w-full h-40 rounded-lg object-cover" controls />
+                            <Button type="button" variant="outline" size="sm" onClick={() => setShortForm(prev => ({ ...prev, video_url: '' }))}>
+                              Cambiar video
+                            </Button>
+                          </div>
+                        ) : (
+                          <Input type="file" accept="video/*" onChange={handleVideoUpload} disabled={uploadingVideo} />
+                        )}
+                        {uploadingVideo && <p className="text-sm text-muted-foreground">Subiendo video...</p>}
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Miniatura (opcional)</Label>
+                        <Input type="file" accept="image/*" onChange={handleThumbnailUpload} disabled={uploadingVideo} />
+                        {shortForm.thumbnail_url && <img src={shortForm.thumbnail_url} alt="" className="h-20 rounded-lg object-cover mt-1" />}
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Switch checked={shortForm.active} onCheckedChange={v => setShortForm({ ...shortForm, active: v })} />
+                        <Label>Activo</Label>
+                      </div>
+                      <div className="flex justify-end gap-2">
+                        <Button type="button" variant="outline" onClick={() => setShortDialogOpen(false)}>Cancelar</Button>
+                        <Button type="submit" disabled={uploadingVideo}>{editingShort ? 'Actualizar' : 'Crear'}</Button>
+                      </div>
+                    </form>
+                  </DialogContent>
+                </Dialog>
+              </TabsContent>
+
+              {/* PROMOTIONS TAB */}
+              <TabsContent value="promos">
+                <Card>
+                  <CardHeader className="pb-3">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <CardTitle className="text-base">Promociones</CardTitle>
+                        <CardDescription>{promotions.length} promociones</CardDescription>
+                      </div>
+                      <Button size="sm" onClick={() => {
+                        setEditingPromo(null);
+                        setPromoForm({ title: '', description: '', conditions: '', image_url: '', valid_until: '', first_time_only: false, active: true });
+                        setPromoDialogOpen(true);
+                      }}>
+                        <Plus className="h-3.5 w-3.5 mr-1" /> Agregar
+                      </Button>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    {promotions.length === 0 ? (
+                      <div className="text-center py-8 text-muted-foreground">
+                        <Megaphone className="h-8 w-8 mx-auto mb-2" />
+                        <p className="text-sm">Sin promociones</p>
+                      </div>
+                    ) : (
+                      <div className="space-y-2">
+                        {promotions.map(p => (
+                          <div key={p.id} className="flex items-center gap-3 p-3 border rounded-lg">
+                            {p.image_url && <img src={p.image_url} alt="" className="w-14 h-14 rounded-lg object-cover shrink-0" />}
+                            <div className="flex-1 min-w-0">
+                              <p className="font-medium text-sm truncate">{p.title}</p>
+                              <p className="text-xs text-muted-foreground truncate">{p.description}</p>
+                              <div className="flex gap-1 mt-1">
+                                {!p.active && <Badge variant="outline" className="text-[10px]">Inactiva</Badge>}
+                                {p.first_time_only && <Badge variant="secondary" className="text-[10px]">Primera vez</Badge>}
+                                {p.valid_until && <Badge variant="outline" className="text-[10px]">Hasta {new Date(p.valid_until).toLocaleDateString('es-CO')}</Badge>}
+                              </div>
+                            </div>
+                            <div className="flex gap-1 shrink-0">
+                              <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => {
+                                setEditingPromo(p);
+                                setPromoForm({
+                                  title: p.title, description: p.description, conditions: p.conditions || '',
+                                  image_url: p.image_url || '', valid_until: p.valid_until || '',
+                                  first_time_only: p.first_time_only || false, active: p.active,
+                                });
+                                setPromoDialogOpen(true);
+                              }}>
+                                <Edit className="h-3.5 w-3.5" />
+                              </Button>
+                              <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => handleDeletePromo(p.id)}>
+                                <Trash2 className="h-3.5 w-3.5 text-destructive" />
+                              </Button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+
+                {/* Promo Dialog */}
+                <Dialog open={promoDialogOpen} onOpenChange={setPromoDialogOpen}>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>{editingPromo ? 'Editar' : 'Nueva'} Promoción</DialogTitle>
+                      <DialogDescription>Configura la promoción del restaurante</DialogDescription>
+                    </DialogHeader>
+                    <form onSubmit={handleSavePromo} className="space-y-4">
+                      <div className="space-y-2">
+                        <Label>Título *</Label>
+                        <Input value={promoForm.title} onChange={e => setPromoForm({ ...promoForm, title: e.target.value })} required placeholder="2x1 en hamburguesas" />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Descripción *</Label>
+                        <Textarea value={promoForm.description} onChange={e => setPromoForm({ ...promoForm, description: e.target.value })} required rows={2} />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Condiciones</Label>
+                        <Input value={promoForm.conditions} onChange={e => setPromoForm({ ...promoForm, conditions: e.target.value })} placeholder="Válido de lunes a jueves" />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Válida hasta</Label>
+                        <Input type="date" value={promoForm.valid_until} onChange={e => setPromoForm({ ...promoForm, valid_until: e.target.value })} />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Imagen</Label>
+                        <Input type="file" accept="image/*" onChange={handlePromoImageUpload} disabled={uploading} />
+                        {promoForm.image_url && <img src={promoForm.image_url} alt="" className="h-20 rounded-lg object-cover mt-1" />}
+                      </div>
+                      <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-2">
+                          <Switch checked={promoForm.first_time_only} onCheckedChange={v => setPromoForm({ ...promoForm, first_time_only: v })} />
+                          <Label className="text-sm">Solo primera vez</Label>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Switch checked={promoForm.active} onCheckedChange={v => setPromoForm({ ...promoForm, active: v })} />
+                          <Label className="text-sm">Activa</Label>
+                        </div>
+                      </div>
+                      <div className="flex justify-end gap-2">
+                        <Button type="button" variant="outline" onClick={() => setPromoDialogOpen(false)}>Cancelar</Button>
+                        <Button type="submit">{editingPromo ? 'Actualizar' : 'Crear'}</Button>
+                      </div>
+                    </form>
+                  </DialogContent>
+                </Dialog>
+              </TabsContent>
+
+              {/* ATTRIBUTES/FILTERS TAB */}
+              <TabsContent value="attrs">
+                <div className="space-y-4">
+                  {ATTRIBUTE_OPTIONS.map(group => (
+                    <Card key={group.type}>
+                      <CardHeader className="pb-3">
+                        <CardTitle className="text-base capitalize">
+                          {group.type === 'ambiente' && '🏠 Ambiente'}
+                          {group.type === 'tipo_comida' && '🍽️ Tipo de Comida'}
+                          {group.type === 'ruta' && '🗺️ Rutas Gastronómicas'}
+                          {group.type === 'mundial' && '⚽ Mundial 2026'}
+                        </CardTitle>
+                        <CardDescription>
+                          Selecciona las etiquetas que aplican a este restaurante
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="flex flex-wrap gap-2">
+                          {group.values.map(val => {
+                            const active = hasAttribute(group.type, val);
+                            return (
+                              <Badge
+                                key={val}
+                                variant={active ? 'default' : 'outline'}
+                                className={`cursor-pointer transition-all text-xs py-1.5 px-3 ${active ? '' : 'hover:bg-muted'}`}
+                                onClick={() => toggleAttribute(group.type, val)}
+                              >
+                                {active && '✓ '}{val}
+                              </Badge>
+                            );
+                          })}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
               </TabsContent>
             </Tabs>
           )}
