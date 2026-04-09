@@ -106,11 +106,11 @@ const CategoryListings = () => {
     <div className="min-h-screen flex flex-col">
       <Navbar onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
 
-      <div className="flex flex-1 pt-14 md:pt-16">
+      <div className="flex flex-1 pt-12 md:pt-14">
         <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
         <main className="flex-1 lg:ml-64">
-          <div className="w-full max-w-screen-2xl mx-auto px-3 sm:px-4 md:px-6 py-3 sm:py-4 md:py-6 pb-20 md:pb-8">
+          <div className="w-full max-w-screen-2xl mx-auto px-3 sm:px-4 md:px-6 py-2 sm:py-3 md:py-4 pb-20 md:pb-8">
             {/* Header */}
             <div className="mb-4 sm:mb-6 flex items-center justify-between">
               <div className="flex items-center gap-2 sm:gap-4">
