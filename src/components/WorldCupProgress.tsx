@@ -28,6 +28,7 @@ const LEVELS = [
 ];
 
 export default function WorldCupProgress() {
+  const navigate = useNavigate();
   const [stats, setStats] = useState<GoalStats>({ visits: 0, referrals: 0, content: 0 });
   const [userId, setUserId] = useState<string | null>(null);
 
