@@ -9,17 +9,30 @@ import App from "./App";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 5 * 60 * 1000, // 5 minutes
+      staleTime: 5 * 60 * 1000,
       retry: 1,
     },
   },
 });
 
-const root = document.getElementById("root");
+// Register service worker only in production, not in iframes/preview
+const isInIframe = (() => {
+  try { return window.self !== window.top; } catch { return true; }
+})();
+const isPreviewHost = window.location.hostname.includes("id-preview--") || window.location.hostname.includes("lovableproject.com");
 
-if (!root) {
-  throw new Error("Root element not found");
+if (!isInIframe && !isPreviewHost && "serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/sw.js").catch(() => {});
+  });
+} else if (isInIframe || isPreviewHost) {
+  navigator.serviceWorker?.getRegistrations().then((regs) => {
+    regs.forEach((r) => r.unregister());
+  });
 }
+
+const root = document.getElementById("root");
+if (!root) throw new Error("Root element not found");
 
 createRoot(root).render(
   <StrictMode>

@@ -1,14 +1,14 @@
 {
   "name": "El Mundial del Sabor 2026",
   "short_name": "Mundial Sabor",
-  "description": "El Mundial del Sabor 2026 - Descubre los mejores restaurantes y sabores de Cali",
+  "description": "Descubre los mejores restaurantes y sabores de Cali para el Mundial 2026",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#1B7A3D",
   "orientation": "portrait-primary",
-  "categories": ["travel", "lifestyle", "navigation", "food"],
+  "categories": ["food", "travel", "lifestyle"],
   "lang": "es-CO",
   "dir": "ltr",
   "icons": [
@@ -25,31 +25,18 @@
       "purpose": "any maskable"
     }
   ],
-  "screenshots": [],
   "shortcuts": [
     {
-      "name": "Ver mapa",
-      "short_name": "Mapa",
-      "description": "Abre el mapa de lugares",
-      "url": "/",
-      "icons": [
-        {
-          "src": "/icon-192.png",
-          "sizes": "192x192"
-        }
-      ]
+      "name": "Rutas Mundialistas",
+      "short_name": "Rutas",
+      "url": "/rutas",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
     },
     {
       "name": "Eventos",
       "short_name": "Eventos",
-      "description": "Ver eventos en Cali",
       "url": "/events-all",
-      "icons": [
-        {
-          "src": "/icon-192.png",
-          "sizes": "192x192"
-        }
-      ]
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
     }
   ]
 }
