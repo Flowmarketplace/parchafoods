@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { Trophy, Utensils, Share2, Camera, Target } from 'lucide-react';
+import { Trophy, Utensils, Share2, Camera, Target, ChevronRight } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 
 interface GoalStats {
@@ -26,6 +28,7 @@ const LEVELS = [
 ];
 
 export default function WorldCupProgress() {
+  const navigate = useNavigate();
   const [stats, setStats] = useState<GoalStats>({ visits: 0, referrals: 0, content: 0 });
   const [userId, setUserId] = useState<string | null>(null);
 
@@ -134,6 +137,18 @@ export default function WorldCupProgress() {
             <p>⚽ +{GOAL_VALUES.content} gol por subir contenido a redes</p>
           </div>
         </div>
+
+        {/* CTA Button */}
+        <Button
+          className="w-full gap-1.5 text-xs font-semibold"
+          onClick={() => navigate(userId ? '/my-loyalty' : '/auth')}
+        >
+          {userId ? (
+            <>Ver todo mi progreso <ChevronRight className="h-3.5 w-3.5" /></>
+          ) : (
+            <>Regístrate y acumula goles ⚽ <ChevronRight className="h-3.5 w-3.5" /></>
+          )}
+        </Button>
       </CardContent>
     </Card>
   );
