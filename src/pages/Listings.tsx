@@ -10,7 +10,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import PlaceCard from '@/components/PlaceCard';
-import { categories, neighborhoods } from '@/data/places';
+import { categories } from '@/data/places';
 import Navbar from '@/components/Navbar';
 import Sidebar from '@/components/Sidebar';
 import BottomNav from '@/components/BottomNav';
@@ -26,6 +26,7 @@ const Listings = () => {
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
   const [selectedNeighborhood, setSelectedNeighborhood] = useState('Todos');
   const [places, setPlaces] = useState<any[]>([]);
+  const [dbNeighborhoods, setDbNeighborhoods] = useState<string[]>(['Todos']);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -68,16 +69,23 @@ const Listings = () => {
           };
         });
         setPlaces(transformed);
+
+        // Extract unique neighborhoods from DB
+        const uniqueNeighborhoods = [...new Set(data.map((b: any) => b.neighborhood).filter(Boolean))] as string[];
+        uniqueNeighborhoods.sort((a, b) => a.localeCompare(b, 'es'));
+        setDbNeighborhoods(['Todos', ...uniqueNeighborhoods]);
       }
       setLoading(false);
     };
     loadBusinesses();
   }, []);
 
+  const normalizeText = (t: string) => t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
   const filteredPlaces = useMemo(() => {
     return places.filter((place) => {
       const categoryMatch = selectedCategory === 'Todos' || place.category === selectedCategory;
-      const neighborhoodMatch = selectedNeighborhood === 'Todos' || place.neighborhood === selectedNeighborhood;
+      const neighborhoodMatch = selectedNeighborhood === 'Todos' || normalizeText(place.neighborhood || '') === normalizeText(selectedNeighborhood);
       return categoryMatch && neighborhoodMatch;
     });
   }, [places, selectedCategory, selectedNeighborhood]);
