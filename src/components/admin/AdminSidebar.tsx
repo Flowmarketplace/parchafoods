@@ -110,4 +110,12 @@ const AdminSidebar = ({ className }: AdminSidebarWrapperProps = {}) => {
   );
 };
 
-export default AdminSidebar;
+
+// Desktop version (fixed sidebar)
+export const AdminSidebarDesktop = () => {
+  return (
+    <div className="hidden lg:block fixed top-0 left-0 h-full z-40">
+      <AdminSidebar />
+    </div>
+  );
+};
