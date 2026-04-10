@@ -93,6 +93,7 @@ const AdminBusinesses = () => {
     name: '', category: '', description: '', address: '', neighborhood: '',
     phone: '', whatsapp: '', email: '', website: '', price_range: '$25.000 - $50.000',
     latitude: '', longitude: '', featured: false, zone: '',
+    instagram_url: '', facebook_url: '', tiktok_url: '',
   });
 
   useEffect(() => { checkAdminAndFetch(); }, []);
@@ -139,6 +140,7 @@ const AdminBusinesses = () => {
       website: business.website || '', price_range: business.price_range || '$25.000 - $50.000',
       latitude: business.latitude?.toString() || '', longitude: business.longitude?.toString() || '',
       featured: business.featured || false, zone: business.zone || '',
+      instagram_url: business.instagram_url || '', facebook_url: business.facebook_url || '', tiktok_url: business.tiktok_url || '',
     });
     setShowForm(true);
     setActiveTab('info');
@@ -170,6 +172,7 @@ const AdminBusinesses = () => {
       name: '', category: '', description: '', address: '', neighborhood: '',
       phone: '', whatsapp: '', email: '', website: '', price_range: '$25.000 - $50.000',
       latitude: '', longitude: '', featured: false, zone: '',
+      instagram_url: '', facebook_url: '', tiktok_url: '',
     });
     setMenuItems([]);
     setImages([]);
