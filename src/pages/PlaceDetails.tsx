@@ -266,54 +266,51 @@ const PlaceDetails = () => {
 
               {/* Redes Sociales */}
               <div className="flex gap-3 mb-6">
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="rounded-full hover:bg-[#1877F2] hover:text-white hover:border-[#1877F2] transition-colors"
-                  onClick={() => window.open('https://facebook.com', '_blank')}
-                  aria-label="Facebook"
-                >
-                  <Facebook className="h-5 w-5" />
-                </Button>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="rounded-full hover:bg-[#E4405F] hover:text-white hover:border-[#E4405F] transition-colors"
-                  onClick={() => window.open('https://instagram.com', '_blank')}
-                  aria-label="Instagram"
-                >
-                  <Instagram className="h-5 w-5" />
-                </Button>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="rounded-full hover:bg-[#1DA1F2] hover:text-white hover:border-[#1DA1F2] transition-colors"
-                  onClick={() => window.open('https://twitter.com', '_blank')}
-                  aria-label="Twitter"
-                >
-                  <Twitter className="h-5 w-5" />
-                </Button>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="rounded-full hover:bg-[#25D366] hover:text-white hover:border-[#25D366] transition-colors"
-                  onClick={() => {
-                    const phone = place.phone?.replace(/\D/g, '') || '';
-                    window.open(`https://wa.me/${phone}`, '_blank');
-                  }}
-                  aria-label="WhatsApp"
-                >
-                  <Share2 className="h-5 w-5" />
-                </Button>
-                {place.airbnbUrl && (
+                {place.facebook_url && (
                   <Button
                     variant="outline"
                     size="icon"
-                    className="rounded-full hover:bg-[#FF5A5F] hover:text-white hover:border-[#FF5A5F] transition-colors"
-                    onClick={() => window.open(place.airbnbUrl, '_blank')}
-                    aria-label="Airbnb"
+                    className="rounded-full hover:bg-[#1877F2] hover:text-white hover:border-[#1877F2] transition-colors"
+                    onClick={() => window.open(place.facebook_url, '_blank')}
+                    aria-label="Facebook"
                   >
-                    <HomeIcon className="h-5 w-5" />
+                    <Facebook className="h-5 w-5" />
+                  </Button>
+                )}
+                {place.instagram_url && (
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="rounded-full hover:bg-[#E4405F] hover:text-white hover:border-[#E4405F] transition-colors"
+                    onClick={() => window.open(place.instagram_url, '_blank')}
+                    aria-label="Instagram"
+                  >
+                    <Instagram className="h-5 w-5" />
+                  </Button>
+                )}
+                {place.tiktok_url && (
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="rounded-full hover:bg-[#010101] hover:text-white hover:border-[#010101] transition-colors"
+                    onClick={() => window.open(place.tiktok_url, '_blank')}
+                    aria-label="TikTok"
+                  >
+                    <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 00-.79-.05A6.34 6.34 0 003.15 15.2a6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.34-6.34V8.73a8.19 8.19 0 004.76 1.52v-3.4a4.85 4.85 0 01-1-.16z"/></svg>
+                  </Button>
+                )}
+                {place.whatsapp && (
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="rounded-full hover:bg-[#25D366] hover:text-white hover:border-[#25D366] transition-colors"
+                    onClick={() => {
+                      const phone = place.whatsapp?.replace(/\D/g, '') || '';
+                      window.open(`https://wa.me/${phone}`, '_blank');
+                    }}
+                    aria-label="WhatsApp"
+                  >
+                    <Share2 className="h-5 w-5" />
                   </Button>
                 )}
               </div>
