@@ -331,6 +331,50 @@ export type Database = {
           },
         ]
       }
+      business_reviews: {
+        Row: {
+          approved: boolean
+          author_name: string
+          business_id: string
+          comment: string | null
+          created_at: string
+          id: string
+          rating: number
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          approved?: boolean
+          author_name: string
+          business_id: string
+          comment?: string | null
+          created_at?: string
+          id?: string
+          rating: number
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          approved?: boolean
+          author_name?: string
+          business_id?: string
+          comment?: string | null
+          created_at?: string
+          id?: string
+          rating?: number
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "business_reviews_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       business_shorts: {
         Row: {
           active: boolean | null
