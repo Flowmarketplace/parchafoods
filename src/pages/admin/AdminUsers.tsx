@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import AdminSidebar from '@/components/admin/AdminSidebar';
+import AdminSidebar, { AdminSidebarDesktop } from '@/components/admin/AdminSidebar';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -10,8 +10,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useToast } from '@/hooks/use-toast';
-import { Search, UserPlus, Users, Shield, Store } from 'lucide-react';
+import { Search, UserPlus, Users, Shield, Store, Menu } from 'lucide-react';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 
@@ -91,17 +92,29 @@ const AdminUsers = () => {
 
   return (
     <div className="flex min-h-screen w-full bg-background">
-      <AdminSidebar />
-      <div className="flex-1 lg:ml-64 w-full p-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Usuarios y Permisos</h1>
-          <p className="text-muted-foreground">
-            Gestiona usuarios y asigna roles y permisos
-          </p>
-        </div>
+      <AdminSidebarDesktop />
+      <div className="flex-1 lg:ml-64 w-full">
+        <header className="sticky top-0 z-30 bg-card border-b border-border px-3 sm:px-4 py-3">
+          <div className="flex items-center gap-3">
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="lg:hidden"><Menu className="h-5 w-5" /></Button>
+              </SheetTrigger>
+              <SheetContent side="left" className="p-0 w-64"><AdminSidebar /></SheetContent>
+            </Sheet>
+            <div>
+              <h1 className="text-lg sm:text-3xl font-bold">Usuarios y Permisos</h1>
+              <p className="text-xs sm:text-sm text-muted-foreground">
+                Gestiona usuarios y asigna roles y permisos
+              </p>
+            </div>
+          </div>
+        </header>
+
+        <div className="p-3 sm:p-6">
 
         {/* Stats Cards */}
-        <div className="grid gap-4 md:grid-cols-4 mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-4 sm:mb-8">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium">Total Usuarios</CardTitle>
