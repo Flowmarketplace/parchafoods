@@ -975,33 +975,76 @@ const PlaceDetails = () => {
                 )}
 
                 <TabsContent value="resenas" className="mt-6">
-                  {place.reviews && place.reviews.length > 0 ? (
-                    <div className="space-y-4">
-                      {place.reviews.map((review) => (
-                        <Card key={review.id}>
-                          <CardContent className="p-4">
-                            <div className="flex items-start justify-between mb-2">
-                              <div>
-                                <p className="font-semibold">{review.author}</p>
-                                <p className="text-sm text-muted-foreground">
-                                  {new Date(review.date).toLocaleDateString('es-CO')}
-                                </p>
+                  <div className="space-y-6">
+                    {/* Review Form */}
+                    {user ? (
+                      <Card>
+                        <CardContent className="p-4 space-y-4">
+                          <h3 className="font-semibold flex items-center gap-2">
+                            <MessageSquare className="h-4 w-4 text-primary" />
+                            Deja tu reseña
+                          </h3>
+                          <div className="flex items-center gap-1">
+                            {[1, 2, 3, 4, 5].map((star) => (
+                              <button key={star} type="button" onClick={() => setReviewRating(star)}>
+                                <Star className={`h-6 w-6 cursor-pointer transition-colors ${star <= reviewRating ? 'fill-secondary text-secondary' : 'text-muted-foreground/30'}`} />
+                              </button>
+                            ))}
+                            <span className="ml-2 text-sm text-muted-foreground">{reviewRating}/5</span>
+                          </div>
+                          <Textarea
+                            placeholder="Comparte tu experiencia..."
+                            value={reviewComment}
+                            onChange={(e) => setReviewComment(e.target.value)}
+                            rows={3}
+                          />
+                          <Button onClick={handleSubmitReview} disabled={submittingReview} className="gap-2">
+                            <Send className="h-4 w-4" />
+                            {submittingReview ? 'Enviando...' : 'Enviar Reseña'}
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    ) : (
+                      <Card className="bg-gradient-to-br from-primary/5 to-secondary/5">
+                        <CardContent className="p-6 text-center">
+                          <MessageSquare className="h-10 w-10 text-primary mx-auto mb-3" />
+                          <p className="text-muted-foreground mb-4">Inicia sesión para dejar una reseña</p>
+                          <Button onClick={() => navigate('/auth')}>Iniciar Sesión</Button>
+                        </CardContent>
+                      </Card>
+                    )}
+
+                    {/* Reviews List */}
+                    {reviews.length > 0 ? (
+                      <div className="space-y-4">
+                        <h3 className="font-semibold text-lg">Reseñas ({reviews.length})</h3>
+                        {reviews.map((review) => (
+                          <Card key={review.id}>
+                            <CardContent className="p-4">
+                              <div className="flex items-start justify-between mb-2">
+                                <div>
+                                  <p className="font-semibold">{review.author_name}</p>
+                                  <p className="text-sm text-muted-foreground">
+                                    {new Date(review.created_at).toLocaleDateString('es-CO')}
+                                  </p>
+                                </div>
+                                <div className="flex items-center gap-1">
+                                  {[1, 2, 3, 4, 5].map((s) => (
+                                    <Star key={s} className={`h-3.5 w-3.5 ${s <= review.rating ? 'fill-secondary text-secondary' : 'text-muted-foreground/20'}`} />
+                                  ))}
+                                </div>
                               </div>
-                              <div className="flex items-center gap-1">
-                                <Star className="h-4 w-4 fill-secondary text-secondary" />
-                                <span className="font-medium">{review.rating}</span>
-                              </div>
-                            </div>
-                            <p className="text-muted-foreground">{review.comment}</p>
-                          </CardContent>
-                        </Card>
-                      ))}
-                    </div>
-                  ) : (
-                    <p className="text-center text-muted-foreground py-8">
-                      Aún no hay reseñas para este lugar
-                    </p>
-                  )}
+                              {review.comment && <p className="text-muted-foreground text-sm">{review.comment}</p>}
+                            </CardContent>
+                          </Card>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-center text-muted-foreground py-8">
+                        Aún no hay reseñas. ¡Sé el primero en opinar!
+                      </p>
+                    )}
+                  </div>
                 </TabsContent>
               </Tabs>
             </div>
