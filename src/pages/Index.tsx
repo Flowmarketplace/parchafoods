@@ -38,6 +38,7 @@ const Index = () => {
   const [places, setPlaces] = useState<any[]>([]);
   const [loadingPlaces, setLoadingPlaces] = useState(true);
   const [shorts, setShorts] = useState<any[]>([]);
+  const [dbNeighborhoods, setDbNeighborhoods] = useState<string[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -84,6 +85,11 @@ const Index = () => {
           };
         });
         setPlaces(transformedPlaces);
+        
+        // Extract unique neighborhoods from DB
+        const uniqueNeighborhoods = [...new Set(data.map((b: any) => b.neighborhood).filter(Boolean))] as string[];
+        uniqueNeighborhoods.sort((a, b) => a.localeCompare(b, 'es'));
+        setDbNeighborhoods(['Todos', ...uniqueNeighborhoods]);
       }
       setLoadingPlaces(false);
     };
@@ -163,7 +169,7 @@ const Index = () => {
     if (!searchQuery || searchQuery.trim() === '') {
       return allPlaces.filter((p) => {
         const catMatch = selectedCategory === 'Todos' || p.category === selectedCategory;
-        const nMatch = selectedNeighborhood === 'Todos' || p.neighborhood === selectedNeighborhood;
+        const nMatch = selectedNeighborhood === 'Todos' || normalizeText(p.neighborhood || '') === normalizeText(selectedNeighborhood);
         return catMatch && nMatch;
       });
     }
@@ -171,7 +177,7 @@ const Index = () => {
     const searchLower = normalizeText(searchQuery.trim());
     return allPlaces.filter((p) => {
       const catMatch = selectedCategory === 'Todos' || p.category === selectedCategory;
-      const nMatch = selectedNeighborhood === 'Todos' || p.neighborhood === selectedNeighborhood;
+      const nMatch = selectedNeighborhood === 'Todos' || normalizeText(p.neighborhood || '') === normalizeText(selectedNeighborhood);
       const text = normalizeText([p.name, p.category, p.address, p.neighborhood, p.description || '', ...(p.foodType || [])].join(' '));
       return text.includes(searchLower) && catMatch && nMatch;
     });
@@ -217,7 +223,7 @@ const Index = () => {
                     <CommandList>
                       <CommandEmpty>No se encontró barrio.</CommandEmpty>
                       <CommandGroup>
-                        {neighborhoods.map((n) => (
+                        {(dbNeighborhoods.length > 1 ? dbNeighborhoods : neighborhoods).map((n) => (
                           <CommandItem key={n} value={n} onSelect={() => { setSelectedNeighborhood(n); setNeighborhoodOpen(false); }}>
                             <Check className={cn("mr-2 h-4 w-4", selectedNeighborhood === n ? "opacity-100" : "opacity-0")} />
                             {n}

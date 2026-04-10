@@ -10,9 +10,9 @@ interface SidebarProps {
 
 const menuItems = [
   { icon: Home, label: 'Inicio', path: '/' },
-  { icon: List, label: 'Categorías', path: '/listings' },
-  { icon: MapPin, label: 'Barrios', path: '/neighborhoods' },
+  { icon: List, label: 'Restaurantes', path: '/listings' },
   { icon: Heart, label: 'Favoritos', path: '/favorites' },
+  { icon: MapPin, label: 'Cerca de mí', path: '/near-me' },
   { icon: Settings, label: 'Configuración', path: '/settings' },
 ];
 
