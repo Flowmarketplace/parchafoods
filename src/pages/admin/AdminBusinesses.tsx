@@ -247,7 +247,7 @@ const AdminBusinesses = () => {
         if (error) throw error;
         toast.success('Restaurante actualizado exitosamente ✅');
       } else {
-        const { data, error } = await supabase.from('businesses').insert({ ...payload, owner_id: userId }).select().single();
+        const { data, error } = await supabase.from('businesses').insert({ ...payload, owner_id: currentUser.id }).select().single();
         if (error) {
           console.error('Insert error details:', error);
           throw error;
