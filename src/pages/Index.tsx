@@ -223,7 +223,7 @@ const Index = () => {
                     <CommandList>
                       <CommandEmpty>No se encontró barrio.</CommandEmpty>
                       <CommandGroup>
-                        {neighborhoods.map((n) => (
+                        {(dbNeighborhoods.length > 1 ? dbNeighborhoods : neighborhoods).map((n) => (
                           <CommandItem key={n} value={n} onSelect={() => { setSelectedNeighborhood(n); setNeighborhoodOpen(false); }}>
                             <Check className={cn("mr-2 h-4 w-4", selectedNeighborhood === n ? "opacity-100" : "opacity-0")} />
                             {n}
