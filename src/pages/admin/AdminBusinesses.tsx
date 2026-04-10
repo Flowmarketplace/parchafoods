@@ -1502,6 +1502,94 @@ const AdminBusinesses = () => {
                   ))}
                 </div>
               </TabsContent>
+
+              {/* REVIEWS TAB */}
+              <TabsContent value="reviews">
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <h3 className="text-lg font-semibold">Reseñas ({reviewsList.length})</h3>
+                    <Dialog open={reviewDialogOpen} onOpenChange={setReviewDialogOpen}>
+                      <Button onClick={() => { setReviewForm({ author_name: '', rating: '5', comment: '', approved: true }); setReviewDialogOpen(true); }}>
+                        <Plus className="mr-2 h-4 w-4" /> Agregar Reseña
+                      </Button>
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle>Nueva Reseña</DialogTitle>
+                          <DialogDescription>Agrega una reseña manualmente</DialogDescription>
+                        </DialogHeader>
+                        <form onSubmit={handleSaveReview} className="space-y-4">
+                          <div className="space-y-2">
+                            <Label>Nombre del autor *</Label>
+                            <Input value={reviewForm.author_name} onChange={e => setReviewForm({ ...reviewForm, author_name: e.target.value })} required placeholder="Nombre del cliente" />
+                          </div>
+                          <div className="space-y-2">
+                            <Label>Calificación *</Label>
+                            <div className="flex items-center gap-1">
+                              {[1, 2, 3, 4, 5].map((s) => (
+                                <button key={s} type="button" onClick={() => setReviewForm({ ...reviewForm, rating: s.toString() })}>
+                                  <Star className={`h-6 w-6 cursor-pointer ${s <= parseInt(reviewForm.rating) ? 'fill-yellow-400 text-yellow-400' : 'text-muted-foreground/30'}`} />
+                                </button>
+                              ))}
+                              <span className="ml-2 text-sm">{reviewForm.rating}/5</span>
+                            </div>
+                          </div>
+                          <div className="space-y-2">
+                            <Label>Comentario</Label>
+                            <Textarea value={reviewForm.comment} onChange={e => setReviewForm({ ...reviewForm, comment: e.target.value })} rows={3} placeholder="Opinión del cliente..." />
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Switch checked={reviewForm.approved} onCheckedChange={v => setReviewForm({ ...reviewForm, approved: v })} />
+                            <Label>Aprobada (visible)</Label>
+                          </div>
+                          <div className="flex justify-end gap-2">
+                            <Button type="button" variant="outline" onClick={() => setReviewDialogOpen(false)}>Cancelar</Button>
+                            <Button type="submit">Crear Reseña</Button>
+                          </div>
+                        </form>
+                      </DialogContent>
+                    </Dialog>
+                  </div>
+
+                  {reviewsList.length === 0 ? (
+                    <Card>
+                      <CardContent className="text-center py-8">
+                        <MessageSquare className="mx-auto h-10 w-10 text-muted-foreground mb-3" />
+                        <p className="text-muted-foreground">No hay reseñas aún</p>
+                      </CardContent>
+                    </Card>
+                  ) : (
+                    reviewsList.map((review) => (
+                      <Card key={review.id}>
+                        <CardContent className="p-4">
+                          <div className="flex items-start justify-between">
+                            <div className="flex-1">
+                              <div className="flex items-center gap-2 mb-1">
+                                <p className="font-semibold">{review.author_name}</p>
+                                {!review.approved && <Badge variant="outline" className="text-[10px]">Oculta</Badge>}
+                              </div>
+                              <div className="flex items-center gap-0.5 mb-2">
+                                {[1, 2, 3, 4, 5].map((s) => (
+                                  <Star key={s} className={`h-3.5 w-3.5 ${s <= review.rating ? 'fill-yellow-400 text-yellow-400' : 'text-muted-foreground/20'}`} />
+                                ))}
+                                <span className="text-xs text-muted-foreground ml-2">{new Date(review.created_at).toLocaleDateString('es-CO')}</span>
+                              </div>
+                              {review.comment && <p className="text-sm text-muted-foreground">{review.comment}</p>}
+                            </div>
+                            <div className="flex gap-1 ml-2">
+                              <Button size="icon" variant="outline" className="h-8 w-8" onClick={() => handleToggleReviewApproval(review.id, review.approved)}>
+                                <Eye className="h-3.5 w-3.5" />
+                              </Button>
+                              <Button size="icon" variant="destructive" className="h-8 w-8" onClick={() => handleDeleteReview(review.id)}>
+                                <Trash2 className="h-3.5 w-3.5" />
+                              </Button>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))
+                  )}
+                </div>
+              </TabsContent>
             </Tabs>
           )}
         </main>
