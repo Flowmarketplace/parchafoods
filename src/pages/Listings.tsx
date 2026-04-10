@@ -126,7 +126,7 @@ const Listings = () => {
                   <SelectValue placeholder="Barrio" />
                 </SelectTrigger>
                 <SelectContent>
-                  {neighborhoods.map((neighborhood) => (
+                  {dbNeighborhoods.map((neighborhood) => (
                     <SelectItem key={neighborhood} value={neighborhood}>
                       {neighborhood}
                     </SelectItem>
