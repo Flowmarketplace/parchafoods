@@ -671,6 +671,7 @@ const AdminBusinesses = () => {
                 <TabsTrigger value="hours" className="text-xs gap-1 flex-1" disabled={!editingBusiness}><Clock className="h-3.5 w-3.5 hidden sm:block" /> Horarios</TabsTrigger>
                 <TabsTrigger value="videos" className="text-xs gap-1 flex-1" disabled={!editingBusiness}><Video className="h-3.5 w-3.5 hidden sm:block" /> Videos</TabsTrigger>
                 <TabsTrigger value="promos" className="text-xs gap-1 flex-1" disabled={!editingBusiness}><Megaphone className="h-3.5 w-3.5 hidden sm:block" /> Promos</TabsTrigger>
+                <TabsTrigger value="branches" className="text-xs gap-1 flex-1" disabled={!editingBusiness}><MapPin className="h-3.5 w-3.5 hidden sm:block" /> Sedes</TabsTrigger>
                 <TabsTrigger value="attrs" className="text-xs gap-1 flex-1" disabled={!editingBusiness}><Tag className="h-3.5 w-3.5 hidden sm:block" /> Filtros</TabsTrigger>
               </TabsList>
 
