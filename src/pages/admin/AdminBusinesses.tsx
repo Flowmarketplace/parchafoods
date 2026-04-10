@@ -177,6 +177,7 @@ const AdminBusinesses = () => {
     setPromotions([]);
     setAttributes([]);
     setBusinessHours([]);
+    setBranches([]);
     setShowForm(true);
     setActiveTab('info');
   };
