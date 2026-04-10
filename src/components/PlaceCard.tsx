@@ -1,10 +1,11 @@
-import { useState, useCallback, useRef } from 'react';
-import { MapPin, Star, Phone } from 'lucide-react';
+import { useState, useCallback, useRef, useEffect } from 'react';
+import { MapPin, Star, Phone, Heart } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Place } from '@/types/place';
 import { useNavigate } from 'react-router-dom';
+import { supabase } from '@/integrations/supabase/client';
 
 interface PlaceCardProps {
   place: Place;
@@ -24,7 +25,36 @@ interface Spark {
 const PlaceCard = ({ place }: PlaceCardProps) => {
   const navigate = useNavigate();
   const [sparks, setSparks] = useState<Spark[]>([]);
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [userId, setUserId] = useState<string | null>(null);
   const cardRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) {
+        setUserId(session.user.id);
+        supabase
+          .from('user_favorites')
+          .select('id')
+          .eq('user_id', session.user.id)
+          .eq('business_id', place.id)
+          .maybeSingle()
+          .then(({ data }) => setIsFavorite(!!data));
+      }
+    });
+  }, [place.id]);
+
+  const toggleFavorite = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!userId) return;
+    if (isFavorite) {
+      await supabase.from('user_favorites').delete().eq('user_id', userId).eq('business_id', place.id);
+      setIsFavorite(false);
+    } else {
+      await supabase.from('user_favorites').insert({ user_id: userId, business_id: place.id });
+      setIsFavorite(true);
+    }
+  };
 
   const handleClick = useCallback((e: React.MouseEvent) => {
     const rect = cardRef.current?.getBoundingClientRect();
