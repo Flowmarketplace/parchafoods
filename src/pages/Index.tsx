@@ -85,6 +85,11 @@ const Index = () => {
           };
         });
         setPlaces(transformedPlaces);
+        
+        // Extract unique neighborhoods from DB
+        const uniqueNeighborhoods = [...new Set(data.map((b: any) => b.neighborhood).filter(Boolean))] as string[];
+        uniqueNeighborhoods.sort((a, b) => a.localeCompare(b, 'es'));
+        setDbNeighborhoods(['Todos', ...uniqueNeighborhoods]);
       }
       setLoadingPlaces(false);
     };
