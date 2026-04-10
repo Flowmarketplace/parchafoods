@@ -1,4 +1,4 @@
-import { Home, Navigation, MapPinned, Settings } from 'lucide-react';
+import { Home, Navigation, MapPinned, Heart, Settings } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 
@@ -9,6 +9,7 @@ const BottomNav = () => {
   const navItems = [
     { id: 'home', name: 'Inicio', icon: Home, path: '/' },
     { id: 'nearme', name: 'Cerca de mí', icon: Navigation, path: '/near-me' },
+    { id: 'favorites', name: 'Favoritos', icon: Heart, path: '/favorites' },
     { id: 'routes', name: 'Rutas M', icon: MapPinned, path: '/listings' },
     { id: 'settings', name: 'Ajustes', icon: Settings, path: '/settings' },
   ];
@@ -36,8 +37,8 @@ const BottomNav = () => {
                 active ? 'text-primary' : 'text-muted-foreground'
               )}
             >
-              <Icon className={cn('h-6 w-6', active && 'stroke-[2.5]')} />
-              <span className="text-[10px] font-medium">{item.name}</span>
+              <Icon className={cn('h-5 w-5', active && 'stroke-[2.5]')} />
+              <span className="text-[9px] font-medium">{item.name}</span>
             </button>
           );
         })}
