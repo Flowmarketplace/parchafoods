@@ -4,7 +4,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Menu, Store, Users, CreditCard, TrendingUp, DollarSign, Bell, Activity } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import AdminSidebar from '@/components/admin/AdminSidebar';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import AdminSidebar, { AdminSidebarDesktop } from '@/components/admin/AdminSidebar';
 import { toast } from 'sonner';
 
 interface DashboardStats {
@@ -118,31 +119,33 @@ const AdminDashboard = () => {
 
   return (
     <div className="flex min-h-screen w-full bg-background">
-      <AdminSidebar />
+      <AdminSidebarDesktop />
 
       <div className="flex-1 lg:ml-64 w-full">
-        <header className="sticky top-0 z-30 bg-card border-b border-border px-4 py-3">
+        <header className="sticky top-0 z-30 bg-card border-b border-border px-3 sm:px-4 py-3">
           <div className="flex items-center gap-3">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="lg:hidden"
-              onClick={() => setSidebarOpen(true)}
-            >
-              <Menu className="h-5 w-5" />
-            </Button>
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="lg:hidden">
+                  <Menu className="h-5 w-5" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="left" className="p-0 w-64">
+                <AdminSidebar />
+              </SheetContent>
+            </Sheet>
             <div>
-              <h1 className="text-2xl font-bold">Panel de Administración</h1>
-              <p className="text-sm text-muted-foreground">
+              <h1 className="text-lg sm:text-2xl font-bold">Panel de Administración</h1>
+              <p className="text-xs sm:text-sm text-muted-foreground">
                 Vista general del sistema
               </p>
             </div>
           </div>
         </header>
 
-        <main className="p-6">
+        <main className="p-3 sm:p-6">
           {/* Stats Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-4 sm:mb-6">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-sm font-medium">Total Negocios</CardTitle>
@@ -197,7 +200,7 @@ const AdminDashboard = () => {
           </div>
 
           {/* Quick Actions */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
             <Card 
               className="cursor-pointer hover:shadow-lg transition-shadow"
               onClick={() => navigate('/admin/businesses')}

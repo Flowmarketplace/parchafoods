@@ -61,7 +61,7 @@ const AdminSidebar = ({ className }: AdminSidebarWrapperProps = {}) => {
         </div>
 
         {/* Back to App Button */}
-        <NavLink to="/" className="block mb-4">
+        <NavLink to="/app" className="block mb-4">
           <Button variant="outline" className="w-full justify-start" size="sm">
             <Home className="h-4 w-4 mr-2" />
             Volver a la App
