@@ -450,6 +450,35 @@ const AdminBusinesses = () => {
     if (editingBusiness) await loadBusinessDetails(editingBusiness.id);
   };
 
+
+  // HOURS HANDLERS
+  const initializeHours = async () => {
+    if (!editingBusiness) { toast.error('Guarda el restaurante primero'); return; }
+    try {
+      const entries = DAY_NAMES.map((_, i) => ({
+        business_id: editingBusiness.id,
+        day_of_week: i,
+        open_time: '08:00',
+        close_time: '22:00',
+        is_closed: false,
+      }));
+      await supabase.from('business_hours').insert(entries);
+      toast.success('Horarios inicializados');
+      await loadBusinessDetails(editingBusiness.id);
+    } catch (error: any) {
+      toast.error(error.message || 'Error');
+    }
+  };
+
+  const updateHour = async (hourId: string, field: string, value: any) => {
+    try {
+      await supabase.from('business_hours').update({ [field]: value }).eq('id', hourId);
+      if (editingBusiness) await loadBusinessDetails(editingBusiness.id);
+    } catch (error: any) {
+      toast.error(error.message || 'Error');
+    }
+  };
+
   // ATTRIBUTE HANDLERS
   const toggleAttribute = async (type: string, value: string) => {
     if (!editingBusiness) { toast.error('Guarda el restaurante primero'); return; }
