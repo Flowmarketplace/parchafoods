@@ -146,12 +146,9 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
         ] : undefined,
       });
       
-      // Disable interactions on mobile
+      // On mobile, keep basic interactions but disable scroll zoom to avoid conflicts with page scrolling
       if (isMobile) {
-        map.current.dragPan.disable();
         map.current.scrollZoom.disable();
-        map.current.doubleClickZoom.disable();
-        map.current.touchZoomRotate.disable();
       }
 
       map.current.on('load', () => {
