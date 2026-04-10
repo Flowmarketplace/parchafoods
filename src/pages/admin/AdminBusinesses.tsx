@@ -201,12 +201,27 @@ const AdminBusinesses = () => {
     }
     setSaving(true);
     try {
-      const payload = {
-        ...formData,
-        latitude: formData.latitude ? parseFloat(formData.latitude) : null,
-        longitude: formData.longitude ? parseFloat(formData.longitude) : null,
+      const payload: any = {
+        name: formData.name,
+        category: formData.category,
+        address: formData.address,
+        neighborhood: formData.neighborhood,
+        featured: formData.featured,
         slug: formData.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, '-').replace(/-+$/, ''),
       };
+      // Only include optional fields if they have values
+      if (formData.description) payload.description = formData.description;
+      if (formData.phone) payload.phone = formData.phone;
+      if (formData.whatsapp) payload.whatsapp = formData.whatsapp;
+      if (formData.email) payload.email = formData.email;
+      if (formData.website) payload.website = formData.website;
+      if (formData.price_range) payload.price_range = formData.price_range;
+      if (formData.zone) payload.zone = formData.zone;
+      if (formData.latitude) payload.latitude = parseFloat(formData.latitude);
+      if (formData.longitude) payload.longitude = parseFloat(formData.longitude);
+      if (formData.instagram_url) payload.instagram_url = formData.instagram_url;
+      if (formData.facebook_url) payload.facebook_url = formData.facebook_url;
+      if (formData.tiktok_url) payload.tiktok_url = formData.tiktok_url;
 
       if (editingBusiness) {
         const { error } = await supabase.from('businesses').update(payload).eq('id', editingBusiness.id);
