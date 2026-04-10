@@ -38,6 +38,7 @@ const Index = () => {
   const [places, setPlaces] = useState<any[]>([]);
   const [loadingPlaces, setLoadingPlaces] = useState(true);
   const [shorts, setShorts] = useState<any[]>([]);
+  const [dbNeighborhoods, setDbNeighborhoods] = useState<string[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
