@@ -97,23 +97,21 @@ const AdminPackages = () => {
 
   return (
     <div className="flex min-h-screen w-full bg-background">
-      <AdminSidebar />
+      <AdminSidebarDesktop />
 
       <div className="flex-1 lg:ml-64 w-full">
-        <header className="sticky top-0 z-30 bg-card border-b border-border px-4 py-3">
+        <header className="sticky top-0 z-30 bg-card border-b border-border px-3 sm:px-4 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="lg:hidden"
-                onClick={() => setSidebarOpen(true)}
-              >
-                <Menu className="h-5 w-5" />
-              </Button>
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button variant="ghost" size="icon" className="lg:hidden"><Menu className="h-5 w-5" /></Button>
+                </SheetTrigger>
+                <SheetContent side="left" className="p-0 w-64"><AdminSidebar /></SheetContent>
+              </Sheet>
               <div>
-                <h1 className="text-xl font-bold">Gestión de Paquetes</h1>
-                <p className="text-sm text-muted-foreground">
+                <h1 className="text-lg sm:text-xl font-bold">Gestión de Paquetes</h1>
+                <p className="text-xs sm:text-sm text-muted-foreground">
                   {plans.length} planes de suscripción
                 </p>
               </div>
