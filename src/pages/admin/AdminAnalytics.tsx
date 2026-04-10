@@ -68,7 +68,7 @@ const AdminAnalytics = () => {
         <div className="p-3 sm:p-6">
 
         {/* KPI Cards */}
-        <div className="grid gap-4 md:grid-cols-4 mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-4 sm:mb-8">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium">Total Usuarios</CardTitle>
