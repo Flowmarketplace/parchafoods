@@ -876,13 +876,33 @@ const AdminBusinesses = () => {
                       <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
                           <Label>Latitud</Label>
-                          <Input type="number" step="0.000001" value={formData.latitude} onChange={e => setFormData({ ...formData, latitude: e.target.value })} placeholder="3.451647" />
+                          <Input type="text" inputMode="decimal" value={formData.latitude} onChange={e => setFormData({ ...formData, latitude: e.target.value.replace(/[^0-9.\-]/g, '') })} placeholder="3.451647" />
                         </div>
                         <div className="space-y-2">
-                          <Label>Longitud</Label>
-                          <Input type="number" step="0.000001" value={formData.longitude} onChange={e => setFormData({ ...formData, longitude: e.target.value })} placeholder="-76.531835" />
+                          <Label>Longitud <span className="text-xs text-muted-foreground">(negativa para Cali)</span></Label>
+                          <Input type="text" inputMode="decimal" value={formData.longitude} onChange={e => setFormData({ ...formData, longitude: e.target.value.replace(/[^0-9.\-]/g, '') })} placeholder="-76.531835" />
                         </div>
                       </div>
+                      <Button type="button" variant="outline" size="sm" className="gap-2" onClick={() => {
+                        if (navigator.geolocation) {
+                          navigator.geolocation.getCurrentPosition(
+                            (pos) => {
+                              setFormData(prev => ({
+                                ...prev,
+                                latitude: pos.coords.latitude.toFixed(6),
+                                longitude: pos.coords.longitude.toFixed(6)
+                              }));
+                              toast.success('📍 Ubicación obtenida');
+                            },
+                            () => toast.error('No se pudo obtener la ubicación')
+                          );
+                        } else {
+                          toast.error('Geolocalización no disponible');
+                        }
+                      }}>
+                        <MapPin className="h-3.5 w-3.5" />
+                        Obtener mi ubicación actual
+                      </Button>
                       {formData.latitude && formData.longitude && (
                         <div className="mt-3">
                           <p className="text-xs text-muted-foreground mb-2">📍 Vista previa del mapa (verifica que el pin esté correcto)</p>
