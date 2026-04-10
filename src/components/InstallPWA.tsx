@@ -51,7 +51,7 @@ const InstallPWA = () => {
   if (!deferredPrompt || dismissed) return null;
 
   return (
-    <div className="fixed bottom-20 left-3 right-3 md:left-auto md:right-4 md:bottom-4 md:w-[360px] z-50 animate-in slide-in-from-bottom-4 duration-300">
+    <div className="fixed bottom-36 left-3 right-3 md:left-auto md:right-4 md:bottom-24 md:w-[360px] z-50 animate-in slide-in-from-bottom-4 duration-300">
       <div className="bg-card border border-border rounded-xl shadow-xl p-3.5 flex items-center gap-3">
         <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
           <img src="/icon-192.png" alt="Logo" className="w-8 h-8 rounded-lg" />
