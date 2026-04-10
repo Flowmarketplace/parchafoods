@@ -93,6 +93,7 @@ const AdminBusinesses = () => {
     name: '', category: '', description: '', address: '', neighborhood: '',
     phone: '', whatsapp: '', email: '', website: '', price_range: '$25.000 - $50.000',
     latitude: '', longitude: '', featured: false, zone: '',
+    instagram_url: '', facebook_url: '', tiktok_url: '',
   });
 
   useEffect(() => { checkAdminAndFetch(); }, []);
@@ -139,6 +140,7 @@ const AdminBusinesses = () => {
       website: business.website || '', price_range: business.price_range || '$25.000 - $50.000',
       latitude: business.latitude?.toString() || '', longitude: business.longitude?.toString() || '',
       featured: business.featured || false, zone: business.zone || '',
+      instagram_url: business.instagram_url || '', facebook_url: business.facebook_url || '', tiktok_url: business.tiktok_url || '',
     });
     setShowForm(true);
     setActiveTab('info');
@@ -170,6 +172,7 @@ const AdminBusinesses = () => {
       name: '', category: '', description: '', address: '', neighborhood: '',
       phone: '', whatsapp: '', email: '', website: '', price_range: '$25.000 - $50.000',
       latitude: '', longitude: '', featured: false, zone: '',
+      instagram_url: '', facebook_url: '', tiktok_url: '',
     });
     setMenuItems([]);
     setImages([]);
@@ -795,6 +798,23 @@ const AdminBusinesses = () => {
                           <Input type="url" value={formData.website} onChange={e => setFormData({ ...formData, website: e.target.value })} />
                         </div>
                       </div>
+
+                      {/* Redes Sociales */}
+                      <p className="text-sm font-medium text-muted-foreground pt-2">Redes Sociales</p>
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div className="space-y-2">
+                          <Label>Instagram URL</Label>
+                          <Input value={formData.instagram_url} onChange={e => setFormData({ ...formData, instagram_url: e.target.value })} placeholder="https://instagram.com/restaurante" />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Facebook URL</Label>
+                          <Input value={formData.facebook_url} onChange={e => setFormData({ ...formData, facebook_url: e.target.value })} placeholder="https://facebook.com/restaurante" />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>TikTok URL</Label>
+                          <Input value={formData.tiktok_url} onChange={e => setFormData({ ...formData, tiktok_url: e.target.value })} placeholder="https://tiktok.com/@restaurante" />
+                        </div>
+                      </div>
                     </CardContent>
                   </Card>
 
@@ -939,6 +959,14 @@ const AdminBusinesses = () => {
                         <div className="space-y-2">
                           <Label>Categoría</Label>
                           <Input value={menuForm.category} onChange={e => setMenuForm({ ...menuForm, category: e.target.value })} placeholder="Entradas, Platos Fuertes..." />
+                          <div className="flex flex-wrap gap-1">
+                            {['Plato Mundialista', 'Entradas', 'Platos Fuertes', 'Bebidas', 'Postres'].map(cat => (
+                              <Button key={cat} type="button" variant={menuForm.category === cat ? 'default' : 'outline'} size="sm" className="text-[10px] h-6 px-2"
+                                onClick={() => setMenuForm({ ...menuForm, category: cat })}>
+                                {cat === 'Plato Mundialista' ? '⚽ ' : ''}{cat}
+                              </Button>
+                            ))}
+                          </div>
                         </div>
                       </div>
                       <div className="space-y-2">

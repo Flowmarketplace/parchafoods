@@ -266,54 +266,51 @@ const PlaceDetails = () => {
 
               {/* Redes Sociales */}
               <div className="flex gap-3 mb-6">
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="rounded-full hover:bg-[#1877F2] hover:text-white hover:border-[#1877F2] transition-colors"
-                  onClick={() => window.open('https://facebook.com', '_blank')}
-                  aria-label="Facebook"
-                >
-                  <Facebook className="h-5 w-5" />
-                </Button>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="rounded-full hover:bg-[#E4405F] hover:text-white hover:border-[#E4405F] transition-colors"
-                  onClick={() => window.open('https://instagram.com', '_blank')}
-                  aria-label="Instagram"
-                >
-                  <Instagram className="h-5 w-5" />
-                </Button>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="rounded-full hover:bg-[#1DA1F2] hover:text-white hover:border-[#1DA1F2] transition-colors"
-                  onClick={() => window.open('https://twitter.com', '_blank')}
-                  aria-label="Twitter"
-                >
-                  <Twitter className="h-5 w-5" />
-                </Button>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="rounded-full hover:bg-[#25D366] hover:text-white hover:border-[#25D366] transition-colors"
-                  onClick={() => {
-                    const phone = place.phone?.replace(/\D/g, '') || '';
-                    window.open(`https://wa.me/${phone}`, '_blank');
-                  }}
-                  aria-label="WhatsApp"
-                >
-                  <Share2 className="h-5 w-5" />
-                </Button>
-                {place.airbnbUrl && (
+                {place.facebook_url && (
                   <Button
                     variant="outline"
                     size="icon"
-                    className="rounded-full hover:bg-[#FF5A5F] hover:text-white hover:border-[#FF5A5F] transition-colors"
-                    onClick={() => window.open(place.airbnbUrl, '_blank')}
-                    aria-label="Airbnb"
+                    className="rounded-full hover:bg-[#1877F2] hover:text-white hover:border-[#1877F2] transition-colors"
+                    onClick={() => window.open(place.facebook_url, '_blank')}
+                    aria-label="Facebook"
                   >
-                    <HomeIcon className="h-5 w-5" />
+                    <Facebook className="h-5 w-5" />
+                  </Button>
+                )}
+                {place.instagram_url && (
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="rounded-full hover:bg-[#E4405F] hover:text-white hover:border-[#E4405F] transition-colors"
+                    onClick={() => window.open(place.instagram_url, '_blank')}
+                    aria-label="Instagram"
+                  >
+                    <Instagram className="h-5 w-5" />
+                  </Button>
+                )}
+                {place.tiktok_url && (
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="rounded-full hover:bg-[#010101] hover:text-white hover:border-[#010101] transition-colors"
+                    onClick={() => window.open(place.tiktok_url, '_blank')}
+                    aria-label="TikTok"
+                  >
+                    <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 00-.79-.05A6.34 6.34 0 003.15 15.2a6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.34-6.34V8.73a8.19 8.19 0 004.76 1.52v-3.4a4.85 4.85 0 01-1-.16z"/></svg>
+                  </Button>
+                )}
+                {place.whatsapp && (
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="rounded-full hover:bg-[#25D366] hover:text-white hover:border-[#25D366] transition-colors"
+                    onClick={() => {
+                      const phone = place.whatsapp?.replace(/\D/g, '') || '';
+                      window.open(`https://wa.me/${phone}`, '_blank');
+                    }}
+                    aria-label="WhatsApp"
+                  >
+                    <Share2 className="h-5 w-5" />
                   </Button>
                 )}
               </div>
@@ -387,40 +384,42 @@ const PlaceDetails = () => {
                   <TabsTrigger value="resenas" className="text-xs gap-1 px-2.5 py-1.5">Reseñas</TabsTrigger>
                 </TabsList>
 
-                {/* Plato Mundialista */}
+                {/* Platos Mundialistas */}
                 <TabsContent value="mundialista" className="mt-4">
                   <Card className="overflow-hidden border-primary/20 bg-gradient-to-br from-primary/5 to-secondary/5">
                     <CardContent className="p-4 sm:p-6">
                       <div className="flex items-center gap-2 mb-4">
                         <span className="text-2xl">⚽</span>
-                        <h3 className="text-lg sm:text-xl font-bold">Plato Mundialista</h3>
+                        <h3 className="text-lg sm:text-xl font-bold">Platos Mundialistas</h3>
                       </div>
                       {(() => {
-                        const mundialItem = menu.find(m => m.category === 'Plato Mundialista');
-                        if (mundialItem) {
+                        const mundialItems = menu.filter(m => m.category === 'Plato Mundialista');
+                        if (mundialItems.length > 0) {
                           return (
-                            <>
-                              {mundialItem.image_url && (
-                                <div className="rounded-lg overflow-hidden h-56 mb-4 bg-muted flex items-center justify-center">
-                                  <img src={mundialItem.image_url} alt={mundialItem.name} className="max-w-full max-h-full object-contain" />
+                            <div className="space-y-4">
+                              {mundialItems.map((mundialItem) => (
+                                <div key={mundialItem.id} className="bg-background/80 rounded-lg p-4 border border-primary/10">
+                                  {mundialItem.image_url && (
+                                    <div className="rounded-lg overflow-hidden h-48 mb-3 bg-muted flex items-center justify-center">
+                                      <img src={mundialItem.image_url} alt={mundialItem.name} className="max-w-full max-h-full object-contain" />
+                                    </div>
+                                  )}
+                                  <p className="font-bold text-primary text-lg mb-1">
+                                    🍽️ {mundialItem.name}
+                                  </p>
+                                  {mundialItem.description && (
+                                    <p className="text-sm text-muted-foreground mb-2">{mundialItem.description}</p>
+                                  )}
+                                  <p className="text-xl font-bold text-secondary">
+                                    ${Number(mundialItem.price).toLocaleString('es-CO')}
+                                  </p>
                                 </div>
-                              )}
-                              <div className="bg-background/80 rounded-lg p-4 mb-3 border border-primary/10">
-                                <p className="font-bold text-primary text-lg mb-1">
-                                  🍽️ {mundialItem.name}
-                                </p>
-                                {mundialItem.description && (
-                                  <p className="text-sm text-muted-foreground mb-2">{mundialItem.description}</p>
-                                )}
-                                <p className="text-xl font-bold text-secondary">
-                                  ${Number(mundialItem.price).toLocaleString('es-CO')}
-                                </p>
-                              </div>
+                              ))}
                               <div className="flex items-center gap-2 text-xs text-muted-foreground">
                                 <Trophy className="h-3.5 w-3.5 text-secondary" />
-                                <span>Pide este plato y gana goles para tu pasaporte mundialista</span>
+                                <span>Pide estos platos y gana goles para tu pasaporte mundialista</span>
                               </div>
-                            </>
+                            </div>
                           );
                         }
                         if (place.worldCupSpecial || place.loyalty_reward_description) {

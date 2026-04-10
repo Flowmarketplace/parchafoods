@@ -435,9 +435,11 @@ export type Database = {
           created_at: string | null
           description: string | null
           email: string | null
+          facebook_url: string | null
           featured: boolean | null
           geo_notifications_enabled: boolean | null
           id: string
+          instagram_url: string | null
           latitude: number | null
           longitude: number | null
           loyalty_enabled: boolean | null
@@ -452,6 +454,7 @@ export type Database = {
           phone: string | null
           price_range: string | null
           slug: string | null
+          tiktok_url: string | null
           updated_at: string | null
           website: string | null
           whatsapp: string | null
@@ -463,9 +466,11 @@ export type Database = {
           created_at?: string | null
           description?: string | null
           email?: string | null
+          facebook_url?: string | null
           featured?: boolean | null
           geo_notifications_enabled?: boolean | null
           id?: string
+          instagram_url?: string | null
           latitude?: number | null
           longitude?: number | null
           loyalty_enabled?: boolean | null
@@ -480,6 +485,7 @@ export type Database = {
           phone?: string | null
           price_range?: string | null
           slug?: string | null
+          tiktok_url?: string | null
           updated_at?: string | null
           website?: string | null
           whatsapp?: string | null
@@ -491,9 +497,11 @@ export type Database = {
           created_at?: string | null
           description?: string | null
           email?: string | null
+          facebook_url?: string | null
           featured?: boolean | null
           geo_notifications_enabled?: boolean | null
           id?: string
+          instagram_url?: string | null
           latitude?: number | null
           longitude?: number | null
           loyalty_enabled?: boolean | null
@@ -508,6 +516,7 @@ export type Database = {
           phone?: string | null
           price_range?: string | null
           slug?: string | null
+          tiktok_url?: string | null
           updated_at?: string | null
           website?: string | null
           whatsapp?: string | null

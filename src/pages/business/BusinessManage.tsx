@@ -58,7 +58,10 @@ const BusinessManage = () => {
     latitude: null as number | null,
     longitude: null as number | null,
     geo_notifications_enabled: false,
-    notification_radius_km: 1.0
+    notification_radius_km: 1.0,
+    instagram_url: '',
+    facebook_url: '',
+    tiktok_url: '',
   });
 
   useEffect(() => {
@@ -102,7 +105,10 @@ const BusinessManage = () => {
         latitude: business.latitude,
         longitude: business.longitude,
         geo_notifications_enabled: business.geo_notifications_enabled || false,
-        notification_radius_km: business.notification_radius_km || 1.0
+        notification_radius_km: business.notification_radius_km || 1.0,
+        instagram_url: business.instagram_url || '',
+        facebook_url: business.facebook_url || '',
+        tiktok_url: business.tiktok_url || '',
       });
     } catch (error: any) {
       console.error('Error:', error);
@@ -368,7 +374,28 @@ const BusinessManage = () => {
                 </div>
               </div>
 
-              {/* Proximity Notifications Section */}
+              {/* Redes Sociales */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">📱 Redes Sociales</CardTitle>
+                  <CardDescription>Agrega las URLs de tus redes sociales para que los clientes te encuentren</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    <Label>Instagram</Label>
+                    <Input value={formData.instagram_url} onChange={e => setFormData({ ...formData, instagram_url: e.target.value })} placeholder="https://instagram.com/turestaurante" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Facebook</Label>
+                    <Input value={formData.facebook_url} onChange={e => setFormData({ ...formData, facebook_url: e.target.value })} placeholder="https://facebook.com/turestaurante" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>TikTok</Label>
+                    <Input value={formData.tiktok_url} onChange={e => setFormData({ ...formData, tiktok_url: e.target.value })} placeholder="https://tiktok.com/@turestaurante" />
+                  </div>
+                </CardContent>
+              </Card>
+
               <Card className="bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-950/30 dark:to-purple-950/30 border-2 border-primary/20">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
