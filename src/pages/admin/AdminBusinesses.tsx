@@ -223,6 +223,10 @@ const AdminBusinesses = () => {
       if (formData.facebook_url) payload.facebook_url = formData.facebook_url;
       if (formData.tiktok_url) payload.tiktok_url = formData.tiktok_url;
 
+      // Get current user to ensure owner_id is set correctly
+      const { data: { user: currentUser } } = await supabase.auth.getUser();
+      if (!currentUser) { toast.error('Sesión expirada'); navigate('/auth'); return; }
+
       if (editingBusiness) {
         // For updates, include all fields to allow clearing values
         const updatePayload = {
