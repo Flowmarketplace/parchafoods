@@ -15,7 +15,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Checkbox } from '@/components/ui/checkbox';
 import {
   Menu, Search, Eye, Edit, Trash2, ArrowLeft, Plus, Store, Image as ImageIcon,
-  UtensilsCrossed, MapPin, Star, ChevronRight, X, Video, Tag, Megaphone
+  UtensilsCrossed, MapPin, Star, ChevronRight, X, Video, Tag, Megaphone, Clock
 } from 'lucide-react';
 import AdminSidebar, { AdminSidebarDesktop } from '@/components/admin/AdminSidebar';
 import { toast } from 'sonner';
@@ -78,6 +78,10 @@ const AdminBusinesses = () => {
   // Attributes state
   const [attributes, setAttributes] = useState<any[]>([]);
 
+  // Hours state
+  const [businessHours, setBusinessHours] = useState<any[]>([]);
+  const DAY_NAMES = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+
   // Form
   const [formData, setFormData] = useState({
     name: '', category: '', description: '', address: '', neighborhood: '',
@@ -136,18 +140,20 @@ const AdminBusinesses = () => {
   };
 
   const loadBusinessDetails = async (businessId: string) => {
-    const [menuRes, imgRes, shortsRes, promoRes, attrRes] = await Promise.all([
+    const [menuRes, imgRes, shortsRes, promoRes, attrRes, hoursRes] = await Promise.all([
       supabase.from('business_menu').select('*').eq('business_id', businessId).order('category, name'),
       supabase.from('business_images').select('*').eq('business_id', businessId).order('display_order'),
       supabase.from('business_shorts').select('*').eq('business_id', businessId).order('created_at', { ascending: false }),
       supabase.from('business_promotions').select('*').eq('business_id', businessId).order('created_at', { ascending: false }),
       supabase.from('business_attributes').select('*').eq('business_id', businessId),
+      supabase.from('business_hours').select('*').eq('business_id', businessId).order('day_of_week'),
     ]);
     setMenuItems(menuRes.data || []);
     setImages(imgRes.data || []);
     setShorts(shortsRes.data || []);
     setPromotions(promoRes.data || []);
     setAttributes(attrRes.data || []);
+    setBusinessHours(hoursRes.data || []);
   };
 
   const handleNew = () => {
@@ -162,6 +168,7 @@ const AdminBusinesses = () => {
     setShorts([]);
     setPromotions([]);
     setAttributes([]);
+    setBusinessHours([]);
     setShowForm(true);
     setActiveTab('info');
   };
@@ -444,6 +451,35 @@ const AdminBusinesses = () => {
     if (editingBusiness) await loadBusinessDetails(editingBusiness.id);
   };
 
+
+  // HOURS HANDLERS
+  const initializeHours = async () => {
+    if (!editingBusiness) { toast.error('Guarda el restaurante primero'); return; }
+    try {
+      const entries = DAY_NAMES.map((_, i) => ({
+        business_id: editingBusiness.id,
+        day_of_week: i,
+        open_time: '08:00',
+        close_time: '22:00',
+        is_closed: false,
+      }));
+      await supabase.from('business_hours').insert(entries);
+      toast.success('Horarios inicializados');
+      await loadBusinessDetails(editingBusiness.id);
+    } catch (error: any) {
+      toast.error(error.message || 'Error');
+    }
+  };
+
+  const updateHour = async (hourId: string, field: string, value: any) => {
+    try {
+      await supabase.from('business_hours').update({ [field]: value }).eq('id', hourId);
+      if (editingBusiness) await loadBusinessDetails(editingBusiness.id);
+    } catch (error: any) {
+      toast.error(error.message || 'Error');
+    }
+  };
+
   // ATTRIBUTE HANDLERS
   const toggleAttribute = async (type: string, value: string) => {
     if (!editingBusiness) { toast.error('Guarda el restaurante primero'); return; }
@@ -583,6 +619,7 @@ const AdminBusinesses = () => {
                 <TabsTrigger value="info" className="text-xs gap-1 flex-1"><Store className="h-3.5 w-3.5 hidden sm:block" /> Info</TabsTrigger>
                 <TabsTrigger value="images" className="text-xs gap-1 flex-1" disabled={!editingBusiness}><ImageIcon className="h-3.5 w-3.5 hidden sm:block" /> Fotos</TabsTrigger>
                 <TabsTrigger value="menu" className="text-xs gap-1 flex-1" disabled={!editingBusiness}><UtensilsCrossed className="h-3.5 w-3.5 hidden sm:block" /> Menú</TabsTrigger>
+                <TabsTrigger value="hours" className="text-xs gap-1 flex-1" disabled={!editingBusiness}><Clock className="h-3.5 w-3.5 hidden sm:block" /> Horarios</TabsTrigger>
                 <TabsTrigger value="videos" className="text-xs gap-1 flex-1" disabled={!editingBusiness}><Video className="h-3.5 w-3.5 hidden sm:block" /> Videos</TabsTrigger>
                 <TabsTrigger value="promos" className="text-xs gap-1 flex-1" disabled={!editingBusiness}><Megaphone className="h-3.5 w-3.5 hidden sm:block" /> Promos</TabsTrigger>
                 <TabsTrigger value="attrs" className="text-xs gap-1 flex-1" disabled={!editingBusiness}><Tag className="h-3.5 w-3.5 hidden sm:block" /> Filtros</TabsTrigger>
@@ -660,6 +697,26 @@ const AdminBusinesses = () => {
                           <Input type="number" step="0.000001" value={formData.longitude} onChange={e => setFormData({ ...formData, longitude: e.target.value })} placeholder="-76.531835" />
                         </div>
                       </div>
+                      {formData.latitude && formData.longitude && (
+                        <div className="mt-3">
+                          <p className="text-xs text-muted-foreground mb-2">📍 Vista previa del mapa (verifica que el pin esté correcto)</p>
+                          <iframe
+                            src={`https://maps.google.com/maps?q=${formData.latitude},${formData.longitude}&t=&z=17&ie=UTF8&iwloc=&output=embed`}
+                            className="w-full h-48 rounded-lg border"
+                            style={{ border: 0 }}
+                            loading="lazy"
+                            title="Vista previa ubicación"
+                          />
+                          <a
+                            href={`https://www.google.com/maps/search/?api=1&query=${formData.latitude},${formData.longitude}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-xs text-primary underline mt-1 inline-block"
+                          >
+                            Abrir en Google Maps para verificar
+                          </a>
+                        </div>
+                      )}
                     </CardContent>
                   </Card>
 
@@ -854,6 +911,70 @@ const AdminBusinesses = () => {
                     </form>
                   </DialogContent>
                 </Dialog>
+              </TabsContent>
+
+              {/* HOURS TAB */}
+              <TabsContent value="hours">
+                <Card>
+                  <CardHeader className="pb-3">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <CardTitle className="text-base">🕐 Horarios de Atención</CardTitle>
+                        <CardDescription>Configura los horarios de apertura y cierre</CardDescription>
+                      </div>
+                      {businessHours.length === 0 && (
+                        <Button size="sm" onClick={initializeHours}>
+                          <Plus className="h-3.5 w-3.5 mr-1" /> Inicializar
+                        </Button>
+                      )}
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    {businessHours.length === 0 ? (
+                      <div className="text-center py-8 text-muted-foreground">
+                        <Clock className="h-8 w-8 mx-auto mb-2" />
+                        <p className="text-sm">No hay horarios configurados</p>
+                        <p className="text-xs mt-1">Haz clic en "Inicializar" para crear los 7 días</p>
+                      </div>
+                    ) : (
+                      <div className="space-y-3">
+                        {businessHours.sort((a: any, b: any) => a.day_of_week - b.day_of_week).map((h: any) => (
+                          <div key={h.id} className="flex items-center gap-3 p-3 border rounded-lg">
+                            <div className="w-24 shrink-0">
+                              <p className="font-medium text-sm">{DAY_NAMES[h.day_of_week]}</p>
+                            </div>
+                            <div className="flex items-center gap-2 flex-1">
+                              <Switch
+                                checked={!h.is_closed}
+                                onCheckedChange={(v) => updateHour(h.id, 'is_closed', !v)}
+                              />
+                              <span className="text-xs text-muted-foreground w-14">
+                                {h.is_closed ? 'Cerrado' : 'Abierto'}
+                              </span>
+                            </div>
+                            {!h.is_closed && (
+                              <div className="flex items-center gap-2">
+                                <Input
+                                  type="time"
+                                  value={h.open_time || '08:00'}
+                                  onChange={e => updateHour(h.id, 'open_time', e.target.value)}
+                                  className="w-28 h-8 text-xs"
+                                />
+                                <span className="text-muted-foreground text-xs">a</span>
+                                <Input
+                                  type="time"
+                                  value={h.close_time || '22:00'}
+                                  onChange={e => updateHour(h.id, 'close_time', e.target.value)}
+                                  className="w-28 h-8 text-xs"
+                                />
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
               </TabsContent>
 
               {/* VIDEOS TAB */}
