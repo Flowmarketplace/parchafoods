@@ -99,6 +99,12 @@ const PlaceDetails = () => {
             .eq('business_id', data.id)
             .eq('active', true)
             .order('is_main', { ascending: false }),
+          supabase
+            .from('business_reviews')
+            .select('*')
+            .eq('business_id', data.id)
+            .eq('approved', true)
+            .order('created_at', { ascending: false }),
         ]);
         
         setImages(imagesResult.data || []);
@@ -106,6 +112,7 @@ const PlaceDetails = () => {
         setPromotions(promotionsResult.data || []);
         setHours(hoursResult.data || []);
         setBranches(branchesResult.data || []);
+        setReviews(reviewsResult.data || []);
       } else {
         // Fallback to mock data
         const mockPlace = mockPlaces.find((p) => p.id === id);
