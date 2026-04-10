@@ -37,6 +37,11 @@ const PlaceDetails = () => {
   const [showQRScanner, setShowQRScanner] = useState(false);
   const [loyaltyPoints, setLoyaltyPoints] = useState<number>(0);
   const [loading, setLoading] = useState(true);
+  const [reviews, setReviews] = useState<any[]>([]);
+  const [reviewRating, setReviewRating] = useState(5);
+  const [reviewComment, setReviewComment] = useState('');
+  const [submittingReview, setSubmittingReview] = useState(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     const loadPlace = async () => {
