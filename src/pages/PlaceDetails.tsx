@@ -64,7 +64,7 @@ const PlaceDetails = () => {
         setPlace(data);
         
         // Load related data
-        const [imagesResult, menuResult, promotionsResult, hoursResult] = await Promise.all([
+        const [imagesResult, menuResult, promotionsResult, hoursResult, branchesResult] = await Promise.all([
           supabase
             .from('business_images')
             .select('*')
@@ -85,13 +85,20 @@ const PlaceDetails = () => {
             .from('business_hours')
             .select('*')
             .eq('business_id', data.id)
-            .order('day_of_week')
+            .order('day_of_week'),
+          supabase
+            .from('business_branches')
+            .select('*')
+            .eq('business_id', data.id)
+            .eq('active', true)
+            .order('is_main', { ascending: false }),
         ]);
         
         setImages(imagesResult.data || []);
         setMenu(menuResult.data || []);
         setPromotions(promotionsResult.data || []);
         setHours(hoursResult.data || []);
+        setBranches(branchesResult.data || []);
       } else {
         // Fallback to mock data
         const mockPlace = mockPlaces.find((p) => p.id === id);
