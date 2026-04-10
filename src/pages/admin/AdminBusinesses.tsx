@@ -88,6 +88,11 @@ const AdminBusinesses = () => {
   const [editingBranch, setEditingBranch] = useState<any>(null);
   const [branchForm, setBranchForm] = useState({ name: '', address: '', neighborhood: '', latitude: '', longitude: '', phone: '', whatsapp: '', is_main: false, active: true });
 
+  // Reviews state
+  const [reviewsList, setReviewsList] = useState<any[]>([]);
+  const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
+  const [reviewForm, setReviewForm] = useState({ author_name: '', rating: '5', comment: '', approved: true });
+
   // Form
   const [formData, setFormData] = useState({
     name: '', category: '', description: '', address: '', neighborhood: '',
