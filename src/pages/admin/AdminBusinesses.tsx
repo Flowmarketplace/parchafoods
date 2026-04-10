@@ -82,6 +82,12 @@ const AdminBusinesses = () => {
   const [businessHours, setBusinessHours] = useState<any[]>([]);
   const DAY_NAMES = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
 
+  // Branches state
+  const [branches, setBranches] = useState<any[]>([]);
+  const [branchDialogOpen, setBranchDialogOpen] = useState(false);
+  const [editingBranch, setEditingBranch] = useState<any>(null);
+  const [branchForm, setBranchForm] = useState({ name: '', address: '', neighborhood: '', latitude: '', longitude: '', phone: '', whatsapp: '', is_main: false, active: true });
+
   // Form
   const [formData, setFormData] = useState({
     name: '', category: '', description: '', address: '', neighborhood: '',
