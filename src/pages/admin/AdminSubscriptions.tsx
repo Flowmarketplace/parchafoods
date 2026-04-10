@@ -1,14 +1,15 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import AdminSidebar from '@/components/admin/AdminSidebar';
+import AdminSidebar, { AdminSidebarDesktop } from '@/components/admin/AdminSidebar';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Search, Calendar, DollarSign, TrendingUp, AlertCircle } from 'lucide-react';
+import { Search, Calendar, DollarSign, TrendingUp, AlertCircle , Menu } from 'lucide-react';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 
@@ -79,14 +80,25 @@ const AdminSubscriptions = () => {
 
   return (
     <div className="flex min-h-screen w-full bg-background">
-      <AdminSidebar />
-      <div className="flex-1 lg:ml-64 w-full p-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Suscripciones</h1>
-          <p className="text-muted-foreground">
-            Gestiona todas las suscripciones activas y su facturación
-          </p>
-        </div>
+      <AdminSidebarDesktop />
+      <div className="flex-1 lg:ml-64 w-full">
+        <header className="sticky top-0 z-30 bg-card border-b border-border px-3 sm:px-4 py-3">
+          <div className="flex items-center gap-3">
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="lg:hidden"><Menu className="h-5 w-5" /></Button>
+              </SheetTrigger>
+              <SheetContent side="left" className="p-0 w-64"><AdminSidebar /></SheetContent>
+            </Sheet>
+            <div>
+              <h1 className="text-lg sm:text-3xl font-bold">Suscripciones</h1>
+              <p className="text-xs sm:text-sm text-muted-foreground">
+                Gestiona todas las suscripciones activas y su facturación
+              </p>
+            </div>
+          </div>
+        </header>
+        <div className="p-3 sm:p-6">
 
         {/* Stats Cards */}
         <div className="grid gap-4 md:grid-cols-4 mb-8">
@@ -216,6 +228,8 @@ const AdminSubscriptions = () => {
             )}
           </CardContent>
         </Card>
+        </div>
+
       </div>
     </div>
   );

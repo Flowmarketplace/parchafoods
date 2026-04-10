@@ -7,7 +7,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Menu, Plus, Edit, Trash2, Check } from 'lucide-react';
-import AdminSidebar from '@/components/admin/AdminSidebar';
+import AdminSidebar, { AdminSidebarDesktop } from '@/components/admin/AdminSidebar';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { toast } from 'sonner';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 
@@ -239,6 +240,8 @@ const AdminPackages = () => {
             ))}
           </div>
         </main>
+        </div>
+
       </div>
     </div>
   );
