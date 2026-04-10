@@ -50,6 +50,7 @@ function App() {
     <RoleBasedRedirect>
       <Routes>
         <Route path="/" element={<Index />} />
+        <Route path="/app" element={<Index />} />
         <Route path="/place/:id" element={<PlaceDetails />} />
         <Route path="/event/:id" element={<EventDetails />} />
         <Route path="/events" element={<Events />} />
