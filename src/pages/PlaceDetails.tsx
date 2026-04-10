@@ -170,6 +170,47 @@ const PlaceDetails = () => {
     }
   };
 
+  const handleSubmitReview = async () => {
+    if (!user || !place) return;
+    if (!reviewComment.trim()) {
+      toast({ title: "Error", description: "Escribe un comentario", variant: "destructive" });
+      return;
+    }
+    setSubmittingReview(true);
+    try {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('full_name')
+        .eq('id', user.id)
+        .maybeSingle();
+
+      const { error } = await supabase.from('business_reviews').insert({
+        business_id: place.id,
+        user_id: user.id,
+        author_name: profile?.full_name || user.email?.split('@')[0] || 'Anónimo',
+        rating: reviewRating,
+        comment: reviewComment.trim(),
+      });
+      if (error) throw error;
+
+      toast({ title: "¡Reseña enviada!", description: "Gracias por tu opinión" });
+      setReviewComment('');
+      setReviewRating(5);
+
+      // Reload reviews
+      const { data: newReviews } = await supabase
+        .from('business_reviews')
+        .select('*')
+        .eq('business_id', place.id)
+        .eq('approved', true)
+        .order('created_at', { ascending: false });
+      setReviews(newReviews || []);
+    } catch (error: any) {
+      toast({ title: "Error", description: error.message || "No se pudo enviar la reseña", variant: "destructive" });
+    } finally {
+      setSubmittingReview(false);
+    }
+  };
 
   if (loading) {
     return (
