@@ -168,6 +168,7 @@ const AdminBusinesses = () => {
     setShorts([]);
     setPromotions([]);
     setAttributes([]);
+    setBusinessHours([]);
     setShowForm(true);
     setActiveTab('info');
   };
