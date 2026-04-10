@@ -140,18 +140,20 @@ const AdminBusinesses = () => {
   };
 
   const loadBusinessDetails = async (businessId: string) => {
-    const [menuRes, imgRes, shortsRes, promoRes, attrRes] = await Promise.all([
+    const [menuRes, imgRes, shortsRes, promoRes, attrRes, hoursRes] = await Promise.all([
       supabase.from('business_menu').select('*').eq('business_id', businessId).order('category, name'),
       supabase.from('business_images').select('*').eq('business_id', businessId).order('display_order'),
       supabase.from('business_shorts').select('*').eq('business_id', businessId).order('created_at', { ascending: false }),
       supabase.from('business_promotions').select('*').eq('business_id', businessId).order('created_at', { ascending: false }),
       supabase.from('business_attributes').select('*').eq('business_id', businessId),
+      supabase.from('business_hours').select('*').eq('business_id', businessId).order('day_of_week'),
     ]);
     setMenuItems(menuRes.data || []);
     setImages(imgRes.data || []);
     setShorts(shortsRes.data || []);
     setPromotions(promoRes.data || []);
     setAttributes(attrRes.data || []);
+    setBusinessHours(hoursRes.data || []);
   };
 
   const handleNew = () => {
