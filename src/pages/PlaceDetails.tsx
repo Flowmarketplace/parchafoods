@@ -384,40 +384,42 @@ const PlaceDetails = () => {
                   <TabsTrigger value="resenas" className="text-xs gap-1 px-2.5 py-1.5">Reseñas</TabsTrigger>
                 </TabsList>
 
-                {/* Plato Mundialista */}
+                {/* Platos Mundialistas */}
                 <TabsContent value="mundialista" className="mt-4">
                   <Card className="overflow-hidden border-primary/20 bg-gradient-to-br from-primary/5 to-secondary/5">
                     <CardContent className="p-4 sm:p-6">
                       <div className="flex items-center gap-2 mb-4">
                         <span className="text-2xl">⚽</span>
-                        <h3 className="text-lg sm:text-xl font-bold">Plato Mundialista</h3>
+                        <h3 className="text-lg sm:text-xl font-bold">Platos Mundialistas</h3>
                       </div>
                       {(() => {
-                        const mundialItem = menu.find(m => m.category === 'Plato Mundialista');
-                        if (mundialItem) {
+                        const mundialItems = menu.filter(m => m.category === 'Plato Mundialista');
+                        if (mundialItems.length > 0) {
                           return (
-                            <>
-                              {mundialItem.image_url && (
-                                <div className="rounded-lg overflow-hidden h-56 mb-4 bg-muted flex items-center justify-center">
-                                  <img src={mundialItem.image_url} alt={mundialItem.name} className="max-w-full max-h-full object-contain" />
+                            <div className="space-y-4">
+                              {mundialItems.map((mundialItem) => (
+                                <div key={mundialItem.id} className="bg-background/80 rounded-lg p-4 border border-primary/10">
+                                  {mundialItem.image_url && (
+                                    <div className="rounded-lg overflow-hidden h-48 mb-3 bg-muted flex items-center justify-center">
+                                      <img src={mundialItem.image_url} alt={mundialItem.name} className="max-w-full max-h-full object-contain" />
+                                    </div>
+                                  )}
+                                  <p className="font-bold text-primary text-lg mb-1">
+                                    🍽️ {mundialItem.name}
+                                  </p>
+                                  {mundialItem.description && (
+                                    <p className="text-sm text-muted-foreground mb-2">{mundialItem.description}</p>
+                                  )}
+                                  <p className="text-xl font-bold text-secondary">
+                                    ${Number(mundialItem.price).toLocaleString('es-CO')}
+                                  </p>
                                 </div>
-                              )}
-                              <div className="bg-background/80 rounded-lg p-4 mb-3 border border-primary/10">
-                                <p className="font-bold text-primary text-lg mb-1">
-                                  🍽️ {mundialItem.name}
-                                </p>
-                                {mundialItem.description && (
-                                  <p className="text-sm text-muted-foreground mb-2">{mundialItem.description}</p>
-                                )}
-                                <p className="text-xl font-bold text-secondary">
-                                  ${Number(mundialItem.price).toLocaleString('es-CO')}
-                                </p>
-                              </div>
+                              ))}
                               <div className="flex items-center gap-2 text-xs text-muted-foreground">
                                 <Trophy className="h-3.5 w-3.5 text-secondary" />
-                                <span>Pide este plato y gana goles para tu pasaporte mundialista</span>
+                                <span>Pide estos platos y gana goles para tu pasaporte mundialista</span>
                               </div>
-                            </>
+                            </div>
                           );
                         }
                         if (place.worldCupSpecial || place.loyalty_reward_description) {
