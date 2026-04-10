@@ -43,10 +43,11 @@ const ShortCard = ({ short }: ShortCardProps) => {
             />
           ) : short.videoUrl ? (
             <video
-              src={short.videoUrl}
+              src={`${short.videoUrl}#t=0.5`}
               muted
               playsInline
               preload="metadata"
+              crossOrigin="anonymous"
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
             />
           ) : (
