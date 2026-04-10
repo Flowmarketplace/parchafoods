@@ -489,6 +489,46 @@ const AdminBusinesses = () => {
     }
   };
 
+  // BRANCH HANDLERS
+  const handleSaveBranch = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingBusiness) { toast.error('Guarda el restaurante primero'); return; }
+    try {
+      const payload = {
+        business_id: editingBusiness.id,
+        name: branchForm.name,
+        address: branchForm.address,
+        neighborhood: branchForm.neighborhood,
+        latitude: branchForm.latitude ? parseFloat(branchForm.latitude) : null,
+        longitude: branchForm.longitude ? parseFloat(branchForm.longitude) : null,
+        phone: branchForm.phone || null,
+        whatsapp: branchForm.whatsapp || null,
+        is_main: branchForm.is_main,
+        active: branchForm.active,
+      };
+      if (editingBranch) {
+        await supabase.from('business_branches').update(payload).eq('id', editingBranch.id);
+        toast.success('Sede actualizada');
+      } else {
+        await supabase.from('business_branches').insert(payload);
+        toast.success('Sede creada');
+      }
+      setBranchDialogOpen(false);
+      setEditingBranch(null);
+      setBranchForm({ name: '', address: '', neighborhood: '', latitude: '', longitude: '', phone: '', whatsapp: '', is_main: false, active: true });
+      await loadBusinessDetails(editingBusiness.id);
+    } catch (error: any) {
+      toast.error(error.message || 'Error');
+    }
+  };
+
+  const handleDeleteBranch = async (id: string) => {
+    if (!confirm('¿Eliminar esta sede?')) return;
+    await supabase.from('business_branches').delete().eq('id', id);
+    toast.success('Sede eliminada');
+    if (editingBusiness) await loadBusinessDetails(editingBusiness.id);
+  };
+
   // ATTRIBUTE HANDLERS
   const toggleAttribute = async (type: string, value: string) => {
     if (!editingBusiness) { toast.error('Guarda el restaurante primero'); return; }
