@@ -471,6 +471,50 @@ const AdminBusinesses = () => {
     if (editingBusiness) await loadBusinessDetails(editingBusiness.id);
   };
 
+  // REVIEW HANDLERS
+  const handleSaveReview = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingBusiness) { toast.error('Guarda el restaurante primero'); return; }
+    try {
+      const { error } = await supabase.from('business_reviews').insert({
+        business_id: editingBusiness.id,
+        user_id: null,
+        author_name: reviewForm.author_name,
+        rating: parseInt(reviewForm.rating),
+        comment: reviewForm.comment || null,
+        approved: reviewForm.approved,
+      });
+      if (error) throw error;
+      toast.success('Reseña agregada');
+      setReviewDialogOpen(false);
+      setReviewForm({ author_name: '', rating: '5', comment: '', approved: true });
+      await loadBusinessDetails(editingBusiness.id);
+    } catch (error: any) {
+      toast.error(error.message || 'Error al guardar reseña');
+    }
+  };
+
+  const handleDeleteReview = async (reviewId: string) => {
+    try {
+      const { error } = await supabase.from('business_reviews').delete().eq('id', reviewId);
+      if (error) throw error;
+      toast.success('Reseña eliminada');
+      if (editingBusiness) await loadBusinessDetails(editingBusiness.id);
+    } catch (error: any) {
+      toast.error(error.message || 'Error');
+    }
+  };
+
+  const handleToggleReviewApproval = async (reviewId: string, currentApproved: boolean) => {
+    try {
+      const { error } = await supabase.from('business_reviews').update({ approved: !currentApproved }).eq('id', reviewId);
+      if (error) throw error;
+      toast.success(currentApproved ? 'Reseña ocultada' : 'Reseña aprobada');
+      if (editingBusiness) await loadBusinessDetails(editingBusiness.id);
+    } catch (error: any) {
+      toast.error(error.message || 'Error');
+    }
+  };
 
   // HOURS HANDLERS
   const initializeHours = async () => {
