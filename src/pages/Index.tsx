@@ -22,6 +22,7 @@ import {
 } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import WorldCupCalendar from '@/components/WorldCupCalendar';
 import ColombiaProgress from '@/components/ColombiaProgress';
 import WorldCupProgress from '@/components/WorldCupProgress';
@@ -330,24 +331,24 @@ const Index = () => {
                 <ShortsCarousel shorts={filteredShorts} />
               </section>
 
-              {/* Colombia en el Mundial */}
+              {/* Colombia & Calendario en Tabs */}
               <section>
-                <div className="flex items-center gap-2 mb-2.5">
-                  <span className="text-lg sm:text-xl">🇨🇴</span>
-                  <h2 className="text-sm sm:text-lg font-bold">Colombia en el Mundial</h2>
-                </div>
-                <ColombiaProgress />
-              </section>
-
-              {/* Calendario */}
-              <section>
-                <div className="flex items-center gap-2 mb-2.5">
-                  <div className="p-1 bg-secondary/10 rounded-md">
-                    <Calendar className="h-4 w-4 text-secondary" />
-                  </div>
-                  <h2 className="text-sm sm:text-lg font-bold">Calendario de Partidos</h2>
-                </div>
-                <WorldCupCalendar />
+                <Tabs defaultValue="colombia" className="w-full">
+                  <TabsList className="w-full grid grid-cols-2 h-11 rounded-xl bg-muted/60 p-1">
+                    <TabsTrigger value="colombia" className="rounded-lg text-xs sm:text-sm font-semibold gap-1.5 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all">
+                      🇨🇴 Colombia
+                    </TabsTrigger>
+                    <TabsTrigger value="calendario" className="rounded-lg text-xs sm:text-sm font-semibold gap-1.5 data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground transition-all">
+                      📅 Calendario
+                    </TabsTrigger>
+                  </TabsList>
+                  <TabsContent value="colombia" className="mt-3 animate-in fade-in-50 slide-in-from-bottom-2 duration-300">
+                    <ColombiaProgress />
+                  </TabsContent>
+                  <TabsContent value="calendario" className="mt-3 animate-in fade-in-50 slide-in-from-bottom-2 duration-300">
+                    <WorldCupCalendar />
+                  </TabsContent>
+                </Tabs>
               </section>
 
 
