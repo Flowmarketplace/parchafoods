@@ -125,7 +125,7 @@ const RouteMap = ({ places, category, routeName, routeEmoji = '🗺️' }: Route
       orderedPlaces.forEach((place, index) => {
         const visited = visitedIds.has(place.id);
         const el = document.createElement('div');
-        el.style.cssText = 'width: 40px; height: 48px; cursor: pointer; position: relative;';
+        el.style.cssText = 'width: 36px; height: 46px; cursor: pointer;';
         el.innerHTML = `
           <div style="
             width: 36px; height: 36px;
@@ -135,32 +135,23 @@ const RouteMap = ({ places, category, routeName, routeEmoji = '🗺️' }: Route
             display: flex; align-items: center; justify-content: center;
             color: white; font-weight: 800; font-size: 15px;
             box-shadow: 0 3px 10px rgba(0,0,0,0.3);
-            position: relative; z-index: 2;
           ">${visited ? '✓' : index + 1}</div>
           <div style="
             width: 0; height: 0;
             border-left: 8px solid transparent;
             border-right: 8px solid transparent;
             border-top: 10px solid ${visited ? '#22c55e' : color};
-            position: absolute; bottom: 0; left: 10px;
+            margin: 0 auto;
           "></div>
         `;
 
-        const popup = new mapboxgl.Popup({ offset: 30, closeButton: false })
-          .setHTML(`
-            <div style="padding: 6px 10px; max-width: 220px;">
-              <div style="font-weight: 700; font-size: 13px; margin-bottom: 2px;">
-                <span style="color: ${color}; margin-right: 4px;">Parada ${index + 1}</span>
-              </div>
-              <div style="font-weight: 600; font-size: 14px;">${place.name}</div>
-              ${place.address ? `<div style="font-size: 11px; color: #666; margin-top: 2px;">${place.address}</div>` : ''}
-              ${visited ? '<div style="color: #22c55e; font-weight: 700; font-size: 12px; margin-top: 4px;">✓ Visitado · ⚽ Gol anotado</div>' : ''}
-            </div>
-          `);
+        el.addEventListener('click', (e) => {
+          e.stopPropagation();
+          navigate(`/place/${place.slug || place.id}`);
+        });
 
-        new mapboxgl.Marker({ element: el })
+        new mapboxgl.Marker({ element: el, anchor: 'bottom' })
           .setLngLat([place.longitude, place.latitude])
-          .setPopup(popup)
           .addTo(m);
       });
 
@@ -365,15 +356,19 @@ const RouteMap = ({ places, category, routeName, routeEmoji = '🗺️' }: Route
                   <div className={`flex items-start gap-3 p-2.5 rounded-lg transition-colors ${visited ? 'bg-green-500/5' : 'hover:bg-muted/50'}`}>
                     {/* Number circle */}
                     <div
-                      className="w-9 h-9 rounded-full flex items-center justify-center text-white font-bold text-sm shrink-0 shadow-sm"
+                      className="w-9 h-9 rounded-full flex items-center justify-center text-white font-bold text-sm shrink-0 shadow-sm cursor-pointer"
                       style={{ background: visited ? '#22c55e' : color }}
+                      onClick={() => navigate(`/place/${place.slug || place.id}`)}
                     >
                       {visited ? <Check className="h-4 w-4" /> : index + 1}
                     </div>
 
-                    {/* Info */}
-                    <div className="flex-1 min-w-0 pt-0.5">
-                      <p className={`font-semibold text-sm ${visited ? 'line-through text-muted-foreground' : ''}`}>
+                    {/* Info - clickable */}
+                    <div
+                      className="flex-1 min-w-0 pt-0.5 cursor-pointer"
+                      onClick={() => navigate(`/place/${place.slug || place.id}`)}
+                    >
+                      <p className={`font-semibold text-sm hover:underline ${visited ? 'line-through text-muted-foreground' : ''}`}>
                         {place.name}
                       </p>
                       <p className="text-[11px] text-muted-foreground truncate">
