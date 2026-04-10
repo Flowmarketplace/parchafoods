@@ -379,7 +379,16 @@ const PlaceDetails = () => {
                   <MapPin className="h-5 w-5 text-primary mt-1 flex-shrink-0" />
                   <div>
                     <p className="font-medium">Dirección</p>
-                    <p className="text-muted-foreground">{place.address}</p>
+                    <a
+                      href={place.latitude && place.longitude 
+                        ? `https://www.google.com/maps/search/?api=1&query=${place.latitude},${place.longitude}` 
+                        : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.address + ', Cali, Colombia')}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-muted-foreground hover:text-primary hover:underline transition-colors"
+                    >
+                      {place.address}
+                    </a>
                   </div>
                 </div>
 
