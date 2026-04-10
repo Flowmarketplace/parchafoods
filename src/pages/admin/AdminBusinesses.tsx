@@ -15,7 +15,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Checkbox } from '@/components/ui/checkbox';
 import {
   Menu, Search, Eye, Edit, Trash2, ArrowLeft, Plus, Store, Image as ImageIcon,
-  UtensilsCrossed, MapPin, Star, ChevronRight, X, Video, Tag, Megaphone, Clock, MessageSquare
+  UtensilsCrossed, MapPin, Star, ChevronRight, X, Video, Tag, Megaphone, Clock, MessageSquare, Check
 } from 'lucide-react';
 import AdminSidebar, { AdminSidebarDesktop } from '@/components/admin/AdminSidebar';
 import { toast } from 'sonner';
