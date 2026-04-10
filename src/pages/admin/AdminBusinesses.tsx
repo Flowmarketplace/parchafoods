@@ -153,7 +153,7 @@ const AdminBusinesses = () => {
   };
 
   const loadBusinessDetails = async (businessId: string) => {
-    const [menuRes, imgRes, shortsRes, promoRes, attrRes, hoursRes, branchRes] = await Promise.all([
+    const [menuRes, imgRes, shortsRes, promoRes, attrRes, hoursRes, branchRes, reviewsRes] = await Promise.all([
       supabase.from('business_menu').select('*').eq('business_id', businessId).order('category, name'),
       supabase.from('business_images').select('*').eq('business_id', businessId).order('display_order'),
       supabase.from('business_shorts').select('*').eq('business_id', businessId).order('created_at', { ascending: false }),
@@ -161,6 +161,7 @@ const AdminBusinesses = () => {
       supabase.from('business_attributes').select('*').eq('business_id', businessId),
       supabase.from('business_hours').select('*').eq('business_id', businessId).order('day_of_week'),
       supabase.from('business_branches').select('*').eq('business_id', businessId).order('is_main', { ascending: false }),
+      supabase.from('business_reviews').select('*').eq('business_id', businessId).order('created_at', { ascending: false }),
     ]);
     setMenuItems(menuRes.data || []);
     setImages(imgRes.data || []);
@@ -169,6 +170,7 @@ const AdminBusinesses = () => {
     setAttributes(attrRes.data || []);
     setBusinessHours(hoursRes.data || []);
     setBranches(branchRes.data || []);
+    setReviewsList(reviewsRes.data || []);
   };
 
   const handleNew = () => {
@@ -186,6 +188,7 @@ const AdminBusinesses = () => {
     setAttributes([]);
     setBusinessHours([]);
     setBranches([]);
+    setReviewsList([]);
     setShowForm(true);
     setActiveTab('info');
   };
