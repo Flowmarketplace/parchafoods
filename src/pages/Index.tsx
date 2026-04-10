@@ -22,6 +22,7 @@ import {
 } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import WorldCupCalendar from '@/components/WorldCupCalendar';
 import ColombiaProgress from '@/components/ColombiaProgress';
 import WorldCupProgress from '@/components/WorldCupProgress';
