@@ -401,13 +401,15 @@ const BusinessMenu = () => {
                 <CardContent>
                    <div className="space-y-4">
                     {categoryItems.map((item) => (
-                      <div key={item.id} className="flex items-start gap-4 p-4 border rounded-lg">
-                        {item.image_url && (
-                          <img
-                            src={item.image_url}
-                            alt={item.name}
-                            className="w-24 h-24 object-cover rounded-lg flex-shrink-0"
-                          />
+                        <div key={item.id} className="flex items-start gap-4 p-4 border rounded-lg">
+                         {item.image_url && (
+                          <div className="w-24 h-24 rounded-lg overflow-hidden flex-shrink-0 bg-muted">
+                            <img
+                              src={item.image_url}
+                              alt={item.name}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
                         )}
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2">

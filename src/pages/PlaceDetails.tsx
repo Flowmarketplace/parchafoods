@@ -400,8 +400,8 @@ const PlaceDetails = () => {
                               {mundialItems.map((mundialItem) => (
                                 <div key={mundialItem.id} className="bg-background/80 rounded-lg p-4 border border-primary/10">
                                   {mundialItem.image_url && (
-                                    <div className="rounded-lg overflow-hidden h-48 mb-3 bg-muted flex items-center justify-center">
-                                      <img src={mundialItem.image_url} alt={mundialItem.name} className="max-w-full max-h-full object-contain" />
+                                    <div className="rounded-lg overflow-hidden aspect-[4/3] mb-3 bg-muted">
+                                      <img src={mundialItem.image_url} alt={mundialItem.name} className="w-full h-full object-cover" />
                                     </div>
                                   )}
                                   <p className="font-bold text-primary text-lg mb-1">
@@ -652,11 +652,11 @@ const PlaceDetails = () => {
                               <Card key={item.id} className="overflow-hidden hover:shadow-lg transition-shadow">
                                 <CardContent className="p-0">
                                   {item.image_url && (
-                                    <div className="relative h-40 w-full overflow-hidden">
+                                    <div className="relative aspect-[4/3] w-full overflow-hidden bg-muted">
                                       <img
                                         src={item.image_url}
                                         alt={item.name}
-                                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                                        className="absolute inset-0 w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                                       />
                                     </div>
                                   )}
