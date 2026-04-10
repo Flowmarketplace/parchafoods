@@ -1345,47 +1345,82 @@ const AdminBusinesses = () => {
                     </div>
                   </CardHeader>
                   <CardContent>
-                    {businessHours.length === 0 ? (
+                    {localHours.length === 0 ? (
                       <div className="text-center py-8 text-muted-foreground">
                         <Clock className="h-8 w-8 mx-auto mb-2" />
                         <p className="text-sm">No hay horarios configurados</p>
                         <p className="text-xs mt-1">Haz clic en "Inicializar" para crear los 7 días</p>
                       </div>
                     ) : (
-                      <div className="space-y-3">
-                        {businessHours.sort((a: any, b: any) => a.day_of_week - b.day_of_week).map((h: any) => (
-                          <div key={h.id} className="flex items-center gap-3 p-3 border rounded-lg">
-                            <div className="w-24 shrink-0">
-                              <p className="font-medium text-sm">{DAY_NAMES[h.day_of_week]}</p>
-                            </div>
-                            <div className="flex items-center gap-2 flex-1">
+                      <div className="space-y-4">
+                        {/* Quick presets */}
+                        <div className="flex flex-wrap gap-2 pb-3 border-b">
+                          <span className="text-xs text-muted-foreground self-center mr-1">Presets:</span>
+                          <Button type="button" size="sm" variant="outline" className="h-7 text-xs" onClick={() => applyPreset('restaurant')}>
+                            🍽️ Restaurante (11-22h)
+                          </Button>
+                          <Button type="button" size="sm" variant="outline" className="h-7 text-xs" onClick={() => applyPreset('cafe')}>
+                            ☕ Café (7-20h)
+                          </Button>
+                          <Button type="button" size="sm" variant="outline" className="h-7 text-xs" onClick={() => applyPreset('allday')}>
+                            🕐 24 horas
+                          </Button>
+                        </div>
+
+                        {/* Days list */}
+                        <div className="space-y-2">
+                          {localHours.sort((a: any, b: any) => a.day_of_week - b.day_of_week).map((h: any) => (
+                            <div key={h.id} className={`flex flex-wrap items-center gap-2 p-3 rounded-lg border transition-colors ${h.is_closed ? 'bg-muted/50 opacity-70' : 'bg-card'}`}>
+                              <div className="w-20 shrink-0">
+                                <p className={`font-semibold text-sm ${h.day_of_week >= 5 ? 'text-primary' : ''}`}>
+                                  {DAY_NAMES[h.day_of_week]}
+                                </p>
+                              </div>
                               <Switch
                                 checked={!h.is_closed}
-                                onCheckedChange={(v) => updateHour(h.id, 'is_closed', !v)}
+                                onCheckedChange={(v) => updateLocalHour(h.day_of_week, 'is_closed', !v)}
                               />
-                              <span className="text-xs text-muted-foreground w-14">
+                              <span className={`text-xs w-14 ${h.is_closed ? 'text-destructive' : 'text-green-600 dark:text-green-400'}`}>
                                 {h.is_closed ? 'Cerrado' : 'Abierto'}
                               </span>
-                            </div>
-                            {!h.is_closed && (
-                              <div className="flex items-center gap-2">
-                                <Input
-                                  type="time"
-                                  value={h.open_time || '08:00'}
-                                  onChange={e => updateHour(h.id, 'open_time', e.target.value)}
-                                  className="w-28 h-8 text-xs"
-                                />
-                                <span className="text-muted-foreground text-xs">a</span>
-                                <Input
-                                  type="time"
-                                  value={h.close_time || '22:00'}
-                                  onChange={e => updateHour(h.id, 'close_time', e.target.value)}
-                                  className="w-28 h-8 text-xs"
-                                />
+                              {!h.is_closed && (
+                                <div className="flex items-center gap-1.5 flex-1 min-w-[200px]">
+                                  <Input
+                                    type="time"
+                                    value={h.open_time || '08:00'}
+                                    onChange={e => updateLocalHour(h.day_of_week, 'open_time', e.target.value)}
+                                    className="w-[110px] h-8 text-xs"
+                                  />
+                                  <span className="text-muted-foreground text-xs">a</span>
+                                  <Input
+                                    type="time"
+                                    value={h.close_time || '22:00'}
+                                    onChange={e => updateLocalHour(h.day_of_week, 'close_time', e.target.value)}
+                                    className="w-[110px] h-8 text-xs"
+                                  />
+                                </div>
+                              )}
+                              {/* Copy actions */}
+                              <div className="flex gap-1 ml-auto">
+                                <Button type="button" size="sm" variant="ghost" className="h-7 text-[10px] px-2" onClick={() => copyHoursToWeekdays(h.day_of_week)} title="Copiar a L-V">
+                                  📋 L-V
+                                </Button>
+                                <Button type="button" size="sm" variant="ghost" className="h-7 text-[10px] px-2" onClick={() => copyHoursToAll(h.day_of_week)} title="Copiar a todos">
+                                  📋 Todos
+                                </Button>
                               </div>
-                            )}
+                            </div>
+                          ))}
+                        </div>
+
+                        {/* Save button */}
+                        {hoursDirty && (
+                          <div className="flex justify-end pt-2 border-t">
+                            <Button type="button" onClick={saveAllHours} className="gap-2">
+                              <Check className="h-4 w-4" /> Guardar horarios
+                            </Button>
                           </div>
-                        ))}
+                        )}
                       </div>
                     )}
                   </CardContent>
