@@ -106,7 +106,15 @@ const PlaceCard = ({ place }: PlaceCardProps) => {
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
         />
         {place.featured && (
-          <Badge className="absolute top-2 right-2 bg-secondary">Destacado</Badge>
+          <Badge className="absolute top-2 left-2 bg-secondary">Destacado</Badge>
+        )}
+        {userId && (
+          <button
+            onClick={toggleFavorite}
+            className="absolute top-2 right-2 z-10 p-1.5 rounded-full bg-background/70 backdrop-blur-sm hover:bg-background/90 transition-colors"
+          >
+            <Heart className={`h-4 w-4 transition-colors ${isFavorite ? 'fill-red-500 text-red-500' : 'text-foreground'}`} />
+          </button>
         )}
       </div>
 
