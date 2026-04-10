@@ -196,9 +196,37 @@ const AdminBusinesses = () => {
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.category || !formData.address || !formData.neighborhood) {
-      toast.error('Completa los campos obligatorios');
+      toast.error('Completa los campos obligatorios: Nombre, Categoría, Dirección y Barrio');
       return;
     }
+    
+    // Validate coordinates if provided
+    let lat: number | null = null;
+    let lng: number | null = null;
+    if (formData.latitude) {
+      lat = parseFloat(formData.latitude);
+      if (isNaN(lat) || lat < 1 || lat > 12) {
+        toast.error('Latitud inválida para Colombia. Debe estar entre 1 y 12 (ej: 3.4516)');
+        return;
+      }
+    }
+    if (formData.longitude) {
+      lng = parseFloat(formData.longitude);
+      if (isNaN(lng)) {
+        toast.error('Longitud inválida. Usa formato: -76.531835');
+        return;
+      }
+      // Auto-correct positive longitude for Colombia (should be negative)
+      if (lng > 0 && lng > 60) {
+        lng = -lng;
+        toast.info('Se corrigió la longitud a negativa automáticamente');
+      }
+      if (lng > -60 || lng < -85) {
+        toast.error('Longitud inválida para Colombia. Debe estar entre -60 y -85 (ej: -76.5318)');
+        return;
+      }
+    }
+
     setSaving(true);
     try {
       const payload: any = {
@@ -217,15 +245,18 @@ const AdminBusinesses = () => {
       if (formData.website) payload.website = formData.website;
       if (formData.price_range) payload.price_range = formData.price_range;
       if (formData.zone) payload.zone = formData.zone;
-      if (formData.latitude) payload.latitude = parseFloat(formData.latitude);
-      if (formData.longitude) payload.longitude = parseFloat(formData.longitude);
+      if (lat !== null) payload.latitude = lat;
+      if (lng !== null) payload.longitude = lng;
       if (formData.instagram_url) payload.instagram_url = formData.instagram_url;
       if (formData.facebook_url) payload.facebook_url = formData.facebook_url;
       if (formData.tiktok_url) payload.tiktok_url = formData.tiktok_url;
 
       // Get current user to ensure owner_id is set correctly
       const { data: { user: currentUser } } = await supabase.auth.getUser();
-      if (!currentUser) { toast.error('Sesión expirada'); navigate('/auth'); return; }
+      if (!currentUser) { toast.error('Sesión expirada. Inicia sesión de nuevo.'); navigate('/auth'); return; }
+      
+      console.log('Saving business with payload:', JSON.stringify(payload));
+      console.log('Current user ID:', currentUser.id);
 
       if (editingBusiness) {
         // For updates, include all fields to allow clearing values
@@ -237,29 +268,40 @@ const AdminBusinesses = () => {
           email: formData.email || null,
           website: formData.website || null,
           zone: formData.zone || null,
-          latitude: formData.latitude ? parseFloat(formData.latitude) : null,
-          longitude: formData.longitude ? parseFloat(formData.longitude) : null,
+          latitude: lat,
+          longitude: lng,
           instagram_url: formData.instagram_url || null,
           facebook_url: formData.facebook_url || null,
           tiktok_url: formData.tiktok_url || null,
         };
+        console.log('Updating business:', editingBusiness.id, updatePayload);
         const { error } = await supabase.from('businesses').update(updatePayload).eq('id', editingBusiness.id);
-        if (error) throw error;
-        toast.success('Restaurante actualizado exitosamente ✅');
-      } else {
-        const { data, error } = await supabase.from('businesses').insert({ ...payload, owner_id: currentUser.id }).select().single();
         if (error) {
-          console.error('Insert error details:', error);
+          console.error('Update error:', error);
           throw error;
         }
-        console.log('Business created:', data);
+        toast.success('Restaurante actualizado exitosamente ✅');
+      } else {
+        console.log('Inserting new business...');
+        const insertPayload = { ...payload, owner_id: currentUser.id };
+        console.log('Insert payload:', JSON.stringify(insertPayload));
+        const { data, error } = await supabase.from('businesses').insert(insertPayload).select().single();
+        if (error) {
+          console.error('Insert error code:', error.code);
+          console.error('Insert error message:', error.message);
+          console.error('Insert error details:', error.details);
+          console.error('Insert error hint:', error.hint);
+          throw error;
+        }
+        console.log('Business created successfully:', data);
         setEditingBusiness(data);
         toast.success('🎉 ¡Restaurante creado exitosamente! Ya es visible para los clientes.', { duration: 5000 });
       }
       await fetchBusinesses();
     } catch (error: any) {
       console.error('Error saving business:', error);
-      toast.error(`Error al guardar: ${error.message || 'Intenta de nuevo'}`);
+      const msg = error?.message || error?.details || 'Error desconocido';
+      toast.error(`Error al guardar: ${msg}`, { duration: 8000 });
     } finally {
       setSaving(false);
     }
