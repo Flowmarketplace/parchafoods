@@ -105,7 +105,10 @@ const BusinessManage = () => {
         latitude: business.latitude,
         longitude: business.longitude,
         geo_notifications_enabled: business.geo_notifications_enabled || false,
-        notification_radius_km: business.notification_radius_km || 1.0
+        notification_radius_km: business.notification_radius_km || 1.0,
+        instagram_url: business.instagram_url || '',
+        facebook_url: business.facebook_url || '',
+        tiktok_url: business.tiktok_url || '',
       });
     } catch (error: any) {
       console.error('Error:', error);
