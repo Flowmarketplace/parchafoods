@@ -71,7 +71,7 @@ const PlaceDetails = () => {
         setPlace(data);
         
         // Load related data
-        const [imagesResult, menuResult, promotionsResult, hoursResult, branchesResult] = await Promise.all([
+        const [imagesResult, menuResult, promotionsResult, hoursResult, branchesResult, reviewsResult] = await Promise.all([
           supabase
             .from('business_images')
             .select('*')
