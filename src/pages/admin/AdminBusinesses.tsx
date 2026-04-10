@@ -959,6 +959,14 @@ const AdminBusinesses = () => {
                         <div className="space-y-2">
                           <Label>Categoría</Label>
                           <Input value={menuForm.category} onChange={e => setMenuForm({ ...menuForm, category: e.target.value })} placeholder="Entradas, Platos Fuertes..." />
+                          <div className="flex flex-wrap gap-1">
+                            {['Plato Mundialista', 'Entradas', 'Platos Fuertes', 'Bebidas', 'Postres'].map(cat => (
+                              <Button key={cat} type="button" variant={menuForm.category === cat ? 'default' : 'outline'} size="sm" className="text-[10px] h-6 px-2"
+                                onClick={() => setMenuForm({ ...menuForm, category: cat })}>
+                                {cat === 'Plato Mundialista' ? '⚽ ' : ''}{cat}
+                              </Button>
+                            ))}
+                          </div>
                         </div>
                       </div>
                       <div className="space-y-2">

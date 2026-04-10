@@ -58,7 +58,10 @@ const BusinessManage = () => {
     latitude: null as number | null,
     longitude: null as number | null,
     geo_notifications_enabled: false,
-    notification_radius_km: 1.0
+    notification_radius_km: 1.0,
+    instagram_url: '',
+    facebook_url: '',
+    tiktok_url: '',
   });
 
   useEffect(() => {
