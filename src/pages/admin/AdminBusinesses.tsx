@@ -214,7 +214,11 @@ const AdminBusinesses = () => {
         toast.success('Restaurante actualizado exitosamente ✅');
       } else {
         const { data, error } = await supabase.from('businesses').insert({ ...payload, owner_id: userId }).select().single();
-        if (error) throw error;
+        if (error) {
+          console.error('Insert error details:', error);
+          throw error;
+        }
+        console.log('Business created:', data);
         setEditingBusiness(data);
         toast.success('🎉 ¡Restaurante creado exitosamente! Ya es visible para los clientes.', { duration: 5000 });
       }
