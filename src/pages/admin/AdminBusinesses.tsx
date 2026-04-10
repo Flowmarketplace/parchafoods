@@ -597,6 +597,79 @@ const AdminBusinesses = () => {
   };
 
   // HOURS HANDLERS
+  const [localHours, setLocalHours] = useState<any[]>([]);
+  const [hoursDirty, setHoursDirty] = useState(false);
+
+  useEffect(() => {
+    setLocalHours(businessHours.map(h => ({ ...h })));
+    setHoursDirty(false);
+  }, [businessHours]);
+
+  const updateLocalHour = (dayIndex: number, field: string, value: any) => {
+    setLocalHours(prev => prev.map(h => h.day_of_week === dayIndex ? { ...h, [field]: value } : h));
+    setHoursDirty(true);
+  };
+
+  const copyHoursToAll = (sourceDayIndex: number) => {
+    const source = localHours.find(h => h.day_of_week === sourceDayIndex);
+    if (!source) return;
+    setLocalHours(prev => prev.map(h => ({
+      ...h,
+      open_time: source.open_time,
+      close_time: source.close_time,
+      is_closed: source.is_closed,
+    })));
+    setHoursDirty(true);
+    toast.info('Horario copiado a todos los días');
+  };
+
+  const copyHoursToWeekdays = (sourceDayIndex: number) => {
+    const source = localHours.find(h => h.day_of_week === sourceDayIndex);
+    if (!source) return;
+    setLocalHours(prev => prev.map(h => h.day_of_week < 5 ? {
+      ...h,
+      open_time: source.open_time,
+      close_time: source.close_time,
+      is_closed: source.is_closed,
+    } : h));
+    setHoursDirty(true);
+    toast.info('Horario copiado a Lunes-Viernes');
+  };
+
+  const applyPreset = (preset: 'restaurant' | 'cafe' | 'allday') => {
+    const presets = {
+      restaurant: { open: '11:00', close: '22:00', weekendClose: '23:00' },
+      cafe: { open: '07:00', close: '20:00', weekendClose: '18:00' },
+      allday: { open: '00:00', close: '23:59', weekendClose: '23:59' },
+    };
+    const p = presets[preset];
+    setLocalHours(prev => prev.map(h => ({
+      ...h,
+      is_closed: false,
+      open_time: p.open,
+      close_time: h.day_of_week >= 5 ? p.weekendClose : p.close,
+    })));
+    setHoursDirty(true);
+    toast.info('Horario preconfigurado aplicado');
+  };
+
+  const saveAllHours = async () => {
+    try {
+      for (const h of localHours) {
+        await supabase.from('business_hours').update({
+          open_time: h.open_time,
+          close_time: h.close_time,
+          is_closed: h.is_closed,
+        }).eq('id', h.id);
+      }
+      setHoursDirty(false);
+      toast.success('✅ Horarios guardados exitosamente');
+      if (editingBusiness) await loadBusinessDetails(editingBusiness.id);
+    } catch (error: any) {
+      toast.error(error.message || 'Error al guardar horarios');
+    }
+  };
+
   const initializeHours = async () => {
     if (!editingBusiness) { toast.error('Guarda el restaurante primero'); return; }
     try {
@@ -610,15 +683,6 @@ const AdminBusinesses = () => {
       await supabase.from('business_hours').insert(entries);
       toast.success('Horarios inicializados');
       await loadBusinessDetails(editingBusiness.id);
-    } catch (error: any) {
-      toast.error(error.message || 'Error');
-    }
-  };
-
-  const updateHour = async (hourId: string, field: string, value: any) => {
-    try {
-      await supabase.from('business_hours').update({ [field]: value }).eq('id', hourId);
-      if (editingBusiness) await loadBusinessDetails(editingBusiness.id);
     } catch (error: any) {
       toast.error(error.message || 'Error');
     }
