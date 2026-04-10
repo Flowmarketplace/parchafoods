@@ -114,7 +114,7 @@ const Index = () => {
           creator: {
             name: 'Sabor 360',
             username: '@sabor360',
-            avatarUrl: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&q=80',
+            avatarUrl: '/sabor360-logo.png',
             verified: true
           },
           views: short.views || 0,

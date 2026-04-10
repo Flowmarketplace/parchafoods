@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Heart, Trash2, MapPin, Star } from 'lucide-react';
+import { Heart, Trash2, MapPin, Star, ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
@@ -74,10 +74,15 @@ const Favorites = () => {
 
   return (
     <div className="min-h-screen bg-background pb-20">
-      <div className="px-4 pt-6 pb-4">
-        <h1 className="text-2xl font-bold mb-1">Mis Favoritos</h1>
-        <p className="text-sm text-muted-foreground">Tus restaurantes guardados</p>
-      </div>
+      <header className="sticky top-0 z-30 bg-card border-b border-border px-4 py-3 flex items-center gap-3">
+        <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
+          <ArrowLeft className="h-5 w-5" />
+        </Button>
+        <div>
+          <h1 className="text-lg font-bold">Mis Favoritos</h1>
+          <p className="text-xs text-muted-foreground">Tus restaurantes guardados</p>
+        </div>
+      </header>
 
       {!user ? (
         <div className="flex flex-col items-center justify-center py-20 px-4">
