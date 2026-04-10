@@ -223,6 +223,10 @@ const AdminBusinesses = () => {
       if (formData.facebook_url) payload.facebook_url = formData.facebook_url;
       if (formData.tiktok_url) payload.tiktok_url = formData.tiktok_url;
 
+      // Get current user to ensure owner_id is set correctly
+      const { data: { user: currentUser } } = await supabase.auth.getUser();
+      if (!currentUser) { toast.error('Sesión expirada'); navigate('/auth'); return; }
+
       if (editingBusiness) {
         // For updates, include all fields to allow clearing values
         const updatePayload = {
@@ -243,7 +247,7 @@ const AdminBusinesses = () => {
         if (error) throw error;
         toast.success('Restaurante actualizado exitosamente ✅');
       } else {
-        const { data, error } = await supabase.from('businesses').insert({ ...payload, owner_id: userId }).select().single();
+        const { data, error } = await supabase.from('businesses').insert({ ...payload, owner_id: currentUser.id }).select().single();
         if (error) {
           console.error('Insert error details:', error);
           throw error;
