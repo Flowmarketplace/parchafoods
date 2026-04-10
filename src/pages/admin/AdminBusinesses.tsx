@@ -884,7 +884,7 @@ const AdminBusinesses = () => {
                       <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
                           <Label>Precio *</Label>
-                          <Input type="number" value={menuForm.price} onChange={e => setMenuForm({ ...menuForm, price: e.target.value })} required />
+                          <Input value={menuForm.price} onChange={e => setMenuForm({ ...menuForm, price: e.target.value })} required placeholder="25000" />
                         </div>
                         <div className="space-y-2">
                           <Label>Categoría</Label>
