@@ -169,7 +169,7 @@ const Index = () => {
     if (!searchQuery || searchQuery.trim() === '') {
       return allPlaces.filter((p) => {
         const catMatch = selectedCategory === 'Todos' || p.category === selectedCategory;
-        const nMatch = selectedNeighborhood === 'Todos' || p.neighborhood === selectedNeighborhood;
+        const nMatch = selectedNeighborhood === 'Todos' || normalizeText(p.neighborhood || '') === normalizeText(selectedNeighborhood);
         return catMatch && nMatch;
       });
     }
@@ -177,7 +177,7 @@ const Index = () => {
     const searchLower = normalizeText(searchQuery.trim());
     return allPlaces.filter((p) => {
       const catMatch = selectedCategory === 'Todos' || p.category === selectedCategory;
-      const nMatch = selectedNeighborhood === 'Todos' || p.neighborhood === selectedNeighborhood;
+      const nMatch = selectedNeighborhood === 'Todos' || normalizeText(p.neighborhood || '') === normalizeText(selectedNeighborhood);
       const text = normalizeText([p.name, p.category, p.address, p.neighborhood, p.description || '', ...(p.foodType || [])].join(' '));
       return text.includes(searchLower) && catMatch && nMatch;
     });
