@@ -811,6 +811,57 @@ export type Database = {
           },
         ]
       }
+      prospects: {
+        Row: {
+          address: string | null
+          category: string | null
+          contact_person: string | null
+          contact_type: string | null
+          created_at: string
+          email: string | null
+          id: string
+          name: string
+          next_contact_date: string | null
+          notes: string | null
+          observation: string | null
+          phone: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          address?: string | null
+          category?: string | null
+          contact_person?: string | null
+          contact_type?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          name: string
+          next_contact_date?: string | null
+          notes?: string | null
+          observation?: string | null
+          phone?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          address?: string | null
+          category?: string | null
+          contact_person?: string | null
+          contact_type?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          name?: string
+          next_contact_date?: string | null
+          notes?: string | null
+          observation?: string | null
+          phone?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       proximity_notifications_sent: {
         Row: {
           business_id: string
