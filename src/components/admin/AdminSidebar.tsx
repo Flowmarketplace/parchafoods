@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { 
   LayoutDashboard,
   Store,
@@ -11,17 +11,22 @@ import {
   Shield,
   Package,
   Home,
-  ArrowLeft
+  ArrowLeft,
+  LogOut
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
 interface AdminSidebarWrapperProps {
   className?: string;
 }
 
 const AdminSidebar = ({ className }: AdminSidebarWrapperProps = {}) => {
+  const navigate = useNavigate();
+
   const menuItems = [
     { icon: LayoutDashboard, label: 'Dashboard', path: '/admin' },
     { icon: Store, label: 'Negocios', path: '/admin/businesses' },
@@ -36,9 +41,15 @@ const AdminSidebar = ({ className }: AdminSidebarWrapperProps = {}) => {
     { icon: Settings, label: 'Configuración', path: '/admin/settings' },
   ];
 
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    toast.success('Sesión cerrada');
+    navigate('/auth');
+  };
+
   return (
-    <aside className={cn("h-full w-64 bg-card border-r border-border overflow-y-auto", className)}>
-      <div className="p-6">
+    <aside className={cn("h-full w-64 bg-card border-r border-border overflow-y-auto flex flex-col", className)}>
+      <div className="p-6 flex-1">
         <div className="flex items-center gap-2 mb-8">
           <div className="bg-gradient-to-br from-primary to-secondary p-2 rounded-lg">
             <Shield className="h-6 w-6 text-white" />
@@ -82,9 +93,23 @@ const AdminSidebar = ({ className }: AdminSidebarWrapperProps = {}) => {
           })}
         </nav>
       </div>
+
+      {/* Logout button at bottom */}
+      <div className="p-4 border-t border-border">
+        <Button
+          variant="ghost"
+          className="w-full justify-start text-destructive hover:text-destructive hover:bg-destructive/10"
+          size="sm"
+          onClick={handleLogout}
+        >
+          <LogOut className="h-4 w-4 mr-2" />
+          Cerrar Sesión
+        </Button>
+      </div>
     </aside>
   );
 };
+
 
 // Desktop version (fixed sidebar)
 export const AdminSidebarDesktop = () => {

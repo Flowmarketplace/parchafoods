@@ -184,16 +184,17 @@ const AdminBusinesses = () => {
       if (editingBusiness) {
         const { error } = await supabase.from('businesses').update(payload).eq('id', editingBusiness.id);
         if (error) throw error;
-        toast.success('Restaurante actualizado');
+        toast.success('Restaurante actualizado exitosamente ✅');
       } else {
         const { data, error } = await supabase.from('businesses').insert({ ...payload, owner_id: userId }).select().single();
         if (error) throw error;
         setEditingBusiness(data);
-        toast.success('Restaurante creado');
+        toast.success('🎉 ¡Restaurante creado exitosamente! Ya es visible para los clientes.', { duration: 5000 });
       }
       await fetchBusinesses();
     } catch (error: any) {
-      toast.error(error.message || 'Error al guardar');
+      console.error('Error saving business:', error);
+      toast.error(`Error al guardar: ${error.message || 'Intenta de nuevo'}`);
     } finally {
       setSaving(false);
     }
