@@ -224,7 +224,22 @@ const AdminBusinesses = () => {
       if (formData.tiktok_url) payload.tiktok_url = formData.tiktok_url;
 
       if (editingBusiness) {
-        const { error } = await supabase.from('businesses').update(payload).eq('id', editingBusiness.id);
+        // For updates, include all fields to allow clearing values
+        const updatePayload = {
+          ...payload,
+          description: formData.description || null,
+          phone: formData.phone || null,
+          whatsapp: formData.whatsapp || null,
+          email: formData.email || null,
+          website: formData.website || null,
+          zone: formData.zone || null,
+          latitude: formData.latitude ? parseFloat(formData.latitude) : null,
+          longitude: formData.longitude ? parseFloat(formData.longitude) : null,
+          instagram_url: formData.instagram_url || null,
+          facebook_url: formData.facebook_url || null,
+          tiktok_url: formData.tiktok_url || null,
+        };
+        const { error } = await supabase.from('businesses').update(updatePayload).eq('id', editingBusiness.id);
         if (error) throw error;
         toast.success('Restaurante actualizado exitosamente ✅');
       } else {
