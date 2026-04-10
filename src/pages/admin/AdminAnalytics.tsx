@@ -3,6 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import AdminSidebar, { AdminSidebarDesktop } from '@/components/admin/AdminSidebar';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { BarChart3, TrendingUp, Users, DollarSign, Store, Calendar , Menu } from 'lucide-react';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
