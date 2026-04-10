@@ -356,15 +356,19 @@ const RouteMap = ({ places, category, routeName, routeEmoji = '🗺️' }: Route
                   <div className={`flex items-start gap-3 p-2.5 rounded-lg transition-colors ${visited ? 'bg-green-500/5' : 'hover:bg-muted/50'}`}>
                     {/* Number circle */}
                     <div
-                      className="w-9 h-9 rounded-full flex items-center justify-center text-white font-bold text-sm shrink-0 shadow-sm"
+                      className="w-9 h-9 rounded-full flex items-center justify-center text-white font-bold text-sm shrink-0 shadow-sm cursor-pointer"
                       style={{ background: visited ? '#22c55e' : color }}
+                      onClick={() => navigate(`/place/${place.slug || place.id}`)}
                     >
                       {visited ? <Check className="h-4 w-4" /> : index + 1}
                     </div>
 
-                    {/* Info */}
-                    <div className="flex-1 min-w-0 pt-0.5">
-                      <p className={`font-semibold text-sm ${visited ? 'line-through text-muted-foreground' : ''}`}>
+                    {/* Info - clickable */}
+                    <div
+                      className="flex-1 min-w-0 pt-0.5 cursor-pointer"
+                      onClick={() => navigate(`/place/${place.slug || place.id}`)}
+                    >
+                      <p className={`font-semibold text-sm hover:underline ${visited ? 'line-through text-muted-foreground' : ''}`}>
                         {place.name}
                       </p>
                       <p className="text-[11px] text-muted-foreground truncate">
