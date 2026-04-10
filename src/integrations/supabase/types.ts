@@ -99,6 +99,62 @@ export type Database = {
           },
         ]
       }
+      business_branches: {
+        Row: {
+          active: boolean | null
+          address: string
+          business_id: string
+          created_at: string | null
+          id: string
+          is_main: boolean | null
+          latitude: number | null
+          longitude: number | null
+          name: string
+          neighborhood: string
+          phone: string | null
+          updated_at: string | null
+          whatsapp: string | null
+        }
+        Insert: {
+          active?: boolean | null
+          address: string
+          business_id: string
+          created_at?: string | null
+          id?: string
+          is_main?: boolean | null
+          latitude?: number | null
+          longitude?: number | null
+          name: string
+          neighborhood: string
+          phone?: string | null
+          updated_at?: string | null
+          whatsapp?: string | null
+        }
+        Update: {
+          active?: boolean | null
+          address?: string
+          business_id?: string
+          created_at?: string | null
+          id?: string
+          is_main?: boolean | null
+          latitude?: number | null
+          longitude?: number | null
+          name?: string
+          neighborhood?: string
+          phone?: string | null
+          updated_at?: string | null
+          whatsapp?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "business_branches_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       business_hours: {
         Row: {
           business_id: string

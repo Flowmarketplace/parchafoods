@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import Autoplay from 'embla-carousel-autoplay';
-import { ArrowLeft, MapPin, Phone, Star, UtensilsCrossed, Facebook, Instagram, Twitter, Share2, ShoppingBag, Briefcase, Home as HomeIcon, Tag, QrCode, ExternalLink, Calendar, Users, Clock, Trophy } from 'lucide-react';
+import { ArrowLeft, MapPin, Phone, Star, UtensilsCrossed, Facebook, Instagram, Twitter, Share2, ShoppingBag, Briefcase, Home as HomeIcon, Tag, QrCode, ExternalLink, Calendar, Users, Clock, Trophy, Store } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { User } from '@supabase/supabase-js';
@@ -30,6 +30,7 @@ const PlaceDetails = () => {
   const [menu, setMenu] = useState<any[]>([]);
   const [promotions, setPromotions] = useState<any[]>([]);
   const [hours, setHours] = useState<any[]>([]);
+  const [branches, setBranches] = useState<any[]>([]);
   const [user, setUser] = useState<User | null>(null);
   const [showQRScanner, setShowQRScanner] = useState(false);
   const [loyaltyPoints, setLoyaltyPoints] = useState<number>(0);
@@ -63,7 +64,7 @@ const PlaceDetails = () => {
         setPlace(data);
         
         // Load related data
-        const [imagesResult, menuResult, promotionsResult, hoursResult] = await Promise.all([
+        const [imagesResult, menuResult, promotionsResult, hoursResult, branchesResult] = await Promise.all([
           supabase
             .from('business_images')
             .select('*')
@@ -84,13 +85,20 @@ const PlaceDetails = () => {
             .from('business_hours')
             .select('*')
             .eq('business_id', data.id)
-            .order('day_of_week')
+            .order('day_of_week'),
+          supabase
+            .from('business_branches')
+            .select('*')
+            .eq('business_id', data.id)
+            .eq('active', true)
+            .order('is_main', { ascending: false }),
         ]);
         
         setImages(imagesResult.data || []);
         setMenu(menuResult.data || []);
         setPromotions(promotionsResult.data || []);
         setHours(hoursResult.data || []);
+        setBranches(branchesResult.data || []);
       } else {
         // Fallback to mock data
         const mockPlace = mockPlaces.find((p) => p.id === id);
@@ -495,24 +503,71 @@ const PlaceDetails = () => {
                 </TabsContent>
 
                 <TabsContent value="ubicacion" className="mt-6">
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div>
-                      <div className="rounded-lg overflow-hidden border border-border h-[400px]">
-                        <PlaceMap
-                          latitude={place.latitude}
-                          longitude={place.longitude}
-                          placeName={place.name}
-                          category={place.category}
-                        />
+                  <div className="space-y-6">
+                    {/* Main location */}
+                    {place.latitude && place.longitude && (
+                      <div>
+                        <h3 className="font-semibold text-sm mb-2 flex items-center gap-2">
+                          <MapPin className="h-4 w-4 text-primary" />
+                          {branches.length > 0 ? 'Ubicación Principal' : 'Ubicación'}
+                        </h3>
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                          <div className="rounded-lg overflow-hidden border border-border h-[300px]">
+                            <PlaceMap
+                              latitude={place.latitude}
+                              longitude={place.longitude}
+                              placeName={place.name}
+                              category={place.category}
+                            />
+                          </div>
+                          <DirectionsPanel 
+                            destinationLat={place.latitude}
+                            destinationLng={place.longitude}
+                            destinationName={place.name}
+                          />
+                        </div>
                       </div>
-                    </div>
-                    <div>
-                      <DirectionsPanel 
-                        destinationLat={place.latitude}
-                        destinationLng={place.longitude}
-                        destinationName={place.name}
-                      />
-                    </div>
+                    )}
+
+                    {/* Branches */}
+                    {branches.length > 0 && (
+                      <div>
+                        <h3 className="font-semibold text-sm mb-3 flex items-center gap-2">
+                          <Store className="h-4 w-4 text-primary" />
+                          Sedes ({branches.length})
+                        </h3>
+                        <div className="space-y-4">
+                          {branches.map((branch: any) => (
+                            <Card key={branch.id} className="overflow-hidden">
+                              <CardContent className="p-0">
+                                <div className="p-3 border-b border-border">
+                                  <div className="flex items-center gap-2">
+                                    <p className="font-semibold text-sm">{branch.name}</p>
+                                    {branch.is_main && (
+                                      <Badge variant="secondary" className="text-[10px]">Principal</Badge>
+                                    )}
+                                  </div>
+                                  <p className="text-xs text-muted-foreground mt-0.5">{branch.address} — {branch.neighborhood}</p>
+                                  {branch.phone && (
+                                    <a href={`tel:${branch.phone}`} className="text-xs text-primary mt-1 inline-block">{branch.phone}</a>
+                                  )}
+                                </div>
+                                {branch.latitude && branch.longitude && (
+                                  <div className="h-[200px]">
+                                    <PlaceMap
+                                      latitude={branch.latitude}
+                                      longitude={branch.longitude}
+                                      placeName={`${place.name} - ${branch.name}`}
+                                      category={place.category}
+                                    />
+                                  </div>
+                                )}
+                              </CardContent>
+                            </Card>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </TabsContent>
 

@@ -82,6 +82,12 @@ const AdminBusinesses = () => {
   const [businessHours, setBusinessHours] = useState<any[]>([]);
   const DAY_NAMES = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
 
+  // Branches state
+  const [branches, setBranches] = useState<any[]>([]);
+  const [branchDialogOpen, setBranchDialogOpen] = useState(false);
+  const [editingBranch, setEditingBranch] = useState<any>(null);
+  const [branchForm, setBranchForm] = useState({ name: '', address: '', neighborhood: '', latitude: '', longitude: '', phone: '', whatsapp: '', is_main: false, active: true });
+
   // Form
   const [formData, setFormData] = useState({
     name: '', category: '', description: '', address: '', neighborhood: '',
@@ -140,13 +146,14 @@ const AdminBusinesses = () => {
   };
 
   const loadBusinessDetails = async (businessId: string) => {
-    const [menuRes, imgRes, shortsRes, promoRes, attrRes, hoursRes] = await Promise.all([
+    const [menuRes, imgRes, shortsRes, promoRes, attrRes, hoursRes, branchRes] = await Promise.all([
       supabase.from('business_menu').select('*').eq('business_id', businessId).order('category, name'),
       supabase.from('business_images').select('*').eq('business_id', businessId).order('display_order'),
       supabase.from('business_shorts').select('*').eq('business_id', businessId).order('created_at', { ascending: false }),
       supabase.from('business_promotions').select('*').eq('business_id', businessId).order('created_at', { ascending: false }),
       supabase.from('business_attributes').select('*').eq('business_id', businessId),
       supabase.from('business_hours').select('*').eq('business_id', businessId).order('day_of_week'),
+      supabase.from('business_branches').select('*').eq('business_id', businessId).order('is_main', { ascending: false }),
     ]);
     setMenuItems(menuRes.data || []);
     setImages(imgRes.data || []);
@@ -154,6 +161,7 @@ const AdminBusinesses = () => {
     setPromotions(promoRes.data || []);
     setAttributes(attrRes.data || []);
     setBusinessHours(hoursRes.data || []);
+    setBranches(branchRes.data || []);
   };
 
   const handleNew = () => {
@@ -169,6 +177,7 @@ const AdminBusinesses = () => {
     setPromotions([]);
     setAttributes([]);
     setBusinessHours([]);
+    setBranches([]);
     setShowForm(true);
     setActiveTab('info');
   };
@@ -480,6 +489,46 @@ const AdminBusinesses = () => {
     }
   };
 
+  // BRANCH HANDLERS
+  const handleSaveBranch = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingBusiness) { toast.error('Guarda el restaurante primero'); return; }
+    try {
+      const payload = {
+        business_id: editingBusiness.id,
+        name: branchForm.name,
+        address: branchForm.address,
+        neighborhood: branchForm.neighborhood,
+        latitude: branchForm.latitude ? parseFloat(branchForm.latitude) : null,
+        longitude: branchForm.longitude ? parseFloat(branchForm.longitude) : null,
+        phone: branchForm.phone || null,
+        whatsapp: branchForm.whatsapp || null,
+        is_main: branchForm.is_main,
+        active: branchForm.active,
+      };
+      if (editingBranch) {
+        await supabase.from('business_branches').update(payload).eq('id', editingBranch.id);
+        toast.success('Sede actualizada');
+      } else {
+        await supabase.from('business_branches').insert(payload);
+        toast.success('Sede creada');
+      }
+      setBranchDialogOpen(false);
+      setEditingBranch(null);
+      setBranchForm({ name: '', address: '', neighborhood: '', latitude: '', longitude: '', phone: '', whatsapp: '', is_main: false, active: true });
+      await loadBusinessDetails(editingBusiness.id);
+    } catch (error: any) {
+      toast.error(error.message || 'Error');
+    }
+  };
+
+  const handleDeleteBranch = async (id: string) => {
+    if (!confirm('¿Eliminar esta sede?')) return;
+    await supabase.from('business_branches').delete().eq('id', id);
+    toast.success('Sede eliminada');
+    if (editingBusiness) await loadBusinessDetails(editingBusiness.id);
+  };
+
   // ATTRIBUTE HANDLERS
   const toggleAttribute = async (type: string, value: string) => {
     if (!editingBusiness) { toast.error('Guarda el restaurante primero'); return; }
@@ -622,6 +671,7 @@ const AdminBusinesses = () => {
                 <TabsTrigger value="hours" className="text-xs gap-1 flex-1" disabled={!editingBusiness}><Clock className="h-3.5 w-3.5 hidden sm:block" /> Horarios</TabsTrigger>
                 <TabsTrigger value="videos" className="text-xs gap-1 flex-1" disabled={!editingBusiness}><Video className="h-3.5 w-3.5 hidden sm:block" /> Videos</TabsTrigger>
                 <TabsTrigger value="promos" className="text-xs gap-1 flex-1" disabled={!editingBusiness}><Megaphone className="h-3.5 w-3.5 hidden sm:block" /> Promos</TabsTrigger>
+                <TabsTrigger value="branches" className="text-xs gap-1 flex-1" disabled={!editingBusiness}><MapPin className="h-3.5 w-3.5 hidden sm:block" /> Sedes</TabsTrigger>
                 <TabsTrigger value="attrs" className="text-xs gap-1 flex-1" disabled={!editingBusiness}><Tag className="h-3.5 w-3.5 hidden sm:block" /> Filtros</TabsTrigger>
               </TabsList>
 
@@ -1193,6 +1243,141 @@ const AdminBusinesses = () => {
                       <div className="flex justify-end gap-2">
                         <Button type="button" variant="outline" onClick={() => setPromoDialogOpen(false)}>Cancelar</Button>
                         <Button type="submit">{editingPromo ? 'Actualizar' : 'Crear'}</Button>
+                      </div>
+                    </form>
+                  </DialogContent>
+                </Dialog>
+              </TabsContent>
+
+              {/* BRANCHES/SEDES TAB */}
+              <TabsContent value="branches">
+                <Card>
+                  <CardHeader className="pb-3">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <CardTitle className="text-base">📍 Sedes / Sucursales</CardTitle>
+                        <CardDescription>{branches.length} sedes registradas</CardDescription>
+                      </div>
+                      <Button size="sm" onClick={() => {
+                        setEditingBranch(null);
+                        setBranchForm({ name: '', address: '', neighborhood: '', latitude: '', longitude: '', phone: '', whatsapp: '', is_main: false, active: true });
+                        setBranchDialogOpen(true);
+                      }}>
+                        <Plus className="h-3.5 w-3.5 mr-1" /> Agregar Sede
+                      </Button>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    {branches.length === 0 ? (
+                      <div className="text-center py-8 text-muted-foreground">
+                        <MapPin className="h-8 w-8 mx-auto mb-2" />
+                        <p className="text-sm">No hay sedes registradas</p>
+                        <p className="text-xs mt-1">La ubicación principal del restaurante se usa como sede por defecto</p>
+                      </div>
+                    ) : (
+                      <div className="space-y-2">
+                        {branches.map((b: any) => (
+                          <div key={b.id} className="flex items-center gap-3 p-3 border rounded-lg">
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-2">
+                                <p className="font-medium text-sm truncate">{b.name}</p>
+                                {b.is_main && <Badge className="text-[10px]">Principal</Badge>}
+                                {!b.active && <Badge variant="outline" className="text-[10px]">Inactiva</Badge>}
+                              </div>
+                              <p className="text-xs text-muted-foreground truncate">{b.address} — {b.neighborhood}</p>
+                              {b.latitude && b.longitude && (
+                                <p className="text-[10px] text-muted-foreground">📍 {b.latitude}, {b.longitude}</p>
+                              )}
+                            </div>
+                            <div className="flex gap-1 shrink-0">
+                              <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => {
+                                setEditingBranch(b);
+                                setBranchForm({
+                                  name: b.name, address: b.address, neighborhood: b.neighborhood,
+                                  latitude: b.latitude?.toString() || '', longitude: b.longitude?.toString() || '',
+                                  phone: b.phone || '', whatsapp: b.whatsapp || '',
+                                  is_main: b.is_main || false, active: b.active !== false,
+                                });
+                                setBranchDialogOpen(true);
+                              }}>
+                                <Edit className="h-3.5 w-3.5" />
+                              </Button>
+                              <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => handleDeleteBranch(b.id)}>
+                                <Trash2 className="h-3.5 w-3.5 text-destructive" />
+                              </Button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+
+                {/* Branch Dialog */}
+                <Dialog open={branchDialogOpen} onOpenChange={setBranchDialogOpen}>
+                  <DialogContent className="max-h-[90vh] overflow-y-auto">
+                    <DialogHeader>
+                      <DialogTitle>{editingBranch ? 'Editar' : 'Nueva'} Sede</DialogTitle>
+                      <DialogDescription>Configura la ubicación de esta sede</DialogDescription>
+                    </DialogHeader>
+                    <form onSubmit={handleSaveBranch} className="space-y-4">
+                      <div className="space-y-2">
+                        <Label>Nombre de la Sede *</Label>
+                        <Input value={branchForm.name} onChange={e => setBranchForm({ ...branchForm, name: e.target.value })} required placeholder="Ej: Sede Norte, Sede Centro" />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Dirección *</Label>
+                        <Input value={branchForm.address} onChange={e => setBranchForm({ ...branchForm, address: e.target.value })} required placeholder="Calle 10 # 45-67" />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Barrio *</Label>
+                        <Input value={branchForm.neighborhood} onChange={e => setBranchForm({ ...branchForm, neighborhood: e.target.value })} required placeholder="Granada" />
+                      </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <Label>Latitud</Label>
+                          <Input type="number" step="0.000001" value={branchForm.latitude} onChange={e => setBranchForm({ ...branchForm, latitude: e.target.value })} placeholder="3.451647" />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Longitud</Label>
+                          <Input type="number" step="0.000001" value={branchForm.longitude} onChange={e => setBranchForm({ ...branchForm, longitude: e.target.value })} placeholder="-76.531835" />
+                        </div>
+                      </div>
+                      {branchForm.latitude && branchForm.longitude && (
+                        <div>
+                          <p className="text-xs text-muted-foreground mb-1">📍 Vista previa</p>
+                          <iframe
+                            src={`https://maps.google.com/maps?q=${branchForm.latitude},${branchForm.longitude}&t=&z=17&ie=UTF8&iwloc=&output=embed`}
+                            className="w-full h-36 rounded-lg border"
+                            style={{ border: 0 }}
+                            loading="lazy"
+                            title="Vista previa sede"
+                          />
+                        </div>
+                      )}
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <Label>Teléfono</Label>
+                          <Input value={branchForm.phone} onChange={e => setBranchForm({ ...branchForm, phone: e.target.value })} placeholder="(602) 123-4567" />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>WhatsApp</Label>
+                          <Input value={branchForm.whatsapp} onChange={e => setBranchForm({ ...branchForm, whatsapp: e.target.value })} placeholder="3001234567" />
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-2">
+                          <Switch checked={branchForm.is_main} onCheckedChange={v => setBranchForm({ ...branchForm, is_main: v })} />
+                          <Label className="text-sm">Sede Principal</Label>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Switch checked={branchForm.active} onCheckedChange={v => setBranchForm({ ...branchForm, active: v })} />
+                          <Label className="text-sm">Activa</Label>
+                        </div>
+                      </div>
+                      <div className="flex justify-end gap-2">
+                        <Button type="button" variant="outline" onClick={() => setBranchDialogOpen(false)}>Cancelar</Button>
+                        <Button type="submit">{editingBranch ? 'Actualizar' : 'Crear'}</Button>
                       </div>
                     </form>
                   </DialogContent>
