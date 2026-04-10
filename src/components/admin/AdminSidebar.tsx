@@ -119,3 +119,5 @@ export const AdminSidebarDesktop = () => {
     </div>
   );
 };
+
+export default AdminSidebar;
