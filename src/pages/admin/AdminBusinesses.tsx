@@ -696,6 +696,26 @@ const AdminBusinesses = () => {
                           <Input type="number" step="0.000001" value={formData.longitude} onChange={e => setFormData({ ...formData, longitude: e.target.value })} placeholder="-76.531835" />
                         </div>
                       </div>
+                      {formData.latitude && formData.longitude && (
+                        <div className="mt-3">
+                          <p className="text-xs text-muted-foreground mb-2">📍 Vista previa del mapa (verifica que el pin esté correcto)</p>
+                          <iframe
+                            src={`https://maps.google.com/maps?q=${formData.latitude},${formData.longitude}&t=&z=17&ie=UTF8&iwloc=&output=embed`}
+                            className="w-full h-48 rounded-lg border"
+                            style={{ border: 0 }}
+                            loading="lazy"
+                            title="Vista previa ubicación"
+                          />
+                          <a
+                            href={`https://www.google.com/maps/search/?api=1&query=${formData.latitude},${formData.longitude}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-xs text-primary underline mt-1 inline-block"
+                          >
+                            Abrir en Google Maps para verificar
+                          </a>
+                        </div>
+                      )}
                     </CardContent>
                   </Card>
 
