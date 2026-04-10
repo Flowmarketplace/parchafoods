@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import Autoplay from 'embla-carousel-autoplay';
-import { ArrowLeft, MapPin, Phone, Star, UtensilsCrossed, Facebook, Instagram, Twitter, Share2, ShoppingBag, Briefcase, Home as HomeIcon, Tag, QrCode, ExternalLink, Calendar, Users, Clock, Trophy, Store } from 'lucide-react';
+import { ArrowLeft, MapPin, Phone, Star, UtensilsCrossed, Facebook, Instagram, Twitter, Share2, ShoppingBag, Briefcase, Home as HomeIcon, Tag, QrCode, ExternalLink, Calendar, Users, Clock, Trophy, Store, MessageSquare, Send } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { User } from '@supabase/supabase-js';
@@ -8,6 +8,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Textarea } from '@/components/ui/textarea';
+import { useToast } from '@/hooks/use-toast';
 import { mockPlaces } from '@/data/places';
 import PlaceChat from '@/components/PlaceChat';
 import PlaceMap from '@/components/PlaceMap';
@@ -35,6 +37,11 @@ const PlaceDetails = () => {
   const [showQRScanner, setShowQRScanner] = useState(false);
   const [loyaltyPoints, setLoyaltyPoints] = useState<number>(0);
   const [loading, setLoading] = useState(true);
+  const [reviews, setReviews] = useState<any[]>([]);
+  const [reviewRating, setReviewRating] = useState(5);
+  const [reviewComment, setReviewComment] = useState('');
+  const [submittingReview, setSubmittingReview] = useState(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     const loadPlace = async () => {
@@ -64,7 +71,7 @@ const PlaceDetails = () => {
         setPlace(data);
         
         // Load related data
-        const [imagesResult, menuResult, promotionsResult, hoursResult, branchesResult] = await Promise.all([
+        const [imagesResult, menuResult, promotionsResult, hoursResult, branchesResult, reviewsResult] = await Promise.all([
           supabase
             .from('business_images')
             .select('*')
@@ -92,6 +99,12 @@ const PlaceDetails = () => {
             .eq('business_id', data.id)
             .eq('active', true)
             .order('is_main', { ascending: false }),
+          supabase
+            .from('business_reviews')
+            .select('*')
+            .eq('business_id', data.id)
+            .eq('approved', true)
+            .order('created_at', { ascending: false }),
         ]);
         
         setImages(imagesResult.data || []);
@@ -99,6 +112,7 @@ const PlaceDetails = () => {
         setPromotions(promotionsResult.data || []);
         setHours(hoursResult.data || []);
         setBranches(branchesResult.data || []);
+        setReviews(reviewsResult.data || []);
       } else {
         // Fallback to mock data
         const mockPlace = mockPlaces.find((p) => p.id === id);
@@ -156,6 +170,47 @@ const PlaceDetails = () => {
     }
   };
 
+  const handleSubmitReview = async () => {
+    if (!user || !place) return;
+    if (!reviewComment.trim()) {
+      toast({ title: "Error", description: "Escribe un comentario", variant: "destructive" });
+      return;
+    }
+    setSubmittingReview(true);
+    try {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('full_name')
+        .eq('id', user.id)
+        .maybeSingle();
+
+      const { error } = await supabase.from('business_reviews').insert({
+        business_id: place.id,
+        user_id: user.id,
+        author_name: profile?.full_name || user.email?.split('@')[0] || 'Anónimo',
+        rating: reviewRating,
+        comment: reviewComment.trim(),
+      });
+      if (error) throw error;
+
+      toast({ title: "¡Reseña enviada!", description: "Gracias por tu opinión" });
+      setReviewComment('');
+      setReviewRating(5);
+
+      // Reload reviews
+      const { data: newReviews } = await supabase
+        .from('business_reviews')
+        .select('*')
+        .eq('business_id', place.id)
+        .eq('approved', true)
+        .order('created_at', { ascending: false });
+      setReviews(newReviews || []);
+    } catch (error: any) {
+      toast({ title: "Error", description: error.message || "No se pudo enviar la reseña", variant: "destructive" });
+    } finally {
+      setSubmittingReview(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -400,8 +455,8 @@ const PlaceDetails = () => {
                               {mundialItems.map((mundialItem) => (
                                 <div key={mundialItem.id} className="bg-background/80 rounded-lg p-4 border border-primary/10">
                                   {mundialItem.image_url && (
-                                    <div className="rounded-lg overflow-hidden h-48 mb-3 bg-muted flex items-center justify-center">
-                                      <img src={mundialItem.image_url} alt={mundialItem.name} className="max-w-full max-h-full object-contain" />
+                                    <div className="rounded-lg overflow-hidden aspect-[4/3] mb-3 bg-muted">
+                                      <img src={mundialItem.image_url} alt={mundialItem.name} className="w-full h-full object-cover" />
                                     </div>
                                   )}
                                   <p className="font-bold text-primary text-lg mb-1">
@@ -652,11 +707,11 @@ const PlaceDetails = () => {
                               <Card key={item.id} className="overflow-hidden hover:shadow-lg transition-shadow">
                                 <CardContent className="p-0">
                                   {item.image_url && (
-                                    <div className="relative h-40 w-full overflow-hidden">
+                                    <div className="relative aspect-[4/3] w-full overflow-hidden bg-muted">
                                       <img
                                         src={item.image_url}
                                         alt={item.name}
-                                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                                        className="absolute inset-0 w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                                       />
                                     </div>
                                   )}
@@ -920,33 +975,76 @@ const PlaceDetails = () => {
                 )}
 
                 <TabsContent value="resenas" className="mt-6">
-                  {place.reviews && place.reviews.length > 0 ? (
-                    <div className="space-y-4">
-                      {place.reviews.map((review) => (
-                        <Card key={review.id}>
-                          <CardContent className="p-4">
-                            <div className="flex items-start justify-between mb-2">
-                              <div>
-                                <p className="font-semibold">{review.author}</p>
-                                <p className="text-sm text-muted-foreground">
-                                  {new Date(review.date).toLocaleDateString('es-CO')}
-                                </p>
+                  <div className="space-y-6">
+                    {/* Review Form */}
+                    {user ? (
+                      <Card>
+                        <CardContent className="p-4 space-y-4">
+                          <h3 className="font-semibold flex items-center gap-2">
+                            <MessageSquare className="h-4 w-4 text-primary" />
+                            Deja tu reseña
+                          </h3>
+                          <div className="flex items-center gap-1">
+                            {[1, 2, 3, 4, 5].map((star) => (
+                              <button key={star} type="button" onClick={() => setReviewRating(star)}>
+                                <Star className={`h-6 w-6 cursor-pointer transition-colors ${star <= reviewRating ? 'fill-secondary text-secondary' : 'text-muted-foreground/30'}`} />
+                              </button>
+                            ))}
+                            <span className="ml-2 text-sm text-muted-foreground">{reviewRating}/5</span>
+                          </div>
+                          <Textarea
+                            placeholder="Comparte tu experiencia..."
+                            value={reviewComment}
+                            onChange={(e) => setReviewComment(e.target.value)}
+                            rows={3}
+                          />
+                          <Button onClick={handleSubmitReview} disabled={submittingReview} className="gap-2">
+                            <Send className="h-4 w-4" />
+                            {submittingReview ? 'Enviando...' : 'Enviar Reseña'}
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    ) : (
+                      <Card className="bg-gradient-to-br from-primary/5 to-secondary/5">
+                        <CardContent className="p-6 text-center">
+                          <MessageSquare className="h-10 w-10 text-primary mx-auto mb-3" />
+                          <p className="text-muted-foreground mb-4">Inicia sesión para dejar una reseña</p>
+                          <Button onClick={() => navigate('/auth')}>Iniciar Sesión</Button>
+                        </CardContent>
+                      </Card>
+                    )}
+
+                    {/* Reviews List */}
+                    {reviews.length > 0 ? (
+                      <div className="space-y-4">
+                        <h3 className="font-semibold text-lg">Reseñas ({reviews.length})</h3>
+                        {reviews.map((review) => (
+                          <Card key={review.id}>
+                            <CardContent className="p-4">
+                              <div className="flex items-start justify-between mb-2">
+                                <div>
+                                  <p className="font-semibold">{review.author_name}</p>
+                                  <p className="text-sm text-muted-foreground">
+                                    {new Date(review.created_at).toLocaleDateString('es-CO')}
+                                  </p>
+                                </div>
+                                <div className="flex items-center gap-1">
+                                  {[1, 2, 3, 4, 5].map((s) => (
+                                    <Star key={s} className={`h-3.5 w-3.5 ${s <= review.rating ? 'fill-secondary text-secondary' : 'text-muted-foreground/20'}`} />
+                                  ))}
+                                </div>
                               </div>
-                              <div className="flex items-center gap-1">
-                                <Star className="h-4 w-4 fill-secondary text-secondary" />
-                                <span className="font-medium">{review.rating}</span>
-                              </div>
-                            </div>
-                            <p className="text-muted-foreground">{review.comment}</p>
-                          </CardContent>
-                        </Card>
-                      ))}
-                    </div>
-                  ) : (
-                    <p className="text-center text-muted-foreground py-8">
-                      Aún no hay reseñas para este lugar
-                    </p>
-                  )}
+                              {review.comment && <p className="text-muted-foreground text-sm">{review.comment}</p>}
+                            </CardContent>
+                          </Card>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-center text-muted-foreground py-8">
+                        Aún no hay reseñas. ¡Sé el primero en opinar!
+                      </p>
+                    )}
+                  </div>
                 </TabsContent>
               </Tabs>
             </div>
