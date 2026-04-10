@@ -78,6 +78,10 @@ const AdminBusinesses = () => {
   // Attributes state
   const [attributes, setAttributes] = useState<any[]>([]);
 
+  // Hours state
+  const [businessHours, setBusinessHours] = useState<any[]>([]);
+  const DAY_NAMES = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+
   // Form
   const [formData, setFormData] = useState({
     name: '', category: '', description: '', address: '', neighborhood: '',
