@@ -798,6 +798,23 @@ const AdminBusinesses = () => {
                           <Input type="url" value={formData.website} onChange={e => setFormData({ ...formData, website: e.target.value })} />
                         </div>
                       </div>
+
+                      {/* Redes Sociales */}
+                      <p className="text-sm font-medium text-muted-foreground pt-2">Redes Sociales</p>
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div className="space-y-2">
+                          <Label>Instagram URL</Label>
+                          <Input value={formData.instagram_url} onChange={e => setFormData({ ...formData, instagram_url: e.target.value })} placeholder="https://instagram.com/restaurante" />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Facebook URL</Label>
+                          <Input value={formData.facebook_url} onChange={e => setFormData({ ...formData, facebook_url: e.target.value })} placeholder="https://facebook.com/restaurante" />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>TikTok URL</Label>
+                          <Input value={formData.tiktok_url} onChange={e => setFormData({ ...formData, tiktok_url: e.target.value })} placeholder="https://tiktok.com/@restaurante" />
+                        </div>
+                      </div>
                     </CardContent>
                   </Card>
 
