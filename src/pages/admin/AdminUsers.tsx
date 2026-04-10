@@ -275,6 +275,7 @@ const AdminUsers = () => {
             )}
           </CardContent>
         </Card>
+        </div>
       </div>
     </div>
   );
