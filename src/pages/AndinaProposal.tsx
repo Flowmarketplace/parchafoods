@@ -263,6 +263,241 @@ const AndinaProposal = () => {
         </div>
       </section>
 
+      {/* === PUSH NOTIFICATIONS POWER === */}
+      <section className="py-24 relative overflow-hidden">
+        <div className="container mx-auto px-6">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+            {/* Visual */}
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7 }}
+              className="relative"
+            >
+              <div className="rounded-3xl overflow-hidden shadow-2xl shadow-yellow-500/10 border border-yellow-500/20">
+                <img src={andinaPush} alt="Notificaciones Push" className="w-full" loading="lazy" />
+              </div>
+              {/* Floating notification cards */}
+              <motion.div
+                animate={{ y: [0, -8, 0] }}
+                transition={{ duration: 3, repeat: Infinity }}
+                className="absolute -top-4 -right-4 md:right-4 bg-card border border-border rounded-2xl p-4 shadow-xl max-w-[220px]"
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-yellow-500 to-amber-500 flex items-center justify-center">
+                    <Bell className="w-4 h-4 text-black" />
+                  </div>
+                  <span className="text-foreground text-xs font-bold">Andina 🍺</span>
+                </div>
+                <p className="text-muted-foreground text-[11px] leading-snug">
+                  ¡Colombia juega hoy! Pide tu Andina helada en cualquier restaurante de la ruta 🇨🇴⚽
+                </p>
+              </motion.div>
+              <motion.div
+                animate={{ y: [0, -6, 0] }}
+                transition={{ duration: 3.5, repeat: Infinity, delay: 1.5 }}
+                className="absolute -bottom-4 -left-4 md:left-4 bg-card border border-border rounded-2xl p-4 shadow-xl max-w-[200px]"
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center">
+                    <Gift className="w-4 h-4 text-white" />
+                  </div>
+                  <span className="text-foreground text-xs font-bold">Promo Andina</span>
+                </div>
+                <p className="text-muted-foreground text-[11px] leading-snug">
+                  2x1 en Andina este fin de semana en 30 restaurantes 🎉
+                </p>
+              </motion.div>
+            </motion.div>
+
+            {/* Content */}
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: 0.15 }}
+            >
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-yellow-500/10 border border-yellow-500/20 mb-6">
+                <Bell className="w-4 h-4 text-yellow-500" />
+                <span className="text-yellow-500 font-semibold text-sm">Notificaciones Push</span>
+              </div>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-5 leading-tight">
+                Llega directo al{" "}
+                <span className="bg-gradient-to-r from-yellow-400 to-amber-500 bg-clip-text text-transparent">bolsillo</span>
+                {" "}de cada usuario
+              </h2>
+              <p className="text-muted-foreground text-base md:text-lg leading-relaxed mb-8">
+                Imagina poder enviar un mensaje a miles de personas justo cuando Colombia está a punto de jugar. 
+                Las notificaciones push tienen una <strong className="text-foreground">tasa de apertura del 90%</strong>, 
+                muy superior al email (20%) o las redes sociales (5%).
+              </p>
+
+              <div className="space-y-5">
+                {[
+                  { metric: "90%", title: "Tasa de apertura", desc: "Las push notifications se leen casi siempre, a diferencia del email o social ads." },
+                  { metric: "50K+", title: "Usuarios alcanzados", desc: "Envíos masivos a toda la base de usuarios registrados de la app." },
+                  { metric: "Real-time", title: "Envío en tiempo real", desc: "Campañas antes, durante y después de cada partido. Timing perfecto." },
+                  { metric: "∞", title: "Envíos ilimitados", desc: "Sin límite de campañas. Promociones de Andina cuando quieras, donde quieras." },
+                ].map((item, i) => (
+                  <motion.div
+                    key={item.title}
+                    initial={{ opacity: 0, x: 20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.1 }}
+                    className="flex items-start gap-4"
+                  >
+                    <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-yellow-500/10 to-amber-500/10 border border-yellow-500/20 flex items-center justify-center flex-shrink-0">
+                      <span className="text-yellow-500 font-bold text-sm">{item.metric}</span>
+                    </div>
+                    <div>
+                      <h4 className="text-foreground font-bold text-sm">{item.title}</h4>
+                      <p className="text-muted-foreground text-sm">{item.desc}</p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* === CONSUMER DATA INTELLIGENCE === */}
+      <section className="py-24 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-muted/30 via-background to-background" />
+        <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(circle, hsl(var(--foreground)) 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
+
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+            {/* Content — left this time */}
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7 }}
+            >
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
+                <BarChart3 className="w-4 h-4 text-primary" />
+                <span className="text-primary font-semibold text-sm">Data de Consumidores</span>
+              </div>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-5 leading-tight">
+                Conoce a tu{" "}
+                <span className="bg-gradient-to-r from-primary to-blue-400 bg-clip-text text-transparent">consumidor</span>
+                {" "}como nunca antes
+              </h2>
+              <p className="text-muted-foreground text-base md:text-lg leading-relaxed mb-8">
+                Accede a datos reales de comportamiento gastronómico: qué restaurantes visitan, cuándo consumen, 
+                qué categorías prefieren y dónde se concentran. Información de primera mano que ninguna otra plataforma ofrece.
+              </p>
+
+              <div className="grid grid-cols-2 gap-4 mb-8">
+                {[
+                  { icon: MapPin, label: "Ubicación y barrios", value: "GPS tracking" },
+                  { icon: Target, label: "Hábitos de consumo", value: "Frecuencia" },
+                  { icon: Store, label: "Restaurantes visitados", value: "Preferencias" },
+                  { icon: TrendingUp, label: "Tendencias", value: "Tiempo real" },
+                ].map((item, i) => (
+                  <motion.div
+                    key={item.label}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.1 }}
+                    className="p-4 rounded-xl border border-border bg-card"
+                  >
+                    <item.icon className="w-5 h-5 text-primary mb-2" />
+                    <div className="text-foreground text-sm font-bold">{item.label}</div>
+                    <div className="text-muted-foreground text-xs">{item.value}</div>
+                  </motion.div>
+                ))}
+              </div>
+
+              <div className="p-5 rounded-xl border border-primary/20 bg-primary/5">
+                <p className="text-foreground text-sm leading-relaxed">
+                  <strong>💡 Valor para Andina:</strong> Con esta data puedes optimizar la distribución de cerveza, 
+                  identificar los restaurantes con mayor rotación, planificar campañas hiper-segmentadas y 
+                  medir el impacto real de cada acción de marketing durante el Mundial.
+                </p>
+              </div>
+            </motion.div>
+
+            {/* Visual — dashboard mockup */}
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: 0.15 }}
+              className="relative"
+            >
+              <div className="rounded-3xl border border-border bg-card p-6 md:p-8 shadow-2xl">
+                <div className="flex items-center gap-2 mb-6">
+                  <div className="w-3 h-3 rounded-full bg-red-500" />
+                  <div className="w-3 h-3 rounded-full bg-yellow-500" />
+                  <div className="w-3 h-3 rounded-full bg-green-500" />
+                  <span className="text-muted-foreground text-xs ml-2">Dashboard — Andina Analytics</span>
+                </div>
+
+                {/* Mock chart bars */}
+                <div className="mb-6">
+                  <div className="text-muted-foreground text-xs mb-3 uppercase tracking-wider">Consumo por categoría gastronómica</div>
+                  <div className="space-y-3">
+                    {[
+                      { label: "Comidas Rápidas", pct: 85, color: "from-yellow-500 to-amber-500" },
+                      { label: "Asados & Parrilla", pct: 72, color: "from-orange-500 to-red-500" },
+                      { label: "Bares & Rooftops", pct: 68, color: "from-purple-500 to-indigo-500" },
+                      { label: "Restaurantes Casual", pct: 55, color: "from-blue-500 to-cyan-500" },
+                      { label: "Comida Mexicana", pct: 45, color: "from-green-500 to-emerald-500" },
+                    ].map((bar) => (
+                      <div key={bar.label}>
+                        <div className="flex justify-between text-xs mb-1">
+                          <span className="text-foreground font-medium">{bar.label}</span>
+                          <span className="text-muted-foreground">{bar.pct}%</span>
+                        </div>
+                        <div className="h-3 rounded-full bg-muted overflow-hidden">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            whileInView={{ width: `${bar.pct}%` }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 1, delay: 0.3 }}
+                            className={`h-full rounded-full bg-gradient-to-r ${bar.color}`}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Mock stats row */}
+                <div className="grid grid-cols-3 gap-3">
+                  {[
+                    { label: "Escaneos QR", value: "12,847", trend: "+34%" },
+                    { label: "Usuarios activos", value: "8,234", trend: "+28%" },
+                    { label: "Restaurantes", value: "100", trend: "100%" },
+                  ].map((stat) => (
+                    <div key={stat.label} className="p-3 rounded-xl bg-muted/50 text-center">
+                      <div className="text-foreground font-bold text-lg">{stat.value}</div>
+                      <div className="text-muted-foreground text-[10px]">{stat.label}</div>
+                      <div className="text-green-500 text-xs font-semibold mt-1">{stat.trend}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Floating badge */}
+              <motion.div
+                animate={{ y: [0, -6, 0] }}
+                transition={{ duration: 3, repeat: Infinity }}
+                className="absolute -bottom-5 right-8 bg-gradient-to-r from-primary to-blue-400 text-white px-5 py-3 rounded-xl shadow-xl flex items-center gap-2"
+              >
+                <BarChart3 className="w-5 h-5" />
+                <span className="text-sm font-bold">Data en tiempo real</span>
+              </motion.div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
       {/* === DATA & REACH === */}
       <section className="py-20 relative">
         <div className="container mx-auto px-6">
