@@ -45,12 +45,14 @@ import AdminSettings from "./pages/admin/AdminSettings";
 import AdminEvents from "./pages/admin/AdminEvents";
 import AdminCategories from "./pages/admin/AdminCategories";
 import AdminProspects from "./pages/admin/AdminProspects";
+import Landing from "./pages/Landing";
 
 function App() {
   return (
     <RoleBasedRedirect>
       <Routes>
         <Route path="/" element={<Index />} />
+        <Route path="/landing" element={<Landing />} />
         <Route path="/app" element={<Index />} />
         <Route path="/place/:id" element={<PlaceDetails />} />
         <Route path="/event/:id" element={<EventDetails />} />
