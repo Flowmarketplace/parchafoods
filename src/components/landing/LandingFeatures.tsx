@@ -152,7 +152,7 @@ const LandingFeatures = () => {
                       animate={{ y: [0, -8, 0] }}
                       transition={{ duration: 4 + i * 0.5, repeat: Infinity, ease: "easeInOut" }}
                     >
-                      <PhoneMockup image={feature.image} title={feature.title} />
+                      <PhoneMockup image={feature.image} title={feature.title} scrolling={i === 1} />
                     </motion.div>
                   </motion.div>
 
