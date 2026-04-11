@@ -1,26 +1,22 @@
 import { motion } from "framer-motion";
-import { BarChart3, Users, Megaphone, QrCode, Video, Bell } from "lucide-react";
-import foodSpread from "@/assets/landing-food-spread.jpg";
+import { Trophy, Target, Users, Gift, Flame, MapPin } from "lucide-react";
 
-const benefits = [
-  { icon: Users, title: "Más clientes", description: "Aparece frente a miles de personas buscando dónde comer durante el Mundial." },
-  { icon: BarChart3, title: "Analíticas", description: "Métricas de visitas, escaneos QR y rendimiento de tus promociones en tiempo real." },
-  { icon: Megaphone, title: "Promociones", description: "Crea ofertas mundialistas que aparecen directamente en la app de tus clientes." },
-  { icon: QrCode, title: "Lealtad QR", description: "Sistema de puntos con códigos QR para fidelizar clientes y generar recurrencia." },
-  { icon: Video, title: "Videos Shorts", description: "Publica videos cortos mostrando tus platos, ambiente y promos especiales." },
-  { icon: Bell, title: "Notificaciones", description: "Envía alertas por proximidad cuando un usuario pase cerca de tu negocio." },
+const steps = [
+  { icon: MapPin, title: "Sigue las Rutas", description: "Elige entre rutas temáticas como Ruta del Café, Comida Mexicana, Asados y más. Visita los restaurantes de cada ruta.", color: "from-primary to-blue-600" },
+  { icon: Target, title: "Acumula Goles", description: "Cada restaurante que visitas te da goles ⚽. Escanea el QR en el lugar para registrar tu visita y sumar puntos.", color: "from-accent to-yellow-500" },
+  { icon: Users, title: "Compite en el Ranking", description: "Sube en la tabla de posiciones y demuestra que eres el máximo explorador gastronómico de Cali. ¿Quién tiene más goles?", color: "from-green-500 to-emerald-600" },
+  { icon: Gift, title: "Gana Premios", description: "Completa rutas para desbloquear recompensas: descuentos exclusivos, comidas gratis, experiencias VIP y más.", color: "from-pink-500 to-rose-600" },
 ];
 
 const LandingForBusiness = () => {
   return (
     <section id="negocios" className="py-24 relative overflow-hidden">
-      {/* Background image */}
-      <div className="absolute inset-0">
-        <img src={foodSpread} alt="" className="w-full h-full object-cover opacity-10" loading="lazy" />
-        <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background" />
-      </div>
+      {/* Background */}
+      <div className="absolute inset-0 bg-gradient-to-b from-muted/50 via-background to-background" />
+      <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(circle, hsl(var(--foreground)) 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
 
       <div className="container mx-auto px-6 relative z-10">
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -28,49 +24,89 @@ const LandingForBusiness = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <span className="text-accent font-semibold text-sm tracking-widest uppercase">Para Restaurantes</span>
-          <h2 className="text-4xl md:text-5xl font-bold mt-3 text-foreground">
-            Impulsa tu <span className="bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent">negocio</span>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 border border-accent/20 mb-6">
+            <Trophy className="w-4 h-4 text-accent" />
+            <span className="text-accent font-semibold text-sm tracking-wide">Gamificación</span>
+          </div>
+          <h2 className="text-4xl md:text-5xl font-bold text-foreground">
+            Recorre, compite y{" "}
+            <span className="bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent">gana premios</span>
           </h2>
           <p className="text-muted-foreground mt-4 max-w-2xl mx-auto text-lg">
-            Únete a la plataforma que conecta tu restaurante con la fiebre mundialista. Más visibilidad, más clientes, más ventas.
+            Convierte cada comida en una aventura. Sigue rutas gastronómicas, acumula goles con cada visita y compite con otros foodies por increíbles recompensas.
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {benefits.map((b, i) => (
+        {/* Steps */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+          {steps.map((step, i) => (
             <motion.div
-              key={b.title}
+              key={step.title}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="rounded-xl border border-border bg-card/80 backdrop-blur p-7 hover:border-accent/30 hover:shadow-lg transition-all duration-300 group"
+              transition={{ duration: 0.5, delay: i * 0.12 }}
+              className="relative group"
             >
-              <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center mb-5 group-hover:bg-accent/20 transition-colors">
-                <b.icon className="w-6 h-6 text-accent" />
+              <div className="rounded-2xl border border-border bg-card p-6 h-full hover:border-accent/30 hover:shadow-xl transition-all duration-300">
+                {/* Step number */}
+                <div className="absolute -top-3 -left-1 w-8 h-8 rounded-full bg-accent flex items-center justify-center text-accent-foreground font-bold text-sm shadow-lg">
+                  {i + 1}
+                </div>
+                {/* Icon */}
+                <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${step.color} flex items-center justify-center mb-5 shadow-lg group-hover:scale-110 transition-transform`}>
+                  <step.icon className="w-7 h-7 text-white" />
+                </div>
+                <h3 className="text-lg font-bold text-foreground mb-2">{step.title}</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">{step.description}</p>
               </div>
-              <h3 className="text-lg font-semibold text-foreground mb-2">{b.title}</h3>
-              <p className="text-muted-foreground text-sm leading-relaxed">{b.description}</p>
             </motion.div>
           ))}
         </div>
 
+        {/* Visual CTA */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="text-center mt-12"
+          className="relative rounded-2xl border border-border bg-gradient-to-r from-accent/5 via-primary/5 to-accent/5 p-8 md:p-12 text-center overflow-hidden"
         >
-          <a
-            href="https://wa.me/573146269531?text=Hola%2C%20quiero%20registrar%20mi%20restaurante%20en%20El%20Mundial%20del%20Sabor"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-accent text-accent-foreground font-bold text-base hover:brightness-110 transition-all shadow-lg"
-          >
-            Registrar mi Restaurante 🍽️
-          </a>
+          <div className="absolute inset-0 bg-gradient-to-r from-accent/10 via-transparent to-primary/10 opacity-50" />
+          <div className="relative z-10">
+            <div className="flex justify-center gap-3 mb-6">
+              {["⚽", "🔥", "🏆", "🎁"].map((emoji, i) => (
+                <motion.span
+                  key={i}
+                  className="text-4xl md:text-5xl"
+                  animate={{ y: [0, -8, 0] }}
+                  transition={{ duration: 2, delay: i * 0.3, repeat: Infinity }}
+                >
+                  {emoji}
+                </motion.span>
+              ))}
+            </div>
+            <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-3">
+              ¿Listo para el reto?
+            </h3>
+            <p className="text-muted-foreground max-w-lg mx-auto mb-6">
+              Más de 8 rutas temáticas con decenas de restaurantes esperándote. Cada visita cuenta. ¡Empieza a acumular goles hoy!
+            </p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-card border border-border">
+                <Flame className="w-4 h-4 text-accent" />
+                <span className="text-sm font-medium text-foreground">8+ rutas</span>
+              </div>
+              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-card border border-border">
+                <Trophy className="w-4 h-4 text-accent" />
+                <span className="text-sm font-medium text-foreground">Ranking en vivo</span>
+              </div>
+              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-card border border-border">
+                <Gift className="w-4 h-4 text-accent" />
+                <span className="text-sm font-medium text-foreground">Premios reales</span>
+              </div>
+            </div>
+          </div>
         </motion.div>
       </div>
     </section>
