@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { MapPin, Trophy, Video, QrCode, Star, Bot } from "lucide-react";
 import featureMapa from "@/assets/feature-mapa.png";
 import featureShorts from "@/assets/feature-shorts.png";
-import featureEvents from "@/assets/feature-events.png";
+import featureRutas from "@/assets/feature-rutas.png";
 import featureLoyalty from "@/assets/feature-loyalty.png";
 import featurePromos from "@/assets/feature-promos.png";
 import featureAi from "@/assets/feature-ai.png";
@@ -22,7 +22,7 @@ const features = [
     title: "Rutas Mundialistas",
     subtitle: "Recorre Cali y gana premios",
     description: "Completa rutas temáticas visitando restaurantes, acumula goles y desbloquea recompensas exclusivas. ¡Convierte cada comida en una aventura mundialista!",
-    image: featureEvents,
+    image: featureRutas,
     color: "from-accent/20 to-accent/5",
     iconBg: "bg-accent",
   },
