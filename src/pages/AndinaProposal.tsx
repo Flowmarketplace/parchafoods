@@ -1,10 +1,13 @@
 import { motion } from "framer-motion";
 import {
   Trophy, Tv, Bell, BarChart3, QrCode, Video, Users, Gift,
-  Megaphone, Eye, MapPin, Beer, Star, CheckCircle2, ArrowRight,
-  Smartphone, Store, TrendingUp, Camera, Sparkles, Target
+  Megaphone, Eye, MapPin, Star, CheckCircle2, ArrowRight,
+  Smartphone, Store, TrendingUp, Camera, Sparkles, Target, DollarSign, Globe, Beer
 } from "lucide-react";
 import andinaLogo from "@/assets/andina-logo.png";
+import andinaFestival from "@/assets/andina-festival.jpg";
+import andinaCheers from "@/assets/andina-cheers.jpg";
+import andinaMatch from "@/assets/andina-match.jpg";
 
 const fadeUp = {
   initial: { opacity: 0, y: 30 },
@@ -14,97 +17,48 @@ const fadeUp = {
 };
 
 const benefits = [
-  {
-    icon: Trophy,
-    title: "Patrocinio Oficial del Evento",
-    description: "Andina como patrocinador oficial de El Mundial del Sabor 2026 en Cali. Permanencia y presencia en todo el evento.",
-    highlight: true,
-  },
-  {
-    icon: Smartphone,
-    title: "Patrocinio Oficial de la App",
-    description: "Módulo exclusivo de patrocinador oficial dentro de la aplicación con presencia destacada para todos los usuarios.",
-    highlight: true,
-  },
-  {
-    icon: Tv,
-    title: "Banner y Video Principal en la App",
-    description: "Espacio premium con banner principal y video destacado visible para todos los usuarios al abrir la aplicación.",
-  },
-  {
-    icon: Bell,
-    title: "Notificaciones Push a Usuarios",
-    description: "Envío de notificaciones push directas a todos los usuarios registrados de la plataforma con campañas personalizadas.",
-  },
-  {
-    icon: BarChart3,
-    title: "Data de Consumidores y Restaurantes",
-    description: "Acceso a datos de consumo, comportamiento de usuarios y participación de restaurantes en tiempo real.",
-  },
-  {
-    icon: Gift,
-    title: "Participación en Premios",
-    description: "Participación directa en el sistema de premios y recompensas a usuarios, asociando la marca con experiencias positivas.",
-  },
-  {
-    icon: Store,
-    title: "Brandeo en 100 Restaurantes",
-    description: "Sticker oficial del Mundial del Sabor brandeado con Andina en 100 restaurantes participantes de la ciudad.",
-  },
-  {
-    icon: QrCode,
-    title: "QR Brandeados",
-    description: "Códigos QR personalizados con la marca Andina en cada restaurante participante para tracking de visitas.",
-  },
-  {
-    icon: Megaphone,
-    title: "Presencia en Redes y Pauta",
-    description: "Presencia en todas las redes sociales del evento y pauta publicitaria en comunidad de foodies de Cali.",
-  },
-  {
-    icon: Video,
-    title: "Videos Brandeados en 100 Restaurantes",
-    description: "Videos con publicidad comercial de Andina reproducidos en los televisores de los 100 restaurantes participantes.",
-  },
-  {
-    icon: TrendingUp,
-    title: "KPIs de Colocación de Cerveza",
-    description: "Métricas detalladas de colocación de cerveza Andina en los sitios participantes con reportes periódicos.",
-  },
-  {
-    icon: Eye,
-    title: "Valla Publicitaria Autopista",
-    description: "Reconocimiento de marca en valla publicitaria en la autopista con Calle 44, una de las vías más transitadas de Cali.",
-  },
-  {
-    icon: Camera,
-    title: "20 Videos Publicitarios UGC",
-    description: "Creación de 20 videos publicitarios de contenido generado por usuarios (UGC) exclusivos para Andina.",
-  },
-  {
-    icon: Sparkles,
-    title: "30 Videos con IA Publicitarios",
-    description: "Producción de 30 videos publicitarios generados con Inteligencia Artificial para campañas digitales de Andina.",
-  },
+  { icon: Trophy, title: "Patrocinio Oficial del Evento", description: "Andina como patrocinador oficial de El Mundial del Sabor 2026 en Cali. Permanencia y presencia en todo el evento.", highlight: true },
+  { icon: Smartphone, title: "Patrocinio Oficial de la App", description: "Módulo exclusivo de patrocinador oficial dentro de la aplicación con presencia destacada para todos los usuarios.", highlight: true },
+  { icon: Tv, title: "Banner y Video Principal en la App", description: "Espacio premium con banner principal y video destacado visible para todos los usuarios al abrir la aplicación." },
+  { icon: Bell, title: "Notificaciones Push a Usuarios", description: "Envío de notificaciones push directas a todos los usuarios registrados de la plataforma con campañas personalizadas." },
+  { icon: BarChart3, title: "Data de Consumidores y Restaurantes", description: "Acceso a datos de consumo, comportamiento de usuarios y participación de restaurantes en tiempo real." },
+  { icon: Gift, title: "Participación en Premios", description: "Participación directa en el sistema de premios y recompensas a usuarios, asociando la marca con experiencias positivas." },
+  { icon: Store, title: "Brandeo en 100 Restaurantes", description: "Sticker oficial del Mundial del Sabor brandeado con Andina en 100 restaurantes participantes de la ciudad." },
+  { icon: QrCode, title: "QR Brandeados", description: "Códigos QR personalizados con la marca Andina en cada restaurante participante para tracking de visitas." },
+  { icon: Megaphone, title: "Presencia en Redes y Pauta", description: "Presencia en todas las redes sociales del evento y pauta publicitaria en comunidad de foodies de Cali." },
+  { icon: Video, title: "Videos Brandeados en 100 Restaurantes", description: "Videos con publicidad comercial de Andina reproducidos en los televisores de los 100 restaurantes participantes." },
+  { icon: TrendingUp, title: "KPIs de Colocación de Cerveza", description: "Métricas detalladas de colocación de cerveza Andina en los sitios participantes con reportes periódicos." },
+  { icon: Eye, title: "Valla Publicitaria Autopista", description: "Reconocimiento de marca en valla publicitaria en la autopista con Calle 44, una de las vías más transitadas de Cali." },
+  { icon: Camera, title: "20 Videos Publicitarios UGC", description: "Creación de 20 videos publicitarios de contenido generado por usuarios (UGC) exclusivos para Andina." },
+  { icon: Sparkles, title: "30 Videos con IA Publicitarios", description: "Producción de 30 videos publicitarios generados con Inteligencia Artificial para campañas digitales de Andina." },
+];
+
+const worldCupStats = [
+  { value: "US$80.000M", label: "Impacto económico global del Mundial 2026", source: "Forbes / FIFA" },
+  { value: "30-50%", label: "Aumento proyectado de ventas en comercio colombiano", source: "ColombiaOne" },
+  { value: "US$13.900M", label: "Gasto estimado de hinchas acompañando selecciones", source: "FIFA / OMC" },
+  { value: "824.000", label: "Empleos que generará el Mundial a nivel mundial", source: "FIFA / OMC" },
+  { value: "6M", label: "Visitantes esperados solo en EE.UU. para el Mundial", source: "Semana" },
+  { value: "48", label: "Selecciones participantes — el Mundial más grande de la historia", source: "FIFA" },
 ];
 
 const keyNumbers = [
-  { value: "100", label: "Restaurantes", icon: Store },
+  { value: "100", label: "Restaurantes brandeados", icon: Store },
   { value: "50K+", label: "Usuarios esperados", icon: Users },
-  { value: "50", label: "Videos totales", icon: Video },
+  { value: "50", label: "Videos producidos", icon: Video },
   { value: "1", label: "Valla publicitaria", icon: Eye },
 ];
 
 const AndinaProposal = () => {
   return (
     <div className="min-h-screen bg-background">
-      {/* Hero */}
+      {/* Hero con imagen de fondo */}
       <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
-        {/* Background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#1a0a2e] via-[#0d1b3e] to-[#0a0a1a]" />
-        <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 30% 40%, rgba(255,215,0,0.15) 0%, transparent 50%), radial-gradient(circle at 70% 60%, rgba(0,100,200,0.1) 0%, transparent 50%)' }} />
-        
-        {/* Floating elements */}
+        <div className="absolute inset-0">
+          <img src={andinaFestival} alt="" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-background" />
+        </div>
+
         <motion.div
           className="absolute top-20 left-10 text-6xl opacity-20"
           animate={{ y: [0, -15, 0], rotate: [0, 5, 0] }}
@@ -112,14 +66,9 @@ const AndinaProposal = () => {
         >⚽</motion.div>
         <motion.div
           className="absolute bottom-32 right-16 text-5xl opacity-20"
-          animate={{ y: [0, -10, 0], rotate: [0, -5, 0] }}
+          animate={{ y: [0, -10, 0] }}
           transition={{ duration: 4, repeat: Infinity, delay: 1 }}
         >🍺</motion.div>
-        <motion.div
-          className="absolute top-40 right-32 text-4xl opacity-15"
-          animate={{ y: [0, -12, 0] }}
-          transition={{ duration: 6, repeat: Infinity, delay: 2 }}
-        >🏆</motion.div>
 
         <div className="container mx-auto px-6 relative z-10 text-center">
           <motion.div {...fadeUp}>
@@ -130,30 +79,15 @@ const AndinaProposal = () => {
           </motion.div>
 
           <motion.div {...fadeUp} transition={{ duration: 0.6, delay: 0.15 }}>
-            <img
-              src={andinaLogo}
-              alt="Cerveza Andina"
-              className="h-20 md:h-28 mx-auto mb-8 drop-shadow-2xl"
-            />
+            <img src={andinaLogo} alt="Cerveza Andina" className="h-20 md:h-28 mx-auto mb-8 drop-shadow-2xl" />
           </motion.div>
 
-          <motion.h1
-            {...fadeUp}
-            transition={{ duration: 0.6, delay: 0.25 }}
-            className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight"
-          >
-            Patrocinador Oficial de
-            <br />
-            <span className="bg-gradient-to-r from-yellow-400 via-amber-300 to-yellow-500 bg-clip-text text-transparent">
-              El Mundial del Sabor
-            </span>
+          <motion.h1 {...fadeUp} transition={{ duration: 0.6, delay: 0.25 }} className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
+            Patrocinador Oficial de<br />
+            <span className="bg-gradient-to-r from-yellow-400 via-amber-300 to-yellow-500 bg-clip-text text-transparent">El Mundial del Sabor</span>
           </motion.h1>
 
-          <motion.p
-            {...fadeUp}
-            transition={{ duration: 0.6, delay: 0.35 }}
-            className="text-white/70 text-lg md:text-xl max-w-3xl mx-auto mb-10 leading-relaxed"
-          >
+          <motion.p {...fadeUp} transition={{ duration: 0.6, delay: 0.35 }} className="text-white/70 text-lg md:text-xl max-w-3xl mx-auto mb-10 leading-relaxed">
             La oportunidad única de conectar Cerveza Andina con más de 50,000 usuarios y 100 restaurantes
             durante el evento gastronómico más grande de Cali para el Mundial FIFA 2026.
           </motion.p>
@@ -165,13 +99,11 @@ const AndinaProposal = () => {
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-yellow-500 to-amber-500 text-black font-bold text-lg hover:brightness-110 transition-all shadow-2xl shadow-yellow-500/20"
             >
-              Hablemos
-              <ArrowRight className="w-5 h-5" />
+              Hablemos <ArrowRight className="w-5 h-5" />
             </a>
           </motion.div>
         </div>
 
-        {/* Bottom gradient fade */}
         <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent" />
       </section>
 
@@ -197,7 +129,71 @@ const AndinaProposal = () => {
         </div>
       </section>
 
-      {/* Benefits Section */}
+      {/* === EL MUNDIAL EN CIFRAS === */}
+      <section className="py-20 relative overflow-hidden">
+        <div className="absolute inset-0">
+          <img src={andinaMatch} alt="" className="w-full h-full object-cover opacity-10" loading="lazy" />
+          <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background" />
+        </div>
+
+        <div className="container mx-auto px-6 relative z-10">
+          <motion.div {...fadeUp} className="text-center mb-14">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 border border-accent/20 mb-5">
+              <Globe className="w-4 h-4 text-accent" />
+              <span className="text-accent font-semibold text-sm">Datos del Mundial 2026</span>
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold text-foreground">
+              El evento más grande del{" "}
+              <span className="bg-gradient-to-r from-yellow-400 to-amber-500 bg-clip-text text-transparent">planeta</span>
+            </h2>
+            <p className="text-muted-foreground mt-4 max-w-2xl mx-auto text-lg">
+              El Mundial FIFA 2026 será el más grande de la historia. Colombia proyecta un aumento de ventas del 30% al 50% en comercio, bares y restaurantes.
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {worldCupStats.map((stat, i) => (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, y: 25 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.45, delay: i * 0.08 }}
+                className="rounded-2xl border border-border bg-card p-6 hover:border-yellow-500/30 hover:shadow-lg transition-all group"
+              >
+                <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-yellow-400 to-amber-500 bg-clip-text text-transparent mb-2">
+                  {stat.value}
+                </div>
+                <p className="text-foreground text-sm font-medium mb-2">{stat.label}</p>
+                <p className="text-muted-foreground text-xs">Fuente: {stat.source}</p>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Extra context card */}
+          <motion.div
+            {...fadeUp}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="mt-10 rounded-2xl border border-yellow-500/20 bg-gradient-to-r from-yellow-500/5 to-amber-500/5 p-6 md:p-8"
+          >
+            <div className="flex flex-col md:flex-row items-start md:items-center gap-5">
+              <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-yellow-500 to-amber-500 flex items-center justify-center flex-shrink-0">
+                <Beer className="w-7 h-7 text-black" />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-foreground mb-1">¿Por qué cerveza + Mundial + restaurantes?</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">
+                  El sector de alimentos y bebidas lidera el impacto económico del Mundial. Las reuniones sociales para ver partidos disparan el consumo en bares y restaurantes. 
+                  Según proyecciones, <strong className="text-foreground">el comercio colombiano espera un aumento del 30% al 50% en ventas</strong> durante el torneo, 
+                  con la cerveza como la bebida protagonista de cada celebración. Andina tiene la oportunidad de posicionarse como la cerveza oficial de esta experiencia gastronómica.
+                </p>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* === BENEFICIOS === */}
       <section className="py-20 relative overflow-hidden">
         <div className="absolute inset-0 opacity-[0.02]" style={{ backgroundImage: 'radial-gradient(circle, hsl(var(--foreground)) 1px, transparent 1px)', backgroundSize: '24px 24px' }} />
 
@@ -229,9 +225,7 @@ const AndinaProposal = () => {
               >
                 <div className="flex items-start gap-4">
                   <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform ${
-                    benefit.highlight
-                      ? "bg-gradient-to-br from-yellow-500 to-amber-500"
-                      : "bg-accent/10"
+                    benefit.highlight ? "bg-gradient-to-br from-yellow-500 to-amber-500" : "bg-accent/10"
                   }`}>
                     <benefit.icon className={`w-6 h-6 ${benefit.highlight ? "text-black" : "text-accent"}`} />
                   </div>
@@ -252,7 +246,23 @@ const AndinaProposal = () => {
         </div>
       </section>
 
-      {/* Data & Reach */}
+      {/* === IMAGEN FULL WIDTH: CHEERS === */}
+      <section className="relative h-[50vh] md:h-[60vh] overflow-hidden">
+        <img src={andinaCheers} alt="Brindis con cerveza" className="w-full h-full object-cover" loading="lazy" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-black/30 to-black/10" />
+        <div className="absolute bottom-0 left-0 right-0 p-8 md:p-14">
+          <motion.div {...fadeUp} className="container mx-auto">
+            <h3 className="text-3xl md:text-4xl font-bold text-white mb-2">
+              La cerveza del momento
+            </h3>
+            <p className="text-white/70 text-lg max-w-xl">
+              Cada partido es una reunión, cada reunión una oportunidad. Andina presente en la mesa de cada celebración mundialista.
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* === DATA & REACH === */}
       <section className="py-20 relative">
         <div className="container mx-auto px-6">
           <motion.div {...fadeUp} className="rounded-3xl border border-border bg-gradient-to-br from-card via-card to-accent/5 p-8 md:p-14 overflow-hidden relative">
@@ -261,9 +271,7 @@ const AndinaProposal = () => {
             <div className="relative z-10 grid md:grid-cols-2 gap-10 items-center">
               <div>
                 <span className="text-accent font-semibold text-sm tracking-widest uppercase">Alcance Garantizado</span>
-                <h2 className="text-3xl md:text-4xl font-bold text-foreground mt-3 mb-4">
-                  Datos que respaldan la inversión
-                </h2>
+                <h2 className="text-3xl md:text-4xl font-bold text-foreground mt-3 mb-4">Datos que respaldan la inversión</h2>
                 <p className="text-muted-foreground text-base leading-relaxed mb-6">
                   Con El Mundial del Sabor, Andina accede a una base activa de consumidores gastronómicos en Cali, 
                   con datos precisos de comportamiento, preferencias y ubicación.
@@ -310,7 +318,7 @@ const AndinaProposal = () => {
         </div>
       </section>
 
-      {/* Content Production */}
+      {/* === PRODUCCIÓN DE CONTENIDO === */}
       <section className="py-20 relative">
         <div className="container mx-auto px-6">
           <motion.div {...fadeUp} className="text-center mb-12">
@@ -323,27 +331,9 @@ const AndinaProposal = () => {
 
           <div className="grid md:grid-cols-3 gap-6">
             {[
-              {
-                icon: Camera,
-                number: "20",
-                title: "Videos UGC",
-                description: "Videos publicitarios de contenido generado por usuarios reales consumiendo en restaurantes con Cerveza Andina.",
-                gradient: "from-pink-500 to-rose-600",
-              },
-              {
-                icon: Sparkles,
-                number: "30",
-                title: "Videos con IA",
-                description: "Videos publicitarios generados con Inteligencia Artificial para campañas digitales innovadoras de la marca.",
-                gradient: "from-purple-500 to-indigo-600",
-              },
-              {
-                icon: Tv,
-                number: "100",
-                title: "Videos en Restaurantes",
-                description: "Publicidad comercial de Andina reproducida en televisores de los 100 restaurantes participantes.",
-                gradient: "from-blue-500 to-cyan-600",
-              },
+              { icon: Camera, number: "20", title: "Videos UGC", description: "Videos publicitarios de contenido generado por usuarios reales consumiendo en restaurantes con Cerveza Andina.", gradient: "from-pink-500 to-rose-600" },
+              { icon: Sparkles, number: "30", title: "Videos con IA", description: "Videos publicitarios generados con Inteligencia Artificial para campañas digitales innovadoras de la marca.", gradient: "from-purple-500 to-indigo-600" },
+              { icon: Tv, number: "100", title: "Videos en Restaurantes", description: "Publicidad comercial de Andina reproducida en televisores de los 100 restaurantes participantes.", gradient: "from-blue-500 to-cyan-600" },
             ].map((item, i) => (
               <motion.div
                 key={item.title}
@@ -365,17 +355,17 @@ const AndinaProposal = () => {
         </div>
       </section>
 
-      {/* CTA Final */}
+      {/* === CTA FINAL === */}
       <section className="py-24 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#1a0a2e] via-[#0d1b3e] to-[#0a0a1a]" />
-        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 50% 50%, rgba(255,215,0,0.2) 0%, transparent 60%)' }} />
+        <div className="absolute inset-0">
+          <img src={andinaMatch} alt="" className="w-full h-full object-cover opacity-20" loading="lazy" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#1a0a2e]/90 via-[#0d1b3e]/95 to-[#0a0a1a]" />
+        </div>
 
         <div className="container mx-auto px-6 relative z-10 text-center">
           <motion.div {...fadeUp}>
             <img src={andinaLogo} alt="Cerveza Andina" className="h-16 mx-auto mb-8 opacity-80" />
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              ¿Listo para ser el patrocinador oficial?
-            </h2>
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">¿Listo para ser el patrocinador oficial?</h2>
             <p className="text-white/60 text-lg max-w-2xl mx-auto mb-10">
               Hablemos sobre cómo Cerveza Andina puede ser la cerveza oficial de El Mundial del Sabor 2026 en Cali.
             </p>
@@ -385,8 +375,7 @@ const AndinaProposal = () => {
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-10 py-5 rounded-xl bg-gradient-to-r from-yellow-500 to-amber-500 text-black font-bold text-lg hover:brightness-110 transition-all shadow-2xl shadow-yellow-500/20"
             >
-              Contactar ahora
-              <ArrowRight className="w-5 h-5" />
+              Contactar ahora <ArrowRight className="w-5 h-5" />
             </a>
           </motion.div>
         </div>
