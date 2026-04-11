@@ -8,6 +8,7 @@ import andinaLogo from "@/assets/andina-logo.png";
 import andinaFestival from "@/assets/andina-festival.jpg";
 import andinaCheers from "@/assets/andina-cheers.jpg";
 import andinaMatch from "@/assets/andina-match.jpg";
+import andinaPush from "@/assets/andina-push.jpg";
 
 const fadeUp = {
   initial: { opacity: 0, y: 30 },
