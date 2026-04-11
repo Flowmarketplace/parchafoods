@@ -64,20 +64,32 @@ const features = [
   },
 ];
 
-const PhoneMockup = ({ image, title }: { image: string; title: string }) => (
+const PhoneMockup = ({ image, title, scrolling }: { image: string; title: string; scrolling?: boolean }) => (
   <div className="relative mx-auto w-[260px] md:w-[280px] lg:w-[300px]">
     {/* Phone frame */}
     <div className="relative rounded-[2.5rem] border-[6px] border-foreground/80 bg-foreground/90 shadow-2xl overflow-hidden">
       {/* Dynamic Island */}
       <div className="absolute top-2 left-1/2 -translate-x-1/2 w-20 h-5 bg-foreground rounded-full z-20" />
       {/* Screen */}
-      <div className="relative rounded-[2rem] overflow-hidden bg-muted">
-        <img
-          src={image}
-          alt={title}
-          className="w-full aspect-[9/19] object-cover object-top"
-          loading="lazy"
-        />
+      <div className="relative rounded-[2rem] overflow-hidden bg-muted aspect-[9/19]">
+        {scrolling ? (
+          <div className="absolute inset-0 overflow-hidden">
+            <img
+              src={image}
+              alt={title}
+              className="w-full animate-phone-scroll"
+              loading="lazy"
+              style={{ minHeight: '200%' }}
+            />
+          </div>
+        ) : (
+          <img
+            src={image}
+            alt={title}
+            className="w-full h-full object-cover object-top"
+            loading="lazy"
+          />
+        )}
         {/* Screen glare */}
         <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent pointer-events-none" />
       </div>
