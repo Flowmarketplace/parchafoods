@@ -1,8 +1,7 @@
 import { motion } from "framer-motion";
-import { MapPin, Trophy, Video, QrCode, Star, Bot } from "lucide-react";
+import { MapPin, Trophy, Video, QrCode, Star, Bot, Navigation } from "lucide-react";
 import featureMapa from "@/assets/feature-mapa.png";
 import featureShorts from "@/assets/feature-shorts.png";
-import featureRutas from "@/assets/feature-rutas.png";
 import featureLoyalty from "@/assets/feature-loyalty.png";
 import featurePromos from "@/assets/feature-promos.png";
 import featureAi from "@/assets/feature-ai.png";
