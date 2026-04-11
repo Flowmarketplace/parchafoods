@@ -93,9 +93,13 @@ const LandingWhatIs = () => {
               transition={{ duration: 0.7, delay: 0.1 }}
               className="hidden sm:block"
             >
-              <div className="w-[180px] md:w-[220px] h-[370px] md:h-[450px] rounded-[2rem] border-[4px] border-foreground/10 bg-foreground/5 shadow-xl overflow-hidden">
+              <motion.div
+                animate={{ y: [0, -8, 0] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                className="w-[180px] md:w-[220px] h-[370px] md:h-[450px] rounded-[2rem] border-[4px] border-foreground/10 bg-foreground/5 shadow-xl overflow-hidden"
+              >
                 <img src={mockupRestaurants} alt="Restaurantes Destacados" className="w-full h-full object-cover object-top" loading="lazy" />
-              </div>
+              </motion.div>
             </motion.div>
 
             {/* Center phone - Home (larger) */}
@@ -106,16 +110,19 @@ const LandingWhatIs = () => {
               transition={{ duration: 0.7, delay: 0.2 }}
               className="relative z-10"
             >
-              <div className="w-[220px] md:w-[280px] h-[450px] md:h-[570px] rounded-[2.5rem] border-[5px] border-foreground/15 bg-foreground/5 shadow-2xl overflow-hidden">
+              <motion.div
+                animate={{ y: [0, -10, 0] }}
+                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+                className="w-[220px] md:w-[280px] h-[450px] md:h-[570px] rounded-[2.5rem] border-[5px] border-foreground/15 bg-foreground/5 shadow-2xl overflow-hidden"
+              >
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-6 bg-foreground/10 rounded-b-2xl z-10" />
-                <img src="/mundial-sabor-icon.png" alt="" className="absolute top-8 left-1/2 -translate-x-1/2 w-8 h-8 rounded-lg z-10 opacity-0" />
                 <img
-                  src={mockupRestaurants}
+                  src={mockupHome}
                   alt="El Mundial del Sabor - Inicio"
                   className="w-full h-full object-cover object-top"
                   loading="lazy"
                 />
-              </div>
+              </motion.div>
               <div className="absolute -inset-6 bg-gradient-to-br from-primary/15 to-accent/15 rounded-full blur-3xl -z-10" />
             </motion.div>
 
@@ -127,9 +134,13 @@ const LandingWhatIs = () => {
               transition={{ duration: 0.7, delay: 0.3 }}
               className="hidden sm:block"
             >
-              <div className="w-[180px] md:w-[220px] h-[370px] md:h-[450px] rounded-[2rem] border-[4px] border-foreground/10 bg-foreground/5 shadow-xl overflow-hidden">
+              <motion.div
+                animate={{ y: [0, -8, 0] }}
+                transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                className="w-[180px] md:w-[220px] h-[370px] md:h-[450px] rounded-[2rem] border-[4px] border-foreground/10 bg-foreground/5 shadow-xl overflow-hidden"
+              >
                 <img src={mockupRutas} alt="Rutas Mundialistas" className="w-full h-full object-cover object-top" loading="lazy" />
-              </div>
+              </motion.div>
             </motion.div>
           </div>
         </div>
