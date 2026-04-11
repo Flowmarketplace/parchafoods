@@ -1,14 +1,8 @@
 import { useState, useEffect, useMemo } from 'react';
-import { Filter, Grid, List as ListIcon } from 'lucide-react';
+import { Search, SlidersHorizontal, X, Sparkles } from 'lucide-react';
+import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import PlaceCard from '@/components/PlaceCard';
 import { categories } from '@/data/places';
 import Navbar from '@/components/Navbar';
@@ -17,17 +11,34 @@ import BottomNav from '@/components/BottomNav';
 import { supabase } from '@/integrations/supabase/client';
 import { useSearchParams } from 'react-router-dom';
 import { Skeleton } from '@/components/ui/skeleton';
+import { motion, AnimatePresence } from 'framer-motion';
+
+const CATEGORY_EMOJIS: Record<string, string> = {
+  'Todos': '🍽️',
+  'Comidas Rápidas': '🍔',
+  'Café': '☕',
+  'Food Truck': '🚚',
+  'Mexicana': '🌮',
+  'Asiática': '🍣',
+  'Bar': '🍺',
+  'Parrilla': '🥩',
+  'Italiana': '🍕',
+  'Rooftop': '🏙️',
+  'Tradicional': '🍲',
+  'Remate': '🎉',
+};
 
 const Listings = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [searchParams] = useSearchParams();
   const initialCategory = searchParams.get('category') || 'Todos';
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
   const [selectedNeighborhood, setSelectedNeighborhood] = useState('Todos');
+  const [searchQuery, setSearchQuery] = useState('');
   const [places, setPlaces] = useState<any[]>([]);
   const [dbNeighborhoods, setDbNeighborhoods] = useState<string[]>(['Todos']);
   const [loading, setLoading] = useState(true);
+  const [showFilters, setShowFilters] = useState(false);
 
   useEffect(() => {
     const cat = searchParams.get('category');
@@ -70,7 +81,6 @@ const Listings = () => {
         });
         setPlaces(transformed);
 
-        // Extract unique neighborhoods from DB
         const uniqueNeighborhoods = [...new Set(data.map((b: any) => b.neighborhood).filter(Boolean))] as string[];
         uniqueNeighborhoods.sort((a, b) => a.localeCompare(b, 'es'));
         setDbNeighborhoods(['Todos', ...uniqueNeighborhoods]);
@@ -86,125 +96,254 @@ const Listings = () => {
     return places.filter((place) => {
       const categoryMatch = selectedCategory === 'Todos' || place.category === selectedCategory;
       const neighborhoodMatch = selectedNeighborhood === 'Todos' || normalizeText(place.neighborhood || '') === normalizeText(selectedNeighborhood);
-      return categoryMatch && neighborhoodMatch;
+      const searchMatch = !searchQuery || normalizeText(place.name).includes(normalizeText(searchQuery)) || normalizeText(place.address || '').includes(normalizeText(searchQuery));
+      return categoryMatch && neighborhoodMatch && searchMatch;
     });
-  }, [places, selectedCategory, selectedNeighborhood]);
+  }, [places, selectedCategory, selectedNeighborhood, searchQuery]);
+
+  const featuredPlaces = filteredPlaces.filter(p => p.featured);
+  const regularPlaces = filteredPlaces.filter(p => !p.featured);
+  const activeFilters = (selectedCategory !== 'Todos' ? 1 : 0) + (selectedNeighborhood !== 'Todos' ? 1 : 0);
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-background">
       <Navbar onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
       
-      <div className="flex flex-1 pt-16 md:pt-28">
+      <div className="flex flex-1 pt-16 md:pt-20">
         <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
         
         <main className="flex-1 lg:ml-64">
-          <div className="w-full max-w-screen-2xl mx-auto px-3 sm:px-4 md:px-6 py-3 sm:py-4 md:py-6 pb-20 md:pb-8">
-            <div className="mb-6">
-              <h1 className="text-3xl font-bold mb-2">Explorar lugares</h1>
-              <p className="text-muted-foreground">
-                Descubre los mejores lugares de Cali
-              </p>
+          {/* Hero Header */}
+          <div className="relative overflow-hidden bg-gradient-to-br from-primary via-primary to-secondary py-8 sm:py-12 px-4 sm:px-6 md:px-8">
+            <div className="absolute inset-0 opacity-10">
+              <div className="absolute top-4 right-8 text-6xl animate-bounce" style={{ animationDuration: '3s' }}>⚽</div>
+              <div className="absolute bottom-4 left-12 text-5xl animate-bounce" style={{ animationDuration: '4s', animationDelay: '1s' }}>🏆</div>
+              <div className="absolute top-1/2 right-1/3 text-4xl animate-bounce" style={{ animationDuration: '3.5s', animationDelay: '0.5s' }}>🍽️</div>
             </div>
+            
+            <div className="relative max-w-screen-2xl mx-auto">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <Sparkles className="h-5 w-5 text-accent" />
+                  <span className="text-sm font-medium text-primary-foreground/80">Explora Cali</span>
+                </div>
+                <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-primary-foreground mb-2">
+                  Descubre los mejores
+                  <br />
+                  <span className="text-accent">sabores de Cali</span>
+                </h1>
+                <p className="text-primary-foreground/70 text-sm sm:text-base max-w-lg">
+                  Encuentra restaurantes, cafés, bares y mucho más en tu ciudad
+                </p>
+              </motion.div>
 
-            {/* Filters */}
-            <div className="flex flex-wrap gap-4 mb-6">
-              <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Categoría" />
-                </SelectTrigger>
-                <SelectContent>
-                  {categories.map((category) => (
-                    <SelectItem key={category} value={category}>
-                      {category}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-
-              <Select value={selectedNeighborhood} onValueChange={setSelectedNeighborhood}>
-                <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Barrio" />
-                </SelectTrigger>
-                <SelectContent>
-                  {dbNeighborhoods.map((neighborhood) => (
-                    <SelectItem key={neighborhood} value={neighborhood}>
-                      {neighborhood}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-
-              <div className="ml-auto flex gap-2">
+              {/* Search bar */}
+              <motion.div 
+                className="mt-6 flex gap-2 max-w-xl"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+              >
+                <div className="relative flex-1">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    placeholder="Buscar restaurantes, barrios..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="pl-10 h-12 rounded-xl bg-card/95 backdrop-blur-sm border-0 shadow-lg text-foreground placeholder:text-muted-foreground"
+                  />
+                  {searchQuery && (
+                    <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2">
+                      <X className="h-4 w-4 text-muted-foreground hover:text-foreground" />
+                    </button>
+                  )}
+                </div>
                 <Button
-                  variant={viewMode === 'grid' ? 'default' : 'outline'}
+                  variant="secondary"
                   size="icon"
-                  onClick={() => setViewMode('grid')}
+                  className="h-12 w-12 rounded-xl shadow-lg relative"
+                  onClick={() => setShowFilters(!showFilters)}
                 >
-                  <Grid className="h-4 w-4" />
+                  <SlidersHorizontal className="h-4 w-4" />
+                  {activeFilters > 0 && (
+                    <span className="absolute -top-1 -right-1 w-5 h-5 bg-accent text-accent-foreground text-xs font-bold rounded-full flex items-center justify-center">
+                      {activeFilters}
+                    </span>
+                  )}
                 </Button>
-                <Button
-                  variant={viewMode === 'list' ? 'default' : 'outline'}
-                  size="icon"
-                  onClick={() => setViewMode('list')}
-                >
-                  <ListIcon className="h-4 w-4" />
-                </Button>
+              </motion.div>
+            </div>
+          </div>
+
+          <div className="w-full max-w-screen-2xl mx-auto px-3 sm:px-4 md:px-6">
+            {/* Category chips */}
+            <div className="py-4 -mx-3 sm:-mx-4 md:-mx-6 px-3 sm:px-4 md:px-6 overflow-x-auto scrollbar-hide">
+              <div className="flex gap-2 min-w-max">
+                {categories.map((cat) => {
+                  const isActive = selectedCategory === cat;
+                  return (
+                    <button
+                      key={cat}
+                      onClick={() => setSelectedCategory(cat)}
+                      className={`flex items-center gap-1.5 px-4 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-200 ${
+                        isActive
+                          ? 'bg-primary text-primary-foreground shadow-md scale-105'
+                          : 'bg-muted text-muted-foreground hover:bg-muted/80 hover:text-foreground'
+                      }`}
+                    >
+                      <span>{CATEGORY_EMOJIS[cat] || '🍽️'}</span>
+                      {cat}
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
-            {/* Active Filters */}
-            <div className="flex flex-wrap gap-2 mb-6">
-              {selectedCategory !== 'Todos' && (
-                <Badge variant="secondary" className="cursor-pointer" onClick={() => setSelectedCategory('Todos')}>
-                  {selectedCategory} ✕
-                </Badge>
+            {/* Neighborhood filter (expandable) */}
+            <AnimatePresence>
+              {showFilters && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: 'auto', opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  className="overflow-hidden"
+                >
+                  <div className="pb-4 border-b border-border/50 mb-4">
+                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Barrio</p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {dbNeighborhoods.map((n) => (
+                        <button
+                          key={n}
+                          onClick={() => setSelectedNeighborhood(n)}
+                          className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                            selectedNeighborhood === n
+                              ? 'bg-secondary text-secondary-foreground shadow-sm'
+                              : 'bg-muted/60 text-muted-foreground hover:bg-muted'
+                          }`}
+                        >
+                          {n}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </motion.div>
               )}
-              {selectedNeighborhood !== 'Todos' && (
-                <Badge variant="secondary" className="cursor-pointer" onClick={() => setSelectedNeighborhood('Todos')}>
-                  {selectedNeighborhood} ✕
-                </Badge>
-              )}
-            </div>
+            </AnimatePresence>
 
-            {/* Results */}
-            <div className="mb-4">
-              <p className="text-muted-foreground">
-                {loading ? 'Cargando...' : `${filteredPlaces.length} ${filteredPlaces.length === 1 ? 'resultado' : 'resultados'}`}
-              </p>
-            </div>
-
-            {/* Places Grid/List */}
-            {loading ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {[...Array(6)].map((_, i) => (
-                  <Skeleton key={i} className="h-64 rounded-xl" />
-                ))}
-              </div>
-            ) : (
-              <div className={
-                viewMode === 'grid'
-                  ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'
-                  : 'flex flex-col gap-4'
-              }>
-                {filteredPlaces.map((place) => (
-                  <PlaceCard key={place.id} place={place} />
-                ))}
+            {/* Active filters pills */}
+            {activeFilters > 0 && (
+              <div className="flex flex-wrap items-center gap-2 mb-4">
+                <span className="text-xs text-muted-foreground">Filtros:</span>
+                {selectedCategory !== 'Todos' && (
+                  <Badge 
+                    variant="secondary" 
+                    className="cursor-pointer hover:bg-destructive/10 hover:text-destructive transition-colors gap-1"
+                    onClick={() => setSelectedCategory('Todos')}
+                  >
+                    {CATEGORY_EMOJIS[selectedCategory]} {selectedCategory}
+                    <X className="h-3 w-3" />
+                  </Badge>
+                )}
+                {selectedNeighborhood !== 'Todos' && (
+                  <Badge 
+                    variant="secondary" 
+                    className="cursor-pointer hover:bg-destructive/10 hover:text-destructive transition-colors gap-1"
+                    onClick={() => setSelectedNeighborhood('Todos')}
+                  >
+                    📍 {selectedNeighborhood}
+                    <X className="h-3 w-3" />
+                  </Badge>
+                )}
+                <button
+                  onClick={() => { setSelectedCategory('Todos'); setSelectedNeighborhood('Todos'); }}
+                  className="text-xs text-primary hover:underline font-medium"
+                >
+                  Limpiar todo
+                </button>
               </div>
             )}
 
-            {!loading && filteredPlaces.length === 0 && (
-              <div className="text-center py-12">
-                <p className="text-muted-foreground">No se encontraron lugares con estos filtros</p>
+            {/* Results count */}
+            <div className="flex items-center justify-between mb-4">
+              <p className="text-sm text-muted-foreground">
+                {loading ? 'Cargando...' : (
+                  <>
+                    <span className="font-semibold text-foreground">{filteredPlaces.length}</span>{' '}
+                    {filteredPlaces.length === 1 ? 'resultado' : 'resultados'}
+                  </>
+                )}
+              </p>
+            </div>
+
+            {/* Loading skeleton */}
+            {loading ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 pb-24">
+                {[...Array(8)].map((_, i) => (
+                  <div key={i} className="rounded-2xl overflow-hidden border border-border/50">
+                    <Skeleton className="aspect-[4/3]" />
+                    <div className="p-4 space-y-3">
+                      <Skeleton className="h-5 w-3/4" />
+                      <Skeleton className="h-4 w-1/2" />
+                      <Skeleton className="h-8 w-full" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : filteredPlaces.length === 0 ? (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="text-center py-16 sm:py-20"
+              >
+                <div className="text-6xl mb-4">🔍</div>
+                <h3 className="text-xl font-bold mb-2">No encontramos resultados</h3>
+                <p className="text-muted-foreground mb-6 max-w-md mx-auto">
+                  Intenta cambiar los filtros o buscar algo diferente
+                </p>
                 <Button
                   variant="outline"
-                  className="mt-4"
                   onClick={() => {
                     setSelectedCategory('Todos');
                     setSelectedNeighborhood('Todos');
+                    setSearchQuery('');
                   }}
+                  className="rounded-full"
                 >
                   Limpiar filtros
                 </Button>
+              </motion.div>
+            ) : (
+              <div className="pb-24 space-y-8">
+                {/* Featured section */}
+                {featuredPlaces.length > 0 && selectedCategory === 'Todos' && (
+                  <div>
+                    <div className="flex items-center gap-2 mb-4">
+                      <span className="text-lg">⭐</span>
+                      <h2 className="text-lg font-bold">Destacados</h2>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5">
+                      {featuredPlaces.map((place) => (
+                        <PlaceCard key={place.id} place={place} featured />
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* All results */}
+                <div>
+                  {featuredPlaces.length > 0 && selectedCategory === 'Todos' && (
+                    <h2 className="text-lg font-bold mb-4">Todos los lugares</h2>
+                  )}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5">
+                    {(selectedCategory === 'Todos' ? regularPlaces : filteredPlaces).map((place) => (
+                      <PlaceCard key={place.id} place={place} />
+                    ))}
+                  </div>
+                </div>
               </div>
             )}
           </div>
