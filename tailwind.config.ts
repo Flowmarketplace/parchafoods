@@ -76,11 +76,18 @@ export default {
           "0%": { transform: "translate(0, 0) scale(1)", opacity: "1" },
           "100%": { transform: "translate(var(--spark-x), var(--spark-y)) scale(0)", opacity: "0" },
         },
+        "phone-scroll": {
+          "0%, 10%": { transform: "translateY(0)" },
+          "40%, 60%": { transform: "translateY(-35%)" },
+          "80%, 90%": { transform: "translateY(-65%)" },
+          "100%": { transform: "translateY(0)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "card-spark": "card-spark 0.5s ease-out forwards",
+        "phone-scroll": "phone-scroll 12s ease-in-out infinite",
       },
     },
   },
