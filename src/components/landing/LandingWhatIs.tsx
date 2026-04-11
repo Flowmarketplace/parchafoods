@@ -85,7 +85,7 @@ const LandingWhatIs = () => {
             </p>
           </motion.div>
 
-          <div className="flex justify-center items-end gap-4 md:gap-8">
+          <div className="flex justify-center items-end gap-6 md:gap-10">
             {/* Left phone - Restaurants */}
             <motion.div
               initial={{ opacity: 0, y: 50, rotate: -5 }}
@@ -97,9 +97,23 @@ const LandingWhatIs = () => {
               <motion.div
                 animate={{ y: [0, -8, 0] }}
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="w-[180px] md:w-[220px] h-[370px] md:h-[450px] rounded-[2rem] border-[4px] border-foreground/10 bg-foreground/5 shadow-xl overflow-hidden"
               >
-                <img src={mockupRestaurants} alt="Restaurantes Destacados" className="w-full h-full object-cover object-top" loading="lazy" />
+                {/* Phone case */}
+                <div className="relative w-[180px] md:w-[220px] h-[370px] md:h-[450px] rounded-[2.5rem] bg-foreground/90 p-[6px] shadow-2xl">
+                  {/* Inner bezel */}
+                  <div className="w-full h-full rounded-[2rem] overflow-hidden bg-black relative">
+                    {/* Status bar / notch */}
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-20 h-5 bg-black rounded-b-xl z-10" />
+                    {/* Screen content */}
+                    <img src={mockupRestaurants} alt="Restaurantes Destacados" className="w-full h-full object-cover object-top" loading="lazy" />
+                    {/* Screen glare */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent pointer-events-none" />
+                  </div>
+                  {/* Side buttons */}
+                  <div className="absolute -right-[2px] top-24 w-[3px] h-8 bg-foreground/70 rounded-r-sm" />
+                  <div className="absolute -left-[2px] top-20 w-[3px] h-6 bg-foreground/70 rounded-l-sm" />
+                  <div className="absolute -left-[2px] top-32 w-[3px] h-10 bg-foreground/70 rounded-l-sm" />
+                </div>
               </motion.div>
             </motion.div>
 
@@ -114,17 +128,30 @@ const LandingWhatIs = () => {
               <motion.div
                 animate={{ y: [0, -10, 0] }}
                 transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-                className="w-[220px] md:w-[280px] h-[450px] md:h-[570px] rounded-[2.5rem] border-[5px] border-foreground/15 bg-foreground/5 shadow-2xl overflow-hidden"
               >
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-6 bg-foreground/10 rounded-b-2xl z-10" />
-                <img
-                  src={mockupHome}
-                  alt="El Mundial del Sabor - Inicio"
-                  className="w-full h-full object-cover object-top"
-                  loading="lazy"
-                />
+                {/* Phone case */}
+                <div className="relative w-[230px] md:w-[280px] h-[470px] md:h-[570px] rounded-[3rem] bg-foreground/90 p-[7px] shadow-2xl">
+                  {/* Inner bezel */}
+                  <div className="w-full h-full rounded-[2.5rem] overflow-hidden bg-black relative">
+                    {/* Dynamic Island */}
+                    <div className="absolute top-2 left-1/2 -translate-x-1/2 w-24 h-6 bg-black rounded-full z-10" />
+                    {/* Screen content */}
+                    <img
+                      src={mockupHome}
+                      alt="El Mundial del Sabor - Inicio"
+                      className="w-full h-full object-cover object-top"
+                      loading="lazy"
+                    />
+                    {/* Screen glare */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent pointer-events-none" />
+                  </div>
+                  {/* Side buttons */}
+                  <div className="absolute -right-[2px] top-28 w-[3px] h-10 bg-foreground/70 rounded-r-sm" />
+                  <div className="absolute -left-[2px] top-24 w-[3px] h-7 bg-foreground/70 rounded-l-sm" />
+                  <div className="absolute -left-[2px] top-36 w-[3px] h-12 bg-foreground/70 rounded-l-sm" />
+                </div>
               </motion.div>
-              <div className="absolute -inset-6 bg-gradient-to-br from-primary/15 to-accent/15 rounded-full blur-3xl -z-10" />
+              <div className="absolute -inset-8 bg-gradient-to-br from-primary/15 to-accent/15 rounded-full blur-3xl -z-10" />
             </motion.div>
 
             {/* Right phone - Rutas */}
@@ -138,9 +165,23 @@ const LandingWhatIs = () => {
               <motion.div
                 animate={{ y: [0, -8, 0] }}
                 transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                className="w-[180px] md:w-[220px] h-[370px] md:h-[450px] rounded-[2rem] border-[4px] border-foreground/10 bg-foreground/5 shadow-xl overflow-hidden"
               >
-                <img src={mockupRutas} alt="Rutas Mundialistas" className="w-full h-full object-cover object-top" loading="lazy" />
+                {/* Phone case */}
+                <div className="relative w-[180px] md:w-[220px] h-[370px] md:h-[450px] rounded-[2.5rem] bg-foreground/90 p-[6px] shadow-2xl">
+                  {/* Inner bezel */}
+                  <div className="w-full h-full rounded-[2rem] overflow-hidden bg-black relative">
+                    {/* Status bar / notch */}
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-20 h-5 bg-black rounded-b-xl z-10" />
+                    {/* Screen content */}
+                    <img src={mockupRutas} alt="Rutas Mundialistas" className="w-full h-full object-cover object-top" loading="lazy" />
+                    {/* Screen glare */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent pointer-events-none" />
+                  </div>
+                  {/* Side buttons */}
+                  <div className="absolute -right-[2px] top-24 w-[3px] h-8 bg-foreground/70 rounded-r-sm" />
+                  <div className="absolute -left-[2px] top-20 w-[3px] h-6 bg-foreground/70 rounded-l-sm" />
+                  <div className="absolute -left-[2px] top-32 w-[3px] h-10 bg-foreground/70 rounded-l-sm" />
+                </div>
               </motion.div>
             </motion.div>
           </div>
