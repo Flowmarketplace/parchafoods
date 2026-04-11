@@ -9,6 +9,7 @@ import andinaFestival from "@/assets/andina-festival.jpg";
 import andinaCheers from "@/assets/andina-cheers.jpg";
 import andinaMatch from "@/assets/andina-match.jpg";
 import andinaPush from "@/assets/andina-push.jpg";
+import andinaCans from "@/assets/andina-cans.png";
 
 const fadeUp = {
   initial: { opacity: 0, y: 30 },
