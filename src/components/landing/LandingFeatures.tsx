@@ -21,7 +21,7 @@ const features = [
     title: "Rutas Mundialistas",
     subtitle: "Recorre Cali y gana premios",
     description: "Completa rutas temáticas visitando restaurantes, acumula goles y desbloquea recompensas exclusivas. ¡Convierte cada comida en una aventura mundialista!",
-    image: featureRutas,
+    image: "",
     color: "from-accent/20 to-accent/5",
     iconBg: "bg-accent",
   },
