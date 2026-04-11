@@ -46,6 +46,7 @@ import AdminEvents from "./pages/admin/AdminEvents";
 import AdminCategories from "./pages/admin/AdminCategories";
 import AdminProspects from "./pages/admin/AdminProspects";
 import Landing from "./pages/Landing";
+import AndinaProposal from "./pages/AndinaProposal";
 
 function App() {
   return (
@@ -53,6 +54,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/landing" element={<Landing />} />
+        <Route path="/andina" element={<AndinaProposal />} />
         <Route path="/app" element={<Index />} />
         <Route path="/place/:id" element={<PlaceDetails />} />
         <Route path="/event/:id" element={<EventDetails />} />
