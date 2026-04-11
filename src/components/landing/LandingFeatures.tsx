@@ -1,8 +1,7 @@
 import { motion } from "framer-motion";
-import { MapPin, Trophy, Video, QrCode, Star, Bot } from "lucide-react";
+import { MapPin, Trophy, Video, QrCode, Star, Bot, Navigation } from "lucide-react";
 import featureMapa from "@/assets/feature-mapa.png";
 import featureShorts from "@/assets/feature-shorts.png";
-import featureRutas from "@/assets/feature-rutas.png";
 import featureLoyalty from "@/assets/feature-loyalty.png";
 import featurePromos from "@/assets/feature-promos.png";
 import featureAi from "@/assets/feature-ai.png";
@@ -22,7 +21,7 @@ const features = [
     title: "Rutas Mundialistas",
     subtitle: "Recorre Cali y gana premios",
     description: "Completa rutas temáticas visitando restaurantes, acumula goles y desbloquea recompensas exclusivas. ¡Convierte cada comida en una aventura mundialista!",
-    image: featureRutas,
+    image: "",
     color: "from-accent/20 to-accent/5",
     iconBg: "bg-accent",
   },
@@ -101,6 +100,59 @@ const PhoneMockup = ({ image, title, scrolling }: { image: string; title: string
   </div>
 );
 
+const ROUTES = [
+  { emoji: '🍔', name: 'Comidas Rápidas', color: 'from-orange-500 to-red-500', stops: 8 },
+  { emoji: '☕', name: 'Ruta del Café', color: 'from-amber-700 to-yellow-600', stops: 6 },
+  { emoji: '🌮', name: 'Comida Mexicana', color: 'from-green-600 to-emerald-500', stops: 5 },
+  { emoji: '🍣', name: 'Ruta del Sushi', color: 'from-pink-500 to-rose-500', stops: 4 },
+  { emoji: '🥩', name: 'Ruta del Asado', color: 'from-red-700 to-orange-600', stops: 6 },
+  { emoji: '🍕', name: 'Ruta Italiana', color: 'from-green-500 to-red-500', stops: 5 },
+  { emoji: '🍺', name: 'Ruta Cervecera', color: 'from-yellow-500 to-amber-600', stops: 7 },
+  { emoji: '🏙️', name: 'Rooftops', color: 'from-indigo-500 to-purple-600', stops: 4 },
+];
+
+const RoutesShowcase = () => (
+  <div className="w-[300px] md:w-[360px] lg:w-[400px]">
+    <div className="grid grid-cols-2 gap-3">
+      {ROUTES.map((route, idx) => (
+        <motion.div
+          key={route.name}
+          initial={{ opacity: 0, scale: 0.8, y: 20 }}
+          whileInView={{ opacity: 1, scale: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4, delay: idx * 0.08 }}
+          whileHover={{ scale: 1.05, y: -4 }}
+          className="relative group cursor-pointer"
+        >
+          <div className={`relative rounded-2xl bg-gradient-to-br ${route.color} p-3.5 sm:p-4 shadow-lg overflow-hidden`}>
+            <div className="absolute -right-2 -bottom-2 text-5xl opacity-20">{route.emoji}</div>
+            <div className="relative z-10">
+              <span className="text-2xl sm:text-3xl block mb-1.5">{route.emoji}</span>
+              <h4 className="text-white font-bold text-xs sm:text-sm leading-tight mb-1">{route.name}</h4>
+              <div className="flex items-center gap-1">
+                <Navigation className="h-3 w-3 text-white/70" />
+                <span className="text-white/80 text-[10px] sm:text-xs">{route.stops} paradas</span>
+              </div>
+            </div>
+            <div className="absolute inset-0 bg-white/0 group-hover:bg-white/10 transition-colors duration-300 rounded-2xl" />
+          </div>
+        </motion.div>
+      ))}
+    </div>
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: 0.6 }}
+      className="mt-4 flex items-center justify-center gap-2 bg-card border border-border rounded-full px-4 py-2.5 shadow-md"
+    >
+      <span className="text-lg">⚽</span>
+      <span className="text-xs sm:text-sm font-semibold text-foreground">Completa rutas y gana goles</span>
+      <span className="text-lg">🏆</span>
+    </motion.div>
+  </div>
+);
+
 const LandingFeatures = () => {
   return (
     <section id="funciones" className="py-20 md:py-32 relative overflow-hidden">
@@ -140,7 +192,7 @@ const LandingFeatures = () => {
 
               <div className="container mx-auto px-6 relative z-10">
                 <div className={`flex flex-col ${isReversed ? 'md:flex-row-reverse' : 'md:flex-row'} items-center gap-10 md:gap-16 lg:gap-24`}>
-                  {/* Phone mockup */}
+                  {/* Visual */}
                   <motion.div
                     initial={{ opacity: 0, x: isReversed ? 60 : -60 }}
                     whileInView={{ opacity: 1, x: 0 }}
@@ -148,12 +200,16 @@ const LandingFeatures = () => {
                     transition={{ duration: 0.7, ease: "easeOut" }}
                     className="flex-shrink-0"
                   >
-                    <motion.div
-                      animate={{ y: [0, -8, 0] }}
-                      transition={{ duration: 4 + i * 0.5, repeat: Infinity, ease: "easeInOut" }}
-                    >
-                      <PhoneMockup image={feature.image} title={feature.title} scrolling={i === 1} />
-                    </motion.div>
+                    {i === 1 ? (
+                      <RoutesShowcase />
+                    ) : (
+                      <motion.div
+                        animate={{ y: [0, -8, 0] }}
+                        transition={{ duration: 4 + i * 0.5, repeat: Infinity, ease: "easeInOut" }}
+                      >
+                        <PhoneMockup image={feature.image} title={feature.title} />
+                      </motion.div>
+                    )}
                   </motion.div>
 
                   {/* Text content */}
