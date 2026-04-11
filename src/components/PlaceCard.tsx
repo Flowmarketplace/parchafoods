@@ -1,14 +1,14 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
-import { MapPin, Star, Phone, Heart } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
+import { MapPin, Star, Heart, ArrowRight } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { Place } from '@/types/place';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
+import { motion } from 'framer-motion';
 
 interface PlaceCardProps {
   place: Place;
+  featured?: boolean;
 }
 
 const EMOJIS = ['⚽', '🏆', '🎉', '⭐', '🥅'];
@@ -22,7 +22,7 @@ interface Spark {
   distance: number;
 }
 
-const PlaceCard = ({ place }: PlaceCardProps) => {
+const PlaceCard = ({ place, featured }: PlaceCardProps) => {
   const navigate = useNavigate();
   const [sparks, setSparks] = useState<Spark[]>([]);
   const [isFavorite, setIsFavorite] = useState(false);
@@ -77,10 +77,16 @@ const PlaceCard = ({ place }: PlaceCardProps) => {
     setTimeout(() => navigate(`/place/${place.slug || place.id}`), 200);
   }, [navigate, place.slug, place.id]);
 
+  const isFeaturedCard = featured || place.featured;
+
   return (
-    <Card
+    <motion.div
       ref={cardRef}
-      className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer group active:scale-[0.98] touch-manipulation relative"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
+      className="group relative rounded-2xl overflow-hidden cursor-pointer active:scale-[0.97] transition-all duration-300 touch-manipulation bg-card border border-border/50 shadow-sm hover:shadow-xl hover:border-primary/20"
+      onClick={handleClick}
     >
       {/* Micro-burst sparks */}
       {sparks.map((s) => (
@@ -99,84 +105,94 @@ const PlaceCard = ({ place }: PlaceCardProps) => {
         </span>
       ))}
 
-      <div className="relative h-40 sm:h-48 overflow-hidden" onClick={handleClick}>
+      {/* Image section */}
+      <div className="relative aspect-[4/3] overflow-hidden">
         <img
           src={place.images[0]}
           alt={place.name}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
         />
-        {place.featured && (
-          <Badge className="absolute top-2 left-2 bg-secondary">Destacado</Badge>
-        )}
-        {userId && (
-          <button
-            onClick={toggleFavorite}
-            className="absolute top-2 right-2 z-10 p-1.5 rounded-full bg-background/70 backdrop-blur-sm hover:bg-background/90 transition-colors"
-          >
-            <Heart className={`h-4 w-4 transition-colors ${isFavorite ? 'fill-red-500 text-red-500' : 'text-foreground'}`} />
-          </button>
-        )}
+        
+        {/* Gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+
+        {/* Top badges row */}
+        <div className="absolute top-3 left-3 right-3 flex items-start justify-between">
+          <div className="flex gap-1.5">
+            {isFeaturedCard && (
+              <span className="px-2.5 py-1 rounded-full bg-accent text-accent-foreground text-xs font-bold shadow-lg">
+                ⭐ Destacado
+              </span>
+            )}
+            <span className="px-2.5 py-1 rounded-full bg-card/90 backdrop-blur-md text-foreground text-xs font-medium shadow-sm">
+              {place.category}
+            </span>
+          </div>
+          
+          {userId && (
+            <button
+              onClick={toggleFavorite}
+              className="w-9 h-9 rounded-full bg-card/80 backdrop-blur-md flex items-center justify-center shadow-sm hover:bg-card transition-colors"
+            >
+              <Heart className={`h-4 w-4 transition-all ${isFavorite ? 'fill-destructive text-destructive scale-110' : 'text-foreground'}`} />
+            </button>
+          )}
+        </div>
+
+        {/* Bottom info overlay */}
+        <div className="absolute bottom-0 left-0 right-0 p-4">
+          <h3 className="text-lg sm:text-xl font-bold text-white mb-1 line-clamp-1 drop-shadow-md">
+            {place.name}
+          </h3>
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1">
+              <MapPin className="h-3.5 w-3.5 text-white/80" />
+              <span className="text-xs text-white/90 line-clamp-1">{place.neighborhood || place.address}</span>
+            </div>
+            {place.rating && (
+              <div className="flex items-center gap-1 bg-accent/90 px-2 py-0.5 rounded-full">
+                <Star className="h-3 w-3 fill-accent-foreground text-accent-foreground" />
+                <span className="text-xs font-bold text-accent-foreground">{place.rating}</span>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
 
-      <CardContent className="p-3 sm:p-4">
-        <div className="flex items-start justify-between mb-1.5 sm:mb-2">
-          <h3 className="font-semibold text-base sm:text-lg line-clamp-1">{place.name}</h3>
-          {place.rating && (
-            <div className="flex items-center gap-0.5 sm:gap-1 text-xs sm:text-sm">
-              <Star className="h-3.5 w-3.5 sm:h-4 sm:w-4 fill-secondary text-secondary" />
-              <span className="font-medium">{place.rating}</span>
-            </div>
-          )}
-        </div>
-
-        <div className="flex flex-wrap gap-1.5 mb-1.5 sm:mb-2">
-          <Badge variant="outline" className="text-xs">
-            {place.category}
-          </Badge>
-          {place.priceRange && (
-            <Badge variant="secondary" className="text-[10px] sm:text-xs">
-              💰 {place.priceRange}
-            </Badge>
-          )}
-        </div>
-
-        {place.foodType && place.foodType.length > 0 && (
-          <div className="flex flex-wrap gap-1 mb-1.5 sm:mb-2">
-            {place.foodType.slice(0, 2).map((type) => (
-              <Badge key={type} variant="secondary" className="text-[10px] sm:text-xs">
-                🍽️ {type}
+      {/* Content section */}
+      <div className="p-4">
+        {/* Price and details */}
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex flex-wrap gap-1.5">
+            {place.priceRange && (
+              <Badge variant="secondary" className="text-xs font-medium">
+                💰 {place.priceRange}
               </Badge>
-            ))}
+            )}
+            {place.zone && (
+              <Badge variant="outline" className="text-xs">
+                📍 {place.zone}
+              </Badge>
+            )}
           </div>
-        )}
-
-        <div className="flex flex-wrap gap-1 mb-2 sm:mb-3">
-          {place.familyFriendly && <Badge variant="outline" className="text-xs">👨‍👩‍👧‍👦</Badge>}
-          {place.petFriendly && <Badge variant="outline" className="text-xs">🐕</Badge>}
-          {place.goodForCouples && <Badge variant="outline" className="text-xs">💑</Badge>}
-          {place.goodForKids && <Badge variant="outline" className="text-xs">👶</Badge>}
         </div>
 
-        <div className="flex items-start gap-1.5 sm:gap-2 text-xs sm:text-sm text-muted-foreground mb-1.5 sm:mb-2">
-          <MapPin className="h-3.5 w-3.5 sm:h-4 sm:w-4 mt-0.5 flex-shrink-0" />
-          <span className="line-clamp-2">{place.address}</span>
+        {/* Quick tags */}
+        <div className="flex flex-wrap gap-1.5 mb-3">
+          {place.familyFriendly && <span className="text-xs bg-muted px-2 py-0.5 rounded-full">👨‍👩‍👧‍👦 Familiar</span>}
+          {place.petFriendly && <span className="text-xs bg-muted px-2 py-0.5 rounded-full">🐕 Pet Friendly</span>}
+          {place.goodForCouples && <span className="text-xs bg-muted px-2 py-0.5 rounded-full">💑 Parejas</span>}
         </div>
 
-        {place.phone && (
-          <div className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-muted-foreground mb-2 sm:mb-3">
-            <Phone className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-            <span>{place.phone}</span>
+        {/* CTA */}
+        <div className="flex items-center justify-between pt-2 border-t border-border/50">
+          <span className="text-sm font-medium text-primary">Ver detalles</span>
+          <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300">
+            <ArrowRight className="h-4 w-4 text-primary group-hover:text-primary-foreground transition-colors" />
           </div>
-        )}
-
-        <Button
-          className="w-full h-9 sm:h-10 text-sm active:scale-95 transition-transform touch-manipulation"
-          onClick={handleClick}
-        >
-          Ver más detalles
-        </Button>
-      </CardContent>
-    </Card>
+        </div>
+      </div>
+    </motion.div>
   );
 };
 
