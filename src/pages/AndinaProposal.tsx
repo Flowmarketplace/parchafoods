@@ -264,111 +264,68 @@ const AndinaProposal = () => {
         </div>
       </section>
 
-      {/* === PUSH NOTIFICATIONS — BOLD SPLIT LAYOUT === */}
-      <section className="relative overflow-hidden">
-        <div className="grid lg:grid-cols-2 min-h-[700px]">
-          {/* Left — Blue brand panel with cans */}
-          <div className="relative bg-[#0033A0] flex items-center justify-center py-16 px-8 lg:py-0 overflow-hidden">
-            {/* Decorative circles */}
-            <div className="absolute -top-20 -left-20 w-80 h-80 rounded-full bg-white/5" />
-            <div className="absolute -bottom-32 -right-16 w-96 h-96 rounded-full bg-white/5" />
-            <div className="absolute top-1/4 right-8 w-24 h-24 rounded-full bg-white/10" />
-
-            <motion.div
-              initial={{ opacity: 0, scale: 0.85, rotate: -5 }}
-              whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-              className="relative z-10"
-            >
-              <img
-                src={andinaCans}
-                alt="Cerveza Andina"
-                className="w-[280px] md:w-[340px] lg:w-[380px] drop-shadow-2xl mx-auto"
-                loading="lazy"
-              />
-            </motion.div>
-          </div>
-
-          {/* Right — Notification showcase */}
-          <div className="relative bg-gradient-to-br from-[#0a0a1a] to-[#111827] flex items-center py-16 px-8 md:px-14 lg:px-16">
-            {/* Subtle glow */}
-            <div className="absolute top-0 left-0 w-1/2 h-full bg-gradient-to-r from-[#0033A0]/10 to-transparent" />
-
-            <div className="relative z-10 w-full max-w-lg">
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-              >
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-yellow-500/10 border border-yellow-500/20 mb-6">
-                  <Bell className="w-4 h-4 text-yellow-500" />
-                  <span className="text-yellow-500 font-semibold text-sm">Notificaciones Push</span>
-                </div>
-                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight">
-                  Directo al{" "}
-                  <span className="bg-gradient-to-r from-yellow-400 to-amber-500 bg-clip-text text-transparent">bolsillo</span>
-                  {" "}de 50K+ usuarios
-                </h2>
-                <p className="text-white/60 text-base md:text-lg leading-relaxed mb-8">
-                  Envía mensajes a miles de personas justo cuando Colombia va a jugar. 
-                  Tasa de apertura del <strong className="text-white">90%</strong> vs. email (20%) o redes (5%).
-                </p>
-              </motion.div>
-
-              {/* Notification mockups */}
-              <div className="space-y-4 mb-8">
-                {[
-                  { icon: Bell, color: "from-yellow-500 to-amber-500", iconColor: "text-black", title: "Andina 🍺", msg: "¡Colombia juega hoy a las 4pm! Pide tu Andina helada en cualquier restaurante de la ruta mundialista 🇨🇴⚽", time: "Ahora" },
-                  { icon: Gift, color: "from-green-500 to-emerald-500", iconColor: "text-white", title: "Promo Andina", msg: "2x1 en Cerveza Andina este fin de semana en 30 restaurantes del Mundial del Sabor 🎉", time: "Hace 2h" },
-                  { icon: Megaphone, color: "from-blue-500 to-indigo-500", iconColor: "text-white", title: "¡Gol de Colombia!", msg: "Celebra con una Andina 🍻 Muestra esta notificación y recibe 20% de descuento", time: "Hace 5min" },
-                ].map((notif, i) => (
-                  <motion.div
-                    key={notif.title}
-                    initial={{ opacity: 0, x: 40 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: i * 0.15 }}
-                    className="bg-white/5 backdrop-blur border border-white/10 rounded-2xl p-4 hover:bg-white/10 transition-all"
-                  >
-                    <div className="flex items-start gap-3">
-                      <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${notif.color} flex items-center justify-center flex-shrink-0`}>
-                        <notif.icon className={`w-5 h-5 ${notif.iconColor}`} />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between mb-1">
-                          <span className="text-white font-bold text-sm">{notif.title}</span>
-                          <span className="text-white/40 text-[10px]">{notif.time}</span>
-                        </div>
-                        <p className="text-white/60 text-xs leading-relaxed">{notif.msg}</p>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-
-              {/* Stats row */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.5 }}
-                className="grid grid-cols-3 gap-3"
-              >
-                {[
-                  { value: "90%", label: "Apertura" },
-                  { value: "50K+", label: "Alcance" },
-                  { value: "∞", label: "Envíos" },
-                ].map((s) => (
-                  <div key={s.label} className="text-center p-3 rounded-xl bg-white/5 border border-white/10">
-                    <div className="text-yellow-400 font-bold text-xl">{s.value}</div>
-                    <div className="text-white/40 text-[10px] uppercase tracking-wider">{s.label}</div>
-                  </div>
-                ))}
-              </motion.div>
+      {/* === PUSH NOTIFICATIONS === */}
+      <section className="py-24 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0033A0]/5 via-background to-background" />
+        <div className="container mx-auto px-6 relative z-10">
+          <motion.div {...fadeUp} className="text-center mb-14">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-yellow-500/10 border border-yellow-500/20 mb-5">
+              <Bell className="w-4 h-4 text-yellow-500" />
+              <span className="text-yellow-500 font-semibold text-sm">Notificaciones Push</span>
             </div>
+            <h2 className="text-4xl md:text-5xl font-bold text-foreground">
+              Directo al{" "}
+              <span className="bg-gradient-to-r from-yellow-400 to-amber-500 bg-clip-text text-transparent">bolsillo</span>
+              {" "}de 50K+ usuarios
+            </h2>
+            <p className="text-muted-foreground mt-4 max-w-2xl mx-auto text-lg">
+              Envía mensajes a miles de personas justo cuando Colombia va a jugar. 
+              Tasa de apertura del <strong className="text-foreground">90%</strong> vs. email (20%) o redes (5%).
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-5 mb-10">
+            {[
+              { icon: Bell, color: "from-yellow-500 to-amber-500", iconColor: "text-black", title: "Andina 🍺", msg: "¡Colombia juega hoy a las 4pm! Pide tu Andina helada en cualquier restaurante de la ruta mundialista 🇨🇴⚽", time: "Ahora" },
+              { icon: Gift, color: "from-green-500 to-emerald-500", iconColor: "text-white", title: "Promo Andina", msg: "2x1 en Cerveza Andina este fin de semana en 30 restaurantes del Mundial del Sabor 🎉", time: "Hace 2h" },
+              { icon: Megaphone, color: "from-blue-500 to-indigo-500", iconColor: "text-white", title: "¡Gol de Colombia!", msg: "Celebra con una Andina 🍻 Muestra esta notificación y recibe 20% de descuento", time: "Hace 5min" },
+            ].map((notif, i) => (
+              <motion.div
+                key={notif.title}
+                initial={{ opacity: 0, y: 25 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.12 }}
+                className="rounded-2xl border border-border bg-card p-5 hover:border-yellow-500/30 hover:shadow-xl transition-all"
+              >
+                <div className="flex items-start gap-3">
+                  <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${notif.color} flex items-center justify-center flex-shrink-0`}>
+                    <notif.icon className={`w-5 h-5 ${notif.iconColor}`} />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-foreground font-bold text-sm">{notif.title}</span>
+                      <span className="text-muted-foreground text-[10px]">{notif.time}</span>
+                    </div>
+                    <p className="text-muted-foreground text-xs leading-relaxed">{notif.msg}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
           </div>
+
+          <motion.div {...fadeUp} transition={{ delay: 0.4 }} className="grid grid-cols-3 gap-4 max-w-md mx-auto">
+            {[
+              { value: "90%", label: "Apertura" },
+              { value: "50K+", label: "Alcance" },
+              { value: "∞", label: "Envíos" },
+            ].map((s) => (
+              <div key={s.label} className="text-center p-4 rounded-xl bg-card border border-border">
+                <div className="text-2xl font-bold bg-gradient-to-r from-yellow-400 to-amber-500 bg-clip-text text-transparent">{s.value}</div>
+                <div className="text-muted-foreground text-xs mt-1">{s.label}</div>
+              </div>
+            ))}
+          </motion.div>
         </div>
       </section>
 
