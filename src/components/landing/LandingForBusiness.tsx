@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { BarChart3, Users, Megaphone, QrCode, Video, Bell } from "lucide-react";
+import foodSpread from "@/assets/landing-food-spread.jpg";
 
 const benefits = [
   { icon: Users, title: "Más clientes", description: "Aparece frente a miles de personas buscando dónde comer durante el Mundial." },
@@ -12,8 +13,14 @@ const benefits = [
 
 const LandingForBusiness = () => {
   return (
-    <section id="negocios" className="py-24 relative bg-muted/30">
-      <div className="container mx-auto px-6">
+    <section id="negocios" className="py-24 relative overflow-hidden">
+      {/* Background image */}
+      <div className="absolute inset-0">
+        <img src={foodSpread} alt="" className="w-full h-full object-cover opacity-10" loading="lazy" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background" />
+      </div>
+
+      <div className="container mx-auto px-6 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -38,7 +45,7 @@ const LandingForBusiness = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="rounded-xl border border-border bg-card p-7 hover:border-accent/30 hover:shadow-lg transition-all duration-300 group"
+              className="rounded-xl border border-border bg-card/80 backdrop-blur p-7 hover:border-accent/30 hover:shadow-lg transition-all duration-300 group"
             >
               <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center mb-5 group-hover:bg-accent/20 transition-colors">
                 <b.icon className="w-6 h-6 text-accent" />
@@ -62,7 +69,7 @@ const LandingForBusiness = () => {
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-accent text-accent-foreground font-bold text-base hover:brightness-110 transition-all shadow-lg"
           >
-            Registrar mi Restaurante
+            Registrar mi Restaurante 🍽️
           </a>
         </motion.div>
       </div>
