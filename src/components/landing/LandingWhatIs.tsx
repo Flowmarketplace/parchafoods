@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import watchingGame from "@/assets/landing-watching-game.jpg";
+import mockupHome from "@/assets/mockup-home.png";
 import mockupRestaurants from "@/assets/mockup-restaurants.png";
 import mockupRutas from "@/assets/mockup-rutas.png";
 
