@@ -192,7 +192,7 @@ const LandingFeatures = () => {
 
               <div className="container mx-auto px-6 relative z-10">
                 <div className={`flex flex-col ${isReversed ? 'md:flex-row-reverse' : 'md:flex-row'} items-center gap-10 md:gap-16 lg:gap-24`}>
-                  {/* Phone mockup */}
+                  {/* Visual */}
                   <motion.div
                     initial={{ opacity: 0, x: isReversed ? 60 : -60 }}
                     whileInView={{ opacity: 1, x: 0 }}
@@ -200,12 +200,16 @@ const LandingFeatures = () => {
                     transition={{ duration: 0.7, ease: "easeOut" }}
                     className="flex-shrink-0"
                   >
-                    <motion.div
-                      animate={{ y: [0, -8, 0] }}
-                      transition={{ duration: 4 + i * 0.5, repeat: Infinity, ease: "easeInOut" }}
-                    >
-                      <PhoneMockup image={feature.image} title={feature.title} scrolling={i === 1} />
-                    </motion.div>
+                    {i === 1 ? (
+                      <RoutesShowcase />
+                    ) : (
+                      <motion.div
+                        animate={{ y: [0, -8, 0] }}
+                        transition={{ duration: 4 + i * 0.5, repeat: Infinity, ease: "easeInOut" }}
+                      >
+                        <PhoneMockup image={feature.image} title={feature.title} />
+                      </motion.div>
+                    )}
                   </motion.div>
 
                   {/* Text content */}
