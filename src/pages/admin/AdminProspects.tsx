@@ -13,7 +13,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Label } from '@/components/ui/label';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Plus, Search, Menu, Phone, MapPin, User, Calendar, Edit, Trash2, Eye, Filter, UserPlus } from 'lucide-react';
+import { Plus, Search, Menu, Phone, MapPin, User, Calendar, Edit, Trash2, Eye, Filter, UserPlus, Globe, Instagram, Facebook, Image } from 'lucide-react';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 
@@ -32,6 +32,11 @@ interface Prospect {
   notes: string | null;
   category: string | null;
   email: string | null;
+  website: string | null;
+  instagram: string | null;
+  facebook: string | null;
+  tiktok: string | null;
+  logo_url: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -48,6 +53,11 @@ const emptyForm = {
   notes: '',
   category: '',
   email: '',
+  website: '',
+  instagram: '',
+  facebook: '',
+  tiktok: '',
+  logo_url: '',
 };
 
 const statusColors: Record<string, string> = {
@@ -122,6 +132,11 @@ const AdminProspects = () => {
         notes: form.notes || null,
         category: form.category || null,
         email: form.email || null,
+        website: form.website || null,
+        instagram: form.instagram || null,
+        facebook: form.facebook || null,
+        tiktok: form.tiktok || null,
+        logo_url: form.logo_url || null,
       };
 
       if (editingId) {
@@ -169,6 +184,11 @@ const AdminProspects = () => {
       notes: p.notes || '',
       category: p.category || '',
       email: p.email || '',
+      website: p.website || '',
+      instagram: p.instagram || '',
+      facebook: p.facebook || '',
+      tiktok: p.tiktok || '',
+      logo_url: p.logo_url || '',
     });
     setDialogOpen(true);
   };
@@ -365,7 +385,7 @@ const AdminProspects = () => {
                 <Label>Categoría</Label>
                 <Select value={form.category} onValueChange={v => setForm(f => ({ ...f, category: v }))}>
                   <SelectTrigger><SelectValue placeholder="Seleccionar" /></SelectTrigger>
-                  <SelectContent>
+                  <SelectContent position="popper" className="max-h-60 overflow-y-auto z-[9999]">
                     {categories.map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}
                   </SelectContent>
                 </Select>
@@ -378,7 +398,7 @@ const AdminProspects = () => {
                 <Label>Estado</Label>
                 <Select value={form.status} onValueChange={v => setForm(f => ({ ...f, status: v as ProspectStatus }))}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
-                  <SelectContent>
+                  <SelectContent position="popper" className="z-[9999]">
                     <SelectItem value="nuevo">🆕 Nuevo</SelectItem>
                     <SelectItem value="contactado">📞 Contactado</SelectItem>
                     <SelectItem value="interesado">⭐ Interesado</SelectItem>
@@ -391,7 +411,7 @@ const AdminProspects = () => {
                 <Label>Tipo de contacto</Label>
                 <Select value={form.contact_type} onValueChange={v => setForm(f => ({ ...f, contact_type: v }))}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
-                  <SelectContent>
+                  <SelectContent position="popper" className="z-[9999]">
                     <SelectItem value="llamada">📞 Llamada</SelectItem>
                     <SelectItem value="visita">🚶 Visita</SelectItem>
                     <SelectItem value="whatsapp">💬 WhatsApp</SelectItem>
@@ -403,6 +423,35 @@ const AdminProspects = () => {
                 <Label>Fecha próximo contacto</Label>
                 <Input type="date" value={form.next_contact_date} onChange={e => setForm(f => ({ ...f, next_contact_date: e.target.value }))} />
               </div>
+            </div>
+
+            {/* Redes sociales y web */}
+            <div>
+              <p className="text-sm font-medium mb-3 flex items-center gap-2"><Globe className="h-4 w-4" /> Web y Redes Sociales</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <Label>Sitio Web</Label>
+                  <Input value={form.website} onChange={e => setForm(f => ({ ...f, website: e.target.value }))} placeholder="https://ejemplo.com" />
+                </div>
+                <div>
+                  <Label>Instagram</Label>
+                  <Input value={form.instagram} onChange={e => setForm(f => ({ ...f, instagram: e.target.value }))} placeholder="@usuario" />
+                </div>
+                <div>
+                  <Label>Facebook</Label>
+                  <Input value={form.facebook} onChange={e => setForm(f => ({ ...f, facebook: e.target.value }))} placeholder="facebook.com/pagina" />
+                </div>
+                <div>
+                  <Label>TikTok</Label>
+                  <Input value={form.tiktok} onChange={e => setForm(f => ({ ...f, tiktok: e.target.value }))} placeholder="@usuario" />
+                </div>
+              </div>
+            </div>
+
+            {/* Logo */}
+            <div>
+              <Label>URL del Logo</Label>
+              <Input value={form.logo_url} onChange={e => setForm(f => ({ ...f, logo_url: e.target.value }))} placeholder="https://ejemplo.com/logo.png" />
             </div>
             <div>
               <Label>Observación</Label>
@@ -465,6 +514,42 @@ const AdminProspects = () => {
                   </div>
                 )}
               </div>
+              {/* Redes y web en detalle */}
+              {(selectedProspect.website || selectedProspect.instagram || selectedProspect.facebook || selectedProspect.tiktok) && (
+                <div className="space-y-2">
+                  <p className="text-xs font-medium text-muted-foreground">Web y Redes</p>
+                  {selectedProspect.website && (
+                    <div className="flex items-center gap-2 text-sm">
+                      <Globe className="h-4 w-4 text-muted-foreground" />
+                      <a href={selectedProspect.website} target="_blank" rel="noopener" className="text-primary hover:underline truncate">{selectedProspect.website}</a>
+                    </div>
+                  )}
+                  {selectedProspect.instagram && (
+                    <div className="flex items-center gap-2 text-sm">
+                      <Instagram className="h-4 w-4 text-muted-foreground" />
+                      <span>{selectedProspect.instagram}</span>
+                    </div>
+                  )}
+                  {selectedProspect.facebook && (
+                    <div className="flex items-center gap-2 text-sm">
+                      <Facebook className="h-4 w-4 text-muted-foreground" />
+                      <span>{selectedProspect.facebook}</span>
+                    </div>
+                  )}
+                  {selectedProspect.tiktok && (
+                    <div className="flex items-center gap-2 text-sm">
+                      <span className="h-4 w-4 text-muted-foreground text-xs font-bold">TT</span>
+                      <span>{selectedProspect.tiktok}</span>
+                    </div>
+                  )}
+                </div>
+              )}
+              {selectedProspect.logo_url && (
+                <div>
+                  <p className="text-xs font-medium text-muted-foreground mb-1">Logo</p>
+                  <img src={selectedProspect.logo_url} alt="Logo" className="h-16 w-16 object-contain rounded-lg border" />
+                </div>
+              )}
               {selectedProspect.observation && (
                 <div>
                   <p className="text-xs font-medium text-muted-foreground mb-1">Observación</p>
