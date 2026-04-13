@@ -514,6 +514,42 @@ const AdminProspects = () => {
                   </div>
                 )}
               </div>
+              {/* Redes y web en detalle */}
+              {(selectedProspect.website || selectedProspect.instagram || selectedProspect.facebook || selectedProspect.tiktok) && (
+                <div className="space-y-2">
+                  <p className="text-xs font-medium text-muted-foreground">Web y Redes</p>
+                  {selectedProspect.website && (
+                    <div className="flex items-center gap-2 text-sm">
+                      <Globe className="h-4 w-4 text-muted-foreground" />
+                      <a href={selectedProspect.website} target="_blank" rel="noopener" className="text-primary hover:underline truncate">{selectedProspect.website}</a>
+                    </div>
+                  )}
+                  {selectedProspect.instagram && (
+                    <div className="flex items-center gap-2 text-sm">
+                      <Instagram className="h-4 w-4 text-muted-foreground" />
+                      <span>{selectedProspect.instagram}</span>
+                    </div>
+                  )}
+                  {selectedProspect.facebook && (
+                    <div className="flex items-center gap-2 text-sm">
+                      <Facebook className="h-4 w-4 text-muted-foreground" />
+                      <span>{selectedProspect.facebook}</span>
+                    </div>
+                  )}
+                  {selectedProspect.tiktok && (
+                    <div className="flex items-center gap-2 text-sm">
+                      <span className="h-4 w-4 text-muted-foreground text-xs font-bold">TT</span>
+                      <span>{selectedProspect.tiktok}</span>
+                    </div>
+                  )}
+                </div>
+              )}
+              {selectedProspect.logo_url && (
+                <div>
+                  <p className="text-xs font-medium text-muted-foreground mb-1">Logo</p>
+                  <img src={selectedProspect.logo_url} alt="Logo" className="h-16 w-16 object-contain rounded-lg border" />
+                </div>
+              )}
               {selectedProspect.observation && (
                 <div>
                   <p className="text-xs font-medium text-muted-foreground mb-1">Observación</p>
