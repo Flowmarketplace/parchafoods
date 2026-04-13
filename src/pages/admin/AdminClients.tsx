@@ -13,7 +13,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Label } from '@/components/ui/label';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Plus, Search, Menu, Phone, MapPin, User, Edit, Trash2, Eye, Filter, Globe, Instagram, Facebook, UserCheck } from 'lucide-react';
+import { Plus, Search, Menu, Phone, MapPin, User, Edit, Trash2, Eye, Filter, Globe, Instagram, Facebook, UserCheck, Calendar } from 'lucide-react';
+import { format } from 'date-fns';
+import { es } from 'date-fns/locale';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 
@@ -70,6 +72,37 @@ const AdminClients = () => {
   const [selectedClient, setSelectedClient] = useState<Client | null>(null);
   const [form, setForm] = useState(emptyForm);
   const [saving, setSaving] = useState(false);
+
+  // Appointment
+  const [appointmentDialogOpen, setAppointmentDialogOpen] = useState(false);
+  const [appointmentForm, setAppointmentForm] = useState({ title: '', description: '', appointment_date: '', appointment_time: '', contacted_by: '', notes: '' });
+  const [savingAppointment, setSavingAppointment] = useState(false);
+  const teamMembers = ['Lino', 'Valentina', 'Nicol', 'Dorian'];
+
+  const handleSaveAppointment = async () => {
+    if (!selectedClient || !appointmentForm.title.trim() || !appointmentForm.appointment_date) {
+      toast.error('Título y fecha son obligatorios'); return;
+    }
+    setSavingAppointment(true);
+    try {
+      const { error } = await supabase.from('prospect_appointments').insert({
+        client_id: selectedClient.id,
+        prospect_id: null,
+        title: appointmentForm.title.trim(),
+        description: appointmentForm.description || null,
+        appointment_date: appointmentForm.appointment_date,
+        appointment_time: appointmentForm.appointment_time || null,
+        contacted_by: appointmentForm.contacted_by || null,
+        notes: appointmentForm.notes || null,
+      });
+      if (error) throw error;
+      toast.success('📅 Cita programada exitosamente');
+      setAppointmentDialogOpen(false);
+      setAppointmentForm({ title: '', description: '', appointment_date: '', appointment_time: '', contacted_by: '', notes: '' });
+    } catch (err: any) {
+      toast.error('Error: ' + (err.message || ''));
+    } finally { setSavingAppointment(false); }
+  };
 
   useEffect(() => { fetchClients(); }, []);
 
@@ -384,12 +417,48 @@ const AdminClients = () => {
               {selectedClient.converted_from_prospect_id && (
                 <p className="text-xs text-muted-foreground">🔄 Convertido desde prospecto</p>
               )}
-              <div className="flex gap-2 pt-2">
-                <Button className="flex-1" onClick={() => { setDetailOpen(false); openEdit(selectedClient); }}><Edit className="h-4 w-4 mr-2" /> Editar</Button>
-                <Button variant="outline" onClick={() => setDetailOpen(false)}>Cerrar</Button>
+              <div className="flex flex-col gap-2 pt-2">
+                <Button variant="outline" className="w-full" onClick={() => {
+                  setAppointmentForm({ ...appointmentForm, title: `Cita con ${selectedClient.name}` });
+                  setAppointmentDialogOpen(true);
+                }}>
+                  <Calendar className="h-4 w-4 mr-2" /> Programar Cita
+                </Button>
+                <div className="flex gap-2">
+                  <Button className="flex-1" onClick={() => { setDetailOpen(false); openEdit(selectedClient); }}><Edit className="h-4 w-4 mr-2" /> Editar</Button>
+                  <Button variant="outline" onClick={() => setDetailOpen(false)}>Cerrar</Button>
+                </div>
               </div>
             </div>
           )}
+        </DialogContent>
+      </Dialog>
+      {/* Appointment Dialog */}
+      <Dialog open={appointmentDialogOpen} onOpenChange={setAppointmentDialogOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader><DialogTitle>📅 Programar Cita</DialogTitle></DialogHeader>
+          <div className="space-y-4">
+            <div><Label>Título *</Label><Input value={appointmentForm.title} onChange={e => setAppointmentForm(f => ({ ...f, title: e.target.value }))} /></div>
+            <div className="grid grid-cols-2 gap-4">
+              <div><Label>Fecha *</Label><Input type="date" value={appointmentForm.appointment_date} onChange={e => setAppointmentForm(f => ({ ...f, appointment_date: e.target.value }))} /></div>
+              <div><Label>Hora</Label><Input type="time" value={appointmentForm.appointment_time} onChange={e => setAppointmentForm(f => ({ ...f, appointment_time: e.target.value }))} /></div>
+            </div>
+            <div>
+              <Label>Responsable</Label>
+              <Select value={appointmentForm.contacted_by} onValueChange={v => setAppointmentForm(f => ({ ...f, contacted_by: v }))}>
+                <SelectTrigger><SelectValue placeholder="Seleccionar" /></SelectTrigger>
+                <SelectContent position="popper" className="z-[9999]">
+                  {teamMembers.map(m => <SelectItem key={m} value={m}>{m}</SelectItem>)}
+                </SelectContent>
+              </Select>
+            </div>
+            <div><Label>Descripción</Label><Textarea value={appointmentForm.description} onChange={e => setAppointmentForm(f => ({ ...f, description: e.target.value }))} rows={2} /></div>
+            <div><Label>Notas</Label><Textarea value={appointmentForm.notes} onChange={e => setAppointmentForm(f => ({ ...f, notes: e.target.value }))} rows={2} /></div>
+            <div className="flex gap-3 justify-end">
+              <Button variant="outline" onClick={() => setAppointmentDialogOpen(false)}>Cancelar</Button>
+              <Button onClick={handleSaveAppointment} disabled={savingAppointment}>{savingAppointment ? 'Guardando...' : 'Programar Cita'}</Button>
+            </div>
+          </div>
         </DialogContent>
       </Dialog>
     </div>
