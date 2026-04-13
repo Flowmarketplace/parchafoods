@@ -1,19 +1,19 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { AdminSidebarDesktop } from '@/components/admin/AdminSidebar';
 import AdminSidebar from '@/components/admin/AdminSidebar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Label } from '@/components/ui/label';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Plus, Search, Menu, Phone, MapPin, User, Calendar, Edit, Trash2, Eye, Filter, UserPlus, Globe, Instagram, Facebook, Image, ArrowRightCircle } from 'lucide-react';
+import { Plus, Search, Menu, Phone, MapPin, User, Calendar, Edit, Trash2, Eye, Filter, UserPlus, Globe, Instagram, Facebook, ArrowRightCircle, Upload, Loader2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
@@ -38,6 +38,8 @@ interface Prospect {
   facebook: string | null;
   tiktok: string | null;
   logo_url: string | null;
+  first_contact_date: string | null;
+  contacted_by: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -59,6 +61,8 @@ const emptyForm = {
   facebook: '',
   tiktok: '',
   logo_url: '',
+  first_contact_date: '',
+  contacted_by: '',
 };
 
 const statusColors: Record<string, string> = {
@@ -83,8 +87,11 @@ const categories = [
   'Asiática', 'Bar', 'Pizzería', 'Otro'
 ];
 
+const teamMembers = ['Lino', 'Valentina', 'Nicol', 'Dorian'];
+
 const AdminProspects = () => {
   const navigate = useNavigate();
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [prospects, setProspects] = useState<Prospect[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -95,41 +102,16 @@ const AdminProspects = () => {
   const [selectedProspect, setSelectedProspect] = useState<Prospect | null>(null);
   const [form, setForm] = useState(emptyForm);
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
 
-  const handleConvertToClient = async (p: Prospect) => {
-    if (!confirm(`¿Convertir "${p.name}" en cliente?`)) return;
-    try {
-      const { error: insertError } = await supabase.from('clients').insert({
-        name: p.name,
-        email: p.email || null,
-        phone: p.phone || null,
-        address: p.address || null,
-        category: p.category || null,
-        contact_person: p.contact_person || null,
-        website: p.website || null,
-        instagram: p.instagram || null,
-        facebook: p.facebook || null,
-        tiktok: p.tiktok || null,
-        logo_url: p.logo_url || null,
-        notes: p.notes || null,
-        converted_from_prospect_id: p.id,
-        status: 'activo',
-      });
-      if (insertError) throw insertError;
+  // Appointment creation from detail
+  const [appointmentDialogOpen, setAppointmentDialogOpen] = useState(false);
+  const [appointmentForm, setAppointmentForm] = useState({
+    title: '', description: '', appointment_date: '', appointment_time: '', contacted_by: '', notes: '',
+  });
+  const [savingAppointment, setSavingAppointment] = useState(false);
 
-      await supabase.from('prospects').update({ status: 'cliente' }).eq('id', p.id);
-
-      toast.success(`🎉 "${p.name}" convertido a cliente exitosamente`);
-      fetchProspects();
-      setDetailOpen(false);
-    } catch (err: any) {
-      toast.error('Error al convertir: ' + (err.message || ''));
-    }
-  };
-
-  useEffect(() => {
-    fetchProspects();
-  }, []);
+  useEffect(() => { fetchProspects(); }, []);
 
   const fetchProspects = async () => {
     setLoading(true);
@@ -137,20 +119,38 @@ const AdminProspects = () => {
       .from('prospects')
       .select('*')
       .order('created_at', { ascending: false });
-
-    if (error) {
-      toast.error('Error al cargar prospectos: ' + error.message);
-    } else {
-      setProspects(data || []);
-    }
+    if (error) toast.error('Error al cargar prospectos: ' + error.message);
+    else setProspects(data || []);
     setLoading(false);
   };
 
-  const handleSave = async () => {
-    if (!form.name.trim()) {
-      toast.error('El nombre es obligatorio');
-      return;
+  const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith('image/')) { toast.error('Solo se permiten imágenes'); return; }
+    if (file.size > 5 * 1024 * 1024) { toast.error('El archivo no puede superar 5MB'); return; }
+
+    setUploading(true);
+    try {
+      const ext = file.name.split('.').pop();
+      const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${ext}`;
+      const { error: uploadError } = await supabase.storage
+        .from('prospect-logos')
+        .upload(fileName, file);
+      if (uploadError) throw uploadError;
+
+      const { data: urlData } = supabase.storage.from('prospect-logos').getPublicUrl(fileName);
+      setForm(f => ({ ...f, logo_url: urlData.publicUrl }));
+      toast.success('Logo subido exitosamente');
+    } catch (err: any) {
+      toast.error('Error al subir: ' + (err.message || ''));
+    } finally {
+      setUploading(false);
     }
+  };
+
+  const handleSave = async () => {
+    if (!form.name.trim()) { toast.error('El nombre es obligatorio'); return; }
     setSaving(true);
     try {
       const payload = {
@@ -170,6 +170,8 @@ const AdminProspects = () => {
         facebook: form.facebook || null,
         tiktok: form.tiktok || null,
         logo_url: form.logo_url || null,
+        first_contact_date: form.first_contact_date || null,
+        contacted_by: form.contacted_by || null,
       };
 
       if (editingId) {
@@ -195,45 +197,76 @@ const AdminProspects = () => {
   const handleDelete = async (id: string) => {
     if (!confirm('¿Estás seguro de eliminar este prospecto?')) return;
     const { error } = await supabase.from('prospects').delete().eq('id', id);
-    if (error) {
-      toast.error('Error al eliminar: ' + error.message);
-    } else {
-      toast.success('Prospecto eliminado');
+    if (error) toast.error('Error al eliminar: ' + error.message);
+    else { toast.success('Prospecto eliminado'); fetchProspects(); }
+  };
+
+  const handleConvertToClient = async (p: Prospect) => {
+    if (!confirm(`¿Convertir "${p.name}" en cliente?`)) return;
+    try {
+      const { error: insertError } = await supabase.from('clients').insert({
+        name: p.name, email: p.email || null, phone: p.phone || null,
+        address: p.address || null, category: p.category || null,
+        contact_person: p.contact_person || null, website: p.website || null,
+        instagram: p.instagram || null, facebook: p.facebook || null,
+        tiktok: p.tiktok || null, logo_url: p.logo_url || null,
+        notes: p.notes || null, converted_from_prospect_id: p.id, status: 'activo',
+      });
+      if (insertError) throw insertError;
+      await supabase.from('prospects').update({ status: 'cliente' }).eq('id', p.id);
+      toast.success(`🎉 "${p.name}" convertido a cliente exitosamente`);
       fetchProspects();
+      setDetailOpen(false);
+    } catch (err: any) {
+      toast.error('Error al convertir: ' + (err.message || ''));
+    }
+  };
+
+  const handleSaveAppointment = async () => {
+    if (!selectedProspect || !appointmentForm.title.trim() || !appointmentForm.appointment_date) {
+      toast.error('Título y fecha son obligatorios');
+      return;
+    }
+    setSavingAppointment(true);
+    try {
+      const { error } = await supabase.from('prospect_appointments').insert({
+        prospect_id: selectedProspect.id,
+        title: appointmentForm.title.trim(),
+        description: appointmentForm.description || null,
+        appointment_date: appointmentForm.appointment_date,
+        appointment_time: appointmentForm.appointment_time || null,
+        contacted_by: appointmentForm.contacted_by || null,
+        notes: appointmentForm.notes || null,
+      });
+      if (error) throw error;
+      toast.success('📅 Cita programada exitosamente');
+      setAppointmentDialogOpen(false);
+      setAppointmentForm({ title: '', description: '', appointment_date: '', appointment_time: '', contacted_by: '', notes: '' });
+    } catch (err: any) {
+      toast.error('Error: ' + (err.message || ''));
+    } finally {
+      setSavingAppointment(false);
     }
   };
 
   const openEdit = (p: Prospect) => {
     setEditingId(p.id);
     setForm({
-      name: p.name,
-      address: p.address || '',
-      phone: p.phone || '',
-      contact_person: p.contact_person || '',
-      next_contact_date: p.next_contact_date || '',
-      contact_type: p.contact_type || 'llamada',
-      status: p.status as ProspectStatus,
-      observation: p.observation || '',
-      notes: p.notes || '',
-      category: p.category || '',
-      email: p.email || '',
-      website: p.website || '',
-      instagram: p.instagram || '',
-      facebook: p.facebook || '',
-      tiktok: p.tiktok || '',
-      logo_url: p.logo_url || '',
+      name: p.name, address: p.address || '', phone: p.phone || '',
+      contact_person: p.contact_person || '', next_contact_date: p.next_contact_date || '',
+      contact_type: p.contact_type || 'llamada', status: p.status as ProspectStatus,
+      observation: p.observation || '', notes: p.notes || '', category: p.category || '',
+      email: p.email || '', website: p.website || '', instagram: p.instagram || '',
+      facebook: p.facebook || '', tiktok: p.tiktok || '', logo_url: p.logo_url || '',
+      first_contact_date: p.first_contact_date || '', contacted_by: p.contacted_by || '',
     });
     setDialogOpen(true);
   };
 
-  const openNew = () => {
-    setEditingId(null);
-    setForm(emptyForm);
-    setDialogOpen(true);
-  };
+  const openNew = () => { setEditingId(null); setForm(emptyForm); setDialogOpen(true); };
 
   const filtered = prospects.filter(p => {
-    const matchSearch = !search || 
+    const matchSearch = !search ||
       p.name.toLowerCase().includes(search.toLowerCase()) ||
       (p.contact_person || '').toLowerCase().includes(search.toLowerCase()) ||
       (p.phone || '').includes(search);
@@ -254,30 +287,31 @@ const AdminProspects = () => {
     <div className="min-h-screen bg-background">
       <AdminSidebarDesktop />
       <div className="lg:ml-64">
-        {/* Mobile header */}
         <div className="lg:hidden flex items-center justify-between p-4 border-b">
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon"><Menu className="h-5 w-5" /></Button>
             </SheetTrigger>
-            <SheetContent side="left" className="p-0 w-64">
-              <AdminSidebar />
-            </SheetContent>
+            <SheetContent side="left" className="p-0 w-64"><AdminSidebar /></SheetContent>
           </Sheet>
           <h1 className="text-lg font-bold">CRM Prospectos</h1>
           <Button size="sm" onClick={openNew}><Plus className="h-4 w-4" /></Button>
         </div>
 
         <div className="p-4 md:p-6 space-y-6">
-          {/* Header */}
           <div className="hidden lg:flex items-center justify-between">
             <div>
               <h1 className="text-2xl font-bold">📋 CRM de Prospectos</h1>
               <p className="text-muted-foreground">Gestiona tus prospectos y clientes potenciales</p>
             </div>
-            <Button onClick={openNew} className="gap-2">
-              <UserPlus className="h-4 w-4" /> Nuevo Prospecto
-            </Button>
+            <div className="flex gap-2">
+              <Button variant="outline" onClick={() => navigate('/admin/appointments')} className="gap-2">
+                <Calendar className="h-4 w-4" /> Calendario de Citas
+              </Button>
+              <Button onClick={openNew} className="gap-2">
+                <UserPlus className="h-4 w-4" /> Nuevo Prospecto
+              </Button>
+            </div>
           </div>
 
           {/* Stats */}
@@ -307,10 +341,9 @@ const AdminProspects = () => {
             </div>
             <Select value={filterStatus} onValueChange={setFilterStatus}>
               <SelectTrigger className="w-full sm:w-48">
-                <Filter className="h-4 w-4 mr-2" />
-                <SelectValue placeholder="Estado" />
+                <Filter className="h-4 w-4 mr-2" /><SelectValue placeholder="Estado" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent position="popper" className="z-[9999]">
                 <SelectItem value="all">Todos</SelectItem>
                 <SelectItem value="nuevo">🆕 Nuevo</SelectItem>
                 <SelectItem value="contactado">📞 Contactado</SelectItem>
@@ -338,11 +371,10 @@ const AdminProspects = () => {
                     <TableHeader>
                       <TableRow>
                         <TableHead>Nombre</TableHead>
-                        <TableHead className="hidden md:table-cell">Encargado</TableHead>
+                        <TableHead className="hidden md:table-cell">Contactó</TableHead>
                         <TableHead className="hidden md:table-cell">Teléfono</TableHead>
                         <TableHead>Estado</TableHead>
                         <TableHead className="hidden lg:table-cell">Próximo contacto</TableHead>
-                        <TableHead className="hidden lg:table-cell">Tipo</TableHead>
                         <TableHead className="text-right">Acciones</TableHead>
                       </TableRow>
                     </TableHeader>
@@ -350,12 +382,15 @@ const AdminProspects = () => {
                       {filtered.map(p => (
                         <TableRow key={p.id} className="cursor-pointer" onClick={() => { setSelectedProspect(p); setDetailOpen(true); }}>
                           <TableCell>
-                            <div>
-                              <p className="font-medium">{p.name}</p>
-                              {p.category && <p className="text-xs text-muted-foreground">{p.category}</p>}
+                            <div className="flex items-center gap-2">
+                              {p.logo_url && <img src={p.logo_url} alt="" className="h-8 w-8 rounded-full object-cover" />}
+                              <div>
+                                <p className="font-medium">{p.name}</p>
+                                {p.category && <p className="text-xs text-muted-foreground">{p.category}</p>}
+                              </div>
                             </div>
                           </TableCell>
-                          <TableCell className="hidden md:table-cell">{p.contact_person || '-'}</TableCell>
+                          <TableCell className="hidden md:table-cell">{p.contacted_by || '-'}</TableCell>
                           <TableCell className="hidden md:table-cell">{p.phone || '-'}</TableCell>
                           <TableCell>
                             <Badge className={`${statusColors[p.status] || ''} border-0 text-xs`}>
@@ -365,18 +400,11 @@ const AdminProspects = () => {
                           <TableCell className="hidden lg:table-cell">
                             {p.next_contact_date ? format(new Date(p.next_contact_date), 'dd MMM yyyy', { locale: es }) : '-'}
                           </TableCell>
-                          <TableCell className="hidden lg:table-cell capitalize">{p.contact_type || '-'}</TableCell>
                           <TableCell className="text-right">
                             <div className="flex gap-1 justify-end" onClick={e => e.stopPropagation()}>
-                              <Button variant="ghost" size="icon" onClick={() => { setSelectedProspect(p); setDetailOpen(true); }}>
-                                <Eye className="h-4 w-4" />
-                              </Button>
-                              <Button variant="ghost" size="icon" onClick={() => openEdit(p)}>
-                                <Edit className="h-4 w-4" />
-                              </Button>
-                              <Button variant="ghost" size="icon" className="text-destructive" onClick={() => handleDelete(p.id)}>
-                                <Trash2 className="h-4 w-4" />
-                              </Button>
+                              <Button variant="ghost" size="icon" onClick={() => { setSelectedProspect(p); setDetailOpen(true); }}><Eye className="h-4 w-4" /></Button>
+                              <Button variant="ghost" size="icon" onClick={() => openEdit(p)}><Edit className="h-4 w-4" /></Button>
+                              <Button variant="ghost" size="icon" className="text-destructive" onClick={() => handleDelete(p.id)}><Trash2 className="h-4 w-4" /></Button>
                             </div>
                           </TableCell>
                         </TableRow>
@@ -387,6 +415,13 @@ const AdminProspects = () => {
               )}
             </CardContent>
           </Card>
+
+          {/* Mobile: Calendar button */}
+          <div className="lg:hidden">
+            <Button variant="outline" className="w-full gap-2" onClick={() => navigate('/admin/appointments')}>
+              <Calendar className="h-4 w-4" /> Ver Calendario de Citas
+            </Button>
+          </div>
         </div>
       </div>
 
@@ -427,6 +462,24 @@ const AdminProspects = () => {
                 <Label>Dirección</Label>
                 <Input value={form.address} onChange={e => setForm(f => ({ ...f, address: e.target.value }))} placeholder="Dirección completa" />
               </div>
+
+              {/* Quién contactó */}
+              <div>
+                <Label>¿Quién contactó?</Label>
+                <Select value={form.contacted_by} onValueChange={v => setForm(f => ({ ...f, contacted_by: v }))}>
+                  <SelectTrigger><SelectValue placeholder="Seleccionar" /></SelectTrigger>
+                  <SelectContent position="popper" className="z-[9999]">
+                    {teamMembers.map(m => <SelectItem key={m} value={m}>{m}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Fecha primer contacto */}
+              <div>
+                <Label>Fecha primer contacto</Label>
+                <Input type="date" value={form.first_contact_date} onChange={e => setForm(f => ({ ...f, first_contact_date: e.target.value }))} />
+              </div>
+
               <div>
                 <Label>Estado</Label>
                 <Select value={form.status} onValueChange={v => setForm(f => ({ ...f, status: v as ProspectStatus }))}>
@@ -458,37 +511,47 @@ const AdminProspects = () => {
               </div>
             </div>
 
-            {/* Redes sociales y web */}
+            {/* Redes sociales */}
             <div>
               <p className="text-sm font-medium mb-3 flex items-center gap-2"><Globe className="h-4 w-4" /> Web y Redes Sociales</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <Label>Sitio Web</Label>
-                  <Input value={form.website} onChange={e => setForm(f => ({ ...f, website: e.target.value }))} placeholder="https://ejemplo.com" />
-                </div>
-                <div>
-                  <Label>Instagram</Label>
-                  <Input value={form.instagram} onChange={e => setForm(f => ({ ...f, instagram: e.target.value }))} placeholder="@usuario" />
-                </div>
-                <div>
-                  <Label>Facebook</Label>
-                  <Input value={form.facebook} onChange={e => setForm(f => ({ ...f, facebook: e.target.value }))} placeholder="facebook.com/pagina" />
-                </div>
-                <div>
-                  <Label>TikTok</Label>
-                  <Input value={form.tiktok} onChange={e => setForm(f => ({ ...f, tiktok: e.target.value }))} placeholder="@usuario" />
-                </div>
+                <div><Label>Sitio Web</Label><Input value={form.website} onChange={e => setForm(f => ({ ...f, website: e.target.value }))} placeholder="https://ejemplo.com" /></div>
+                <div><Label>Instagram</Label><Input value={form.instagram} onChange={e => setForm(f => ({ ...f, instagram: e.target.value }))} placeholder="@usuario" /></div>
+                <div><Label>Facebook</Label><Input value={form.facebook} onChange={e => setForm(f => ({ ...f, facebook: e.target.value }))} placeholder="facebook.com/pagina" /></div>
+                <div><Label>TikTok</Label><Input value={form.tiktok} onChange={e => setForm(f => ({ ...f, tiktok: e.target.value }))} placeholder="@usuario" /></div>
               </div>
             </div>
 
-            {/* Logo */}
+            {/* Logo upload */}
             <div>
-              <Label>URL del Logo</Label>
-              <Input value={form.logo_url} onChange={e => setForm(f => ({ ...f, logo_url: e.target.value }))} placeholder="https://ejemplo.com/logo.png" />
+              <Label>Logo del negocio</Label>
+              <div className="flex items-center gap-3 mt-1">
+                {form.logo_url && (
+                  <img src={form.logo_url} alt="Logo" className="h-14 w-14 rounded-lg object-cover border" />
+                )}
+                <div className="flex-1">
+                  <input ref={fileInputRef} type="file" accept="image/*" onChange={handleLogoUpload} className="hidden" />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="w-full gap-2"
+                    onClick={() => fileInputRef.current?.click()}
+                    disabled={uploading}
+                  >
+                    {uploading ? <><Loader2 className="h-4 w-4 animate-spin" /> Subiendo...</> : <><Upload className="h-4 w-4" /> {form.logo_url ? 'Cambiar logo' : 'Subir logo'}</>}
+                  </Button>
+                </div>
+                {form.logo_url && (
+                  <Button type="button" variant="ghost" size="sm" className="text-destructive" onClick={() => setForm(f => ({ ...f, logo_url: '' }))}>
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                )}
+              </div>
             </div>
+
             <div>
               <Label>Observación</Label>
-              <Textarea value={form.observation} onChange={e => setForm(f => ({ ...f, observation: e.target.value }))} placeholder="Notas de la conversación, detalles importantes..." rows={3} />
+              <Textarea value={form.observation} onChange={e => setForm(f => ({ ...f, observation: e.target.value }))} placeholder="Notas de la conversación..." rows={3} />
             </div>
             <div>
               <Label>Notas adicionales</Label>
@@ -506,101 +569,71 @@ const AdminProspects = () => {
 
       {/* Detail Dialog */}
       <Dialog open={detailOpen} onOpenChange={setDetailOpen}>
-        <DialogContent className="max-w-md">
-          <DialogHeader>
-            <DialogTitle>📋 Detalle del Prospecto</DialogTitle>
-          </DialogHeader>
+        <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
+          <DialogHeader><DialogTitle>📋 Detalle del Prospecto</DialogTitle></DialogHeader>
           {selectedProspect && (
             <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <h3 className="text-lg font-bold">{selectedProspect.name}</h3>
+              <div className="flex items-center gap-3">
+                {selectedProspect.logo_url && <img src={selectedProspect.logo_url} alt="" className="h-14 w-14 rounded-full object-cover border" />}
+                <div className="flex-1">
+                  <h3 className="text-lg font-bold">{selectedProspect.name}</h3>
+                  {selectedProspect.category && <p className="text-sm text-muted-foreground">{selectedProspect.category}</p>}
+                </div>
                 <Badge className={`${statusColors[selectedProspect.status]} border-0`}>
                   {statusLabels[selectedProspect.status]}
                 </Badge>
               </div>
-              {selectedProspect.category && (
-                <p className="text-sm text-muted-foreground">{selectedProspect.category}</p>
-              )}
-              <div className="space-y-3">
+
+              <div className="space-y-2">
+                {selectedProspect.contacted_by && (
+                  <div className="flex items-center gap-2 text-sm"><User className="h-4 w-4 text-muted-foreground" /><span>Contactó: <strong>{selectedProspect.contacted_by}</strong></span></div>
+                )}
+                {selectedProspect.first_contact_date && (
+                  <div className="flex items-center gap-2 text-sm"><Calendar className="h-4 w-4 text-muted-foreground" /><span>Primer contacto: {format(new Date(selectedProspect.first_contact_date), "dd 'de' MMMM yyyy", { locale: es })}</span></div>
+                )}
                 {selectedProspect.contact_person && (
-                  <div className="flex items-center gap-2 text-sm">
-                    <User className="h-4 w-4 text-muted-foreground" />
-                    <span>{selectedProspect.contact_person}</span>
-                  </div>
+                  <div className="flex items-center gap-2 text-sm"><User className="h-4 w-4 text-muted-foreground" /><span>{selectedProspect.contact_person}</span></div>
                 )}
                 {selectedProspect.phone && (
-                  <div className="flex items-center gap-2 text-sm">
-                    <Phone className="h-4 w-4 text-muted-foreground" />
-                    <a href={`tel:${selectedProspect.phone}`} className="text-primary hover:underline">{selectedProspect.phone}</a>
-                  </div>
+                  <div className="flex items-center gap-2 text-sm"><Phone className="h-4 w-4 text-muted-foreground" /><a href={`tel:${selectedProspect.phone}`} className="text-primary hover:underline">{selectedProspect.phone}</a></div>
                 )}
                 {selectedProspect.address && (
-                  <div className="flex items-center gap-2 text-sm">
-                    <MapPin className="h-4 w-4 text-muted-foreground" />
-                    <span>{selectedProspect.address}</span>
-                  </div>
+                  <div className="flex items-center gap-2 text-sm"><MapPin className="h-4 w-4 text-muted-foreground" /><span>{selectedProspect.address}</span></div>
                 )}
                 {selectedProspect.next_contact_date && (
-                  <div className="flex items-center gap-2 text-sm">
-                    <Calendar className="h-4 w-4 text-muted-foreground" />
-                    <span>{format(new Date(selectedProspect.next_contact_date), "dd 'de' MMMM yyyy", { locale: es })} — {selectedProspect.contact_type}</span>
-                  </div>
+                  <div className="flex items-center gap-2 text-sm"><Calendar className="h-4 w-4 text-muted-foreground" /><span>Próximo: {format(new Date(selectedProspect.next_contact_date), "dd 'de' MMMM yyyy", { locale: es })} — {selectedProspect.contact_type}</span></div>
                 )}
               </div>
-              {/* Redes y web en detalle */}
+
               {(selectedProspect.website || selectedProspect.instagram || selectedProspect.facebook || selectedProspect.tiktok) && (
                 <div className="space-y-2">
                   <p className="text-xs font-medium text-muted-foreground">Web y Redes</p>
-                  {selectedProspect.website && (
-                    <div className="flex items-center gap-2 text-sm">
-                      <Globe className="h-4 w-4 text-muted-foreground" />
-                      <a href={selectedProspect.website} target="_blank" rel="noopener" className="text-primary hover:underline truncate">{selectedProspect.website}</a>
-                    </div>
-                  )}
-                  {selectedProspect.instagram && (
-                    <div className="flex items-center gap-2 text-sm">
-                      <Instagram className="h-4 w-4 text-muted-foreground" />
-                      <span>{selectedProspect.instagram}</span>
-                    </div>
-                  )}
-                  {selectedProspect.facebook && (
-                    <div className="flex items-center gap-2 text-sm">
-                      <Facebook className="h-4 w-4 text-muted-foreground" />
-                      <span>{selectedProspect.facebook}</span>
-                    </div>
-                  )}
-                  {selectedProspect.tiktok && (
-                    <div className="flex items-center gap-2 text-sm">
-                      <span className="h-4 w-4 text-muted-foreground text-xs font-bold">TT</span>
-                      <span>{selectedProspect.tiktok}</span>
-                    </div>
-                  )}
+                  {selectedProspect.website && <div className="flex items-center gap-2 text-sm"><Globe className="h-4 w-4 text-muted-foreground" /><a href={selectedProspect.website} target="_blank" rel="noopener" className="text-primary hover:underline truncate">{selectedProspect.website}</a></div>}
+                  {selectedProspect.instagram && <div className="flex items-center gap-2 text-sm"><Instagram className="h-4 w-4 text-muted-foreground" /><span>{selectedProspect.instagram}</span></div>}
+                  {selectedProspect.facebook && <div className="flex items-center gap-2 text-sm"><Facebook className="h-4 w-4 text-muted-foreground" /><span>{selectedProspect.facebook}</span></div>}
+                  {selectedProspect.tiktok && <div className="flex items-center gap-2 text-sm"><span className="text-xs font-bold text-muted-foreground">TT</span><span>{selectedProspect.tiktok}</span></div>}
                 </div>
               )}
-              {selectedProspect.logo_url && (
-                <div>
-                  <p className="text-xs font-medium text-muted-foreground mb-1">Logo</p>
-                  <img src={selectedProspect.logo_url} alt="Logo" className="h-16 w-16 object-contain rounded-lg border" />
-                </div>
-              )}
+
               {selectedProspect.observation && (
-                <div>
-                  <p className="text-xs font-medium text-muted-foreground mb-1">Observación</p>
-                  <p className="text-sm bg-muted p-3 rounded-lg">{selectedProspect.observation}</p>
-                </div>
+                <div><p className="text-xs font-medium text-muted-foreground mb-1">Observación</p><p className="text-sm bg-muted p-3 rounded-lg">{selectedProspect.observation}</p></div>
               )}
               {selectedProspect.notes && (
-                <div>
-                  <p className="text-xs font-medium text-muted-foreground mb-1">Notas</p>
-                  <p className="text-sm bg-muted p-3 rounded-lg">{selectedProspect.notes}</p>
-                </div>
+                <div><p className="text-xs font-medium text-muted-foreground mb-1">Notas</p><p className="text-sm bg-muted p-3 rounded-lg">{selectedProspect.notes}</p></div>
               )}
+
               <div className="flex flex-col gap-2 pt-2">
                 {selectedProspect.status !== 'cliente' && (
                   <Button className="w-full bg-green-600 hover:bg-green-700 text-white" onClick={() => handleConvertToClient(selectedProspect)}>
                     <ArrowRightCircle className="h-4 w-4 mr-2" /> Convertir a Cliente
                   </Button>
                 )}
+                <Button variant="outline" className="w-full" onClick={() => {
+                  setAppointmentForm({ ...appointmentForm, title: `Cita con ${selectedProspect.name}` });
+                  setAppointmentDialogOpen(true);
+                }}>
+                  <Calendar className="h-4 w-4 mr-2" /> Programar Cita
+                </Button>
                 <div className="flex gap-2">
                   <Button className="flex-1" onClick={() => { setDetailOpen(false); openEdit(selectedProspect); }}>
                     <Edit className="h-4 w-4 mr-2" /> Editar
@@ -610,6 +643,52 @@ const AdminProspects = () => {
               </div>
             </div>
           )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Appointment Dialog */}
+      <Dialog open={appointmentDialogOpen} onOpenChange={setAppointmentDialogOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader><DialogTitle>📅 Programar Cita</DialogTitle></DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <Label>Título *</Label>
+              <Input value={appointmentForm.title} onChange={e => setAppointmentForm(f => ({ ...f, title: e.target.value }))} />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label>Fecha *</Label>
+                <Input type="date" value={appointmentForm.appointment_date} onChange={e => setAppointmentForm(f => ({ ...f, appointment_date: e.target.value }))} />
+              </div>
+              <div>
+                <Label>Hora</Label>
+                <Input type="time" value={appointmentForm.appointment_time} onChange={e => setAppointmentForm(f => ({ ...f, appointment_time: e.target.value }))} />
+              </div>
+            </div>
+            <div>
+              <Label>Responsable</Label>
+              <Select value={appointmentForm.contacted_by} onValueChange={v => setAppointmentForm(f => ({ ...f, contacted_by: v }))}>
+                <SelectTrigger><SelectValue placeholder="Seleccionar" /></SelectTrigger>
+                <SelectContent position="popper" className="z-[9999]">
+                  {teamMembers.map(m => <SelectItem key={m} value={m}>{m}</SelectItem>)}
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label>Descripción</Label>
+              <Textarea value={appointmentForm.description} onChange={e => setAppointmentForm(f => ({ ...f, description: e.target.value }))} rows={2} />
+            </div>
+            <div>
+              <Label>Notas</Label>
+              <Textarea value={appointmentForm.notes} onChange={e => setAppointmentForm(f => ({ ...f, notes: e.target.value }))} rows={2} />
+            </div>
+            <div className="flex gap-3 justify-end">
+              <Button variant="outline" onClick={() => setAppointmentDialogOpen(false)}>Cancelar</Button>
+              <Button onClick={handleSaveAppointment} disabled={savingAppointment}>
+                {savingAppointment ? 'Guardando...' : 'Programar Cita'}
+              </Button>
+            </div>
+          </div>
         </DialogContent>
       </Dialog>
     </div>
