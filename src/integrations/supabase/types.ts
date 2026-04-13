@@ -883,12 +883,13 @@ export type Database = {
         Row: {
           appointment_date: string
           appointment_time: string | null
+          client_id: string | null
           contacted_by: string | null
           created_at: string
           description: string | null
           id: string
           notes: string | null
-          prospect_id: string
+          prospect_id: string | null
           status: string
           title: string
           updated_at: string
@@ -896,12 +897,13 @@ export type Database = {
         Insert: {
           appointment_date: string
           appointment_time?: string | null
+          client_id?: string | null
           contacted_by?: string | null
           created_at?: string
           description?: string | null
           id?: string
           notes?: string | null
-          prospect_id: string
+          prospect_id?: string | null
           status?: string
           title: string
           updated_at?: string
@@ -909,17 +911,25 @@ export type Database = {
         Update: {
           appointment_date?: string
           appointment_time?: string | null
+          client_id?: string | null
           contacted_by?: string | null
           created_at?: string
           description?: string | null
           id?: string
           notes?: string | null
-          prospect_id?: string
+          prospect_id?: string | null
           status?: string
           title?: string
           updated_at?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "prospect_appointments_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "prospect_appointments_prospect_id_fkey"
             columns: ["prospect_id"]
