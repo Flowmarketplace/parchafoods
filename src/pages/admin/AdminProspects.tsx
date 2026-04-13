@@ -132,6 +132,11 @@ const AdminProspects = () => {
         notes: form.notes || null,
         category: form.category || null,
         email: form.email || null,
+        website: form.website || null,
+        instagram: form.instagram || null,
+        facebook: form.facebook || null,
+        tiktok: form.tiktok || null,
+        logo_url: form.logo_url || null,
       };
 
       if (editingId) {
