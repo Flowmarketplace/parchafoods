@@ -385,7 +385,7 @@ const AdminProspects = () => {
                 <Label>Categoría</Label>
                 <Select value={form.category} onValueChange={v => setForm(f => ({ ...f, category: v }))}>
                   <SelectTrigger><SelectValue placeholder="Seleccionar" /></SelectTrigger>
-                  <SelectContent>
+                  <SelectContent position="popper" className="max-h-60 overflow-y-auto z-[9999]">
                     {categories.map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}
                   </SelectContent>
                 </Select>
@@ -398,7 +398,7 @@ const AdminProspects = () => {
                 <Label>Estado</Label>
                 <Select value={form.status} onValueChange={v => setForm(f => ({ ...f, status: v as ProspectStatus }))}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
-                  <SelectContent>
+                  <SelectContent position="popper" className="z-[9999]">
                     <SelectItem value="nuevo">🆕 Nuevo</SelectItem>
                     <SelectItem value="contactado">📞 Contactado</SelectItem>
                     <SelectItem value="interesado">⭐ Interesado</SelectItem>
@@ -411,7 +411,7 @@ const AdminProspects = () => {
                 <Label>Tipo de contacto</Label>
                 <Select value={form.contact_type} onValueChange={v => setForm(f => ({ ...f, contact_type: v }))}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
-                  <SelectContent>
+                  <SelectContent position="popper" className="z-[9999]">
                     <SelectItem value="llamada">📞 Llamada</SelectItem>
                     <SelectItem value="visita">🚶 Visita</SelectItem>
                     <SelectItem value="whatsapp">💬 WhatsApp</SelectItem>
@@ -423,6 +423,35 @@ const AdminProspects = () => {
                 <Label>Fecha próximo contacto</Label>
                 <Input type="date" value={form.next_contact_date} onChange={e => setForm(f => ({ ...f, next_contact_date: e.target.value }))} />
               </div>
+            </div>
+
+            {/* Redes sociales y web */}
+            <div>
+              <p className="text-sm font-medium mb-3 flex items-center gap-2"><Globe className="h-4 w-4" /> Web y Redes Sociales</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <Label>Sitio Web</Label>
+                  <Input value={form.website} onChange={e => setForm(f => ({ ...f, website: e.target.value }))} placeholder="https://ejemplo.com" />
+                </div>
+                <div>
+                  <Label>Instagram</Label>
+                  <Input value={form.instagram} onChange={e => setForm(f => ({ ...f, instagram: e.target.value }))} placeholder="@usuario" />
+                </div>
+                <div>
+                  <Label>Facebook</Label>
+                  <Input value={form.facebook} onChange={e => setForm(f => ({ ...f, facebook: e.target.value }))} placeholder="facebook.com/pagina" />
+                </div>
+                <div>
+                  <Label>TikTok</Label>
+                  <Input value={form.tiktok} onChange={e => setForm(f => ({ ...f, tiktok: e.target.value }))} placeholder="@usuario" />
+                </div>
+              </div>
+            </div>
+
+            {/* Logo */}
+            <div>
+              <Label>URL del Logo</Label>
+              <Input value={form.logo_url} onChange={e => setForm(f => ({ ...f, logo_url: e.target.value }))} placeholder="https://ejemplo.com/logo.png" />
             </div>
             <div>
               <Label>Observación</Label>
