@@ -819,14 +819,19 @@ export type Database = {
           contact_type: string | null
           created_at: string
           email: string | null
+          facebook: string | null
           id: string
+          instagram: string | null
+          logo_url: string | null
           name: string
           next_contact_date: string | null
           notes: string | null
           observation: string | null
           phone: string | null
           status: string
+          tiktok: string | null
           updated_at: string
+          website: string | null
         }
         Insert: {
           address?: string | null
@@ -835,14 +840,19 @@ export type Database = {
           contact_type?: string | null
           created_at?: string
           email?: string | null
+          facebook?: string | null
           id?: string
+          instagram?: string | null
+          logo_url?: string | null
           name: string
           next_contact_date?: string | null
           notes?: string | null
           observation?: string | null
           phone?: string | null
           status?: string
+          tiktok?: string | null
           updated_at?: string
+          website?: string | null
         }
         Update: {
           address?: string | null
@@ -851,14 +861,19 @@ export type Database = {
           contact_type?: string | null
           created_at?: string
           email?: string | null
+          facebook?: string | null
           id?: string
+          instagram?: string | null
+          logo_url?: string | null
           name?: string
           next_contact_date?: string | null
           notes?: string | null
           observation?: string | null
           phone?: string | null
           status?: string
+          tiktok?: string | null
           updated_at?: string
+          website?: string | null
         }
         Relationships: []
       }
