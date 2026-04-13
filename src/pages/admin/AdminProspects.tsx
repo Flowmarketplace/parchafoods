@@ -13,7 +13,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Label } from '@/components/ui/label';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Plus, Search, Menu, Phone, MapPin, User, Calendar, Edit, Trash2, Eye, Filter, UserPlus } from 'lucide-react';
+import { Plus, Search, Menu, Phone, MapPin, User, Calendar, Edit, Trash2, Eye, Filter, UserPlus, Globe, Instagram, Facebook, Image } from 'lucide-react';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 
