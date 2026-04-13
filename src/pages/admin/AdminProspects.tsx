@@ -184,6 +184,11 @@ const AdminProspects = () => {
       notes: p.notes || '',
       category: p.category || '',
       email: p.email || '',
+      website: p.website || '',
+      instagram: p.instagram || '',
+      facebook: p.facebook || '',
+      tiktok: p.tiktok || '',
+      logo_url: p.logo_url || '',
     });
     setDialogOpen(true);
   };
