@@ -32,6 +32,11 @@ interface Prospect {
   notes: string | null;
   category: string | null;
   email: string | null;
+  website: string | null;
+  instagram: string | null;
+  facebook: string | null;
+  tiktok: string | null;
+  logo_url: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -48,6 +53,11 @@ const emptyForm = {
   notes: '',
   category: '',
   email: '',
+  website: '',
+  instagram: '',
+  facebook: '',
+  tiktok: '',
+  logo_url: '',
 };
 
 const statusColors: Record<string, string> = {
