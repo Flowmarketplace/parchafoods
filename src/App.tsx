@@ -46,6 +46,7 @@ import AdminEvents from "./pages/admin/AdminEvents";
 import AdminCategories from "./pages/admin/AdminCategories";
 import AdminProspects from "./pages/admin/AdminProspects";
 import AdminClients from "./pages/admin/AdminClients";
+import AdminAppointments from "./pages/admin/AdminAppointments";
 import Landing from "./pages/Landing";
 import AndinaProposal from "./pages/AndinaProposal";
 
@@ -96,6 +97,7 @@ function App() {
         <Route path="/admin/categories" element={<AdminCategories />} />
         <Route path="/admin/prospects" element={<AdminProspects />} />
         <Route path="/admin/clients" element={<AdminClients />} />
+        <Route path="/admin/appointments" element={<AdminAppointments />} />
         <Route path="/admin/analytics" element={<AdminAnalytics />} />
         <Route path="/admin/notifications" element={<AdminNotifications />} />
         <Route path="/admin/customization" element={<AdminCustomization />} />
