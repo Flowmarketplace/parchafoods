@@ -13,7 +13,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Label } from '@/components/ui/label';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Plus, Search, Menu, Phone, MapPin, User, Calendar, Edit, Trash2, Eye, Filter, UserPlus, Globe, Instagram, Facebook, Image } from 'lucide-react';
+import { Plus, Search, Menu, Phone, MapPin, User, Calendar, Edit, Trash2, Eye, Filter, UserPlus, Globe, Instagram, Facebook, Image, ArrowRightCircle } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 
@@ -83,6 +84,7 @@ const categories = [
 ];
 
 const AdminProspects = () => {
+  const navigate = useNavigate();
   const [prospects, setProspects] = useState<Prospect[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -93,6 +95,37 @@ const AdminProspects = () => {
   const [selectedProspect, setSelectedProspect] = useState<Prospect | null>(null);
   const [form, setForm] = useState(emptyForm);
   const [saving, setSaving] = useState(false);
+
+  const handleConvertToClient = async (p: Prospect) => {
+    if (!confirm(`¿Convertir "${p.name}" en cliente?`)) return;
+    try {
+      const { error: insertError } = await supabase.from('clients').insert({
+        name: p.name,
+        email: p.email || null,
+        phone: p.phone || null,
+        address: p.address || null,
+        category: p.category || null,
+        contact_person: p.contact_person || null,
+        website: p.website || null,
+        instagram: p.instagram || null,
+        facebook: p.facebook || null,
+        tiktok: p.tiktok || null,
+        logo_url: p.logo_url || null,
+        notes: p.notes || null,
+        converted_from_prospect_id: p.id,
+        status: 'activo',
+      });
+      if (insertError) throw insertError;
+
+      await supabase.from('prospects').update({ status: 'cliente' }).eq('id', p.id);
+
+      toast.success(`🎉 "${p.name}" convertido a cliente exitosamente`);
+      fetchProspects();
+      setDetailOpen(false);
+    } catch (err: any) {
+      toast.error('Error al convertir: ' + (err.message || ''));
+    }
+  };
 
   useEffect(() => {
     fetchProspects();
@@ -562,11 +595,18 @@ const AdminProspects = () => {
                   <p className="text-sm bg-muted p-3 rounded-lg">{selectedProspect.notes}</p>
                 </div>
               )}
-              <div className="flex gap-2 pt-2">
-                <Button className="flex-1" onClick={() => { setDetailOpen(false); openEdit(selectedProspect); }}>
-                  <Edit className="h-4 w-4 mr-2" /> Editar
-                </Button>
-                <Button variant="outline" onClick={() => setDetailOpen(false)}>Cerrar</Button>
+              <div className="flex flex-col gap-2 pt-2">
+                {selectedProspect.status !== 'cliente' && (
+                  <Button className="w-full bg-green-600 hover:bg-green-700 text-white" onClick={() => handleConvertToClient(selectedProspect)}>
+                    <ArrowRightCircle className="h-4 w-4 mr-2" /> Convertir a Cliente
+                  </Button>
+                )}
+                <div className="flex gap-2">
+                  <Button className="flex-1" onClick={() => { setDetailOpen(false); openEdit(selectedProspect); }}>
+                    <Edit className="h-4 w-4 mr-2" /> Editar
+                  </Button>
+                  <Button variant="outline" onClick={() => setDetailOpen(false)}>Cerrar</Button>
+                </div>
               </div>
             </div>
           )}
