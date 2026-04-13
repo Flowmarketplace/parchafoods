@@ -879,15 +879,67 @@ export type Database = {
           },
         ]
       }
+      prospect_appointments: {
+        Row: {
+          appointment_date: string
+          appointment_time: string | null
+          contacted_by: string | null
+          created_at: string
+          description: string | null
+          id: string
+          notes: string | null
+          prospect_id: string
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          appointment_date: string
+          appointment_time?: string | null
+          contacted_by?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          notes?: string | null
+          prospect_id: string
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          appointment_date?: string
+          appointment_time?: string | null
+          contacted_by?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          notes?: string | null
+          prospect_id?: string
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prospect_appointments_prospect_id_fkey"
+            columns: ["prospect_id"]
+            isOneToOne: false
+            referencedRelation: "prospects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       prospects: {
         Row: {
           address: string | null
           category: string | null
           contact_person: string | null
           contact_type: string | null
+          contacted_by: string | null
           created_at: string
           email: string | null
           facebook: string | null
+          first_contact_date: string | null
           id: string
           instagram: string | null
           logo_url: string | null
@@ -906,9 +958,11 @@ export type Database = {
           category?: string | null
           contact_person?: string | null
           contact_type?: string | null
+          contacted_by?: string | null
           created_at?: string
           email?: string | null
           facebook?: string | null
+          first_contact_date?: string | null
           id?: string
           instagram?: string | null
           logo_url?: string | null
@@ -927,9 +981,11 @@ export type Database = {
           category?: string | null
           contact_person?: string | null
           contact_type?: string | null
+          contacted_by?: string | null
           created_at?: string
           email?: string | null
           facebook?: string | null
+          first_contact_date?: string | null
           id?: string
           instagram?: string | null
           logo_url?: string | null
