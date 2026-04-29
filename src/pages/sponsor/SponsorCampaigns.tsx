@@ -89,6 +89,37 @@ const Inner = () => {
     cta_action_type: 'url',
     cta_action_value: '',
   });
+  const [uploadingImage, setUploadingImage] = useState(false);
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !sponsor) return;
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error('La imagen debe pesar menos de 5MB');
+      return;
+    }
+    if (!file.type.startsWith('image/')) {
+      toast.error('El archivo debe ser una imagen');
+      return;
+    }
+    setUploadingImage(true);
+    try {
+      const ext = file.name.split('.').pop();
+      const path = `${sponsor.id}/campaigns/${Date.now()}.${ext}`;
+      const { error: upErr } = await supabase.storage
+        .from('sponsor-assets')
+        .upload(path, file, { cacheControl: '3600', upsert: false });
+      if (upErr) throw upErr;
+      const { data: pub } = supabase.storage.from('sponsor-assets').getPublicUrl(path);
+      setForm((f) => ({ ...f, image_url: pub.publicUrl }));
+      toast.success('Imagen subida');
+    } catch (err: any) {
+      toast.error(err.message || 'Error al subir imagen');
+    } finally {
+      setUploadingImage(false);
+      e.target.value = '';
+    }
+  };
 
   const load = async () => {
     if (!sponsor) return;
