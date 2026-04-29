@@ -6,6 +6,7 @@ import {
   Settings,
   BarChart3,
   Home,
+  ArrowLeft,
   LogOut,
   Bell,
 } from 'lucide-react';
