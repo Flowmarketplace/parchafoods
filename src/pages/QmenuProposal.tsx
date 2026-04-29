@@ -5,12 +5,12 @@ import {
   Smartphone, Store, TrendingUp, Camera, Sparkles, Target, Globe, Beef,
   Award, Gem, Crown, Flame, Truck, Utensils
 } from "lucide-react";
-import qmenuLogo from "@/assets/qmenu-logo-white.png";
 import qmenuMeats from "@/assets/qmenu-meats.jpg";
 import qmenuGrill from "@/assets/qmenu-grill.jpg";
 import qmenuDistribution from "@/assets/qmenu-distribution.jpg";
 import qmenuFeast from "@/assets/qmenu-feast.jpg";
 import qmenuStorefront from "@/assets/qmenu-storefront.png";
+import qmenuStaff from "@/assets/qmenu-staff.jpg";
 
 const fadeUp = {
   initial: { opacity: 0, y: 30 },
