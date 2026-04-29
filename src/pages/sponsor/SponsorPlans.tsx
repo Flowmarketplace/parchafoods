@@ -27,6 +27,9 @@ const Inner = () => {
   const { sponsor } = useSponsor();
   const [plans, setPlans] = useState<any[]>([]);
   const [requests, setRequests] = useState<any[]>([]);
+  const [editing, setEditing] = useState<any | null>(null);
+  const [editMessage, setEditMessage] = useState('');
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const load = async () => {
     const [{ data: p }, { data: r }] = await Promise.all([
