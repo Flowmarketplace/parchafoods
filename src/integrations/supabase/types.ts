@@ -1215,6 +1215,271 @@ export type Database = {
           },
         ]
       }
+      sponsor_campaigns: {
+        Row: {
+          category_filters: string[] | null
+          created_at: string
+          cta_action_type: string | null
+          cta_action_value: string | null
+          cta_label: string | null
+          geo_enabled: boolean
+          geo_latitude: number | null
+          geo_longitude: number | null
+          geo_radius_km: number | null
+          id: string
+          image_url: string | null
+          message: string
+          rejection_reason: string | null
+          scheduled_at: string | null
+          sent_at: string | null
+          sent_count: number | null
+          sponsor_id: string
+          status: string
+          target_audience: string
+          title: string
+          updated_at: string
+          zone_filters: string[] | null
+        }
+        Insert: {
+          category_filters?: string[] | null
+          created_at?: string
+          cta_action_type?: string | null
+          cta_action_value?: string | null
+          cta_label?: string | null
+          geo_enabled?: boolean
+          geo_latitude?: number | null
+          geo_longitude?: number | null
+          geo_radius_km?: number | null
+          id?: string
+          image_url?: string | null
+          message: string
+          rejection_reason?: string | null
+          scheduled_at?: string | null
+          sent_at?: string | null
+          sent_count?: number | null
+          sponsor_id: string
+          status?: string
+          target_audience?: string
+          title: string
+          updated_at?: string
+          zone_filters?: string[] | null
+        }
+        Update: {
+          category_filters?: string[] | null
+          created_at?: string
+          cta_action_type?: string | null
+          cta_action_value?: string | null
+          cta_label?: string | null
+          geo_enabled?: boolean
+          geo_latitude?: number | null
+          geo_longitude?: number | null
+          geo_radius_km?: number | null
+          id?: string
+          image_url?: string | null
+          message?: string
+          rejection_reason?: string | null
+          scheduled_at?: string | null
+          sent_at?: string | null
+          sent_count?: number | null
+          sponsor_id?: string
+          status?: string
+          target_audience?: string
+          title?: string
+          updated_at?: string
+          zone_filters?: string[] | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sponsor_campaigns_sponsor_id_fkey"
+            columns: ["sponsor_id"]
+            isOneToOne: false
+            referencedRelation: "sponsors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sponsor_plan_requests: {
+        Row: {
+          admin_notes: string | null
+          created_at: string
+          id: string
+          message: string | null
+          plan_id: string
+          sponsor_id: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          admin_notes?: string | null
+          created_at?: string
+          id?: string
+          message?: string | null
+          plan_id: string
+          sponsor_id: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          admin_notes?: string | null
+          created_at?: string
+          id?: string
+          message?: string | null
+          plan_id?: string
+          sponsor_id?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sponsor_plan_requests_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "sponsor_plans"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sponsor_plan_requests_sponsor_id_fkey"
+            columns: ["sponsor_id"]
+            isOneToOne: false
+            referencedRelation: "sponsors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sponsor_plans: {
+        Row: {
+          active: boolean
+          created_at: string
+          currency: string
+          data_access_level: string
+          description: string | null
+          display_order: number
+          features: Json | null
+          geo_targeting: boolean
+          id: string
+          main_banners: number
+          monthly_push_limit: number
+          name: string
+          price: number
+          priority_support: boolean
+          tier: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          currency?: string
+          data_access_level?: string
+          description?: string | null
+          display_order?: number
+          features?: Json | null
+          geo_targeting?: boolean
+          id?: string
+          main_banners?: number
+          monthly_push_limit?: number
+          name: string
+          price: number
+          priority_support?: boolean
+          tier: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          currency?: string
+          data_access_level?: string
+          description?: string | null
+          display_order?: number
+          features?: Json | null
+          geo_targeting?: boolean
+          id?: string
+          main_banners?: number
+          monthly_push_limit?: number
+          name?: string
+          price?: number
+          priority_support?: boolean
+          tier?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      sponsors: {
+        Row: {
+          brand_name: string
+          contact_person: string | null
+          created_at: string
+          current_plan_id: string | null
+          description: string | null
+          email: string | null
+          facebook: string | null
+          id: string
+          industry: string | null
+          instagram: string | null
+          logo_url: string | null
+          notes: string | null
+          phone: string | null
+          plan_end_date: string | null
+          plan_start_date: string | null
+          status: string
+          tiktok: string | null
+          updated_at: string
+          user_id: string
+          website: string | null
+        }
+        Insert: {
+          brand_name: string
+          contact_person?: string | null
+          created_at?: string
+          current_plan_id?: string | null
+          description?: string | null
+          email?: string | null
+          facebook?: string | null
+          id?: string
+          industry?: string | null
+          instagram?: string | null
+          logo_url?: string | null
+          notes?: string | null
+          phone?: string | null
+          plan_end_date?: string | null
+          plan_start_date?: string | null
+          status?: string
+          tiktok?: string | null
+          updated_at?: string
+          user_id: string
+          website?: string | null
+        }
+        Update: {
+          brand_name?: string
+          contact_person?: string | null
+          created_at?: string
+          current_plan_id?: string | null
+          description?: string | null
+          email?: string | null
+          facebook?: string | null
+          id?: string
+          industry?: string | null
+          instagram?: string | null
+          logo_url?: string | null
+          notes?: string | null
+          phone?: string | null
+          plan_end_date?: string | null
+          plan_start_date?: string | null
+          status?: string
+          tiktok?: string | null
+          updated_at?: string
+          user_id?: string
+          website?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sponsors_current_plan_id_fkey"
+            columns: ["current_plan_id"]
+            isOneToOne: false
+            referencedRelation: "sponsor_plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       subscription_plans: {
         Row: {
           analytics: boolean
@@ -1353,7 +1618,7 @@ export type Database = {
       }
     }
     Enums: {
-      app_role: "admin" | "user" | "business_owner" | "customer"
+      app_role: "admin" | "user" | "business_owner" | "customer" | "sponsor"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1481,7 +1746,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin", "user", "business_owner", "customer"],
+      app_role: ["admin", "user", "business_owner", "customer", "sponsor"],
     },
   },
 } as const
