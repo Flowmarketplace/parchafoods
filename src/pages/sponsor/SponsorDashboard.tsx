@@ -20,7 +20,9 @@ import {
   Zap,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { useNavigate } from 'react-router-dom';
+import { MapPin, Search, Star } from 'lucide-react';
 
 interface StatCardProps {
   icon: any;
@@ -68,6 +70,9 @@ const SponsorDashboard = () => {
   const [planName, setPlanName] = useState<string | null>(null);
   const [planLimit, setPlanLimit] = useState<number>(0);
   const [recentCampaigns, setRecentCampaigns] = useState<any[]>([]);
+  const [businesses, setBusinesses] = useState<any[]>([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
   useEffect(() => {
     (async () => {
@@ -110,8 +115,26 @@ const SponsorDashboard = () => {
         draftCampaigns: allCamps.filter((c: any) => c.status === 'borrador').length,
       });
       setRecentCampaigns(recent.data || []);
+
+      const { data: bizList } = await supabase
+        .from('businesses')
+        .select('id, name, category, neighborhood, zone, address, price_range, featured')
+        .order('featured', { ascending: false })
+        .order('name', { ascending: true });
+      setBusinesses(bizList || []);
     })();
   }, []);
+
+  const categories = Array.from(new Set(businesses.map((b) => b.category).filter(Boolean))).sort();
+  const filteredBusinesses = businesses.filter((b) => {
+    const matchesSearch =
+      !searchTerm ||
+      b.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      b.neighborhood?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      b.category?.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = selectedCategory === 'all' || b.category === selectedCategory;
+    return matchesSearch && matchesCategory;
+  });
 
   const usagePercent = planLimit > 0 ? Math.min(100, (stats.activeCampaigns / planLimit) * 100) : 0;
 
@@ -331,6 +354,93 @@ const SponsorDashboard = () => {
                       </p>
                     </div>
                     {statusBadge(c.status)}
+                  </div>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Registered restaurants */}
+        <Card className="border-0 shadow-md">
+          <CardHeader className="pb-3">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+              <div>
+                <CardTitle className="flex items-center gap-2 text-base">
+                  <Store className="h-4 w-4 text-primary" /> Restaurantes registrados
+                </CardTitle>
+                <p className="text-xs text-muted-foreground mt-1">
+                  {filteredBusinesses.length} de {businesses.length} restaurantes
+                </p>
+              </div>
+              <div className="relative w-full md:w-72">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  placeholder="Buscar por nombre, zona, categoría..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-9 h-9"
+                />
+              </div>
+            </div>
+            <div className="flex flex-wrap gap-2 pt-3">
+              <Badge
+                variant={selectedCategory === 'all' ? 'default' : 'outline'}
+                className="cursor-pointer"
+                onClick={() => setSelectedCategory('all')}
+              >
+                Todas ({businesses.length})
+              </Badge>
+              {categories.map((cat) => {
+                const count = businesses.filter((b) => b.category === cat).length;
+                return (
+                  <Badge
+                    key={cat}
+                    variant={selectedCategory === cat ? 'default' : 'outline'}
+                    className="cursor-pointer"
+                    onClick={() => setSelectedCategory(cat)}
+                  >
+                    {cat} ({count})
+                  </Badge>
+                );
+              })}
+            </div>
+          </CardHeader>
+          <CardContent>
+            {filteredBusinesses.length === 0 ? (
+              <div className="text-center py-8 space-y-2">
+                <Store className="h-10 w-10 mx-auto text-muted-foreground/40" />
+                <p className="text-sm text-muted-foreground">No hay restaurantes que coincidan</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 max-h-[600px] overflow-y-auto pr-1">
+                {filteredBusinesses.map((b) => (
+                  <div
+                    key={b.id}
+                    className="p-3 rounded-lg border bg-card hover:bg-muted/50 hover:shadow-sm transition-all cursor-pointer"
+                    onClick={() => navigate(`/business/${b.id}`)}
+                  >
+                    <div className="flex items-start justify-between gap-2 mb-2">
+                      <div className="flex-1 min-w-0">
+                        <p className="font-semibold text-sm truncate flex items-center gap-1">
+                          {b.name}
+                          {b.featured && <Star className="h-3 w-3 text-amber-500 fill-amber-500 flex-shrink-0" />}
+                        </p>
+                        <Badge variant="secondary" className="text-[10px] mt-1">
+                          {b.category}
+                        </Badge>
+                      </div>
+                      {b.price_range && (
+                        <span className="text-xs font-medium text-muted-foreground">{b.price_range}</span>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                      <MapPin className="h-3 w-3 flex-shrink-0" />
+                      <span className="truncate">
+                        {b.neighborhood}
+                        {b.zone ? ` · ${b.zone}` : ''}
+                      </span>
+                    </div>
                   </div>
                 ))}
               </div>
