@@ -4,8 +4,29 @@ import { supabase } from '@/integrations/supabase/client';
 import SponsorSidebar, { SponsorSidebarDesktop } from './SponsorSidebar';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
-import { Menu, Megaphone } from 'lucide-react';
+import { Menu, Megaphone, LogOut, Home } from 'lucide-react';
 import { Card } from '@/components/ui/card';
+import { toast } from 'sonner';
+
+const signOutAndGo = async (navigate: (p: string) => void) => {
+  await supabase.auth.signOut();
+  toast.success('Sesión cerrada');
+  navigate('/auth');
+};
+
+const ExitActions = () => {
+  const navigate = useNavigate();
+  return (
+    <div className="flex flex-col sm:flex-row gap-2 justify-center pt-2">
+      <Button variant="outline" size="sm" onClick={() => navigate('/app')}>
+        <Home className="h-4 w-4 mr-2" /> Ir a la App
+      </Button>
+      <Button variant="destructive" size="sm" onClick={() => signOutAndGo(navigate)}>
+        <LogOut className="h-4 w-4 mr-2" /> Cerrar sesión
+      </Button>
+    </div>
+  );
+};
 
 interface SponsorLayoutProps {
   children: React.ReactNode;
@@ -49,6 +70,7 @@ export const useSponsor = () => {
 
 const SponsorLayout = ({ children, title, subtitle }: SponsorLayoutProps) => {
   const { sponsor, loading } = useSponsor();
+  const navigate = useNavigate();
 
   if (loading) {
     return (
@@ -65,6 +87,7 @@ const SponsorLayout = ({ children, title, subtitle }: SponsorLayoutProps) => {
           <Megaphone className="h-12 w-12 mx-auto text-primary" />
           <h2 className="text-2xl font-bold">Sin perfil de patrocinador</h2>
           <p className="text-muted-foreground">No encontramos un perfil de patrocinador asociado a tu cuenta. Contacta al administrador.</p>
+          <ExitActions />
         </Card>
       </div>
     );
@@ -79,6 +102,7 @@ const SponsorLayout = ({ children, title, subtitle }: SponsorLayoutProps) => {
           <p className="text-muted-foreground">
             Tu cuenta de <strong>{sponsor.brand_name}</strong> está pendiente de aprobación por el administrador. Te contactaremos pronto.
           </p>
+          <ExitActions />
         </Card>
       </div>
     );
@@ -90,6 +114,7 @@ const SponsorLayout = ({ children, title, subtitle }: SponsorLayoutProps) => {
         <Card className="max-w-md p-8 text-center space-y-4">
           <h2 className="text-2xl font-bold">Cuenta {sponsor.status}</h2>
           <p className="text-muted-foreground">Tu cuenta no está activa. Contacta al administrador para más información.</p>
+          <ExitActions />
         </Card>
       </div>
     );
@@ -114,6 +139,12 @@ const SponsorLayout = ({ children, title, subtitle }: SponsorLayoutProps) => {
             <h1 className="text-xl font-bold">{title}</h1>
             {subtitle && <p className="text-xs text-muted-foreground">{subtitle}</p>}
           </div>
+          <Button variant="outline" size="sm" onClick={() => navigate('/app')} className="hidden sm:inline-flex">
+            <Home className="h-4 w-4 mr-2" /> App
+          </Button>
+          <Button variant="ghost" size="sm" onClick={() => signOutAndGo(navigate)} className="text-destructive hover:text-destructive">
+            <LogOut className="h-4 w-4 mr-2" /> <span className="hidden sm:inline">Salir</span>
+          </Button>
         </header>
         <main className="p-4 md:p-6">{children}</main>
       </div>
