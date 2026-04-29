@@ -281,7 +281,7 @@ const Listings = () => {
 
             {/* Loading skeleton */}
             {loading ? (
-              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-5 pb-28 md:pb-12">
+              <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-5 pb-28 md:pb-12">
                 {[...Array(8)].map((_, i) => (
                   <div key={i} className="rounded-2xl overflow-hidden border border-border/50">
                     <Skeleton className="aspect-[4/3]" />
@@ -325,7 +325,7 @@ const Listings = () => {
                       <span className="text-base sm:text-lg">⭐</span>
                       <h2 className="text-base sm:text-lg font-bold">Destacados</h2>
                     </div>
-                    <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-5">
+                    <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-5">
                       {featuredPlaces.map((place) => (
                         <PlaceCard key={place.id} place={place} featured />
                       ))}
@@ -338,7 +338,7 @@ const Listings = () => {
                   {featuredPlaces.length > 0 && selectedCategory === 'Todos' && (
                     <h2 className="text-base sm:text-lg font-bold mb-3 sm:mb-4">Todos los lugares</h2>
                   )}
-                  <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-5">
+                  <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-5">
                     {(selectedCategory === 'Todos' ? regularPlaces : filteredPlaces).map((place) => (
                       <PlaceCard key={place.id} place={place} />
                     ))}
