@@ -329,49 +329,35 @@ const Auth = () => {
                     <Label>Iniciar sesión como</Label>
                     <RadioGroup
                       value={loginAccountType}
-                      onValueChange={(value) => setLoginAccountType(value as 'customer' | 'business_owner' | 'admin')}
-                      className="grid grid-cols-3 gap-3"
+                      onValueChange={(value) => setLoginAccountType(value as any)}
+                      className="grid grid-cols-4 gap-2"
                     >
                       <div>
-                        <RadioGroupItem
-                          value="customer"
-                          id="login-customer"
-                          className="peer sr-only"
-                        />
-                        <Label
-                          htmlFor="login-customer"
-                          className="flex flex-col items-center justify-between rounded-lg border-2 border-muted bg-popover p-3 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer"
-                        >
-                          <UserCircle className="mb-2 h-5 w-5" />
-                          <span className="text-xs font-medium text-center">Cliente</span>
+                        <RadioGroupItem value="customer" id="login-customer" className="peer sr-only" />
+                        <Label htmlFor="login-customer" className="flex flex-col items-center justify-between rounded-lg border-2 border-muted bg-popover p-2 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer">
+                          <UserCircle className="mb-1 h-5 w-5" />
+                          <span className="text-[10px] font-medium text-center">Cliente</span>
                         </Label>
                       </div>
                       <div>
-                        <RadioGroupItem
-                          value="business_owner"
-                          id="login-business"
-                          className="peer sr-only"
-                        />
-                        <Label
-                          htmlFor="login-business"
-                          className="flex flex-col items-center justify-center rounded-lg border-2 border-muted bg-popover p-3 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer"
-                        >
-                          <Store className="mb-2 h-5 w-5" />
-                          <span className="text-xs font-medium text-center">Negocio</span>
+                        <RadioGroupItem value="business_owner" id="login-business" className="peer sr-only" />
+                        <Label htmlFor="login-business" className="flex flex-col items-center justify-center rounded-lg border-2 border-muted bg-popover p-2 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer">
+                          <Store className="mb-1 h-5 w-5" />
+                          <span className="text-[10px] font-medium text-center">Negocio</span>
                         </Label>
                       </div>
                       <div>
-                        <RadioGroupItem
-                          value="admin"
-                          id="login-admin"
-                          className="peer sr-only"
-                        />
-                        <Label
-                          htmlFor="login-admin"
-                          className="flex flex-col items-center justify-center rounded-lg border-2 border-muted bg-popover p-3 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer"
-                        >
-                          <ShieldCheck className="mb-2 h-5 w-5" />
-                          <span className="text-xs font-medium text-center">Admin</span>
+                        <RadioGroupItem value="sponsor" id="login-sponsor" className="peer sr-only" />
+                        <Label htmlFor="login-sponsor" className="flex flex-col items-center justify-center rounded-lg border-2 border-muted bg-popover p-2 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer">
+                          <Megaphone className="mb-1 h-5 w-5" />
+                          <span className="text-[10px] font-medium text-center">Patrocinador</span>
+                        </Label>
+                      </div>
+                      <div>
+                        <RadioGroupItem value="admin" id="login-admin" className="peer sr-only" />
+                        <Label htmlFor="login-admin" className="flex flex-col items-center justify-center rounded-lg border-2 border-muted bg-popover p-2 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer">
+                          <ShieldCheck className="mb-1 h-5 w-5" />
+                          <span className="text-[10px] font-medium text-center">Admin</span>
                         </Label>
                       </div>
                     </RadioGroup>
