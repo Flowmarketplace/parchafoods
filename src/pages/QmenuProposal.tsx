@@ -5,12 +5,12 @@ import {
   Smartphone, Store, TrendingUp, Camera, Sparkles, Target, Globe, Beef,
   Award, Gem, Crown, Flame, Truck, Utensils
 } from "lucide-react";
-import qmenuLogo from "@/assets/qmenu-logo-white.png";
 import qmenuMeats from "@/assets/qmenu-meats.jpg";
 import qmenuGrill from "@/assets/qmenu-grill.jpg";
 import qmenuDistribution from "@/assets/qmenu-distribution.jpg";
 import qmenuFeast from "@/assets/qmenu-feast.jpg";
 import qmenuStorefront from "@/assets/qmenu-storefront.png";
+import qmenuStaff from "@/assets/qmenu-staff.jpg";
 
 const fadeUp = {
   initial: { opacity: 0, y: 30 },
@@ -144,7 +144,9 @@ const QmenuProposal = () => {
           </motion.div>
 
           <motion.div {...fadeUp} transition={{ duration: 0.6, delay: 0.15 }}>
-            <img src={qmenuLogo} alt="Q'Menu" className="h-20 md:h-28 mx-auto mb-8 drop-shadow-2xl" />
+            <h2 className="text-6xl md:text-8xl font-black text-white mb-8 tracking-tight drop-shadow-2xl" style={{ fontFamily: "'Inter', system-ui, sans-serif", letterSpacing: '-0.04em' }}>
+              Q'menu
+            </h2>
           </motion.div>
 
           <motion.h1 {...fadeUp} transition={{ duration: 0.6, delay: 0.25 }} className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
@@ -299,12 +301,6 @@ const QmenuProposal = () => {
                     <p className="text-muted-foreground text-sm leading-relaxed">{benefit.description}</p>
                   </div>
                 </div>
-                {benefit.highlight && (
-                  <div className="mt-4 flex items-center gap-1.5">
-                    <CheckCircle2 className="w-4 h-4 text-red-500" />
-                    <span className="text-red-500 text-xs font-semibold">EXCLUSIVO PATROCINADOR OFICIAL</span>
-                  </div>
-                )}
               </motion.div>
             ))}
           </div>
@@ -649,28 +645,39 @@ const QmenuProposal = () => {
       <section className="py-20 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 via-background to-orange-500/5" />
         <div className="container mx-auto px-6 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
+          <div className="grid lg:grid-cols-5 gap-10 lg:gap-12 items-center max-w-6xl mx-auto">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7 }}
-              className="relative"
+              className="relative lg:col-span-2 max-w-sm mx-auto lg:max-w-none w-full"
             >
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-red-500/20">
+              {/* Foto principal del local — contenida, ratio fijo para evitar pixelación */}
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl border-2 border-red-500/20 aspect-[4/5]">
                 <img src={qmenuStorefront} alt="Local Q'Menu Cali" className="w-full h-full object-cover" loading="lazy" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
-                <div className="absolute bottom-4 left-4 right-4">
-                  <span className="inline-block px-3 py-1 rounded-full bg-yellow-400 text-black text-xs font-bold shadow-lg">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                <div className="absolute bottom-3 left-3 right-3">
+                  <span className="inline-block px-2.5 py-1 rounded-full bg-yellow-400 text-black text-[11px] font-bold shadow-lg">
                     🥩 Q'Menu · Cali
                   </span>
                 </div>
               </div>
-              <div className="absolute -top-4 -right-4 w-28 h-28 bg-gradient-to-br from-red-600 to-orange-500 rounded-2xl flex items-center justify-center shadow-2xl rotate-6">
+
+              {/* Polaroid del staff — toque humano y personalizado */}
+              <div className="absolute -bottom-6 -left-4 sm:-left-8 w-28 sm:w-32 rotate-[-8deg] bg-white p-1.5 pb-5 rounded-sm shadow-2xl hidden sm:block">
+                <div className="aspect-square overflow-hidden">
+                  <img src={qmenuStaff} alt="Equipo Q'Menu" className="w-full h-full object-cover" loading="lazy" />
+                </div>
+                <p className="text-[9px] text-center text-black/70 font-semibold mt-1">El equipo Q'Menu</p>
+              </div>
+
+              {/* Badge crecimiento */}
+              <div className="absolute -top-3 -right-3 w-24 h-24 bg-gradient-to-br from-red-600 to-orange-500 rounded-2xl flex items-center justify-center shadow-2xl rotate-6">
                 <div className="text-center px-1">
-                  <div className="text-[10px] text-white/80 font-semibold leading-tight">INICIO</div>
-                  <div className="text-2xl font-black text-white leading-none">100</div>
-                  <div className="text-[8px] text-white/90 font-semibold mt-0.5">→ 1,200 al cierre</div>
+                  <div className="text-[9px] text-white/80 font-semibold leading-tight">INICIO</div>
+                  <div className="text-xl font-black text-white leading-none">100</div>
+                  <div className="text-[8px] text-white/90 font-semibold mt-0.5">→ 1,200</div>
                 </div>
               </div>
             </motion.div>
@@ -680,6 +687,7 @@ const QmenuProposal = () => {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7, delay: 0.15 }}
+              className="lg:col-span-3"
             >
               <span className="text-red-500 font-semibold text-sm tracking-widest uppercase">Hecho a la medida de Q'Menu</span>
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mt-3 mb-5 leading-tight">
@@ -1104,7 +1112,7 @@ const QmenuProposal = () => {
 
         <div className="container mx-auto px-6 relative z-10 text-center">
           <motion.div {...fadeUp}>
-            <img src={qmenuLogo} alt="Q'Menu" className="h-16 mx-auto mb-8 opacity-90" />
+            <h3 className="text-5xl md:text-6xl font-black text-white mb-8 tracking-tight" style={{ letterSpacing: '-0.04em' }}>Q'menu</h3>
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">¿Listo para ser el patrocinador oficial?</h2>
             <p className="text-white/60 text-lg max-w-2xl mx-auto mb-10">
               Hablemos sobre cómo Q'Menu puede ser la carne oficial de El Mundial del Sabor 2026 en Cali.
