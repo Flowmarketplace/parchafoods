@@ -723,7 +723,8 @@ const QmenuProposal = () => {
                 </p>
                 <ul className="space-y-3">
                   {[
-                    "Datos de 100 restaurantes participantes",
+                    "Inicio con 100 restaurantes durante el Mundial",
+                    "Proyección de 1,200 restaurantes al cierre de 2026",
                     "Visitas estimadas de 50,000+ usuarios",
                     "KPIs de colocación de carne en tiempo real",
                     "Métricas de engagement y escaneos QR",
