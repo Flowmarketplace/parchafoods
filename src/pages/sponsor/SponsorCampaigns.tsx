@@ -434,11 +434,15 @@ const Inner = () => {
                       <div className="bg-white/95 backdrop-blur-md rounded-2xl shadow-lg overflow-hidden">
                         {/* Header */}
                         <div className="flex items-center gap-2 px-3 pt-2.5 pb-1.5">
-                          <div className="h-5 w-5 rounded-md bg-gradient-to-br from-primary to-secondary flex items-center justify-center flex-shrink-0">
-                            <Bell className="h-2.5 w-2.5 text-white" />
+                          <div className="h-5 w-5 rounded-md bg-gradient-to-br from-primary to-secondary flex items-center justify-center flex-shrink-0 overflow-hidden">
+                            {sponsor?.logo_url ? (
+                              <img src={sponsor.logo_url} alt="" className="h-full w-full object-cover" />
+                            ) : (
+                              <Bell className="h-2.5 w-2.5 text-white" />
+                            )}
                           </div>
                           <span className="text-[9px] font-semibold text-slate-700 uppercase tracking-wide flex-1 truncate">
-                            Sabor 360
+                            {sponsor?.brand_name || 'Sabor 360'}
                           </span>
                           <span className="text-[9px] text-slate-500">ahora</span>
                         </div>
