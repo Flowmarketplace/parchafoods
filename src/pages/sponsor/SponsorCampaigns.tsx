@@ -11,7 +11,51 @@ import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Plus, Send, Trash2, Bell } from 'lucide-react';
+import { Plus, Send, Trash2, Bell, ExternalLink, MessageCircle, Phone, MapPin, MessageSquare, AlertCircle } from 'lucide-react';
+import { z } from 'zod';
+
+// CTA validators per action type
+const ctaValueSchema = (type: string) => {
+  switch (type) {
+    case 'url':
+      return z.string().trim().url({ message: 'Debe ser una URL válida (https://...)' }).max(500);
+    case 'whatsapp':
+      // E.164-ish: optional +, 8-15 digits
+      return z.string().trim().regex(/^\+?\d{8,15}$/, { message: 'Número WhatsApp inválido (8-15 dígitos, opcional +)' });
+    case 'call':
+      return z.string().trim().regex(/^\+?[\d\s\-()]{7,20}$/, { message: 'Teléfono inválido' });
+    case 'message':
+      return z.string().trim().min(2, { message: 'Escribe el mensaje a enviar' }).max(300, { message: 'Máximo 300 caracteres' });
+    case 'place':
+      return z.string().trim().uuid({ message: 'Debe ser un ID de lugar válido (UUID)' });
+    default:
+      return z.string().trim().min(1);
+  }
+};
+
+const ctaPlaceholders: Record<string, string> = {
+  url: 'https://miempresa.com/promo',
+  whatsapp: '+573001234567',
+  call: '+57 300 123 4567',
+  message: 'Hola, me interesa tu promoción',
+  place: 'uuid del restaurante en la app',
+};
+
+const ctaHints: Record<string, string> = {
+  url: 'Abre el enlace en el navegador del usuario.',
+  whatsapp: 'Abre WhatsApp con el número precargado.',
+  call: 'Inicia una llamada al número.',
+  message: 'Envía un mensaje directo dentro de la app.',
+  place: 'Lleva al usuario a la ficha del restaurante.',
+};
+
+const ctaIcons: Record<string, any> = { url: ExternalLink, whatsapp: MessageCircle, call: Phone, message: MessageSquare, place: MapPin };
+
+const campaignSchema = z.object({
+  title: z.string().trim().min(3, { message: 'El título debe tener al menos 3 caracteres' }).max(60),
+  message: z.string().trim().min(10, { message: 'El mensaje debe tener al menos 10 caracteres' }).max(180),
+  image_url: z.string().trim().url({ message: 'URL de imagen inválida' }).max(500).optional().or(z.literal('')),
+});
 
 const audienceLabel: Record<string, string> = {
   businesses: 'Restaurantes',
