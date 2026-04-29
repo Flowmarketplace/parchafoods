@@ -207,16 +207,20 @@ const Inner = () => {
           <DialogTrigger asChild>
             <Button><Plus className="h-4 w-4 mr-2" /> Nueva campaña</Button>
           </DialogTrigger>
-          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
             <DialogHeader><DialogTitle>Nueva campaña push</DialogTitle></DialogHeader>
-            <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-[1fr_280px] gap-6">
+              {/* FORM */}
+              <div className="space-y-4">
               <div>
                 <Label>Título *</Label>
                 <Input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} maxLength={60} />
+                <p className="text-xs text-muted-foreground mt-1">{form.title.length}/60</p>
               </div>
               <div>
                 <Label>Mensaje *</Label>
                 <Textarea value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} rows={3} maxLength={180} />
+                <p className="text-xs text-muted-foreground mt-1">{form.message.length}/180</p>
               </div>
               <div>
                 <Label>Imagen (URL opcional)</Label>
@@ -257,9 +261,12 @@ const Inner = () => {
 
               <div className="border-t pt-4 space-y-3">
                 <Label className="text-base">Botón de acción (CTA)</Label>
-                <Input placeholder="Texto del botón (ej: Ver oferta)" value={form.cta_label} onChange={(e) => setForm({ ...form, cta_label: e.target.value })} />
+                <div>
+                  <Input placeholder="Texto del botón (ej: Ver oferta)" value={form.cta_label} onChange={(e) => setForm({ ...form, cta_label: e.target.value })} maxLength={30} />
+                  {ctaLabelError && <p className="text-xs text-destructive mt-1 flex items-center gap-1"><AlertCircle className="h-3 w-3" />{ctaLabelError}</p>}
+                </div>
                 <div className="grid grid-cols-2 gap-2">
-                  <Select value={form.cta_action_type} onValueChange={(v) => setForm({ ...form, cta_action_type: v })}>
+                  <Select value={form.cta_action_type} onValueChange={(v) => setForm({ ...form, cta_action_type: v, cta_action_value: '' })}>
                     <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>
                       <SelectItem value="url">Abrir URL</SelectItem>
@@ -269,13 +276,72 @@ const Inner = () => {
                       <SelectItem value="place">Ver lugar en app</SelectItem>
                     </SelectContent>
                   </Select>
-                  <Input placeholder="Valor (URL, número, ID...)" value={form.cta_action_value} onChange={(e) => setForm({ ...form, cta_action_value: e.target.value })} />
+                  <Input
+                    placeholder={ctaPlaceholders[form.cta_action_type]}
+                    value={form.cta_action_value}
+                    onChange={(e) => setForm({ ...form, cta_action_value: e.target.value })}
+                    className={ctaValueError ? 'border-destructive' : ''}
+                  />
                 </div>
+                <p className="text-xs text-muted-foreground">{ctaHints[form.cta_action_type]}</p>
+                {ctaValueError && <p className="text-xs text-destructive flex items-center gap-1"><AlertCircle className="h-3 w-3" />{ctaValueError}</p>}
               </div>
 
               <div className="flex gap-2 pt-2">
                 <Button variant="outline" onClick={() => submit('borrador')} className="flex-1">Guardar borrador</Button>
-                <Button onClick={() => submit('pendiente')} className="flex-1"><Send className="h-4 w-4 mr-2" />Enviar para aprobación</Button>
+                <Button
+                  onClick={() => submit('pendiente')}
+                  className="flex-1"
+                  disabled={!!ctaValueError || !!ctaLabelError}
+                >
+                  <Send className="h-4 w-4 mr-2" />Enviar para aprobación
+                </Button>
+              </div>
+              </div>
+
+              {/* LIVE PREVIEW */}
+              <div className="space-y-3 md:sticky md:top-0 md:self-start">
+                <Label className="text-xs uppercase text-muted-foreground">Vista previa</Label>
+                {/* Phone mock */}
+                <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl p-3 shadow-xl">
+                  <div className="bg-slate-700/50 rounded-2xl p-3 space-y-2">
+                    <div className="flex items-center gap-2 text-[10px] text-white/60">
+                      <div className="h-5 w-5 rounded bg-primary flex items-center justify-center">
+                        <Bell className="h-3 w-3 text-primary-foreground" />
+                      </div>
+                      <span className="font-semibold">SABOR 360</span>
+                      <span className="ml-auto">ahora</span>
+                    </div>
+                    <div className="bg-white dark:bg-slate-100 rounded-lg p-2 space-y-1">
+                      <p className="text-[11px] font-bold text-slate-900 line-clamp-2">{form.title || 'Título de la notificación'}</p>
+                      <p className="text-[10px] text-slate-700 line-clamp-3">{form.message || 'Aquí aparecerá el mensaje de tu notificación push.'}</p>
+                      {form.image_url && (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img src={form.image_url} alt="" className="w-full h-20 object-cover rounded mt-1" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+                      )}
+                      {form.cta_label && form.cta_action_value && !ctaValueError && !ctaLabelError && (
+                        <button
+                          type="button"
+                          className="w-full mt-2 inline-flex items-center justify-center gap-1.5 bg-primary text-primary-foreground text-[10px] font-medium rounded px-2 py-1.5"
+                        >
+                          {(() => { const I = ctaIcons[form.cta_action_type] || ExternalLink; return <I className="h-3 w-3" />; })()}
+                          {form.cta_label}
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+                {/* Summary */}
+                <div className="text-xs space-y-1 p-3 rounded border bg-muted/30">
+                  <p><strong>Audiencia:</strong> {audienceLabel[form.target_audience]}</p>
+                  {form.geo_enabled && form.geo_latitude && form.geo_longitude && (
+                    <p><strong>Geo:</strong> {form.geo_radius_km}km en torno a ({Number(form.geo_latitude).toFixed(3)}, {Number(form.geo_longitude).toFixed(3)})</p>
+                  )}
+                  {form.scheduled_at && <p><strong>Envío:</strong> {new Date(form.scheduled_at).toLocaleString('es-CO')}</p>}
+                  {form.cta_label && form.cta_action_value && !ctaValueError && (
+                    <p><strong>Acción:</strong> {form.cta_action_type} → <span className="break-all">{form.cta_action_value}</span></p>
+                  )}
+                </div>
               </div>
             </div>
           </DialogContent>
