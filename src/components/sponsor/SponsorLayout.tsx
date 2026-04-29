@@ -70,6 +70,7 @@ export const useSponsor = () => {
 
 const SponsorLayout = ({ children, title, subtitle }: SponsorLayoutProps) => {
   const { sponsor, loading } = useSponsor();
+  const navigate = useNavigate();
 
   if (loading) {
     return (
