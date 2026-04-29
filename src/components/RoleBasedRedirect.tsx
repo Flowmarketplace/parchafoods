@@ -30,11 +30,14 @@ const RoleBasedRedirect = ({ children }: { children: React.ReactNode }) => {
 
         const isAdmin = roles?.some(r => r.role === 'admin');
         const isBusinessOwner = roles?.some(r => r.role === 'business_owner');
+        const isSponsor = roles?.some((r: any) => r.role === 'sponsor');
         
         if (isAdmin) {
           navigate('/admin', { replace: true });
         } else if (isBusinessOwner) {
           navigate('/business-dashboard', { replace: true });
+        } else if (isSponsor) {
+          navigate('/sponsor', { replace: true });
         } else {
           setLoading(false);
         }

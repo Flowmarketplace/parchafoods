@@ -10,7 +10,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { useToast } from '@/hooks/use-toast';
 import { z } from 'zod';
 import { User, Session } from '@supabase/supabase-js';
-import { Store, UserCircle, ArrowLeft, ShieldCheck } from 'lucide-react';
+import { Store, UserCircle, ArrowLeft, ShieldCheck, Megaphone } from 'lucide-react';
 
 const emailSchema = z.string().trim().email({ message: "Email inválido" });
 const passwordSchema = z.string().min(6, { message: "La contraseña debe tener al menos 6 caracteres" });
@@ -26,14 +26,15 @@ const Auth = () => {
   // Login form
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
-  const [loginAccountType, setLoginAccountType] = useState<'customer' | 'business_owner' | 'admin'>('customer');
+  const [loginAccountType, setLoginAccountType] = useState<'customer' | 'business_owner' | 'sponsor' | 'admin'>('customer');
 
   // Signup form
   const [signupEmail, setSignupEmail] = useState('');
   const [signupPassword, setSignupPassword] = useState('');
   const [signupConfirmPassword, setSignupConfirmPassword] = useState('');
   const [signupFullName, setSignupFullName] = useState('');
-  const [accountType, setAccountType] = useState<'customer' | 'business_owner'>('customer');
+  const [signupBrandName, setSignupBrandName] = useState('');
+  const [accountType, setAccountType] = useState<'customer' | 'business_owner' | 'sponsor'>('customer');
 
   // Password reset
   const [showResetPassword, setShowResetPassword] = useState(false);
@@ -56,11 +57,14 @@ const Auth = () => {
             
             const isAdmin = roles?.some(r => r.role === 'admin');
             const isBusinessOwner = roles?.some(r => r.role === 'business_owner');
+            const isSponsor = roles?.some(r => r.role === 'sponsor');
             
             if (isAdmin) {
               navigate('/admin');
             } else if (isBusinessOwner) {
               navigate('/business-dashboard');
+            } else if (isSponsor) {
+              navigate('/sponsor');
             } else {
               navigate('/');
             }
@@ -82,11 +86,14 @@ const Auth = () => {
         
         const isAdmin = roles?.some(r => r.role === 'admin');
         const isBusinessOwner = roles?.some(r => r.role === 'business_owner');
+        const isSponsor = roles?.some(r => r.role === 'sponsor');
         
         if (isAdmin) {
           navigate('/admin');
         } else if (isBusinessOwner) {
           navigate('/business-dashboard');
+        } else if (isSponsor) {
+          navigate('/sponsor');
         } else {
           navigate('/');
         }
@@ -189,7 +196,7 @@ const Auth = () => {
 
       const redirectUrl = `${window.location.origin}/`;
 
-      const { error } = await supabase.auth.signUp({
+      const { data: signupData, error } = await supabase.auth.signUp({
         email: signupEmail,
         password: signupPassword,
         options: {
@@ -216,10 +223,25 @@ const Auth = () => {
           });
         }
       } else {
-        toast({
-          title: "¡Cuenta creada!",
-          description: "Tu cuenta ha sido creada exitosamente",
-        });
+        // If sponsor, create sponsor profile (pending approval)
+        if (accountType === 'sponsor' && signupData.user) {
+          await supabase.from('sponsors').insert({
+            user_id: signupData.user.id,
+            brand_name: signupBrandName || signupFullName,
+            contact_person: signupFullName,
+            email: signupEmail,
+            status: 'pendiente',
+          });
+          toast({
+            title: "¡Solicitud enviada!",
+            description: "Tu cuenta de patrocinador está pendiente de aprobación por el administrador.",
+          });
+        } else {
+          toast({
+            title: "¡Cuenta creada!",
+            description: "Tu cuenta ha sido creada exitosamente",
+          });
+        }
       }
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -307,49 +329,35 @@ const Auth = () => {
                     <Label>Iniciar sesión como</Label>
                     <RadioGroup
                       value={loginAccountType}
-                      onValueChange={(value) => setLoginAccountType(value as 'customer' | 'business_owner' | 'admin')}
-                      className="grid grid-cols-3 gap-3"
+                      onValueChange={(value) => setLoginAccountType(value as any)}
+                      className="grid grid-cols-4 gap-2"
                     >
                       <div>
-                        <RadioGroupItem
-                          value="customer"
-                          id="login-customer"
-                          className="peer sr-only"
-                        />
-                        <Label
-                          htmlFor="login-customer"
-                          className="flex flex-col items-center justify-between rounded-lg border-2 border-muted bg-popover p-3 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer"
-                        >
-                          <UserCircle className="mb-2 h-5 w-5" />
-                          <span className="text-xs font-medium text-center">Cliente</span>
+                        <RadioGroupItem value="customer" id="login-customer" className="peer sr-only" />
+                        <Label htmlFor="login-customer" className="flex flex-col items-center justify-between rounded-lg border-2 border-muted bg-popover p-2 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer">
+                          <UserCircle className="mb-1 h-5 w-5" />
+                          <span className="text-[10px] font-medium text-center">Cliente</span>
                         </Label>
                       </div>
                       <div>
-                        <RadioGroupItem
-                          value="business_owner"
-                          id="login-business"
-                          className="peer sr-only"
-                        />
-                        <Label
-                          htmlFor="login-business"
-                          className="flex flex-col items-center justify-center rounded-lg border-2 border-muted bg-popover p-3 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer"
-                        >
-                          <Store className="mb-2 h-5 w-5" />
-                          <span className="text-xs font-medium text-center">Negocio</span>
+                        <RadioGroupItem value="business_owner" id="login-business" className="peer sr-only" />
+                        <Label htmlFor="login-business" className="flex flex-col items-center justify-center rounded-lg border-2 border-muted bg-popover p-2 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer">
+                          <Store className="mb-1 h-5 w-5" />
+                          <span className="text-[10px] font-medium text-center">Negocio</span>
                         </Label>
                       </div>
                       <div>
-                        <RadioGroupItem
-                          value="admin"
-                          id="login-admin"
-                          className="peer sr-only"
-                        />
-                        <Label
-                          htmlFor="login-admin"
-                          className="flex flex-col items-center justify-center rounded-lg border-2 border-muted bg-popover p-3 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer"
-                        >
-                          <ShieldCheck className="mb-2 h-5 w-5" />
-                          <span className="text-xs font-medium text-center">Admin</span>
+                        <RadioGroupItem value="sponsor" id="login-sponsor" className="peer sr-only" />
+                        <Label htmlFor="login-sponsor" className="flex flex-col items-center justify-center rounded-lg border-2 border-muted bg-popover p-2 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer">
+                          <Megaphone className="mb-1 h-5 w-5" />
+                          <span className="text-[10px] font-medium text-center">Patrocinador</span>
+                        </Label>
+                      </div>
+                      <div>
+                        <RadioGroupItem value="admin" id="login-admin" className="peer sr-only" />
+                        <Label htmlFor="login-admin" className="flex flex-col items-center justify-center rounded-lg border-2 border-muted bg-popover p-2 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer">
+                          <ShieldCheck className="mb-1 h-5 w-5" />
+                          <span className="text-[10px] font-medium text-center">Admin</span>
                         </Label>
                       </div>
                     </RadioGroup>
@@ -423,39 +431,46 @@ const Auth = () => {
                   <Label>Tipo de Cuenta</Label>
                   <RadioGroup
                     value={accountType}
-                    onValueChange={(value) => setAccountType(value as 'customer' | 'business_owner')}
-                    className="grid grid-cols-2 gap-4"
+                    onValueChange={(value) => setAccountType(value as 'customer' | 'business_owner' | 'sponsor')}
+                    className="grid grid-cols-3 gap-2"
                   >
                     <div>
-                      <RadioGroupItem
-                        value="customer"
-                        id="customer"
-                        className="peer sr-only"
-                      />
-                      <Label
-                        htmlFor="customer"
-                        className="flex flex-col items-center justify-between rounded-lg border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer"
-                      >
-                        <UserCircle className="mb-2 h-6 w-6" />
-                        <span className="text-sm font-medium">Cliente</span>
+                      <RadioGroupItem value="customer" id="customer" className="peer sr-only" />
+                      <Label htmlFor="customer" className="flex flex-col items-center justify-between rounded-lg border-2 border-muted bg-popover p-3 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer">
+                        <UserCircle className="mb-1 h-5 w-5" />
+                        <span className="text-xs font-medium">Cliente</span>
                       </Label>
                     </div>
                     <div>
-                      <RadioGroupItem
-                        value="business_owner"
-                        id="business_owner"
-                        className="peer sr-only"
-                      />
-                      <Label
-                        htmlFor="business_owner"
-                        className="flex flex-col items-center justify-center rounded-lg border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer"
-                      >
-                        <Store className="mb-2 h-6 w-6" />
-                        <span className="text-sm font-medium text-center">Dueño de Negocio</span>
+                      <RadioGroupItem value="business_owner" id="business_owner" className="peer sr-only" />
+                      <Label htmlFor="business_owner" className="flex flex-col items-center justify-center rounded-lg border-2 border-muted bg-popover p-3 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer">
+                        <Store className="mb-1 h-5 w-5" />
+                        <span className="text-xs font-medium text-center">Negocio</span>
+                      </Label>
+                    </div>
+                    <div>
+                      <RadioGroupItem value="sponsor" id="sponsor" className="peer sr-only" />
+                      <Label htmlFor="sponsor" className="flex flex-col items-center justify-center rounded-lg border-2 border-muted bg-popover p-3 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer">
+                        <Megaphone className="mb-1 h-5 w-5" />
+                        <span className="text-xs font-medium text-center">Patrocinador</span>
                       </Label>
                     </div>
                   </RadioGroup>
                 </div>
+                {accountType === 'sponsor' && (
+                  <div className="space-y-2">
+                    <Label htmlFor="signup-brand">Nombre de la Marca</Label>
+                    <Input
+                      id="signup-brand"
+                      type="text"
+                      placeholder="Coca-Cola, Bavaria, etc."
+                      value={signupBrandName}
+                      onChange={(e) => setSignupBrandName(e.target.value)}
+                      required
+                    />
+                    <p className="text-xs text-muted-foreground">Tu cuenta quedará pendiente de aprobación por el administrador.</p>
+                  </div>
+                )}
                 <div className="space-y-2">
                   <Label htmlFor="signup-name">Nombre Completo</Label>
                   <Input
