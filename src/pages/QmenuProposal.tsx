@@ -645,28 +645,39 @@ const QmenuProposal = () => {
       <section className="py-20 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 via-background to-orange-500/5" />
         <div className="container mx-auto px-6 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
+          <div className="grid lg:grid-cols-5 gap-10 lg:gap-12 items-center max-w-6xl mx-auto">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7 }}
-              className="relative"
+              className="relative lg:col-span-2 max-w-sm mx-auto lg:max-w-none w-full"
             >
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-red-500/20">
+              {/* Foto principal del local — contenida, ratio fijo para evitar pixelación */}
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl border-2 border-red-500/20 aspect-[4/5]">
                 <img src={qmenuStorefront} alt="Local Q'Menu Cali" className="w-full h-full object-cover" loading="lazy" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
-                <div className="absolute bottom-4 left-4 right-4">
-                  <span className="inline-block px-3 py-1 rounded-full bg-yellow-400 text-black text-xs font-bold shadow-lg">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                <div className="absolute bottom-3 left-3 right-3">
+                  <span className="inline-block px-2.5 py-1 rounded-full bg-yellow-400 text-black text-[11px] font-bold shadow-lg">
                     🥩 Q'Menu · Cali
                   </span>
                 </div>
               </div>
-              <div className="absolute -top-4 -right-4 w-28 h-28 bg-gradient-to-br from-red-600 to-orange-500 rounded-2xl flex items-center justify-center shadow-2xl rotate-6">
+
+              {/* Polaroid del staff — toque humano y personalizado */}
+              <div className="absolute -bottom-6 -left-4 sm:-left-8 w-28 sm:w-32 rotate-[-8deg] bg-white p-1.5 pb-5 rounded-sm shadow-2xl hidden sm:block">
+                <div className="aspect-square overflow-hidden">
+                  <img src={qmenuStaff} alt="Equipo Q'Menu" className="w-full h-full object-cover" loading="lazy" />
+                </div>
+                <p className="text-[9px] text-center text-black/70 font-semibold mt-1">El equipo Q'Menu</p>
+              </div>
+
+              {/* Badge crecimiento */}
+              <div className="absolute -top-3 -right-3 w-24 h-24 bg-gradient-to-br from-red-600 to-orange-500 rounded-2xl flex items-center justify-center shadow-2xl rotate-6">
                 <div className="text-center px-1">
-                  <div className="text-[10px] text-white/80 font-semibold leading-tight">INICIO</div>
-                  <div className="text-2xl font-black text-white leading-none">100</div>
-                  <div className="text-[8px] text-white/90 font-semibold mt-0.5">→ 1,200 al cierre</div>
+                  <div className="text-[9px] text-white/80 font-semibold leading-tight">INICIO</div>
+                  <div className="text-xl font-black text-white leading-none">100</div>
+                  <div className="text-[8px] text-white/90 font-semibold mt-0.5">→ 1,200</div>
                 </div>
               </div>
             </motion.div>
@@ -676,6 +687,7 @@ const QmenuProposal = () => {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7, delay: 0.15 }}
+              className="lg:col-span-3"
             >
               <span className="text-red-500 font-semibold text-sm tracking-widest uppercase">Hecho a la medida de Q'Menu</span>
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mt-3 mb-5 leading-tight">
