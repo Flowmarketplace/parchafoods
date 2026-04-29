@@ -4,8 +4,29 @@ import { supabase } from '@/integrations/supabase/client';
 import SponsorSidebar, { SponsorSidebarDesktop } from './SponsorSidebar';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
-import { Menu, Megaphone } from 'lucide-react';
+import { Menu, Megaphone, LogOut, Home } from 'lucide-react';
 import { Card } from '@/components/ui/card';
+import { toast } from 'sonner';
+
+const signOutAndGo = async (navigate: (p: string) => void) => {
+  await supabase.auth.signOut();
+  toast.success('Sesión cerrada');
+  navigate('/auth');
+};
+
+const ExitActions = () => {
+  const navigate = useNavigate();
+  return (
+    <div className="flex flex-col sm:flex-row gap-2 justify-center pt-2">
+      <Button variant="outline" size="sm" onClick={() => navigate('/app')}>
+        <Home className="h-4 w-4 mr-2" /> Ir a la App
+      </Button>
+      <Button variant="destructive" size="sm" onClick={() => signOutAndGo(navigate)}>
+        <LogOut className="h-4 w-4 mr-2" /> Cerrar sesión
+      </Button>
+    </div>
+  );
+};
 
 interface SponsorLayoutProps {
   children: React.ReactNode;
