@@ -87,6 +87,7 @@ const SponsorLayout = ({ children, title, subtitle }: SponsorLayoutProps) => {
           <Megaphone className="h-12 w-12 mx-auto text-primary" />
           <h2 className="text-2xl font-bold">Sin perfil de patrocinador</h2>
           <p className="text-muted-foreground">No encontramos un perfil de patrocinador asociado a tu cuenta. Contacta al administrador.</p>
+          <ExitActions />
         </Card>
       </div>
     );
