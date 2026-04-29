@@ -41,6 +41,7 @@ const AdminSidebar = ({ className }: AdminSidebarWrapperProps = {}) => {
     { icon: Users, label: 'CRM Prospectos', path: '/admin/prospects' },
     { icon: UserCheck, label: 'Clientes', path: '/admin/clients' },
     { icon: Calendar, label: 'Calendario Citas', path: '/admin/appointments' },
+    { icon: Megaphone, label: 'Patrocinadores', path: '/admin/sponsors' },
     { icon: BarChart3, label: 'Estadísticas', path: '/admin/analytics' },
     { icon: Bell, label: 'Notificaciones', path: '/admin/notifications' },
     { icon: Palette, label: 'Personalización', path: '/admin/customization' },
