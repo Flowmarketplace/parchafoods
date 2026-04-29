@@ -795,7 +795,7 @@ const QmenuProposal = () => {
             {[
               { icon: Camera, number: "20", title: "Videos UGC", description: "Videos publicitarios de contenido generado por usuarios reales disfrutando cortes Q'Menu en restaurantes.", gradient: "from-pink-500 to-rose-600" },
               { icon: Sparkles, number: "30", title: "Videos con IA", description: "Videos publicitarios generados con Inteligencia Artificial para campañas digitales innovadoras de Q'Menu.", gradient: "from-purple-500 to-indigo-600" },
-              { icon: Tv, number: "100", title: "Videos en Restaurantes", description: "Publicidad comercial de Q'Menu reproducida en televisores de los 100 restaurantes participantes.", gradient: "from-red-500 to-orange-600" },
+              { icon: Tv, number: "100+", title: "Videos en Restaurantes", description: "Publicidad de Q'Menu en TVs de los restaurantes participantes. Inicio con 100 puntos, escalando a 1,200 al cierre 2026.", gradient: "from-red-500 to-orange-600" },
             ].map((item, i) => (
               <motion.div
                 key={item.title}
