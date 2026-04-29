@@ -46,7 +46,7 @@ const worldCupStats = [
 ];
 
 const keyNumbers = [
-  { value: "100", label: "Restaurantes brandeados", icon: Store },
+  { value: "100 → 1,200", label: "Restaurantes (inicio Mundial → cierre 2026)", icon: Store },
   { value: "50K+", label: "Usuarios esperados", icon: Users },
   { value: "50", label: "Videos producidos", icon: Video },
   { value: "1", label: "Valla publicitaria", icon: Eye },
