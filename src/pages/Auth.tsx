@@ -431,39 +431,46 @@ const Auth = () => {
                   <Label>Tipo de Cuenta</Label>
                   <RadioGroup
                     value={accountType}
-                    onValueChange={(value) => setAccountType(value as 'customer' | 'business_owner')}
-                    className="grid grid-cols-2 gap-4"
+                    onValueChange={(value) => setAccountType(value as 'customer' | 'business_owner' | 'sponsor')}
+                    className="grid grid-cols-3 gap-2"
                   >
                     <div>
-                      <RadioGroupItem
-                        value="customer"
-                        id="customer"
-                        className="peer sr-only"
-                      />
-                      <Label
-                        htmlFor="customer"
-                        className="flex flex-col items-center justify-between rounded-lg border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer"
-                      >
-                        <UserCircle className="mb-2 h-6 w-6" />
-                        <span className="text-sm font-medium">Cliente</span>
+                      <RadioGroupItem value="customer" id="customer" className="peer sr-only" />
+                      <Label htmlFor="customer" className="flex flex-col items-center justify-between rounded-lg border-2 border-muted bg-popover p-3 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer">
+                        <UserCircle className="mb-1 h-5 w-5" />
+                        <span className="text-xs font-medium">Cliente</span>
                       </Label>
                     </div>
                     <div>
-                      <RadioGroupItem
-                        value="business_owner"
-                        id="business_owner"
-                        className="peer sr-only"
-                      />
-                      <Label
-                        htmlFor="business_owner"
-                        className="flex flex-col items-center justify-center rounded-lg border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer"
-                      >
-                        <Store className="mb-2 h-6 w-6" />
-                        <span className="text-sm font-medium text-center">Dueño de Negocio</span>
+                      <RadioGroupItem value="business_owner" id="business_owner" className="peer sr-only" />
+                      <Label htmlFor="business_owner" className="flex flex-col items-center justify-center rounded-lg border-2 border-muted bg-popover p-3 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer">
+                        <Store className="mb-1 h-5 w-5" />
+                        <span className="text-xs font-medium text-center">Negocio</span>
+                      </Label>
+                    </div>
+                    <div>
+                      <RadioGroupItem value="sponsor" id="sponsor" className="peer sr-only" />
+                      <Label htmlFor="sponsor" className="flex flex-col items-center justify-center rounded-lg border-2 border-muted bg-popover p-3 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer">
+                        <Megaphone className="mb-1 h-5 w-5" />
+                        <span className="text-xs font-medium text-center">Patrocinador</span>
                       </Label>
                     </div>
                   </RadioGroup>
                 </div>
+                {accountType === 'sponsor' && (
+                  <div className="space-y-2">
+                    <Label htmlFor="signup-brand">Nombre de la Marca</Label>
+                    <Input
+                      id="signup-brand"
+                      type="text"
+                      placeholder="Coca-Cola, Bavaria, etc."
+                      value={signupBrandName}
+                      onChange={(e) => setSignupBrandName(e.target.value)}
+                      required
+                    />
+                    <p className="text-xs text-muted-foreground">Tu cuenta quedará pendiente de aprobación por el administrador.</p>
+                  </div>
+                )}
                 <div className="space-y-2">
                   <Label htmlFor="signup-name">Nombre Completo</Label>
                   <Input
