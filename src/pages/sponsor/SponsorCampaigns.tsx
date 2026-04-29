@@ -11,7 +11,7 @@ import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Plus, Send, Trash2, Bell, ExternalLink, MessageCircle, Phone, MapPin, MessageSquare, AlertCircle } from 'lucide-react';
+import { Plus, Send, Trash2, Bell, ExternalLink, MessageCircle, Phone, MapPin, MessageSquare, AlertCircle, Upload, X, Info } from 'lucide-react';
 import { z } from 'zod';
 
 // CTA validators per action type
@@ -89,6 +89,37 @@ const Inner = () => {
     cta_action_type: 'url',
     cta_action_value: '',
   });
+  const [uploadingImage, setUploadingImage] = useState(false);
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !sponsor) return;
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error('La imagen debe pesar menos de 5MB');
+      return;
+    }
+    if (!file.type.startsWith('image/')) {
+      toast.error('El archivo debe ser una imagen');
+      return;
+    }
+    setUploadingImage(true);
+    try {
+      const ext = file.name.split('.').pop();
+      const path = `${sponsor.id}/campaigns/${Date.now()}.${ext}`;
+      const { error: upErr } = await supabase.storage
+        .from('sponsor-assets')
+        .upload(path, file, { cacheControl: '3600', upsert: false });
+      if (upErr) throw upErr;
+      const { data: pub } = supabase.storage.from('sponsor-assets').getPublicUrl(path);
+      setForm((f) => ({ ...f, image_url: pub.publicUrl }));
+      toast.success('Imagen subida');
+    } catch (err: any) {
+      toast.error(err.message || 'Error al subir imagen');
+    } finally {
+      setUploadingImage(false);
+      e.target.value = '';
+    }
+  };
 
   const load = async () => {
     if (!sponsor) return;
@@ -222,9 +253,73 @@ const Inner = () => {
                 <Textarea value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} rows={3} maxLength={180} />
                 <p className="text-xs text-muted-foreground mt-1">{form.message.length}/180</p>
               </div>
-              <div>
-                <Label>Imagen (URL opcional)</Label>
-                <Input value={form.image_url} onChange={(e) => setForm({ ...form, image_url: e.target.value })} placeholder="https://..." />
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <Label>Imagen de la campaña</Label>
+                  {form.image_url && (
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      className="h-6 text-xs text-destructive hover:text-destructive"
+                      onClick={() => setForm({ ...form, image_url: '' })}
+                    >
+                      <X className="h-3 w-3 mr-1" /> Quitar
+                    </Button>
+                  )}
+                </div>
+
+                {form.image_url ? (
+                  <div className="relative rounded-lg border overflow-hidden bg-muted">
+                    <img
+                      src={form.image_url}
+                      alt="Preview"
+                      className="w-full h-32 object-cover"
+                      onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                    />
+                  </div>
+                ) : (
+                  <label
+                    htmlFor="campaign-image-upload"
+                    className="flex flex-col items-center justify-center gap-2 border-2 border-dashed rounded-lg p-6 cursor-pointer hover:bg-muted/50 transition-colors"
+                  >
+                    <Upload className="h-6 w-6 text-muted-foreground" />
+                    <p className="text-sm font-medium">
+                      {uploadingImage ? 'Subiendo...' : 'Adjuntar imagen'}
+                    </p>
+                    <p className="text-xs text-muted-foreground">PNG, JPG o WEBP · Máx 5MB</p>
+                  </label>
+                )}
+                <input
+                  id="campaign-image-upload"
+                  type="file"
+                  accept="image/png,image/jpeg,image/webp"
+                  className="hidden"
+                  onChange={handleImageUpload}
+                  disabled={uploadingImage}
+                />
+
+                <div className="text-xs text-muted-foreground space-y-1">
+                  <Input
+                    value={form.image_url}
+                    onChange={(e) => setForm({ ...form, image_url: e.target.value })}
+                    placeholder="O pega una URL: https://..."
+                    className="h-8 text-xs"
+                  />
+                </div>
+
+                <div className="flex items-start gap-2 p-3 rounded-md bg-primary/5 border border-primary/10">
+                  <Info className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
+                  <div className="text-xs space-y-1">
+                    <p className="font-semibold text-foreground">Medidas recomendadas</p>
+                    <ul className="text-muted-foreground space-y-0.5">
+                      <li>• <strong>Tamaño:</strong> 1200 × 600 px (relación 2:1)</li>
+                      <li>• <strong>Formato:</strong> PNG o JPG</li>
+                      <li>• <strong>Peso:</strong> menos de 1MB para carga rápida</li>
+                      <li>• <strong>Zona segura:</strong> centra el contenido importante (algunos dispositivos recortan los bordes)</li>
+                    </ul>
+                  </div>
+                </div>
               </div>
               <div>
                 <Label>Público objetivo</Label>
