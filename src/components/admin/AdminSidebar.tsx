@@ -14,7 +14,8 @@ import {
   ArrowLeft,
   LogOut,
   Calendar,
-  UserCheck
+  UserCheck,
+  Megaphone
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
