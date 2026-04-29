@@ -26,14 +26,15 @@ const Auth = () => {
   // Login form
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
-  const [loginAccountType, setLoginAccountType] = useState<'customer' | 'business_owner' | 'admin'>('customer');
+  const [loginAccountType, setLoginAccountType] = useState<'customer' | 'business_owner' | 'sponsor' | 'admin'>('customer');
 
   // Signup form
   const [signupEmail, setSignupEmail] = useState('');
   const [signupPassword, setSignupPassword] = useState('');
   const [signupConfirmPassword, setSignupConfirmPassword] = useState('');
   const [signupFullName, setSignupFullName] = useState('');
-  const [accountType, setAccountType] = useState<'customer' | 'business_owner'>('customer');
+  const [signupBrandName, setSignupBrandName] = useState('');
+  const [accountType, setAccountType] = useState<'customer' | 'business_owner' | 'sponsor'>('customer');
 
   // Password reset
   const [showResetPassword, setShowResetPassword] = useState(false);
