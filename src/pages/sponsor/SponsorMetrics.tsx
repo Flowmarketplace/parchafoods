@@ -1,9 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
-import SponsorLayout from '@/components/sponsor/SponsorLayout';
+import SponsorLayout, { useSponsor } from '@/components/sponsor/SponsorLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
-import { Badge } from '@/components/ui/badge';
-import { useSponsor } from '@/hooks/useSponsor';
 import {
   PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend,
   BarChart, Bar, XAxis, YAxis, CartesianGrid, LineChart, Line,
@@ -141,7 +139,7 @@ const SponsorMetrics = () => {
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">
         <KpiCard icon={<Send className="h-4 w-4" />} label="Envíos totales" value={kpis.totalSent.toLocaleString('es-CO')} accent="primary" />
         <KpiCard icon={<Eye className="h-4 w-4" />} label="Tasa de apertura" value={`${kpis.openRate.toFixed(1)}%`} sub={`${kpis.opens.toLocaleString('es-CO')} aperturas`} accent="secondary" />
-        <KpiCard icon={<MousePointerClick className="h-4 w-4" />} label="CTR (clics)" value={`${kpis.ctr.toFixed(1)}%`} sub={`${kpis.clics?.toLocaleString?.('es-CO') ?? kpis.clicks.toLocaleString('es-CO')} clics`} accent="accent" />
+        <KpiCard icon={<MousePointerClick className="h-4 w-4" />} label="CTR (clics)" value={`${kpis.ctr.toFixed(1)}%`} sub={`${kpis.clicks.toLocaleString('es-CO')} clics`} accent="accent" />
         <KpiCard icon={<Target className="h-4 w-4" />} label="Conversión" value={`${kpis.cvr.toFixed(1)}%`} sub={`${kpis.conversions.toLocaleString('es-CO')} conv.`} accent="primary" />
         <KpiCard icon={<DollarSign className="h-4 w-4" />} label="CPC" value={formatCOP(kpis.cpc)} sub="costo por clic" accent="secondary" />
         <KpiCard icon={<TrendingUp className="h-4 w-4" />} label="CPA" value={formatCOP(kpis.cpa)} sub="costo por adquisición" accent="accent" />
