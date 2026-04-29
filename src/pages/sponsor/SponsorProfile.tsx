@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 
 const Inner = () => {
-  const { sponsor, refresh } = useSponsor() as any;
+  const { sponsor, setSponsor } = useSponsor();
   const [form, setForm] = useState<any>(null);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
