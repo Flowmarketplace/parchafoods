@@ -139,6 +139,12 @@ const SponsorLayout = ({ children, title, subtitle }: SponsorLayoutProps) => {
             <h1 className="text-xl font-bold">{title}</h1>
             {subtitle && <p className="text-xs text-muted-foreground">{subtitle}</p>}
           </div>
+          <Button variant="outline" size="sm" onClick={() => navigate('/app')} className="hidden sm:inline-flex">
+            <Home className="h-4 w-4 mr-2" /> App
+          </Button>
+          <Button variant="ghost" size="sm" onClick={() => signOutAndGo(navigate)} className="text-destructive hover:text-destructive">
+            <LogOut className="h-4 w-4 mr-2" /> <span className="hidden sm:inline">Salir</span>
+          </Button>
         </header>
         <main className="p-4 md:p-6">{children}</main>
       </div>
