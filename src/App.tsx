@@ -106,6 +106,7 @@ function App() {
         <Route path="/admin/clients" element={<AdminClients />} />
         <Route path="/admin/appointments" element={<AdminAppointments />} />
         <Route path="/admin/sponsors" element={<AdminSponsors />} />
+        <Route path="/admin/approvals" element={<AdminApprovals />} />
         <Route path="/sponsor" element={<SponsorDashboard />} />
         <Route path="/sponsor/metrics" element={<SponsorMetrics />} />
         <Route path="/sponsor/campaigns" element={<SponsorCampaigns />} />
