@@ -29,7 +29,7 @@ const benefits = [
   { icon: Store, title: "Brandeo en Restaurantes Aliados", description: "Sticker oficial del Mundial del Sabor brandeado con Q'Menu. Inicio con 100 restaurantes durante el Mundial y proyección de 1,200 al cierre de 2026." },
   { icon: QrCode, title: "QR Brandeados Q'Menu", description: "Códigos QR personalizados con la marca Q'Menu en cada restaurante participante para tracking de visitas y consumo." },
   { icon: Megaphone, title: "Presencia en Redes y Pauta", description: "Presencia en todas las redes sociales del evento y pauta publicitaria en la comunidad de foodies de Cali." },
-  { icon: Video, title: "Videos Brandeados en 100 Restaurantes", description: "Videos con publicidad comercial de Q'Menu reproducidos en los televisores de los 100 restaurantes participantes." },
+  { icon: Video, title: "Videos Brandeados en Restaurantes", description: "Videos con publicidad comercial de Q'Menu reproducidos en los televisores de los restaurantes participantes (100 al inicio, escalando a 1,200 en 2026)." },
   { icon: TrendingUp, title: "KPIs de Colocación de Carnes", description: "Métricas detalladas de colocación y rotación de cortes Q'Menu en los sitios participantes con reportes periódicos." },
   { icon: Eye, title: "Valla Publicitaria Autopista", description: "Reconocimiento de marca en valla publicitaria en la autopista con Calle 44, una de las vías más transitadas de Cali." },
   { icon: Camera, title: "20 Videos Publicitarios UGC", description: "Creación de 20 videos publicitarios de contenido generado por usuarios (UGC) exclusivos para Q'Menu." },
