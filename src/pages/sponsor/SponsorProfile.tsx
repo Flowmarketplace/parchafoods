@@ -87,7 +87,9 @@ const Inner = () => {
     setSaving(false);
     if (error) { toast.error(error.message); return; }
     toast.success('Perfil actualizado correctamente');
-    if (typeof refresh === 'function') refresh();
+    if (sponsor && setSponsor) {
+      setSponsor({ ...sponsor, brand_name: form.brand_name, logo_url: form.logo_url } as any);
+    }
   };
 
   return (
