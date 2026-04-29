@@ -26,7 +26,7 @@ const benefits = [
   { icon: Bell, title: "Notificaciones Push a Usuarios", description: "Envío de notificaciones push directas a todos los usuarios registrados con campañas personalizadas según el plan contratado." },
   { icon: BarChart3, title: "Data de Restaurantes y Consumidores", description: "Acceso a datos de consumo de carnes, comportamiento de usuarios y rotación en restaurantes en tiempo real." },
   { icon: Gift, title: "Participación en Premios", description: "Participación directa en el sistema de premios y recompensas asociando Q'Menu a la mejor parrilla del Mundial." },
-  { icon: Store, title: "Brandeo en 100 Restaurantes", description: "Sticker oficial del Mundial del Sabor brandeado con Q'Menu en 100 restaurantes participantes de la ciudad." },
+  { icon: Store, title: "Brandeo en Restaurantes Aliados", description: "Sticker oficial del Mundial del Sabor brandeado con Q'Menu. Inicio con 100 restaurantes durante el Mundial y proyección de 1,200 al cierre de 2026." },
   { icon: QrCode, title: "QR Brandeados Q'Menu", description: "Códigos QR personalizados con la marca Q'Menu en cada restaurante participante para tracking de visitas y consumo." },
   { icon: Megaphone, title: "Presencia en Redes y Pauta", description: "Presencia en todas las redes sociales del evento y pauta publicitaria en la comunidad de foodies de Cali." },
   { icon: Video, title: "Videos Brandeados en 100 Restaurantes", description: "Videos con publicidad comercial de Q'Menu reproducidos en los televisores de los 100 restaurantes participantes." },
