@@ -771,10 +771,10 @@ const QmenuProposal = () => {
         <div className="absolute bottom-0 left-0 right-0 p-8 md:p-14">
           <motion.div {...fadeUp} className="container mx-auto">
             <h3 className="text-3xl md:text-4xl font-bold text-white mb-2">
-              De la planta directo a 100 restaurantes
+              De la planta a 100 restaurantes — y creciendo a 1,200
             </h3>
             <p className="text-white/70 text-lg max-w-xl">
-              La cadena de frío y calidad Q'Menu, ahora con tracking digital y datos de rotación en cada punto.
+              Arrancamos cubriendo 100 puntos durante el Mundial y escalamos a 1,200 restaurantes inscritos al cierre de 2026, con tracking digital y datos de rotación en cada punto.
             </p>
           </motion.div>
         </div>
