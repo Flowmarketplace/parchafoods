@@ -54,6 +54,7 @@ import SponsorMetrics from "./pages/sponsor/SponsorMetrics";
 import SponsorCampaigns from "./pages/sponsor/SponsorCampaigns";
 import SponsorPlans from "./pages/sponsor/SponsorPlans";
 import SponsorProfile from "./pages/sponsor/SponsorProfile";
+import SponsorBusinessStats from "./pages/sponsor/SponsorBusinessStats";
 import Landing from "./pages/Landing";
 import AndinaProposal from "./pages/AndinaProposal";
 
@@ -112,6 +113,7 @@ function App() {
         <Route path="/sponsor/campaigns" element={<SponsorCampaigns />} />
         <Route path="/sponsor/plans" element={<SponsorPlans />} />
         <Route path="/sponsor/profile" element={<SponsorProfile />} />
+        <Route path="/sponsor/business/:id" element={<SponsorBusinessStats />} />
         <Route path="/admin/analytics" element={<AdminAnalytics />} />
         <Route path="/admin/notifications" element={<AdminNotifications />} />
         <Route path="/admin/customization" element={<AdminCustomization />} />
