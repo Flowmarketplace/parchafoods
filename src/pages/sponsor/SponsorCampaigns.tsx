@@ -102,26 +102,76 @@ const Inner = () => {
 
   useEffect(() => { load(); }, [sponsor]);
 
+  // Live validation for CTA value
+  const ctaValueError = (() => {
+    if (!form.cta_label && !form.cta_action_value) return null; // CTA is optional
+    if (form.cta_label && !form.cta_action_value) return 'Falta el valor del CTA';
+    if (form.cta_action_value && !form.cta_label) return 'Falta el texto del botón';
+    if (!form.cta_action_value) return null;
+    const result = ctaValueSchema(form.cta_action_type).safeParse(form.cta_action_value);
+    return result.success ? null : result.error.errors[0].message;
+  })();
+
+  const ctaLabelError = form.cta_label && form.cta_label.length > 30 ? 'Máximo 30 caracteres' : null;
+
   const submit = async (status: 'borrador' | 'pendiente') => {
     if (!sponsor) return;
-    if (!form.title || !form.message) {
-      toast.error('Título y mensaje son obligatorios');
-      return;
-    }
-    const payload: any = {
-      sponsor_id: sponsor.id,
+
+    // Base validation (skip for borrador? we still validate, but allow empty CTA)
+    const baseResult = campaignSchema.safeParse({
       title: form.title,
       message: form.message,
-      image_url: form.image_url || null,
+      image_url: form.image_url,
+    });
+    if (!baseResult.success) {
+      toast.error(baseResult.error.errors[0].message);
+      return;
+    }
+
+    // Geo validation
+    if (form.geo_enabled) {
+      const lat = Number(form.geo_latitude);
+      const lng = Number(form.geo_longitude);
+      const rad = Number(form.geo_radius_km);
+      if (!form.geo_latitude || !form.geo_longitude || isNaN(lat) || isNaN(lng) || lat < -90 || lat > 90 || lng < -180 || lng > 180) {
+        toast.error('Coordenadas geográficas inválidas');
+        return;
+      }
+      if (isNaN(rad) || rad <= 0 || rad > 100) {
+        toast.error('El radio debe estar entre 0.1 y 100 km');
+        return;
+      }
+    }
+
+    // Scheduled date must be in the future (only when sending for approval)
+    if (status === 'pendiente' && form.scheduled_at) {
+      const scheduled = new Date(form.scheduled_at);
+      if (scheduled.getTime() < Date.now()) {
+        toast.error('La fecha programada debe ser futura');
+        return;
+      }
+    }
+
+    // CTA validation (only if user started filling it)
+    if (form.cta_label || form.cta_action_value) {
+      if (ctaLabelError) { toast.error(ctaLabelError); return; }
+      if (ctaValueError) { toast.error(ctaValueError); return; }
+    }
+
+    const payload: any = {
+      sponsor_id: sponsor.id,
+      title: form.title.trim(),
+      message: form.message.trim(),
+      image_url: form.image_url?.trim() || null,
       target_audience: form.target_audience,
       geo_enabled: form.geo_enabled,
       geo_latitude: form.geo_enabled && form.geo_latitude ? Number(form.geo_latitude) : null,
       geo_longitude: form.geo_enabled && form.geo_longitude ? Number(form.geo_longitude) : null,
       geo_radius_km: form.geo_enabled ? Number(form.geo_radius_km || 5) : null,
       scheduled_at: form.scheduled_at || null,
-      cta_label: form.cta_label || null,
-      cta_action_type: form.cta_action_type || null,
-      cta_action_value: form.cta_action_value || null,
+      cta_label: form.cta_label?.trim() || null,
+      cta_action_type: form.cta_label ? form.cta_action_type : null,
+      cta_action_value: form.cta_action_value?.trim() || null,
       status,
     };
     const { error } = await supabase.from('sponsor_campaigns').insert(payload);
