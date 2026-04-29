@@ -409,7 +409,8 @@ const QmenuProposal = () => {
                 <span className="bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent">cocinas de toda la ciudad</span>
               </h2>
               <p className="text-muted-foreground text-base md:text-lg leading-relaxed mb-6">
-                La calidad y atención que distingue a Q'Menu — esa misma frescura, profesionalismo y cuidado por el producto — ahora con presencia digital constante en los principales 100 restaurantes de Cali durante todo el 2026.
+                La calidad y atención que distingue a Q'Menu — esa misma frescura, profesionalismo y cuidado por el producto — ahora con presencia digital constante.
+                Iniciamos con <strong className="text-foreground">100 restaurantes durante el Mundial</strong> y proyectamos cerrar 2026 con <strong className="text-foreground">1,200 restaurantes inscritos</strong> en la app.
               </p>
 
               <div className="rounded-2xl border-2 border-red-500/30 bg-gradient-to-br from-red-500/10 to-orange-500/10 p-6">
