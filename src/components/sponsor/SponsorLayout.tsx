@@ -114,6 +114,7 @@ const SponsorLayout = ({ children, title, subtitle }: SponsorLayoutProps) => {
         <Card className="max-w-md p-8 text-center space-y-4">
           <h2 className="text-2xl font-bold">Cuenta {sponsor.status}</h2>
           <p className="text-muted-foreground">Tu cuenta no está activa. Contacta al administrador para más información.</p>
+          <ExitActions />
         </Card>
       </div>
     );
