@@ -48,6 +48,7 @@ import AdminProspects from "./pages/admin/AdminProspects";
 import AdminClients from "./pages/admin/AdminClients";
 import AdminAppointments from "./pages/admin/AdminAppointments";
 import AdminSponsors from "./pages/admin/AdminSponsors";
+import AdminApprovals from "./pages/admin/AdminApprovals";
 import SponsorDashboard from "./pages/sponsor/SponsorDashboard";
 import SponsorMetrics from "./pages/sponsor/SponsorMetrics";
 import SponsorCampaigns from "./pages/sponsor/SponsorCampaigns";
@@ -105,6 +106,7 @@ function App() {
         <Route path="/admin/clients" element={<AdminClients />} />
         <Route path="/admin/appointments" element={<AdminAppointments />} />
         <Route path="/admin/sponsors" element={<AdminSponsors />} />
+        <Route path="/admin/approvals" element={<AdminApprovals />} />
         <Route path="/sponsor" element={<SponsorDashboard />} />
         <Route path="/sponsor/metrics" element={<SponsorMetrics />} />
         <Route path="/sponsor/campaigns" element={<SponsorCampaigns />} />

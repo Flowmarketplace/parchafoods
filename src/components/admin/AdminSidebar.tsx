@@ -15,6 +15,7 @@ import {
   LogOut,
   Calendar,
   UserCheck,
+  ShieldCheck,
   Megaphone
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -36,6 +37,7 @@ const AdminSidebar = ({ className }: AdminSidebarWrapperProps = {}) => {
     { icon: CreditCard, label: 'Suscripciones', path: '/admin/subscriptions' },
     { icon: Package, label: 'Paquetes', path: '/admin/packages' },
     { icon: Users, label: 'Usuarios', path: '/admin/users' },
+    { icon: ShieldCheck, label: 'Aprobaciones y Roles', path: '/admin/approvals' },
     { icon: Shield, label: 'Eventos', path: '/admin/events' },
     { icon: BarChart3, label: 'Categorías', path: '/admin/categories' },
     { icon: Users, label: 'CRM Prospectos', path: '/admin/prospects' },
