@@ -153,8 +153,9 @@ const QmenuProposal = () => {
           </motion.h1>
 
           <motion.p {...fadeUp} transition={{ duration: 0.6, delay: 0.35 }} className="text-white/70 text-lg md:text-xl max-w-3xl mx-auto mb-10 leading-relaxed">
-            La oportunidad única de posicionar Q'Menu como la carne oficial de más de 50,000 usuarios y 100 restaurantes
-            durante el evento gastronómico más grande de Cali para el Mundial FIFA 2026.
+            La oportunidad única de posicionar Q'Menu como la carne oficial del evento gastronómico más grande de Cali.
+            Arrancamos con <strong className="text-white">100 restaurantes durante la temporada del Mundial FIFA 2026</strong>{" "}
+            y proyectamos cerrar el año con <strong className="text-yellow-400">1,200 restaurantes inscritos</strong> y más de 50,000 usuarios activos.
           </motion.p>
 
           <motion.div {...fadeUp} transition={{ duration: 0.6, delay: 0.45 }}>
