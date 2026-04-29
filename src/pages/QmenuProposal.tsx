@@ -346,7 +346,8 @@ const QmenuProposal = () => {
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {/* Módulos del dashboard */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mb-20">
             {dashboardModules.map((mod, i) => (
               <motion.div
                 key={mod.title}
@@ -364,6 +365,283 @@ const QmenuProposal = () => {
               </motion.div>
             ))}
           </div>
+
+          {/* === SCREENSHOTS DEL DASHBOARD === */}
+          <motion.div {...fadeUp} className="text-center mb-10">
+            <span className="text-red-500 font-semibold text-sm tracking-widest uppercase">Vista previa del panel</span>
+            <h3 className="text-2xl md:text-3xl font-bold text-foreground mt-2">
+              Así se ve el dashboard de Q'Menu
+            </h3>
+            <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">
+              Capturas de las pantallas reales que Q'Menu tendrá disponibles desde el primer día.
+            </p>
+          </motion.div>
+
+          {/* SCREENSHOT 1 — MÉTRICAS / KPIs */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="rounded-3xl border border-border bg-[#0f0f10] p-4 md:p-6 shadow-2xl mb-10 overflow-hidden"
+          >
+            <div className="flex items-center gap-2 mb-5 pb-3 border-b border-white/10">
+              <div className="w-3 h-3 rounded-full bg-red-500" />
+              <div className="w-3 h-3 rounded-full bg-yellow-500" />
+              <div className="w-3 h-3 rounded-full bg-green-500" />
+              <span className="text-white/50 text-xs ml-3 truncate">elmundialdelsabor.com / sponsor / metrics</span>
+              <span className="ml-auto text-[10px] px-2 py-1 rounded-full bg-red-500/20 text-red-400 font-semibold hidden md:inline">● EN VIVO</span>
+            </div>
+
+            <div className="flex items-center justify-between mb-5 flex-wrap gap-2">
+              <div>
+                <h4 className="text-white text-lg md:text-xl font-bold">Métricas de Campañas</h4>
+                <p className="text-white/50 text-xs">Resultados consolidados · últimos 30 días</p>
+              </div>
+              <div className="flex gap-2">
+                <span className="text-[10px] px-3 py-1.5 rounded-lg bg-white/5 text-white/70">Hoy</span>
+                <span className="text-[10px] px-3 py-1.5 rounded-lg bg-red-500 text-white font-semibold">30 días</span>
+                <span className="text-[10px] px-3 py-1.5 rounded-lg bg-white/5 text-white/70 hidden md:inline">90 días</span>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+              {[
+                { label: "Tasa de apertura", value: "68.4%", trend: "+12%" },
+                { label: "CTR (Click-through)", value: "24.1%", trend: "+8%" },
+                { label: "Costo por adquisición", value: "$1,840", trend: "-15%" },
+                { label: "ROI campaña", value: "340%", trend: "+22%" },
+              ].map((k) => (
+                <div key={k.label} className="rounded-xl bg-gradient-to-br from-white/5 to-white/[0.02] border border-white/10 p-3 md:p-4">
+                  <div className="text-white/50 text-[10px] uppercase tracking-wider mb-1">{k.label}</div>
+                  <div className="text-white text-xl md:text-2xl font-black">{k.value}</div>
+                  <div className="text-[10px] font-semibold text-green-400 mt-1">{k.trend} vs mes anterior</div>
+                </div>
+              ))}
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="rounded-xl bg-white/5 border border-white/10 p-4">
+                <div className="text-white/70 text-xs font-semibold mb-3">Distribución de conversiones (torta)</div>
+                <div className="flex items-center gap-4">
+                  <div className="relative w-28 h-28 flex-shrink-0">
+                    <svg viewBox="0 0 36 36" className="w-full h-full -rotate-90">
+                      <circle cx="18" cy="18" r="15.9" fill="none" stroke="#27272a" strokeWidth="4" />
+                      <circle cx="18" cy="18" r="15.9" fill="none" stroke="#ef4444" strokeWidth="4" strokeDasharray="42 100" />
+                      <circle cx="18" cy="18" r="15.9" fill="none" stroke="#f97316" strokeWidth="4" strokeDasharray="28 100" strokeDashoffset="-42" />
+                      <circle cx="18" cy="18" r="15.9" fill="none" stroke="#fbbf24" strokeWidth="4" strokeDasharray="18 100" strokeDashoffset="-70" />
+                      <circle cx="18" cy="18" r="15.9" fill="none" stroke="#84cc16" strokeWidth="4" strokeDasharray="12 100" strokeDashoffset="-88" />
+                    </svg>
+                    <div className="absolute inset-0 flex items-center justify-center flex-col">
+                      <span className="text-white text-lg font-black">12K</span>
+                      <span className="text-white/50 text-[9px]">conv.</span>
+                    </div>
+                  </div>
+                  <div className="space-y-1.5 text-xs flex-1">
+                    {[
+                      { c: "bg-red-500", l: "Reservas", v: "42%" },
+                      { c: "bg-orange-500", l: "Clics WhatsApp", v: "28%" },
+                      { c: "bg-yellow-500", l: "Llamadas", v: "18%" },
+                      { c: "bg-lime-500", l: "Visitas perfil", v: "12%" },
+                    ].map((s) => (
+                      <div key={s.l} className="flex items-center gap-2">
+                        <div className={`w-2 h-2 rounded-full ${s.c}`} />
+                        <span className="text-white/70 flex-1">{s.l}</span>
+                        <span className="text-white font-semibold">{s.v}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="rounded-xl bg-white/5 border border-white/10 p-4">
+                <div className="text-white/70 text-xs font-semibold mb-3">Embudo de conversión</div>
+                <div className="space-y-2">
+                  {[
+                    { l: "Impresiones", v: "245,000", w: "100%", c: "from-red-500 to-red-600" },
+                    { l: "Aperturas", v: "167,580", w: "68%", c: "from-orange-500 to-red-500" },
+                    { l: "Clics", v: "59,049", w: "24%", c: "from-yellow-500 to-orange-500" },
+                    { l: "Conversiones", v: "12,047", w: "4.9%", c: "from-lime-500 to-yellow-500" },
+                  ].map((step) => (
+                    <div key={step.l}>
+                      <div className="flex justify-between text-[10px] text-white/70 mb-1">
+                        <span>{step.l}</span>
+                        <span className="font-semibold text-white">{step.v}</span>
+                      </div>
+                      <div className="h-5 rounded-md bg-white/5 overflow-hidden relative">
+                        <div className={`h-full bg-gradient-to-r ${step.c} flex items-center justify-end pr-2`} style={{ width: step.w }}>
+                          <span className="text-[9px] font-bold text-white">{step.w}</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* SCREENSHOT 2 — CAMPAÑAS PUSH */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="rounded-3xl border border-border bg-[#0f0f10] p-4 md:p-6 shadow-2xl mb-10"
+          >
+            <div className="flex items-center gap-2 mb-5 pb-3 border-b border-white/10">
+              <div className="w-3 h-3 rounded-full bg-red-500" />
+              <div className="w-3 h-3 rounded-full bg-yellow-500" />
+              <div className="w-3 h-3 rounded-full bg-green-500" />
+              <span className="text-white/50 text-xs ml-3 truncate">elmundialdelsabor.com / sponsor / campaigns</span>
+            </div>
+
+            <div className="flex items-center justify-between mb-5 flex-wrap gap-2">
+              <div>
+                <h4 className="text-white text-lg md:text-xl font-bold">Gestión de Campañas Push</h4>
+                <p className="text-white/50 text-xs">Crea, programa y mide notificaciones</p>
+              </div>
+              <button className="text-xs px-4 py-2 rounded-lg bg-gradient-to-r from-red-600 to-orange-500 text-white font-bold shadow-lg shadow-red-500/30">
+                + Nueva campaña
+              </button>
+            </div>
+
+            <div className="space-y-3">
+              {[
+                { title: "🥩 Reserva tu mesa con la mejor parrilla Q'Menu", status: "Activa", statusColor: "bg-green-500/20 text-green-400", sent: "12,400", opened: "68%", clicked: "24%", date: "Hoy 18:30" },
+                { title: "🔥 Esta noche: 2x1 en cortes premium Q'Menu", status: "Activa", statusColor: "bg-green-500/20 text-green-400", sent: "8,200", opened: "72%", clicked: "31%", date: "Hace 2h" },
+                { title: "⚽ Especial Mundial: parrilladas para tu equipo", status: "Programada", statusColor: "bg-blue-500/20 text-blue-400", sent: "—", opened: "—", clicked: "—", date: "Mañana 12:00" },
+                { title: "🎉 Celebra el primer gol con cortes Q'Menu", status: "Finalizada", statusColor: "bg-white/10 text-white/60", sent: "15,800", opened: "64%", clicked: "19%", date: "Hace 5d" },
+              ].map((c) => (
+                <div key={c.title} className="rounded-xl bg-white/5 border border-white/10 p-3 md:p-4 hover:border-red-500/30 transition-colors">
+                  <div className="flex items-start justify-between gap-3 mb-3">
+                    <div className="flex-1 min-w-0">
+                      <p className="text-white font-semibold text-sm truncate">{c.title}</p>
+                      <p className="text-white/40 text-[10px] mt-0.5">{c.date}</p>
+                    </div>
+                    <span className={`text-[10px] px-2 py-1 rounded-full font-semibold whitespace-nowrap ${c.statusColor}`}>{c.status}</span>
+                  </div>
+                  <div className="grid grid-cols-3 gap-2 text-center">
+                    <div className="rounded-lg bg-black/30 p-2">
+                      <div className="text-white/50 text-[9px]">ENVIADAS</div>
+                      <div className="text-white font-bold text-sm">{c.sent}</div>
+                    </div>
+                    <div className="rounded-lg bg-black/30 p-2">
+                      <div className="text-white/50 text-[9px]">APERTURA</div>
+                      <div className="text-orange-400 font-bold text-sm">{c.opened}</div>
+                    </div>
+                    <div className="rounded-lg bg-black/30 p-2">
+                      <div className="text-white/50 text-[9px]">CTR</div>
+                      <div className="text-red-400 font-bold text-sm">{c.clicked}</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* SCREENSHOT 3 — RESTAURANTES */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="rounded-3xl border border-border bg-[#0f0f10] p-4 md:p-6 shadow-2xl"
+          >
+            <div className="flex items-center gap-2 mb-5 pb-3 border-b border-white/10">
+              <div className="w-3 h-3 rounded-full bg-red-500" />
+              <div className="w-3 h-3 rounded-full bg-yellow-500" />
+              <div className="w-3 h-3 rounded-full bg-green-500" />
+              <span className="text-white/50 text-xs ml-3 truncate">elmundialdelsabor.com / sponsor / business</span>
+            </div>
+
+            <div className="flex items-center justify-between mb-5 flex-wrap gap-2">
+              <div>
+                <h4 className="text-white text-lg md:text-xl font-bold">Restaurantes afiliados</h4>
+                <p className="text-white/50 text-xs">Crecimiento proyectado: 100 (Mundial) → 1,200 (cierre 2026)</p>
+              </div>
+              <div className="text-right">
+                <div className="text-white text-2xl font-black">1,200</div>
+                <div className="text-green-400 text-[10px] font-semibold">Meta 2026</div>
+              </div>
+            </div>
+
+            <div className="rounded-xl bg-white/5 border border-white/10 p-4 mb-4">
+              <div className="text-white/70 text-xs font-semibold mb-3">Crecimiento de restaurantes inscritos · 2026</div>
+              <div className="flex items-end gap-1.5 h-32">
+                {[
+                  { m: "Ene", v: 8 },
+                  { m: "Feb", v: 12 },
+                  { m: "Mar", v: 18 },
+                  { m: "Abr", v: 28 },
+                  { m: "May", v: 42 },
+                  { m: "Jun", v: 58, highlight: true },
+                  { m: "Jul", v: 72, highlight: true },
+                  { m: "Ago", v: 80 },
+                  { m: "Sep", v: 86 },
+                  { m: "Oct", v: 91 },
+                  { m: "Nov", v: 96 },
+                  { m: "Dic", v: 100 },
+                ].map((b) => (
+                  <div key={b.m} className="flex-1 flex flex-col items-center gap-1">
+                    <div className="w-full flex items-end h-full">
+                      <div
+                        className={`w-full rounded-t-md ${b.highlight ? "bg-gradient-to-t from-red-600 to-orange-400" : "bg-gradient-to-t from-red-500/40 to-orange-500/40"}`}
+                        style={{ height: `${b.v}%` }}
+                      />
+                    </div>
+                    <span className="text-[9px] text-white/50">{b.m}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="flex items-center gap-4 text-[10px] text-white/60 mt-3 pt-3 border-t border-white/5 flex-wrap">
+                <div className="flex items-center gap-1.5"><div className="w-2 h-2 rounded-sm bg-orange-500" /> Temporada Mundial (Jun-Jul)</div>
+                <div className="flex items-center gap-1.5"><div className="w-2 h-2 rounded-sm bg-red-500/40" /> Crecimiento orgánico</div>
+                <div className="ml-auto text-white/70">Cierre Dic 2026: <strong className="text-white">1,200 restaurantes</strong></div>
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-3">
+              <div className="rounded-xl bg-white/5 border border-white/10 p-4">
+                <div className="text-white/70 text-xs font-semibold mb-3">🏆 Top restaurantes consumo Q'Menu</div>
+                <div className="space-y-2">
+                  {[
+                    { n: "Tratoría Sushi Green", kg: "284 kg", pct: 92 },
+                    { n: "Cilindro Municipal", kg: "248 kg", pct: 80 },
+                    { n: "El Corte de la Res", kg: "221 kg", pct: 71 },
+                    { n: "Pura Casta", kg: "198 kg", pct: 64 },
+                  ].map((r, i) => (
+                    <div key={r.n} className="flex items-center gap-2">
+                      <span className="text-white/50 text-xs w-4">{i + 1}</span>
+                      <span className="text-white text-xs flex-1 truncate">{r.n}</span>
+                      <div className="w-16 h-1.5 rounded-full bg-white/10 overflow-hidden">
+                        <div className="h-full bg-gradient-to-r from-red-500 to-orange-500" style={{ width: `${r.pct}%` }} />
+                      </div>
+                      <span className="text-white/70 text-[10px] w-12 text-right">{r.kg}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="rounded-xl bg-white/5 border border-white/10 p-4">
+                <div className="text-white/70 text-xs font-semibold mb-3">📍 Distribución por zona de Cali</div>
+                <div className="space-y-2">
+                  {[
+                    { z: "Norte (Granada, Centenario)", n: 28, c: "bg-red-500" },
+                    { z: "Sur (Ciudad Jardín, Pance)", n: 24, c: "bg-orange-500" },
+                    { z: "Oeste (San Antonio, Peñón)", n: 22, c: "bg-yellow-500" },
+                    { z: "Este (Versalles, Caney)", n: 16, c: "bg-lime-500" },
+                    { z: "Centro histórico", n: 10, c: "bg-emerald-500" },
+                  ].map((z) => (
+                    <div key={z.z} className="flex items-center gap-2">
+                      <div className={`w-2 h-2 rounded-full ${z.c}`} />
+                      <span className="text-white text-xs flex-1 truncate">{z.z}</span>
+                      <span className="text-white/70 text-[10px] font-semibold">{z.n}%</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </section>
 
