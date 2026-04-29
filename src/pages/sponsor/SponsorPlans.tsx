@@ -121,18 +121,88 @@ const Inner = () => {
         <Card>
           <CardHeader><CardTitle>Mis solicitudes</CardTitle></CardHeader>
           <CardContent className="space-y-2">
-            {requests.map((r) => (
-              <div key={r.id} className="flex items-center justify-between p-3 rounded bg-muted/40">
-                <div>
-                  <p className="font-medium text-sm">{r.sponsor_plans?.name}</p>
-                  <p className="text-xs text-muted-foreground">{new Date(r.created_at).toLocaleString('es-CO')}</p>
+            {requests.map((r) => {
+              const canEdit = r.status === 'pendiente';
+              return (
+                <div key={r.id} className="flex flex-wrap items-center justify-between gap-3 p-3 rounded bg-muted/40">
+                  <div className="flex-1 min-w-0">
+                    <p className="font-medium text-sm">{r.sponsor_plans?.name}</p>
+                    <p className="text-xs text-muted-foreground">{new Date(r.created_at).toLocaleString('es-CO')}</p>
+                    {r.message && <p className="text-xs text-muted-foreground mt-1 italic line-clamp-2">"{r.message}"</p>}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Badge variant={r.status === 'aprobada' ? 'default' : r.status === 'rechazada' ? 'destructive' : 'secondary'}>{r.status}</Badge>
+                    {canEdit && (
+                      <>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="h-8 w-8 p-0"
+                          onClick={() => { setEditing(r); setEditMessage(r.message || ''); }}
+                          title="Editar"
+                        >
+                          <Pencil className="h-3.5 w-3.5" />
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="h-8 w-8 p-0 text-destructive hover:text-destructive"
+                          onClick={() => setDeletingId(r.id)}
+                          title="Eliminar"
+                        >
+                          <Trash2 className="h-3.5 w-3.5" />
+                        </Button>
+                      </>
+                    )}
+                  </div>
                 </div>
-                <Badge variant={r.status === 'aprobada' ? 'default' : r.status === 'rechazada' ? 'destructive' : 'secondary'}>{r.status}</Badge>
-              </div>
-            ))}
+              );
+            })}
           </CardContent>
         </Card>
       )}
+
+      {/* Edit dialog */}
+      <Dialog open={!!editing} onOpenChange={(o) => !o && setEditing(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Editar solicitud</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-2">
+            <Label>Plan</Label>
+            <p className="text-sm font-medium">{editing?.sponsor_plans?.name}</p>
+            <Label>Mensaje</Label>
+            <Textarea
+              value={editMessage}
+              onChange={(e) => setEditMessage(e.target.value)}
+              rows={4}
+              placeholder="Cuéntanos más sobre tu interés..."
+            />
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setEditing(null)}>Cancelar</Button>
+            <Button onClick={saveEdit}>Guardar cambios</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete confirm */}
+      <AlertDialog open={!!deletingId} onOpenChange={(o) => !o && setDeletingId(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>¿Eliminar esta solicitud?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Esta acción no se puede deshacer. La solicitud será eliminada permanentemente.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Eliminar
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
