@@ -104,6 +104,12 @@ function App() {
         <Route path="/admin/prospects" element={<AdminProspects />} />
         <Route path="/admin/clients" element={<AdminClients />} />
         <Route path="/admin/appointments" element={<AdminAppointments />} />
+        <Route path="/admin/sponsors" element={<AdminSponsors />} />
+        <Route path="/sponsor" element={<SponsorDashboard />} />
+        <Route path="/sponsor/metrics" element={<SponsorMetrics />} />
+        <Route path="/sponsor/campaigns" element={<SponsorCampaigns />} />
+        <Route path="/sponsor/plans" element={<SponsorPlans />} />
+        <Route path="/sponsor/profile" element={<SponsorProfile />} />
         <Route path="/admin/analytics" element={<AdminAnalytics />} />
         <Route path="/admin/notifications" element={<AdminNotifications />} />
         <Route path="/admin/customization" element={<AdminCustomization />} />
