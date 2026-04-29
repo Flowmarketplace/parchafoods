@@ -15,6 +15,7 @@ import {
   LogOut,
   Calendar,
   UserCheck,
+  ShieldCheck,
   Megaphone
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
