@@ -755,9 +755,7 @@ const QmenuProposal = () => {
 
         <div className="container mx-auto px-6 relative z-10 text-center">
           <motion.div {...fadeUp}>
-            <div className="inline-block bg-yellow-400 rounded-2xl p-3 mb-8 shadow-xl">
-              <img src={qmenuLogo} alt="Q'Menu" className="h-14 mx-auto" />
-            </div>
+            <img src={qmenuLogo} alt="Q'Menu" className="h-16 mx-auto mb-8 opacity-90" />
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">¿Listo para ser el patrocinador oficial?</h2>
             <p className="text-white/60 text-lg max-w-2xl mx-auto mb-10">
               Hablemos sobre cómo Q'Menu puede ser la carne oficial de El Mundial del Sabor 2026 en Cali.
