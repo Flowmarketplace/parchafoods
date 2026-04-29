@@ -114,11 +114,11 @@ const Listings = () => {
         
         <main className="flex-1 lg:ml-64">
           {/* Hero Header */}
-          <div className="relative overflow-hidden bg-gradient-to-br from-primary via-primary to-secondary py-8 sm:py-12 px-4 sm:px-6 md:px-8">
-            <div className="absolute inset-0 opacity-10">
-              <div className="absolute top-4 right-8 text-6xl animate-bounce" style={{ animationDuration: '3s' }}>⚽</div>
-              <div className="absolute bottom-4 left-12 text-5xl animate-bounce" style={{ animationDuration: '4s', animationDelay: '1s' }}>🏆</div>
-              <div className="absolute top-1/2 right-1/3 text-4xl animate-bounce" style={{ animationDuration: '3.5s', animationDelay: '0.5s' }}>🍽️</div>
+          <div className="relative overflow-hidden bg-gradient-to-br from-primary via-primary to-secondary py-5 sm:py-10 md:py-12 px-3 sm:px-6 md:px-8">
+            <div className="absolute inset-0 opacity-10 pointer-events-none">
+              <div className="absolute top-2 right-4 sm:top-4 sm:right-8 text-4xl sm:text-6xl animate-bounce" style={{ animationDuration: '3s' }}>⚽</div>
+              <div className="absolute bottom-2 left-6 sm:bottom-4 sm:left-12 text-3xl sm:text-5xl animate-bounce" style={{ animationDuration: '4s', animationDelay: '1s' }}>🏆</div>
+              <div className="absolute top-1/2 right-1/3 text-2xl sm:text-4xl animate-bounce hidden sm:block" style={{ animationDuration: '3.5s', animationDelay: '0.5s' }}>🍽️</div>
             </div>
             
             <div className="relative max-w-screen-2xl mx-auto">
@@ -127,34 +127,34 @@ const Listings = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
               >
-                <div className="flex items-center gap-2 mb-2">
-                  <Sparkles className="h-5 w-5 text-accent" />
-                  <span className="text-sm font-medium text-primary-foreground/80">Explora Cali</span>
+                <div className="flex items-center gap-1.5 mb-1.5 sm:mb-2">
+                  <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 text-accent" />
+                  <span className="text-xs sm:text-sm font-medium text-primary-foreground/80">Explora Cali</span>
                 </div>
-                <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-primary-foreground mb-2">
+                <h1 className="text-2xl sm:text-4xl md:text-5xl font-extrabold text-primary-foreground mb-1.5 sm:mb-2 leading-tight">
                   Descubre los mejores
                   <br />
                   <span className="text-accent">sabores de Cali</span>
                 </h1>
-                <p className="text-primary-foreground/70 text-sm sm:text-base max-w-lg">
+                <p className="text-primary-foreground/70 text-xs sm:text-base max-w-lg hidden sm:block">
                   Encuentra restaurantes, cafés, bares y mucho más en tu ciudad
                 </p>
               </motion.div>
 
               {/* Search bar */}
               <motion.div 
-                className="mt-6 flex gap-2 max-w-xl"
+                className="mt-4 sm:mt-6 flex gap-2 max-w-xl"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
               >
-                <div className="relative flex-1">
+                <div className="relative flex-1 min-w-0">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input
-                    placeholder="Buscar restaurantes, barrios..."
+                    placeholder="Buscar restaurantes..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-10 h-12 rounded-xl bg-card/95 backdrop-blur-sm border-0 shadow-lg text-foreground placeholder:text-muted-foreground"
+                    className="pl-9 pr-9 h-11 sm:h-12 rounded-xl bg-card/95 backdrop-blur-sm border-0 shadow-lg text-foreground placeholder:text-muted-foreground text-sm sm:text-base"
                   />
                   {searchQuery && (
                     <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2">
@@ -165,12 +165,12 @@ const Listings = () => {
                 <Button
                   variant="secondary"
                   size="icon"
-                  className="h-12 w-12 rounded-xl shadow-lg relative"
+                  className="h-11 w-11 sm:h-12 sm:w-12 rounded-xl shadow-lg relative shrink-0"
                   onClick={() => setShowFilters(!showFilters)}
                 >
                   <SlidersHorizontal className="h-4 w-4" />
                   {activeFilters > 0 && (
-                    <span className="absolute -top-1 -right-1 w-5 h-5 bg-accent text-accent-foreground text-xs font-bold rounded-full flex items-center justify-center">
+                    <span className="absolute -top-1 -right-1 w-5 h-5 bg-accent text-accent-foreground text-[10px] font-bold rounded-full flex items-center justify-center">
                       {activeFilters}
                     </span>
                   )}
