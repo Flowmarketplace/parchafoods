@@ -4,7 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import SponsorSidebar, { SponsorSidebarDesktop } from './SponsorSidebar';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
-import { Menu, Megaphone, LogOut, Home } from 'lucide-react';
+import { Menu, Megaphone, LogOut, Home, ArrowLeft } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { toast } from 'sonner';
 
