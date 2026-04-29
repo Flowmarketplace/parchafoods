@@ -181,15 +181,15 @@ const Listings = () => {
 
           <div className="w-full max-w-screen-2xl mx-auto px-3 sm:px-4 md:px-6">
             {/* Category chips */}
-            <div className="py-4 -mx-3 sm:-mx-4 md:-mx-6 px-3 sm:px-4 md:px-6 overflow-x-auto scrollbar-hide">
-              <div className="flex gap-2 min-w-max">
+            <div className="py-3 sm:py-4 -mx-3 sm:-mx-4 md:-mx-6 px-3 sm:px-4 md:px-6 overflow-x-auto scrollbar-hide">
+              <div className="flex gap-1.5 sm:gap-2 min-w-max">
                 {categories.map((cat) => {
                   const isActive = selectedCategory === cat;
                   return (
                     <button
                       key={cat}
                       onClick={() => setSelectedCategory(cat)}
-                      className={`flex items-center gap-1.5 px-4 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-200 ${
+                      className={`flex items-center gap-1 sm:gap-1.5 px-3 sm:px-4 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-medium whitespace-nowrap transition-all duration-200 ${
                         isActive
                           ? 'bg-primary text-primary-foreground shadow-md scale-105'
                           : 'bg-muted text-muted-foreground hover:bg-muted/80 hover:text-foreground'
