@@ -741,7 +741,7 @@ const QmenuProposal = () => {
               <div className="grid grid-cols-2 gap-4">
                 {[
                   { number: "50K+", label: "Usuarios activos", emoji: "👥" },
-                  { number: "100", label: "Restaurantes", emoji: "🍽️" },
+                  { number: "100→1,200", label: "Restaurantes (proyección 2026)", emoji: "🍽️" },
                   { number: "50", label: "Videos producidos", emoji: "🎬" },
                   { number: "100%", label: "Visibilidad digital", emoji: "📱" },
                 ].map((stat, i) => (
