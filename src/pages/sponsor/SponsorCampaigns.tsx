@@ -11,7 +11,7 @@ import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Plus, Send, Trash2, Bell, ExternalLink, MessageCircle, Phone, MapPin, MessageSquare, AlertCircle } from 'lucide-react';
+import { Plus, Send, Trash2, Bell, ExternalLink, MessageCircle, Phone, MapPin, MessageSquare, AlertCircle, Upload, X, Info } from 'lucide-react';
 import { z } from 'zod';
 
 // CTA validators per action type
