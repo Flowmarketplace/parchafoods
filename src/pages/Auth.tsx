@@ -57,11 +57,14 @@ const Auth = () => {
             
             const isAdmin = roles?.some(r => r.role === 'admin');
             const isBusinessOwner = roles?.some(r => r.role === 'business_owner');
+            const isSponsor = roles?.some(r => r.role === 'sponsor');
             
             if (isAdmin) {
               navigate('/admin');
             } else if (isBusinessOwner) {
               navigate('/business-dashboard');
+            } else if (isSponsor) {
+              navigate('/sponsor');
             } else {
               navigate('/');
             }
