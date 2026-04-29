@@ -70,6 +70,9 @@ const SponsorDashboard = () => {
   const [planName, setPlanName] = useState<string | null>(null);
   const [planLimit, setPlanLimit] = useState<number>(0);
   const [recentCampaigns, setRecentCampaigns] = useState<any[]>([]);
+  const [businesses, setBusinesses] = useState<any[]>([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
   useEffect(() => {
     (async () => {
