@@ -196,7 +196,7 @@ const Auth = () => {
 
       const redirectUrl = `${window.location.origin}/`;
 
-      const { error } = await supabase.auth.signUp({
+      const { data: signupData, error } = await supabase.auth.signUp({
         email: signupEmail,
         password: signupPassword,
         options: {
@@ -223,10 +223,25 @@ const Auth = () => {
           });
         }
       } else {
-        toast({
-          title: "¡Cuenta creada!",
-          description: "Tu cuenta ha sido creada exitosamente",
-        });
+        // If sponsor, create sponsor profile (pending approval)
+        if (accountType === 'sponsor' && signupData.user) {
+          await supabase.from('sponsors').insert({
+            user_id: signupData.user.id,
+            brand_name: signupBrandName || signupFullName,
+            contact_person: signupFullName,
+            email: signupEmail,
+            status: 'pendiente',
+          });
+          toast({
+            title: "¡Solicitud enviada!",
+            description: "Tu cuenta de patrocinador está pendiente de aprobación por el administrador.",
+          });
+        } else {
+          toast({
+            title: "¡Cuenta creada!",
+            description: "Tu cuenta ha sido creada exitosamente",
+          });
+        }
       }
     } catch (error) {
       if (error instanceof z.ZodError) {
