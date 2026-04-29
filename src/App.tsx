@@ -54,6 +54,7 @@ import SponsorMetrics from "./pages/sponsor/SponsorMetrics";
 import SponsorCampaigns from "./pages/sponsor/SponsorCampaigns";
 import SponsorPlans from "./pages/sponsor/SponsorPlans";
 import SponsorProfile from "./pages/sponsor/SponsorProfile";
+import SponsorBusinessStats from "./pages/sponsor/SponsorBusinessStats";
 import Landing from "./pages/Landing";
 import AndinaProposal from "./pages/AndinaProposal";
 
