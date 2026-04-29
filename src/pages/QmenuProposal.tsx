@@ -5,11 +5,12 @@ import {
   Smartphone, Store, TrendingUp, Camera, Sparkles, Target, Globe, Beef,
   Award, Gem, Crown, Flame, Truck, Utensils
 } from "lucide-react";
-import qmenuLogo from "@/assets/qmenu-logo.png";
+import qmenuLogo from "@/assets/qmenu-logo-white.png";
 import qmenuMeats from "@/assets/qmenu-meats.jpg";
 import qmenuGrill from "@/assets/qmenu-grill.jpg";
 import qmenuDistribution from "@/assets/qmenu-distribution.jpg";
 import qmenuFeast from "@/assets/qmenu-feast.jpg";
+import qmenuStorefront from "@/assets/qmenu-storefront.png";
 
 const fadeUp = {
   initial: { opacity: 0, y: 30 },
@@ -143,9 +144,7 @@ const QmenuProposal = () => {
           </motion.div>
 
           <motion.div {...fadeUp} transition={{ duration: 0.6, delay: 0.15 }}>
-            <div className="inline-block bg-yellow-400 rounded-2xl p-4 mb-8 shadow-2xl">
-              <img src={qmenuLogo} alt="Q'Menu" className="h-16 md:h-24 mx-auto" />
-            </div>
+            <img src={qmenuLogo} alt="Q'Menu" className="h-20 md:h-28 mx-auto mb-8 drop-shadow-2xl" />
           </motion.div>
 
           <motion.h1 {...fadeUp} transition={{ duration: 0.6, delay: 0.25 }} className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
@@ -367,6 +366,73 @@ const QmenuProposal = () => {
         </div>
       </section>
 
+      {/* === SECCIÓN PERSONALIZADA Q'MENU === */}
+      <section className="py-20 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 via-background to-orange-500/5" />
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="grid lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7 }}
+              className="relative"
+            >
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-red-500/20">
+                <img src={qmenuStorefront} alt="Local Q'Menu Cali" className="w-full h-full object-cover" loading="lazy" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+                <div className="absolute bottom-4 left-4 right-4">
+                  <span className="inline-block px-3 py-1 rounded-full bg-yellow-400 text-black text-xs font-bold shadow-lg">
+                    🥩 Q'Menu · Cali
+                  </span>
+                </div>
+              </div>
+              <div className="absolute -top-4 -right-4 w-24 h-24 bg-gradient-to-br from-red-600 to-orange-500 rounded-2xl flex items-center justify-center shadow-2xl rotate-6">
+                <div className="text-center">
+                  <div className="text-2xl font-black text-white leading-none">100</div>
+                  <div className="text-[9px] text-white/90 font-semibold">RESTAURANTES</div>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: 0.15 }}
+            >
+              <span className="text-red-500 font-semibold text-sm tracking-widest uppercase">Hecho a la medida de Q'Menu</span>
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mt-3 mb-5 leading-tight">
+                De su local en Cali a las{" "}
+                <span className="bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent">cocinas de toda la ciudad</span>
+              </h2>
+              <p className="text-muted-foreground text-base md:text-lg leading-relaxed mb-6">
+                La calidad y atención que distingue a Q'Menu — esa misma frescura, profesionalismo y cuidado por el producto — ahora con presencia digital constante en los principales 100 restaurantes de Cali durante todo el 2026.
+              </p>
+
+              <div className="rounded-2xl border-2 border-red-500/30 bg-gradient-to-br from-red-500/10 to-orange-500/10 p-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-red-600 to-orange-500 flex items-center justify-center flex-shrink-0">
+                    <Crown className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold text-red-500 uppercase tracking-wider mb-1">Inversión inicial propuesta</p>
+                    <div className="flex items-baseline gap-2 mb-2">
+                      <span className="text-4xl font-black text-foreground">$50M</span>
+                      <span className="text-muted-foreground text-sm">COP · pago único</span>
+                    </div>
+                    <p className="text-foreground text-sm font-semibold mb-1">Plan Oro · Presencia durante TODO el año 2026</p>
+                    <p className="text-muted-foreground text-xs leading-relaxed">
+                      Q'Menu estará presente en la app desde la firma del contrato hasta el <strong className="text-foreground">31 de diciembre de 2026</strong>, abarcando los meses previos, el desarrollo completo del Mundial FIFA 2026 y el cierre de año.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
       {/* === PLANES === */}
       <section className="py-24 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-background via-muted/20 to-background" />
@@ -378,7 +444,7 @@ const QmenuProposal = () => {
               <span className="bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent">exposición</span>
             </h2>
             <p className="text-muted-foreground mt-4 max-w-2xl mx-auto text-lg">
-              Tres planes diseñados para distintos objetivos. <strong className="text-foreground">Vigencia hasta el 31 de diciembre de 2026</strong> con un solo pago por todo el periodo.
+              Tres planes diseñados para distintos objetivos. <strong className="text-foreground">Vigencia desde la contratación hasta el 31 de diciembre de 2026</strong> — un solo pago por presencia durante todo el año.
             </p>
           </motion.div>
 
@@ -756,9 +822,7 @@ const QmenuProposal = () => {
 
         <div className="container mx-auto px-6 relative z-10 text-center">
           <motion.div {...fadeUp}>
-            <div className="inline-block bg-yellow-400 rounded-2xl p-3 mb-8 shadow-xl">
-              <img src={qmenuLogo} alt="Q'Menu" className="h-14 mx-auto" />
-            </div>
+            <img src={qmenuLogo} alt="Q'Menu" className="h-16 mx-auto mb-8 opacity-90" />
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">¿Listo para ser el patrocinador oficial?</h2>
             <p className="text-white/60 text-lg max-w-2xl mx-auto mb-10">
               Hablemos sobre cómo Q'Menu puede ser la carne oficial de El Mundial del Sabor 2026 en Cali.
