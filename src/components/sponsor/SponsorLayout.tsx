@@ -102,6 +102,7 @@ const SponsorLayout = ({ children, title, subtitle }: SponsorLayoutProps) => {
           <p className="text-muted-foreground">
             Tu cuenta de <strong>{sponsor.brand_name}</strong> está pendiente de aprobación por el administrador. Te contactaremos pronto.
           </p>
+          <ExitActions />
         </Card>
       </div>
     );
