@@ -263,7 +263,7 @@ const AdminDashboard = () => {
 
             <Card 
               className="cursor-pointer hover:shadow-lg transition-shadow"
-              onClick={() => navigate('/admin/permissions')}
+              onClick={() => navigate('/admin/approvals')}
             >
               <CardHeader>
                 <div className="flex items-center gap-2">
