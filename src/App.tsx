@@ -47,6 +47,12 @@ import AdminCategories from "./pages/admin/AdminCategories";
 import AdminProspects from "./pages/admin/AdminProspects";
 import AdminClients from "./pages/admin/AdminClients";
 import AdminAppointments from "./pages/admin/AdminAppointments";
+import AdminSponsors from "./pages/admin/AdminSponsors";
+import SponsorDashboard from "./pages/sponsor/SponsorDashboard";
+import SponsorMetrics from "./pages/sponsor/SponsorMetrics";
+import SponsorCampaigns from "./pages/sponsor/SponsorCampaigns";
+import SponsorPlans from "./pages/sponsor/SponsorPlans";
+import SponsorProfile from "./pages/sponsor/SponsorProfile";
 import Landing from "./pages/Landing";
 import AndinaProposal from "./pages/AndinaProposal";
 
