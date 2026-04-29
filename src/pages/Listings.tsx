@@ -317,15 +317,15 @@ const Listings = () => {
                 </Button>
               </motion.div>
             ) : (
-              <div className="pb-24 space-y-8">
+              <div className="pb-28 md:pb-12 space-y-6 sm:space-y-8">
                 {/* Featured section */}
                 {featuredPlaces.length > 0 && selectedCategory === 'Todos' && (
                   <div>
-                    <div className="flex items-center gap-2 mb-4">
-                      <span className="text-lg">⭐</span>
-                      <h2 className="text-lg font-bold">Destacados</h2>
+                    <div className="flex items-center gap-2 mb-3 sm:mb-4">
+                      <span className="text-base sm:text-lg">⭐</span>
+                      <h2 className="text-base sm:text-lg font-bold">Destacados</h2>
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5">
+                    <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-5">
                       {featuredPlaces.map((place) => (
                         <PlaceCard key={place.id} place={place} featured />
                       ))}
@@ -336,9 +336,9 @@ const Listings = () => {
                 {/* All results */}
                 <div>
                   {featuredPlaces.length > 0 && selectedCategory === 'Todos' && (
-                    <h2 className="text-lg font-bold mb-4">Todos los lugares</h2>
+                    <h2 className="text-base sm:text-lg font-bold mb-3 sm:mb-4">Todos los lugares</h2>
                   )}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5">
+                  <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-5">
                     {(selectedCategory === 'Todos' ? regularPlaces : filteredPlaces).map((place) => (
                       <PlaceCard key={place.id} place={place} />
                     ))}
