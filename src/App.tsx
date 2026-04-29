@@ -57,6 +57,7 @@ import SponsorProfile from "./pages/sponsor/SponsorProfile";
 import SponsorBusinessStats from "./pages/sponsor/SponsorBusinessStats";
 import Landing from "./pages/Landing";
 import AndinaProposal from "./pages/AndinaProposal";
+import QmenuProposal from "./pages/QmenuProposal";
 
 function App() {
   return (
@@ -65,6 +66,7 @@ function App() {
         <Route path="/" element={<Index />} />
         <Route path="/landing" element={<Landing />} />
         <Route path="/andina" element={<AndinaProposal />} />
+        <Route path="/qmenu" element={<QmenuProposal />} />
         <Route path="/app" element={<Index />} />
         <Route path="/place/:id" element={<PlaceDetails />} />
         <Route path="/event/:id" element={<EventDetails />} />
