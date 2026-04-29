@@ -396,38 +396,102 @@ const Inner = () => {
 
               {/* LIVE PREVIEW */}
               <div className="space-y-3 md:sticky md:top-0 md:self-start">
-                <Label className="text-xs uppercase text-muted-foreground">Vista previa</Label>
-                {/* Phone mock */}
-                <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl p-3 shadow-xl">
-                  <div className="bg-slate-700/50 rounded-2xl p-3 space-y-2">
-                    <div className="flex items-center gap-2 text-[10px] text-white/60">
-                      <div className="h-5 w-5 rounded bg-primary flex items-center justify-center">
-                        <Bell className="h-3 w-3 text-primary-foreground" />
+                <Label className="text-xs uppercase text-muted-foreground">Vista previa en móvil</Label>
+
+                {/* Realistic phone mock */}
+                <div className="mx-auto w-full max-w-[280px] bg-slate-900 rounded-[2.5rem] p-2 shadow-2xl ring-1 ring-slate-800">
+                  {/* Notch */}
+                  <div className="relative bg-black rounded-[2rem] overflow-hidden" style={{ aspectRatio: '9/17' }}>
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-5 bg-black rounded-b-2xl z-20" />
+
+                    {/* Lock screen background */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-orange-500 via-red-500 to-amber-600" />
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.2),transparent_50%)]" />
+                    <div className="absolute inset-0 bg-black/30" />
+
+                    {/* Status bar */}
+                    <div className="relative z-10 flex items-center justify-between px-5 pt-3 pb-1 text-white text-[10px] font-semibold">
+                      <span>{new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit', hour12: false })}</span>
+                      <div className="flex items-center gap-1">
+                        <span>•••</span>
+                        <span>📶</span>
+                        <span>🔋</span>
                       </div>
-                      <span className="font-semibold">SABOR 360</span>
-                      <span className="ml-auto">ahora</span>
                     </div>
-                    <div className="bg-white dark:bg-slate-100 rounded-lg p-2 space-y-1">
-                      <p className="text-[11px] font-bold text-slate-900 line-clamp-2">{form.title || 'Título de la notificación'}</p>
-                      <p className="text-[10px] text-slate-700 line-clamp-3">{form.message || 'Aquí aparecerá el mensaje de tu notificación push.'}</p>
-                      {form.image_url && (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img src={form.image_url} alt="" className="w-full h-20 object-cover rounded mt-1" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
-                      )}
-                      {form.cta_label && form.cta_action_value && !ctaValueError && !ctaLabelError && (
-                        <button
-                          type="button"
-                          className="w-full mt-2 inline-flex items-center justify-center gap-1.5 bg-primary text-primary-foreground text-[10px] font-medium rounded px-2 py-1.5"
-                        >
-                          {(() => { const I = ctaIcons[form.cta_action_type] || ExternalLink; return <I className="h-3 w-3" />; })()}
-                          {form.cta_label}
-                        </button>
-                      )}
+
+                    {/* Time/date */}
+                    <div className="relative z-10 text-center text-white pt-4 pb-3">
+                      <p className="text-[10px] font-medium opacity-90 uppercase tracking-wide">
+                        {new Date().toLocaleDateString('es-CO', { weekday: 'long', day: 'numeric', month: 'long' })}
+                      </p>
+                      <p className="text-4xl font-light tracking-tight mt-0.5">
+                        {new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit', hour12: false })}
+                      </p>
+                    </div>
+
+                    {/* Notification card */}
+                    <div className="relative z-10 px-3 pt-2">
+                      <div className="bg-white/95 backdrop-blur-md rounded-2xl shadow-lg overflow-hidden">
+                        {/* Header */}
+                        <div className="flex items-center gap-2 px-3 pt-2.5 pb-1.5">
+                          <div className="h-5 w-5 rounded-md bg-gradient-to-br from-primary to-secondary flex items-center justify-center flex-shrink-0">
+                            <Bell className="h-2.5 w-2.5 text-white" />
+                          </div>
+                          <span className="text-[9px] font-semibold text-slate-700 uppercase tracking-wide flex-1 truncate">
+                            Sabor 360
+                          </span>
+                          <span className="text-[9px] text-slate-500">ahora</span>
+                        </div>
+
+                        {/* Content */}
+                        <div className="px-3 pb-2.5 space-y-1">
+                          <p className="text-[11px] font-bold text-slate-900 leading-tight line-clamp-2">
+                            {form.title || 'Título de la notificación'}
+                          </p>
+                          <p className="text-[10px] text-slate-700 leading-snug line-clamp-3">
+                            {form.message || 'Aquí aparecerá el mensaje de tu notificación push.'}
+                          </p>
+                        </div>
+
+                        {/* Big picture (expanded notification style) */}
+                        {form.image_url && (
+                          <div className="bg-slate-100">
+                            <img
+                              src={form.image_url}
+                              alt=""
+                              className="w-full object-cover"
+                              style={{ aspectRatio: '2/1' }}
+                              onError={(e) => {
+                                const el = e.target as HTMLImageElement;
+                                el.parentElement!.style.display = 'none';
+                              }}
+                            />
+                          </div>
+                        )}
+
+                        {/* CTA */}
+                        {form.cta_label && form.cta_action_value && !ctaValueError && !ctaLabelError && (
+                          <div className="px-3 pb-3 pt-2">
+                            <div className="w-full inline-flex items-center justify-center gap-1.5 bg-gradient-to-r from-primary to-secondary text-white text-[10px] font-semibold rounded-lg px-3 py-2 shadow-sm">
+                              {(() => {
+                                const I = ctaIcons[form.cta_action_type] || ExternalLink;
+                                return <I className="h-3 w-3" />;
+                              })()}
+                              {form.cta_label}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Stacked older notification hint */}
+                      <div className="bg-white/40 backdrop-blur-sm h-2 mx-3 -mt-1 rounded-b-xl" />
+                      <div className="bg-white/25 backdrop-blur-sm h-1.5 mx-5 -mt-0.5 rounded-b-xl" />
                     </div>
                   </div>
                 </div>
+
                 {/* Summary */}
-                <div className="text-xs space-y-1 p-3 rounded border bg-muted/30">
+                <div className="text-xs space-y-1 p-3 rounded-lg border bg-muted/30">
                   <p><strong>Audiencia:</strong> {audienceLabel[form.target_audience]}</p>
                   {form.geo_enabled && form.geo_latitude && form.geo_longitude && (
                     <p><strong>Geo:</strong> {form.geo_radius_km}km en torno a ({Number(form.geo_latitude).toFixed(3)}, {Number(form.geo_longitude).toFixed(3)})</p>
