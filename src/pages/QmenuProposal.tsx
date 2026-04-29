@@ -144,7 +144,9 @@ const QmenuProposal = () => {
           </motion.div>
 
           <motion.div {...fadeUp} transition={{ duration: 0.6, delay: 0.15 }}>
-            <img src={qmenuLogo} alt="Q'Menu" className="h-20 md:h-28 mx-auto mb-8 drop-shadow-2xl" />
+            <h2 className="text-6xl md:text-8xl font-black text-white mb-8 tracking-tight drop-shadow-2xl" style={{ fontFamily: "'Inter', system-ui, sans-serif", letterSpacing: '-0.04em' }}>
+              Q'menu
+            </h2>
           </motion.div>
 
           <motion.h1 {...fadeUp} transition={{ duration: 0.6, delay: 0.25 }} className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
@@ -299,12 +301,6 @@ const QmenuProposal = () => {
                     <p className="text-muted-foreground text-sm leading-relaxed">{benefit.description}</p>
                   </div>
                 </div>
-                {benefit.highlight && (
-                  <div className="mt-4 flex items-center gap-1.5">
-                    <CheckCircle2 className="w-4 h-4 text-red-500" />
-                    <span className="text-red-500 text-xs font-semibold">EXCLUSIVO PATROCINADOR OFICIAL</span>
-                  </div>
-                )}
               </motion.div>
             ))}
           </div>
@@ -1104,7 +1100,7 @@ const QmenuProposal = () => {
 
         <div className="container mx-auto px-6 relative z-10 text-center">
           <motion.div {...fadeUp}>
-            <img src={qmenuLogo} alt="Q'Menu" className="h-16 mx-auto mb-8 opacity-90" />
+            <h3 className="text-5xl md:text-6xl font-black text-white mb-8 tracking-tight" style={{ letterSpacing: '-0.04em' }}>Q'menu</h3>
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">¿Listo para ser el patrocinador oficial?</h2>
             <p className="text-white/60 text-lg max-w-2xl mx-auto mb-10">
               Hablemos sobre cómo Q'Menu puede ser la carne oficial de El Mundial del Sabor 2026 en Cali.
