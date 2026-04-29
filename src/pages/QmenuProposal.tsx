@@ -683,10 +683,10 @@ const QmenuProposal = () => {
                   {[
                     { label: "Escaneos QR", value: "12,847", trend: "+34%" },
                     { label: "Kg estimados/sem", value: "8,540", trend: "+28%" },
-                    { label: "Restaurantes", value: "100", trend: "100%" },
+                    { label: "Restaurantes", value: "100 → 1,200", trend: "Meta 2026" },
                   ].map((stat) => (
                     <div key={stat.label} className="p-3 rounded-xl bg-muted/50 text-center">
-                      <div className="text-foreground font-bold text-lg">{stat.value}</div>
+                      <div className="text-foreground font-bold text-base">{stat.value}</div>
                       <div className="text-muted-foreground text-[10px]">{stat.label}</div>
                       <div className="text-green-500 text-xs font-semibold mt-1">{stat.trend}</div>
                     </div>
