@@ -114,11 +114,11 @@ const Listings = () => {
         
         <main className="flex-1 lg:ml-64">
           {/* Hero Header */}
-          <div className="relative overflow-hidden bg-gradient-to-br from-primary via-primary to-secondary py-8 sm:py-12 px-4 sm:px-6 md:px-8">
-            <div className="absolute inset-0 opacity-10">
-              <div className="absolute top-4 right-8 text-6xl animate-bounce" style={{ animationDuration: '3s' }}>⚽</div>
-              <div className="absolute bottom-4 left-12 text-5xl animate-bounce" style={{ animationDuration: '4s', animationDelay: '1s' }}>🏆</div>
-              <div className="absolute top-1/2 right-1/3 text-4xl animate-bounce" style={{ animationDuration: '3.5s', animationDelay: '0.5s' }}>🍽️</div>
+          <div className="relative overflow-hidden bg-gradient-to-br from-primary via-primary to-secondary py-5 sm:py-10 md:py-12 px-3 sm:px-6 md:px-8">
+            <div className="absolute inset-0 opacity-10 pointer-events-none">
+              <div className="absolute top-2 right-4 sm:top-4 sm:right-8 text-4xl sm:text-6xl animate-bounce" style={{ animationDuration: '3s' }}>⚽</div>
+              <div className="absolute bottom-2 left-6 sm:bottom-4 sm:left-12 text-3xl sm:text-5xl animate-bounce" style={{ animationDuration: '4s', animationDelay: '1s' }}>🏆</div>
+              <div className="absolute top-1/2 right-1/3 text-2xl sm:text-4xl animate-bounce hidden sm:block" style={{ animationDuration: '3.5s', animationDelay: '0.5s' }}>🍽️</div>
             </div>
             
             <div className="relative max-w-screen-2xl mx-auto">
@@ -127,34 +127,34 @@ const Listings = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
               >
-                <div className="flex items-center gap-2 mb-2">
-                  <Sparkles className="h-5 w-5 text-accent" />
-                  <span className="text-sm font-medium text-primary-foreground/80">Explora Cali</span>
+                <div className="flex items-center gap-1.5 mb-1.5 sm:mb-2">
+                  <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 text-accent" />
+                  <span className="text-xs sm:text-sm font-medium text-primary-foreground/80">Explora Cali</span>
                 </div>
-                <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-primary-foreground mb-2">
+                <h1 className="text-2xl sm:text-4xl md:text-5xl font-extrabold text-primary-foreground mb-1.5 sm:mb-2 leading-tight">
                   Descubre los mejores
                   <br />
                   <span className="text-accent">sabores de Cali</span>
                 </h1>
-                <p className="text-primary-foreground/70 text-sm sm:text-base max-w-lg">
+                <p className="text-primary-foreground/70 text-xs sm:text-base max-w-lg hidden sm:block">
                   Encuentra restaurantes, cafés, bares y mucho más en tu ciudad
                 </p>
               </motion.div>
 
               {/* Search bar */}
               <motion.div 
-                className="mt-6 flex gap-2 max-w-xl"
+                className="mt-4 sm:mt-6 flex gap-2 max-w-xl"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
               >
-                <div className="relative flex-1">
+                <div className="relative flex-1 min-w-0">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input
-                    placeholder="Buscar restaurantes, barrios..."
+                    placeholder="Buscar restaurantes..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-10 h-12 rounded-xl bg-card/95 backdrop-blur-sm border-0 shadow-lg text-foreground placeholder:text-muted-foreground"
+                    className="pl-9 pr-9 h-11 sm:h-12 rounded-xl bg-card/95 backdrop-blur-sm border-0 shadow-lg text-foreground placeholder:text-muted-foreground text-sm sm:text-base"
                   />
                   {searchQuery && (
                     <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2">
@@ -165,12 +165,12 @@ const Listings = () => {
                 <Button
                   variant="secondary"
                   size="icon"
-                  className="h-12 w-12 rounded-xl shadow-lg relative"
+                  className="h-11 w-11 sm:h-12 sm:w-12 rounded-xl shadow-lg relative shrink-0"
                   onClick={() => setShowFilters(!showFilters)}
                 >
                   <SlidersHorizontal className="h-4 w-4" />
                   {activeFilters > 0 && (
-                    <span className="absolute -top-1 -right-1 w-5 h-5 bg-accent text-accent-foreground text-xs font-bold rounded-full flex items-center justify-center">
+                    <span className="absolute -top-1 -right-1 w-5 h-5 bg-accent text-accent-foreground text-[10px] font-bold rounded-full flex items-center justify-center">
                       {activeFilters}
                     </span>
                   )}
@@ -181,15 +181,15 @@ const Listings = () => {
 
           <div className="w-full max-w-screen-2xl mx-auto px-3 sm:px-4 md:px-6">
             {/* Category chips */}
-            <div className="py-4 -mx-3 sm:-mx-4 md:-mx-6 px-3 sm:px-4 md:px-6 overflow-x-auto scrollbar-hide">
-              <div className="flex gap-2 min-w-max">
+            <div className="py-3 sm:py-4 -mx-3 sm:-mx-4 md:-mx-6 px-3 sm:px-4 md:px-6 overflow-x-auto scrollbar-hide">
+              <div className="flex gap-1.5 sm:gap-2 min-w-max">
                 {categories.map((cat) => {
                   const isActive = selectedCategory === cat;
                   return (
                     <button
                       key={cat}
                       onClick={() => setSelectedCategory(cat)}
-                      className={`flex items-center gap-1.5 px-4 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-200 ${
+                      className={`flex items-center gap-1 sm:gap-1.5 px-3 sm:px-4 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-medium whitespace-nowrap transition-all duration-200 ${
                         isActive
                           ? 'bg-primary text-primary-foreground shadow-md scale-105'
                           : 'bg-muted text-muted-foreground hover:bg-muted/80 hover:text-foreground'
@@ -281,14 +281,14 @@ const Listings = () => {
 
             {/* Loading skeleton */}
             {loading ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 pb-24">
+              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-5 pb-28 md:pb-12">
                 {[...Array(8)].map((_, i) => (
                   <div key={i} className="rounded-2xl overflow-hidden border border-border/50">
                     <Skeleton className="aspect-[4/3]" />
-                    <div className="p-4 space-y-3">
-                      <Skeleton className="h-5 w-3/4" />
-                      <Skeleton className="h-4 w-1/2" />
-                      <Skeleton className="h-8 w-full" />
+                    <div className="p-3 sm:p-4 space-y-2 sm:space-y-3">
+                      <Skeleton className="h-4 sm:h-5 w-3/4" />
+                      <Skeleton className="h-3 sm:h-4 w-1/2" />
+                      <Skeleton className="h-7 sm:h-8 w-full" />
                     </div>
                   </div>
                 ))}
@@ -317,15 +317,15 @@ const Listings = () => {
                 </Button>
               </motion.div>
             ) : (
-              <div className="pb-24 space-y-8">
+              <div className="pb-28 md:pb-12 space-y-6 sm:space-y-8">
                 {/* Featured section */}
                 {featuredPlaces.length > 0 && selectedCategory === 'Todos' && (
                   <div>
-                    <div className="flex items-center gap-2 mb-4">
-                      <span className="text-lg">⭐</span>
-                      <h2 className="text-lg font-bold">Destacados</h2>
+                    <div className="flex items-center gap-2 mb-3 sm:mb-4">
+                      <span className="text-base sm:text-lg">⭐</span>
+                      <h2 className="text-base sm:text-lg font-bold">Destacados</h2>
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5">
+                    <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-5">
                       {featuredPlaces.map((place) => (
                         <PlaceCard key={place.id} place={place} featured />
                       ))}
@@ -336,9 +336,9 @@ const Listings = () => {
                 {/* All results */}
                 <div>
                   {featuredPlaces.length > 0 && selectedCategory === 'Todos' && (
-                    <h2 className="text-lg font-bold mb-4">Todos los lugares</h2>
+                    <h2 className="text-base sm:text-lg font-bold mb-3 sm:mb-4">Todos los lugares</h2>
                   )}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5">
+                  <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-5">
                     {(selectedCategory === 'Todos' ? regularPlaces : filteredPlaces).map((place) => (
                       <PlaceCard key={place.id} place={place} />
                     ))}
