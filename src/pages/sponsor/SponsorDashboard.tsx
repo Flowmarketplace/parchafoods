@@ -418,7 +418,7 @@ const SponsorDashboard = () => {
                   <div
                     key={b.id}
                     className="p-3 rounded-lg border bg-card hover:bg-muted/50 hover:shadow-sm transition-all cursor-pointer"
-                    onClick={() => navigate(`/business/${b.id}`)}
+                    onClick={() => navigate(`/sponsor/business/${b.id}`)}
                   >
                     <div className="flex items-start justify-between gap-2 mb-2">
                       <div className="flex-1 min-w-0">
