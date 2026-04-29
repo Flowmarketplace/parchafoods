@@ -388,10 +388,11 @@ const QmenuProposal = () => {
                   </span>
                 </div>
               </div>
-              <div className="absolute -top-4 -right-4 w-24 h-24 bg-gradient-to-br from-red-600 to-orange-500 rounded-2xl flex items-center justify-center shadow-2xl rotate-6">
-                <div className="text-center">
+              <div className="absolute -top-4 -right-4 w-28 h-28 bg-gradient-to-br from-red-600 to-orange-500 rounded-2xl flex items-center justify-center shadow-2xl rotate-6">
+                <div className="text-center px-1">
+                  <div className="text-[10px] text-white/80 font-semibold leading-tight">INICIO</div>
                   <div className="text-2xl font-black text-white leading-none">100</div>
-                  <div className="text-[9px] text-white/90 font-semibold">RESTAURANTES</div>
+                  <div className="text-[8px] text-white/90 font-semibold mt-0.5">→ 1,200 al cierre</div>
                 </div>
               </div>
             </motion.div>
