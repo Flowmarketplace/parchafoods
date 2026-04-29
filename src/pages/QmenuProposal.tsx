@@ -144,9 +144,7 @@ const QmenuProposal = () => {
           </motion.div>
 
           <motion.div {...fadeUp} transition={{ duration: 0.6, delay: 0.15 }}>
-            <div className="inline-block bg-yellow-400 rounded-2xl p-4 mb-8 shadow-2xl">
-              <img src={qmenuLogo} alt="Q'Menu" className="h-16 md:h-24 mx-auto" />
-            </div>
+            <img src={qmenuLogo} alt="Q'Menu" className="h-20 md:h-28 mx-auto mb-8 drop-shadow-2xl" />
           </motion.div>
 
           <motion.h1 {...fadeUp} transition={{ duration: 0.6, delay: 0.25 }} className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
