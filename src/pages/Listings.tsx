@@ -281,14 +281,14 @@ const Listings = () => {
 
             {/* Loading skeleton */}
             {loading ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 pb-24">
+              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-5 pb-28 md:pb-12">
                 {[...Array(8)].map((_, i) => (
                   <div key={i} className="rounded-2xl overflow-hidden border border-border/50">
                     <Skeleton className="aspect-[4/3]" />
-                    <div className="p-4 space-y-3">
-                      <Skeleton className="h-5 w-3/4" />
-                      <Skeleton className="h-4 w-1/2" />
-                      <Skeleton className="h-8 w-full" />
+                    <div className="p-3 sm:p-4 space-y-2 sm:space-y-3">
+                      <Skeleton className="h-4 sm:h-5 w-3/4" />
+                      <Skeleton className="h-3 sm:h-4 w-1/2" />
+                      <Skeleton className="h-7 sm:h-8 w-full" />
                     </div>
                   </div>
                 ))}
