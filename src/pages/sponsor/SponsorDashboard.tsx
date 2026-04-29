@@ -115,8 +115,26 @@ const SponsorDashboard = () => {
         draftCampaigns: allCamps.filter((c: any) => c.status === 'borrador').length,
       });
       setRecentCampaigns(recent.data || []);
+
+      const { data: bizList } = await supabase
+        .from('businesses')
+        .select('id, name, category, neighborhood, zone, address, price_range, featured')
+        .order('featured', { ascending: false })
+        .order('name', { ascending: true });
+      setBusinesses(bizList || []);
     })();
   }, []);
+
+  const categories = Array.from(new Set(businesses.map((b) => b.category).filter(Boolean))).sort();
+  const filteredBusinesses = businesses.filter((b) => {
+    const matchesSearch =
+      !searchTerm ||
+      b.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      b.neighborhood?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      b.category?.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = selectedCategory === 'all' || b.category === selectedCategory;
+    return matchesSearch && matchesCategory;
+  });
 
   const usagePercent = planLimit > 0 ? Math.min(100, (stats.activeCampaigns / planLimit) * 100) : 0;
 
