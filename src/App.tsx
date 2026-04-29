@@ -113,6 +113,7 @@ function App() {
         <Route path="/sponsor/campaigns" element={<SponsorCampaigns />} />
         <Route path="/sponsor/plans" element={<SponsorPlans />} />
         <Route path="/sponsor/profile" element={<SponsorProfile />} />
+        <Route path="/sponsor/business/:id" element={<SponsorBusinessStats />} />
         <Route path="/admin/analytics" element={<AdminAnalytics />} />
         <Route path="/admin/notifications" element={<AdminNotifications />} />
         <Route path="/admin/customization" element={<AdminCustomization />} />
