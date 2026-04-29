@@ -69,13 +69,19 @@ const AdminSidebar = ({ className }: AdminSidebarWrapperProps = {}) => {
           </div>
         </div>
 
-        {/* Back to App Button */}
-        <NavLink to="/app" className="block mb-4">
-          <Button variant="outline" className="w-full justify-start" size="sm">
-            <Home className="h-4 w-4 mr-2" />
-            Volver a la App
+        {/* Back + Home buttons */}
+        <div className="flex gap-2 mb-4">
+          <Button variant="outline" className="flex-1" size="sm" onClick={() => navigate(-1)}>
+            <ArrowLeft className="h-4 w-4 mr-1" />
+            Atrás
           </Button>
-        </NavLink>
+          <NavLink to="/app" className="flex-1">
+            <Button variant="outline" className="w-full" size="sm">
+              <Home className="h-4 w-4 mr-1" />
+              App
+            </Button>
+          </NavLink>
+        </div>
 
         <Separator className="mb-4" />
 

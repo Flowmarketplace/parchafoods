@@ -4,7 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import SponsorSidebar, { SponsorSidebarDesktop } from './SponsorSidebar';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
-import { Menu, Megaphone, LogOut, Home } from 'lucide-react';
+import { Menu, Megaphone, LogOut, Home, ArrowLeft } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { toast } from 'sonner';
 
@@ -135,6 +135,9 @@ const SponsorLayout = ({ children, title, subtitle }: SponsorLayoutProps) => {
               <SponsorSidebar />
             </SheetContent>
           </Sheet>
+          <Button variant="ghost" size="icon" onClick={() => navigate(-1)} title="Atrás">
+            <ArrowLeft className="h-5 w-5" />
+          </Button>
           <div className="flex-1">
             <h1 className="text-xl font-bold">{title}</h1>
             {subtitle && <p className="text-xs text-muted-foreground">{subtitle}</p>}
