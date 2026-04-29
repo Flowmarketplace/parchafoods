@@ -135,6 +135,9 @@ const SponsorLayout = ({ children, title, subtitle }: SponsorLayoutProps) => {
               <SponsorSidebar />
             </SheetContent>
           </Sheet>
+          <Button variant="ghost" size="icon" onClick={() => navigate(-1)} title="Atrás">
+            <ArrowLeft className="h-5 w-5" />
+          </Button>
           <div className="flex-1">
             <h1 className="text-xl font-bold">{title}</h1>
             {subtitle && <p className="text-xs text-muted-foreground">{subtitle}</p>}
