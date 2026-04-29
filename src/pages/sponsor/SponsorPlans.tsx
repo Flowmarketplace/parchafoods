@@ -55,6 +55,31 @@ const Inner = () => {
     load();
   };
 
+  const saveEdit = async () => {
+    if (!editing) return;
+    const { error } = await supabase
+      .from('sponsor_plan_requests')
+      .update({ message: editMessage })
+      .eq('id', editing.id);
+    if (error) { toast.error(error.message); return; }
+    toast.success('Solicitud actualizada');
+    setEditing(null);
+    setEditMessage('');
+    load();
+  };
+
+  const confirmDelete = async () => {
+    if (!deletingId) return;
+    const { error } = await supabase
+      .from('sponsor_plan_requests')
+      .delete()
+      .eq('id', deletingId);
+    if (error) { toast.error(error.message); return; }
+    toast.success('Solicitud eliminada');
+    setDeletingId(null);
+    load();
+  };
+
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
