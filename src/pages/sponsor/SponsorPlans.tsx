@@ -3,9 +3,18 @@ import SponsorLayout, { useSponsor } from '@/components/sponsor/SponsorLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
+import {
+  Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle,
+} from '@/components/ui/dialog';
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Check, Crown, Award, Gem } from 'lucide-react';
+import { Check, Crown, Award, Gem, Pencil, Trash2 } from 'lucide-react';
 
 const tierIcon: Record<string, any> = { bronce: Award, plata: Gem, oro: Crown };
 const tierColor: Record<string, string> = {
