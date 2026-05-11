@@ -47,7 +47,10 @@ export const useGeolocation = () => {
     }));
   };
 
-  const handleSuccess = (position: GeolocationPosition_) => {
+  // Alias to avoid clashing with our exported interface name
+  type BrowserGeoPosition = globalThis.GeolocationPosition;
+
+  const handleSuccess = (position: BrowserGeoPosition) => {
     setState({
       position: {
         latitude: position.coords.latitude,
@@ -59,9 +62,6 @@ export const useGeolocation = () => {
       permissionDenied: false,
     });
   };
-
-  // Alias to avoid clashing with our exported interface name
-  type GeolocationPosition_ = globalThis.GeolocationPosition;
 
   const requestLocation = () => {
     if (!navigator.geolocation) {
