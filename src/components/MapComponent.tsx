@@ -23,7 +23,69 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
   const markers = useRef<mapboxgl.Marker[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [mapLoaded, setMapLoaded] = useState(false);
+  const [routeInfo, setRouteInfo] = useState<{ name: string; distanceKm: number; durationMin: number; lat: number; lng: number } | null>(null);
   const navigate = useNavigate();
+
+  const clearRoute = () => {
+    if (!map.current) return;
+    if (map.current.getLayer('route-line')) map.current.removeLayer('route-line');
+    if (map.current.getSource('route')) map.current.removeSource('route');
+    setRouteInfo(null);
+  };
+
+  const drawRouteToPlace = async (place: Place) => {
+    if (!map.current || !mapLoaded) return;
+    if (!userPosition) {
+      // No user position — just fly to the place
+      map.current.flyTo({ center: [place.longitude, place.latitude], zoom: 16, duration: 1000 });
+      return;
+    }
+    try {
+      const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${userPosition.lng},${userPosition.lat};${place.longitude},${place.latitude}?geometries=geojson&overview=full&access_token=${MAPBOX_TOKEN}`;
+      const res = await fetch(url);
+      const data = await res.json();
+      const route = data?.routes?.[0];
+      if (!route) return;
+
+      const geojson: any = {
+        type: 'Feature',
+        properties: {},
+        geometry: route.geometry,
+      };
+
+      if (map.current.getSource('route')) {
+        (map.current.getSource('route') as mapboxgl.GeoJSONSource).setData(geojson);
+      } else {
+        map.current.addSource('route', { type: 'geojson', data: geojson });
+        map.current.addLayer({
+          id: 'route-line',
+          type: 'line',
+          source: 'route',
+          layout: { 'line-join': 'round', 'line-cap': 'round' },
+          paint: { 'line-color': '#2563eb', 'line-width': 5, 'line-opacity': 0.85 },
+        });
+      }
+
+      // Fit bounds to route
+      const coords: [number, number][] = route.geometry.coordinates;
+      const bounds = coords.reduce(
+        (b, c) => b.extend(c as [number, number]),
+        new mapboxgl.LngLatBounds(coords[0], coords[0])
+      );
+      map.current.fitBounds(bounds, { padding: 60, duration: 1200, maxZoom: 15 });
+
+      setRouteInfo({
+        name: place.name,
+        distanceKm: route.distance / 1000,
+        durationMin: Math.round(route.duration / 60),
+        lat: place.latitude,
+        lng: place.longitude,
+      });
+    } catch (err) {
+      console.error('Error fetching route:', err);
+    }
+  };
+
 
   const createMarker = (place: Place) => {
     if (!map.current) {
