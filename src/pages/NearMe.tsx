@@ -144,7 +144,7 @@ const NearMe = () => {
         </div>
 
         {/* Permission Request / Error State */}
-        {!position && !loading && (
+        {!effectivePos && !loading && (
           <div className="mb-6">
             {error ? (
               <Alert variant={permissionDenied ? "destructive" : "default"}>
@@ -167,13 +167,23 @@ const NearMe = () => {
                       </ol>
                     </div>
                   )}
+                  <Button onClick={() => setOriginDialogOpen(true)} size="sm" variant="outline" className="w-fit">
+                    <Search className="h-4 w-4 mr-2" />
+                    Ingresar ubicación manualmente
+                  </Button>
                 </AlertDescription>
               </Alert>
             ) : (
-              <Button onClick={requestLocation} size="lg" className="w-full">
-                <Navigation className="h-5 w-5 mr-2" />
-                Activar mi ubicación
-              </Button>
+              <div className="flex flex-col gap-2">
+                <Button onClick={requestLocation} size="lg" className="w-full">
+                  <Navigation className="h-5 w-5 mr-2" />
+                  Activar mi ubicación
+                </Button>
+                <Button onClick={() => setOriginDialogOpen(true)} size="lg" variant="outline" className="w-full">
+                  <Search className="h-5 w-5 mr-2" />
+                  Ingresar ubicación manualmente
+                </Button>
+              </div>
             )}
           </div>
         )}
@@ -186,8 +196,26 @@ const NearMe = () => {
           </div>
         )}
 
+        {/* Manual origin chip when active */}
+        {!position && manualPos && (
+          <div className="mb-4 p-3 bg-secondary/15 border border-secondary/30 rounded-lg flex items-center gap-2 flex-wrap">
+            <MapPin className="h-4 w-4 text-secondary shrink-0" />
+            <span className="text-sm">
+              Saliendo desde: <strong>{manualPos.label}</strong>
+            </span>
+            <div className="ml-auto flex gap-2">
+              <Button onClick={() => setOriginDialogOpen(true)} size="sm" variant="outline">
+                Cambiar
+              </Button>
+              <Button onClick={() => setManualPos(null)} size="sm" variant="ghost">
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+        )}
+
         {/* Results */}
-        {position && (
+        {effectivePos && (
           <>
             {/* Category Filter */}
             <div className="mb-6">
