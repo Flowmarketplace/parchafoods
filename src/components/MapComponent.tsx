@@ -147,8 +147,9 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
         .setPopup(popup)
         .addTo(map.current);
 
-      el.addEventListener('click', () => {
-        navigate(`/place/${place.id}`);
+      el.addEventListener('click', (e) => {
+        e.stopPropagation();
+        drawRouteToPlace(place);
       });
 
       return marker;
