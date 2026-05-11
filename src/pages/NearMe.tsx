@@ -39,6 +39,13 @@ const NearMe = () => {
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   const { position, error, loading, permissionDenied, requestLocation } = useGeolocation();
   const [maxDistance, setMaxDistance] = useState(5); // km
+  const mapSectionRef = useRef<HTMLDivElement>(null);
+  const [focusCoords, setFocusCoords] = useState<{ lat: number; lng: number; key: number } | null>(null);
+
+  const focusOnMap = (lat: number, lng: number) => {
+    setFocusCoords({ lat, lng, key: Date.now() });
+    mapSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
   useEffect(() => {
     // Auto-request location on mount
