@@ -46,9 +46,54 @@ const NearMe = () => {
   const mapSectionRef = useRef<HTMLDivElement>(null);
   const [focusCoords, setFocusCoords] = useState<{ lat: number; lng: number; key: number } | null>(null);
 
+  // Manual origin (when geolocation is unavailable)
+  const [manualPos, setManualPos] = useState<{ latitude: number; longitude: number; label: string } | null>(null);
+  const [originDialogOpen, setOriginDialogOpen] = useState(false);
+  const [originQuery, setOriginQuery] = useState('');
+  const [originSuggestions, setOriginSuggestions] = useState<Array<{ label: string; lat: number; lng: number }>>([]);
+  const [searchingOrigin, setSearchingOrigin] = useState(false);
+  const [originError, setOriginError] = useState<string | null>(null);
+
+  const effectivePos = position || (manualPos ? { latitude: manualPos.latitude, longitude: manualPos.longitude } : null);
+
   const focusOnMap = (lat: number, lng: number) => {
     setFocusCoords({ lat, lng, key: Date.now() });
     mapSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  const searchOrigin = async () => {
+    const q = originQuery.trim();
+    if (q.length < 3) {
+      setOriginError('Escribe al menos 3 caracteres');
+      return;
+    }
+    setSearchingOrigin(true);
+    setOriginError(null);
+    try {
+      const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(q)}.json?proximity=-76.5225,3.4516&country=co&limit=5&access_token=${MAPBOX_TOKEN}`;
+      const res = await fetch(url);
+      const data = await res.json();
+      const features = (data?.features || []) as any[];
+      if (features.length === 0) {
+        setOriginSuggestions([]);
+        setOriginError('No encontramos esa dirección. Intenta con otra.');
+      } else {
+        setOriginSuggestions(features.map((f) => ({ label: f.place_name, lng: f.center[0], lat: f.center[1] })));
+      }
+    } catch (e) {
+      console.error('Geocoding error:', e);
+      setOriginError('Error buscando la dirección. Intenta de nuevo.');
+    } finally {
+      setSearchingOrigin(false);
+    }
+  };
+
+  const selectOrigin = (s: { label: string; lat: number; lng: number }) => {
+    setManualPos({ latitude: s.lat, longitude: s.lng, label: s.label });
+    setOriginDialogOpen(false);
+    setOriginSuggestions([]);
+    setOriginQuery('');
+    setOriginError(null);
   };
 
   useEffect(() => {
@@ -57,13 +102,13 @@ const NearMe = () => {
   }, []);
 
   const nearbyPlaces = useMemo<PlaceWithDistance[]>(() => {
-    if (!position) return [];
+    if (!effectivePos) return [];
 
     const placesWithDistance = mockPlaces.map(place => ({
       ...place,
       distance: calculateDistance(
-        position.latitude,
-        position.longitude,
+        effectivePos.latitude,
+        effectivePos.longitude,
         place.latitude,
         place.longitude
       )
@@ -77,7 +122,7 @@ const NearMe = () => {
     }
 
     return filtered.sort((a, b) => a.distance - b.distance);
-  }, [position, maxDistance, selectedCategory]);
+  }, [effectivePos?.latitude, effectivePos?.longitude, maxDistance, selectedCategory]);
 
   return (
     <div className="min-h-screen bg-background">
