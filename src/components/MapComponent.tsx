@@ -379,12 +379,11 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
     if (!origin) return;
     // Re-fetch directions to the same destination using the new origin
     drawRouteToPlace({
-      // Minimal Place shape needed by drawRouteToPlace
       id: 'active-route',
       name: routeInfo.name,
       latitude: routeInfo.lat,
       longitude: routeInfo.lng,
-    } as unknown as Place);
+    } as unknown as Place, { fitBounds: false });
     // We intentionally exclude routeInfo to avoid feedback loops; we trigger on origin change.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userPosition?.lat, userPosition?.lng, manualOrigin?.lat, manualOrigin?.lng, mapLoaded]);
