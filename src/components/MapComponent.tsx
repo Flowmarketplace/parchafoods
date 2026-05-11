@@ -311,6 +311,31 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
           </div>
         </div>
       )}
+      {routeInfo && (
+        <div className="absolute left-2 right-2 bottom-2 z-20 bg-card/95 backdrop-blur-md border border-border rounded-xl shadow-lg p-3 flex items-center gap-3">
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-bold text-foreground truncate">🚗 Ruta a {routeInfo.name}</p>
+            <p className="text-xs text-muted-foreground">
+              {routeInfo.distanceKm.toFixed(1)} km · ~{routeInfo.durationMin} min en auto
+            </p>
+          </div>
+          <a
+            href={`https://www.google.com/maps/dir/?api=1&destination=${routeInfo.lat},${routeInfo.lng}&travelmode=driving`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs font-bold bg-primary text-primary-foreground px-3 py-2 rounded-lg hover:bg-primary/90 active:scale-95 transition-all whitespace-nowrap"
+          >
+            Navegar
+          </a>
+          <button
+            onClick={clearRoute}
+            aria-label="Cerrar ruta"
+            className="text-xs font-bold bg-muted text-foreground w-8 h-8 rounded-lg hover:bg-muted/80 active:scale-95 transition-all flex items-center justify-center"
+          >
+            ✕
+          </button>
+        </div>
+      )}
     </div>
   );
 };
