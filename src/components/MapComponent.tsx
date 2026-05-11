@@ -23,7 +23,69 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
   const markers = useRef<mapboxgl.Marker[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [mapLoaded, setMapLoaded] = useState(false);
+  const [routeInfo, setRouteInfo] = useState<{ name: string; distanceKm: number; durationMin: number; lat: number; lng: number } | null>(null);
   const navigate = useNavigate();
+
+  const clearRoute = () => {
+    if (!map.current) return;
+    if (map.current.getLayer('route-line')) map.current.removeLayer('route-line');
+    if (map.current.getSource('route')) map.current.removeSource('route');
+    setRouteInfo(null);
+  };
+
+  const drawRouteToPlace = async (place: Place) => {
+    if (!map.current || !mapLoaded) return;
+    if (!userPosition) {
+      // No user position — just fly to the place
+      map.current.flyTo({ center: [place.longitude, place.latitude], zoom: 16, duration: 1000 });
+      return;
+    }
+    try {
+      const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${userPosition.lng},${userPosition.lat};${place.longitude},${place.latitude}?geometries=geojson&overview=full&access_token=${MAPBOX_TOKEN}`;
+      const res = await fetch(url);
+      const data = await res.json();
+      const route = data?.routes?.[0];
+      if (!route) return;
+
+      const geojson: any = {
+        type: 'Feature',
+        properties: {},
+        geometry: route.geometry,
+      };
+
+      if (map.current.getSource('route')) {
+        (map.current.getSource('route') as mapboxgl.GeoJSONSource).setData(geojson);
+      } else {
+        map.current.addSource('route', { type: 'geojson', data: geojson });
+        map.current.addLayer({
+          id: 'route-line',
+          type: 'line',
+          source: 'route',
+          layout: { 'line-join': 'round', 'line-cap': 'round' },
+          paint: { 'line-color': '#2563eb', 'line-width': 5, 'line-opacity': 0.85 },
+        });
+      }
+
+      // Fit bounds to route
+      const coords: [number, number][] = route.geometry.coordinates;
+      const bounds = coords.reduce(
+        (b, c) => b.extend(c as [number, number]),
+        new mapboxgl.LngLatBounds(coords[0], coords[0])
+      );
+      map.current.fitBounds(bounds, { padding: 60, duration: 1200, maxZoom: 15 });
+
+      setRouteInfo({
+        name: place.name,
+        distanceKm: route.distance / 1000,
+        durationMin: Math.round(route.duration / 60),
+        lat: place.latitude,
+        lng: place.longitude,
+      });
+    } catch (err) {
+      console.error('Error fetching route:', err);
+    }
+  };
+
 
   const createMarker = (place: Place) => {
     if (!map.current) {
@@ -85,8 +147,9 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
         .setPopup(popup)
         .addTo(map.current);
 
-      el.addEventListener('click', () => {
-        navigate(`/place/${place.id}`);
+      el.addEventListener('click', (e) => {
+        e.stopPropagation();
+        drawRouteToPlace(place);
       });
 
       return marker;
@@ -246,6 +309,31 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
             <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent" />
             <p className="text-sm text-muted-foreground">Cargando mapa...</p>
           </div>
+        </div>
+      )}
+      {routeInfo && (
+        <div className="absolute left-2 right-2 bottom-2 z-20 bg-card/95 backdrop-blur-md border border-border rounded-xl shadow-lg p-3 flex items-center gap-3">
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-bold text-foreground truncate">🚗 Ruta a {routeInfo.name}</p>
+            <p className="text-xs text-muted-foreground">
+              {routeInfo.distanceKm.toFixed(1)} km · ~{routeInfo.durationMin} min en auto
+            </p>
+          </div>
+          <a
+            href={`https://www.google.com/maps/dir/?api=1&destination=${routeInfo.lat},${routeInfo.lng}&travelmode=driving`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs font-bold bg-primary text-primary-foreground px-3 py-2 rounded-lg hover:bg-primary/90 active:scale-95 transition-all whitespace-nowrap"
+          >
+            Navegar
+          </a>
+          <button
+            onClick={clearRoute}
+            aria-label="Cerrar ruta"
+            className="text-xs font-bold bg-muted text-foreground w-8 h-8 rounded-lg hover:bg-muted/80 active:scale-95 transition-all flex items-center justify-center"
+          >
+            ✕
+          </button>
         </div>
       )}
     </div>
