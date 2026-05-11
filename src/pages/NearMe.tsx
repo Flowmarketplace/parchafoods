@@ -201,10 +201,27 @@ const NearMe = () => {
                   {nearbyPlaces.map((place) => (
                     <div key={place.id} className="relative">
                       <PlaceCard place={place} />
-                      <div className="absolute top-2 left-2 bg-primary text-primary-foreground px-2 py-1 rounded-full text-xs font-bold shadow-lg flex items-center gap-1">
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          e.preventDefault();
+                          const hasCoords =
+                            typeof place.latitude === 'number' &&
+                            typeof place.longitude === 'number' &&
+                            !isNaN(place.latitude) &&
+                            !isNaN(place.longitude);
+                          const url = hasCoords
+                            ? `https://www.google.com/maps/search/?api=1&query=${place.latitude},${place.longitude}(${encodeURIComponent(place.name)})`
+                            : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${place.name} ${place.address || ''} Cali`)}`;
+                          window.open(url, '_blank', 'noopener,noreferrer');
+                        }}
+                        aria-label={`Abrir ${place.name} en Google Maps`}
+                        className="absolute top-14 right-2 z-10 bg-primary text-primary-foreground px-2.5 py-1 rounded-full text-xs font-bold shadow-lg flex items-center gap-1 hover:bg-primary/90 active:scale-95 transition-all"
+                      >
                         <Navigation className="h-3 w-3" />
                         {formatDistance(place.distance)}
-                      </div>
+                      </button>
                     </div>
                   ))}
                 </div>
