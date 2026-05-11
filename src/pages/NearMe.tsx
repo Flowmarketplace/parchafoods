@@ -217,7 +217,7 @@ const NearMe = () => {
                           window.open(url, '_blank', 'noopener,noreferrer');
                         }}
                         aria-label={`Abrir ${place.name} en Google Maps`}
-                        className="absolute top-14 right-2 z-10 bg-primary text-primary-foreground px-2.5 py-1 rounded-full text-xs font-bold shadow-lg flex items-center gap-1 hover:bg-primary/90 active:scale-95 transition-all"
+                        className="absolute bottom-2 left-2 z-10 bg-primary text-primary-foreground px-2.5 py-1 rounded-full text-xs font-bold shadow-lg flex items-center gap-1 hover:bg-primary/90 active:scale-95 transition-all"
                       >
                         <Navigation className="h-3 w-3" />
                         {formatDistance(place.distance)}
