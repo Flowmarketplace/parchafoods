@@ -191,6 +191,35 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
     }
   }, [selectedNeighborhood, mapLoaded]);
 
+  // Fly to focused coordinates when badge is clicked
+  useEffect(() => {
+    if (map.current && mapLoaded && focusCoordinates) {
+      map.current.flyTo({
+        center: [focusCoordinates.lng, focusCoordinates.lat],
+        zoom: focusCoordinates.zoom ?? 16,
+        duration: 1200,
+        essential: true,
+      });
+    }
+  }, [focusCoordinates?.key, focusCoordinates?.lat, focusCoordinates?.lng, mapLoaded]);
+
+  // Add user-location marker
+  const userMarker = useRef<mapboxgl.Marker | null>(null);
+  useEffect(() => {
+    if (!map.current || !mapLoaded) return;
+    if (userMarker.current) {
+      userMarker.current.remove();
+      userMarker.current = null;
+    }
+    if (userPosition) {
+      const el = document.createElement('div');
+      el.style.cssText = 'width:18px;height:18px;border-radius:50%;background:#2563eb;border:3px solid white;box-shadow:0 0 0 4px rgba(37,99,235,0.3);';
+      userMarker.current = new mapboxgl.Marker(el)
+        .setLngLat([userPosition.lng, userPosition.lat])
+        .addTo(map.current);
+    }
+  }, [userPosition?.lat, userPosition?.lng, mapLoaded]);
+
   // Initialize map on mount
   useEffect(() => {
     if (!mapContainer.current) return;
