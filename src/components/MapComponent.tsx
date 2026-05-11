@@ -13,9 +13,11 @@ interface MapComponentProps {
   selectedNeighborhood?: string;
   selectedCategory?: string;
   places?: Place[];
+  focusCoordinates?: { lat: number; lng: number; zoom?: number; key?: string | number } | null;
+  userPosition?: { lat: number; lng: number } | null;
 }
 
-const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todos', places }: MapComponentProps) => {
+const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todos', places, focusCoordinates, userPosition }: MapComponentProps) => {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
   const markers = useRef<mapboxgl.Marker[]>([]);
