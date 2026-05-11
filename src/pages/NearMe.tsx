@@ -275,14 +275,14 @@ const NearMe = () => {
             </div>
 
             {/* Mini Map */}
-            {nearbyPlaces.length > 0 && position && (
+            {nearbyPlaces.length > 0 && effectivePos && (
               <div ref={mapSectionRef} className="mb-6 rounded-2xl overflow-hidden border border-border shadow-sm">
                 <div className="h-64 sm:h-80 w-full">
                   <MapComponent
                     places={nearbyPlaces}
                     selectedCategory={selectedCategory || 'Todos'}
                     focusCoordinates={focusCoords}
-                    userPosition={{ lat: position.latitude, lng: position.longitude }}
+                    userPosition={{ lat: effectivePos.latitude, lng: effectivePos.longitude }}
                   />
                 </div>
               </div>
