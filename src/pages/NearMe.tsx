@@ -338,6 +338,65 @@ const NearMe = () => {
       </main>
 
       <BottomNav />
+
+      {/* Manual origin dialog */}
+      <Dialog open={originDialogOpen} onOpenChange={(open) => {
+        setOriginDialogOpen(open);
+        if (!open) {
+          setOriginError(null);
+          setOriginSuggestions([]);
+        }
+      }}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Ingresa tu ubicación de salida</DialogTitle>
+            <DialogDescription>
+              Escribe una dirección, barrio o lugar conocido en Cali para calcular distancias y trazar rutas.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="flex gap-2">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Ej: Avenida 6N #25-50, Granada"
+                value={originQuery}
+                onChange={(e) => setOriginQuery(e.target.value)}
+                onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); searchOrigin(); } }}
+                maxLength={120}
+                className="pl-9"
+                autoFocus
+              />
+            </div>
+            <Button onClick={searchOrigin} disabled={searchingOrigin || originQuery.trim().length < 3}>
+              {searchingOrigin ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Buscar'}
+            </Button>
+          </div>
+
+          {originError && (
+            <p className="text-xs text-destructive">{originError}</p>
+          )}
+
+          {originSuggestions.length > 0 && (
+            <div className="flex flex-col gap-1.5 max-h-64 overflow-y-auto">
+              {originSuggestions.map((s, i) => (
+                <button
+                  key={`${s.lat}-${s.lng}-${i}`}
+                  onClick={() => selectOrigin(s)}
+                  className="text-left flex items-start gap-2 p-3 rounded-lg border border-border hover:bg-muted transition-colors"
+                >
+                  <MapPin className="h-4 w-4 text-primary mt-0.5 shrink-0" />
+                  <span className="text-sm text-foreground">{s.label}</span>
+                </button>
+              ))}
+            </div>
+          )}
+
+          <p className="text-[11px] text-muted-foreground">
+            Tu ubicación de salida se usará solo para calcular la ruta dentro de la app.
+          </p>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
