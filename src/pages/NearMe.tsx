@@ -1,10 +1,11 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MapPin, Navigation, AlertCircle, Loader2, X } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Sidebar from '@/components/Sidebar';
 import BottomNav from '@/components/BottomNav';
 import PlaceCard from '@/components/PlaceCard';
+import MapComponent from '@/components/MapComponent';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
@@ -38,6 +39,13 @@ const NearMe = () => {
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   const { position, error, loading, permissionDenied, requestLocation } = useGeolocation();
   const [maxDistance, setMaxDistance] = useState(5); // km
+  const mapSectionRef = useRef<HTMLDivElement>(null);
+  const [focusCoords, setFocusCoords] = useState<{ lat: number; lng: number; key: number } | null>(null);
+
+  const focusOnMap = (lat: number, lng: number) => {
+    setFocusCoords({ lat, lng, key: Date.now() });
+    mapSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
   useEffect(() => {
     // Auto-request location on mount
@@ -189,6 +197,20 @@ const NearMe = () => {
               </div>
             </div>
 
+            {/* Mini Map */}
+            {nearbyPlaces.length > 0 && position && (
+              <div ref={mapSectionRef} className="mb-6 rounded-2xl overflow-hidden border border-border shadow-sm">
+                <div className="h-64 sm:h-80 w-full">
+                  <MapComponent
+                    places={nearbyPlaces}
+                    selectedCategory={selectedCategory || 'Todos'}
+                    focusCoordinates={focusCoords}
+                    userPosition={{ lat: position.latitude, lng: position.longitude }}
+                  />
+                </div>
+              </div>
+            )}
+
             {/* Places List */}
             {nearbyPlaces.length > 0 ? (
               <>
@@ -211,12 +233,15 @@ const NearMe = () => {
                             typeof place.longitude === 'number' &&
                             !isNaN(place.latitude) &&
                             !isNaN(place.longitude);
+                          if (hasCoords) {
+                            focusOnMap(place.latitude, place.longitude);
+                          }
                           const url = hasCoords
                             ? `https://www.google.com/maps/search/?api=1&query=${place.latitude},${place.longitude}(${encodeURIComponent(place.name)})`
                             : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${place.name} ${place.address || ''} Cali`)}`;
                           window.open(url, '_blank', 'noopener,noreferrer');
                         }}
-                        aria-label={`Abrir ${place.name} en Google Maps`}
+                        aria-label={`Ver ${place.name} en el mapa y abrir en Google Maps`}
                         className="absolute bottom-14 right-2 z-10 bg-primary text-primary-foreground px-2.5 py-1 rounded-full text-xs font-bold shadow-lg flex items-center gap-1 hover:bg-primary/90 active:scale-95 transition-all"
                       >
                         <Navigation className="h-3 w-3" />

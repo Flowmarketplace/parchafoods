@@ -13,9 +13,11 @@ interface MapComponentProps {
   selectedNeighborhood?: string;
   selectedCategory?: string;
   places?: Place[];
+  focusCoordinates?: { lat: number; lng: number; zoom?: number; key?: string | number } | null;
+  userPosition?: { lat: number; lng: number } | null;
 }
 
-const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todos', places }: MapComponentProps) => {
+const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todos', places, focusCoordinates, userPosition }: MapComponentProps) => {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
   const markers = useRef<mapboxgl.Marker[]>([]);
@@ -188,6 +190,35 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
       }
     }
   }, [selectedNeighborhood, mapLoaded]);
+
+  // Fly to focused coordinates when badge is clicked
+  useEffect(() => {
+    if (map.current && mapLoaded && focusCoordinates) {
+      map.current.flyTo({
+        center: [focusCoordinates.lng, focusCoordinates.lat],
+        zoom: focusCoordinates.zoom ?? 16,
+        duration: 1200,
+        essential: true,
+      });
+    }
+  }, [focusCoordinates?.key, focusCoordinates?.lat, focusCoordinates?.lng, mapLoaded]);
+
+  // Add user-location marker
+  const userMarker = useRef<mapboxgl.Marker | null>(null);
+  useEffect(() => {
+    if (!map.current || !mapLoaded) return;
+    if (userMarker.current) {
+      userMarker.current.remove();
+      userMarker.current = null;
+    }
+    if (userPosition) {
+      const el = document.createElement('div');
+      el.style.cssText = 'width:18px;height:18px;border-radius:50%;background:#2563eb;border:3px solid white;box-shadow:0 0 0 4px rgba(37,99,235,0.3);';
+      userMarker.current = new mapboxgl.Marker(el)
+        .setLngLat([userPosition.lng, userPosition.lat])
+        .addTo(map.current);
+    }
+  }, [userPosition?.lat, userPosition?.lng, mapLoaded]);
 
   // Initialize map on mount
   useEffect(() => {
