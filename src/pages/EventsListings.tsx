@@ -78,7 +78,7 @@ const EventsListings = () => {
       <div className="flex flex-1 pt-16 md:pt-28">
         <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
         
-        <main className="flex-1 lg:ml-64">
+        <main className="flex-1 min-w-0 lg:ml-64">
           <div className="w-full max-w-screen-2xl mx-auto px-3 sm:px-4 md:px-6 py-3 sm:py-4 md:py-6">
             {/* Header */}
             <div className="mb-6 flex items-center justify-between">

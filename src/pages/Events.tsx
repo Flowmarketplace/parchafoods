@@ -74,7 +74,7 @@ const Events = () => {
       <div className="flex flex-1 pt-16 md:pt-28">
         <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
         
-        <main className="flex-1 lg:ml-64">
+        <main className="flex-1 min-w-0 lg:ml-64">
           {/* Hero Section */}
           <div className="bg-gradient-to-r from-primary/10 to-secondary/10 py-8 md:py-12 px-4">
             <div className="max-w-4xl mx-auto text-center">
