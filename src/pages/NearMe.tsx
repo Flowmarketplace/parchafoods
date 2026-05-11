@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { MapPin, Navigation, AlertCircle, Loader2, X } from 'lucide-react';
+import { MapPin, Navigation, AlertCircle, Loader2, X, Search } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Sidebar from '@/components/Sidebar';
 import BottomNav from '@/components/BottomNav';
@@ -9,11 +9,15 @@ import MapComponent from '@/components/MapComponent';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { mockPlaces } from '@/data/places';
 import { useGeolocation } from '@/hooks/useGeolocation';
 import { calculateDistance, formatDistance } from '@/utils/distance';
 import { Place, Category } from '@/types/place';
 import { categoryIcons } from '@/utils/categoryIcons';
+
+const MAPBOX_TOKEN = 'pk.eyJ1IjoiaGFuZGNpdHkiLCJhIjoiY2syNmp3ZjUxMzJkMzNtcGl6dXR6ZTV0diJ9.0xE-C5rlwWBM80gUY1POzw';
 
 interface PlaceWithDistance extends Place {
   distance: number;
@@ -42,9 +46,54 @@ const NearMe = () => {
   const mapSectionRef = useRef<HTMLDivElement>(null);
   const [focusCoords, setFocusCoords] = useState<{ lat: number; lng: number; key: number } | null>(null);
 
+  // Manual origin (when geolocation is unavailable)
+  const [manualPos, setManualPos] = useState<{ latitude: number; longitude: number; label: string } | null>(null);
+  const [originDialogOpen, setOriginDialogOpen] = useState(false);
+  const [originQuery, setOriginQuery] = useState('');
+  const [originSuggestions, setOriginSuggestions] = useState<Array<{ label: string; lat: number; lng: number }>>([]);
+  const [searchingOrigin, setSearchingOrigin] = useState(false);
+  const [originError, setOriginError] = useState<string | null>(null);
+
+  const effectivePos = position || (manualPos ? { latitude: manualPos.latitude, longitude: manualPos.longitude } : null);
+
   const focusOnMap = (lat: number, lng: number) => {
     setFocusCoords({ lat, lng, key: Date.now() });
     mapSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  const searchOrigin = async () => {
+    const q = originQuery.trim();
+    if (q.length < 3) {
+      setOriginError('Escribe al menos 3 caracteres');
+      return;
+    }
+    setSearchingOrigin(true);
+    setOriginError(null);
+    try {
+      const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(q)}.json?proximity=-76.5225,3.4516&country=co&limit=5&access_token=${MAPBOX_TOKEN}`;
+      const res = await fetch(url);
+      const data = await res.json();
+      const features = (data?.features || []) as any[];
+      if (features.length === 0) {
+        setOriginSuggestions([]);
+        setOriginError('No encontramos esa dirección. Intenta con otra.');
+      } else {
+        setOriginSuggestions(features.map((f) => ({ label: f.place_name, lng: f.center[0], lat: f.center[1] })));
+      }
+    } catch (e) {
+      console.error('Geocoding error:', e);
+      setOriginError('Error buscando la dirección. Intenta de nuevo.');
+    } finally {
+      setSearchingOrigin(false);
+    }
+  };
+
+  const selectOrigin = (s: { label: string; lat: number; lng: number }) => {
+    setManualPos({ latitude: s.lat, longitude: s.lng, label: s.label });
+    setOriginDialogOpen(false);
+    setOriginSuggestions([]);
+    setOriginQuery('');
+    setOriginError(null);
   };
 
   useEffect(() => {
@@ -53,13 +102,13 @@ const NearMe = () => {
   }, []);
 
   const nearbyPlaces = useMemo<PlaceWithDistance[]>(() => {
-    if (!position) return [];
+    if (!effectivePos) return [];
 
     const placesWithDistance = mockPlaces.map(place => ({
       ...place,
       distance: calculateDistance(
-        position.latitude,
-        position.longitude,
+        effectivePos.latitude,
+        effectivePos.longitude,
         place.latitude,
         place.longitude
       )
@@ -73,7 +122,7 @@ const NearMe = () => {
     }
 
     return filtered.sort((a, b) => a.distance - b.distance);
-  }, [position, maxDistance, selectedCategory]);
+  }, [effectivePos?.latitude, effectivePos?.longitude, maxDistance, selectedCategory]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -95,7 +144,7 @@ const NearMe = () => {
         </div>
 
         {/* Permission Request / Error State */}
-        {!position && !loading && (
+        {!effectivePos && !loading && (
           <div className="mb-6">
             {error ? (
               <Alert variant={permissionDenied ? "destructive" : "default"}>
@@ -118,13 +167,23 @@ const NearMe = () => {
                       </ol>
                     </div>
                   )}
+                  <Button onClick={() => setOriginDialogOpen(true)} size="sm" variant="outline" className="w-fit">
+                    <Search className="h-4 w-4 mr-2" />
+                    Ingresar ubicación manualmente
+                  </Button>
                 </AlertDescription>
               </Alert>
             ) : (
-              <Button onClick={requestLocation} size="lg" className="w-full">
-                <Navigation className="h-5 w-5 mr-2" />
-                Activar mi ubicación
-              </Button>
+              <div className="flex flex-col gap-2">
+                <Button onClick={requestLocation} size="lg" className="w-full">
+                  <Navigation className="h-5 w-5 mr-2" />
+                  Activar mi ubicación
+                </Button>
+                <Button onClick={() => setOriginDialogOpen(true)} size="lg" variant="outline" className="w-full">
+                  <Search className="h-5 w-5 mr-2" />
+                  Ingresar ubicación manualmente
+                </Button>
+              </div>
             )}
           </div>
         )}
@@ -137,8 +196,26 @@ const NearMe = () => {
           </div>
         )}
 
+        {/* Manual origin chip when active */}
+        {!position && manualPos && (
+          <div className="mb-4 p-3 bg-secondary/15 border border-secondary/30 rounded-lg flex items-center gap-2 flex-wrap">
+            <MapPin className="h-4 w-4 text-secondary shrink-0" />
+            <span className="text-sm">
+              Saliendo desde: <strong>{manualPos.label}</strong>
+            </span>
+            <div className="ml-auto flex gap-2">
+              <Button onClick={() => setOriginDialogOpen(true)} size="sm" variant="outline">
+                Cambiar
+              </Button>
+              <Button onClick={() => setManualPos(null)} size="sm" variant="ghost">
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+        )}
+
         {/* Results */}
-        {position && (
+        {effectivePos && (
           <>
             {/* Category Filter */}
             <div className="mb-6">
@@ -198,14 +275,14 @@ const NearMe = () => {
             </div>
 
             {/* Mini Map */}
-            {nearbyPlaces.length > 0 && position && (
+            {nearbyPlaces.length > 0 && effectivePos && (
               <div ref={mapSectionRef} className="mb-6 rounded-2xl overflow-hidden border border-border shadow-sm">
                 <div className="h-64 sm:h-80 w-full">
                   <MapComponent
                     places={nearbyPlaces}
                     selectedCategory={selectedCategory || 'Todos'}
                     focusCoordinates={focusCoords}
-                    userPosition={{ lat: position.latitude, lng: position.longitude }}
+                    userPosition={{ lat: effectivePos.latitude, lng: effectivePos.longitude }}
                   />
                 </div>
               </div>
@@ -261,6 +338,65 @@ const NearMe = () => {
       </main>
 
       <BottomNav />
+
+      {/* Manual origin dialog */}
+      <Dialog open={originDialogOpen} onOpenChange={(open) => {
+        setOriginDialogOpen(open);
+        if (!open) {
+          setOriginError(null);
+          setOriginSuggestions([]);
+        }
+      }}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Ingresa tu ubicación de salida</DialogTitle>
+            <DialogDescription>
+              Escribe una dirección, barrio o lugar conocido en Cali para calcular distancias y trazar rutas.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="flex gap-2">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Ej: Avenida 6N #25-50, Granada"
+                value={originQuery}
+                onChange={(e) => setOriginQuery(e.target.value)}
+                onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); searchOrigin(); } }}
+                maxLength={120}
+                className="pl-9"
+                autoFocus
+              />
+            </div>
+            <Button onClick={searchOrigin} disabled={searchingOrigin || originQuery.trim().length < 3}>
+              {searchingOrigin ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Buscar'}
+            </Button>
+          </div>
+
+          {originError && (
+            <p className="text-xs text-destructive">{originError}</p>
+          )}
+
+          {originSuggestions.length > 0 && (
+            <div className="flex flex-col gap-1.5 max-h-64 overflow-y-auto">
+              {originSuggestions.map((s, i) => (
+                <button
+                  key={`${s.lat}-${s.lng}-${i}`}
+                  onClick={() => selectOrigin(s)}
+                  className="text-left flex items-start gap-2 p-3 rounded-lg border border-border hover:bg-muted transition-colors"
+                >
+                  <MapPin className="h-4 w-4 text-primary mt-0.5 shrink-0" />
+                  <span className="text-sm text-foreground">{s.label}</span>
+                </button>
+              ))}
+            </div>
+          )}
+
+          <p className="text-[11px] text-muted-foreground">
+            Tu ubicación de salida se usará solo para calcular la ruta dentro de la app.
+          </p>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

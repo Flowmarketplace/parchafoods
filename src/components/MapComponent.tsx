@@ -5,6 +5,10 @@ import { mockPlaces } from '@/data/places';
 import { useNavigate } from 'react-router-dom';
 import { getCategoryIcon, getCategoryColor } from '@/utils/categoryIcons';
 import { neighborhoodLocations } from '@/data/neighborhoods';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Loader2, MapPin, Search } from 'lucide-react';
 
 // Mapbox public token (safe to expose in frontend)
 const MAPBOX_TOKEN = 'pk.eyJ1IjoiaGFuZGNpdHkiLCJhIjoiY2syNmp3ZjUxMzJkMzNtcGl6dXR6ZTV0diJ9.0xE-C5rlwWBM80gUY1POzw';
@@ -21,9 +25,17 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
   const markers = useRef<mapboxgl.Marker[]>([]);
+  const manualOriginMarker = useRef<mapboxgl.Marker | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [mapLoaded, setMapLoaded] = useState(false);
   const [routeInfo, setRouteInfo] = useState<{ name: string; distanceKm: number; durationMin: number; lat: number; lng: number } | null>(null);
+  const [manualOrigin, setManualOrigin] = useState<{ lat: number; lng: number; label: string } | null>(null);
+  const [originDialogOpen, setOriginDialogOpen] = useState(false);
+  const [originQuery, setOriginQuery] = useState('');
+  const [originSuggestions, setOriginSuggestions] = useState<Array<{ label: string; lat: number; lng: number }>>([]);
+  const [searchingOrigin, setSearchingOrigin] = useState(false);
+  const [originError, setOriginError] = useState<string | null>(null);
+  const pendingPlace = useRef<Place | null>(null);
   const navigate = useNavigate();
 
   const clearRoute = () => {
@@ -33,15 +45,23 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
     setRouteInfo(null);
   };
 
+  const getOrigin = (): { lat: number; lng: number } | null => {
+    if (userPosition) return userPosition;
+    if (manualOrigin) return { lat: manualOrigin.lat, lng: manualOrigin.lng };
+    return null;
+  };
+
   const drawRouteToPlace = async (place: Place) => {
     if (!map.current || !mapLoaded) return;
-    if (!userPosition) {
-      // No user position — just fly to the place
-      map.current.flyTo({ center: [place.longitude, place.latitude], zoom: 16, duration: 1000 });
+    const origin = getOrigin();
+    if (!origin) {
+      // No origin available — open manual origin dialog
+      pendingPlace.current = place;
+      setOriginDialogOpen(true);
       return;
     }
     try {
-      const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${userPosition.lng},${userPosition.lat};${place.longitude},${place.latitude}?geometries=geojson&overview=full&access_token=${MAPBOX_TOKEN}`;
+      const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${origin.lng},${origin.lat};${place.longitude},${place.latitude}?geometries=geojson&overview=full&access_token=${MAPBOX_TOKEN}`;
       const res = await fetch(url);
       const data = await res.json();
       const route = data?.routes?.[0];
@@ -85,6 +105,73 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
       console.error('Error fetching route:', err);
     }
   };
+
+  const searchOrigin = async () => {
+    const q = originQuery.trim();
+    if (q.length < 3) {
+      setOriginError('Escribe al menos 3 caracteres');
+      return;
+    }
+    setSearchingOrigin(true);
+    setOriginError(null);
+    try {
+      const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(q)}.json?proximity=-76.5225,3.4516&country=co&limit=5&access_token=${MAPBOX_TOKEN}`;
+      const res = await fetch(url);
+      const data = await res.json();
+      const features = (data?.features || []) as any[];
+      if (features.length === 0) {
+        setOriginSuggestions([]);
+        setOriginError('No encontramos esa dirección. Intenta con otra.');
+      } else {
+        setOriginSuggestions(
+          features.map((f) => ({
+            label: f.place_name,
+            lng: f.center[0],
+            lat: f.center[1],
+          }))
+        );
+      }
+    } catch (e) {
+      console.error('Geocoding error:', e);
+      setOriginError('Error buscando la dirección. Intenta de nuevo.');
+    } finally {
+      setSearchingOrigin(false);
+    }
+  };
+
+  const selectOrigin = (s: { label: string; lat: number; lng: number }) => {
+    setManualOrigin(s);
+    setOriginDialogOpen(false);
+    setOriginSuggestions([]);
+    setOriginQuery('');
+    // Place a marker at the manual origin
+    if (manualOriginMarker.current) {
+      manualOriginMarker.current.remove();
+      manualOriginMarker.current = null;
+    }
+    if (map.current) {
+      const el = document.createElement('div');
+      el.style.cssText = 'width:18px;height:18px;border-radius:50%;background:#16a34a;border:3px solid white;box-shadow:0 0 0 4px rgba(22,163,74,0.3);';
+      manualOriginMarker.current = new mapboxgl.Marker(el).setLngLat([s.lng, s.lat]).addTo(map.current);
+    }
+    // If we had a pending place, draw the route now
+    if (pendingPlace.current) {
+      const place = pendingPlace.current;
+      pendingPlace.current = null;
+      // wait next tick so state has settled (drawRouteToPlace reads manualOrigin via getOrigin)
+      setTimeout(() => drawRouteToPlace(place), 0);
+    }
+  };
+
+  const clearManualOrigin = () => {
+    setManualOrigin(null);
+    if (manualOriginMarker.current) {
+      manualOriginMarker.current.remove();
+      manualOriginMarker.current = null;
+    }
+    clearRoute();
+  };
+
 
 
   const createMarker = (place: Place) => {
@@ -336,6 +423,86 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
           </button>
         </div>
       )}
+
+      {/* Manual origin chip (when used) */}
+      {!userPosition && manualOrigin && !routeInfo && (
+        <div className="absolute left-2 top-2 z-20 bg-card/95 backdrop-blur-md border border-border rounded-full shadow-md px-3 py-1.5 flex items-center gap-2 max-w-[calc(100%-1rem)]">
+          <MapPin className="h-3.5 w-3.5 text-green-600 shrink-0" />
+          <span className="text-xs text-foreground truncate">Saliendo desde: <strong>{manualOrigin.label}</strong></span>
+          <button
+            onClick={() => setOriginDialogOpen(true)}
+            className="text-xs font-semibold text-primary hover:underline shrink-0"
+          >
+            cambiar
+          </button>
+          <button
+            onClick={clearManualOrigin}
+            aria-label="Quitar origen manual"
+            className="text-muted-foreground hover:text-foreground shrink-0"
+          >
+            ✕
+          </button>
+        </div>
+      )}
+
+      {/* Manual origin dialog */}
+      <Dialog open={originDialogOpen} onOpenChange={(open) => {
+        setOriginDialogOpen(open);
+        if (!open) {
+          setOriginError(null);
+          setOriginSuggestions([]);
+        }
+      }}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Ingresa tu ubicación de salida</DialogTitle>
+            <DialogDescription>
+              No detectamos tu ubicación. Escribe una dirección, barrio o lugar conocido para trazar la ruta.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="flex gap-2">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Ej: Avenida 6N #25-50, Granada"
+                value={originQuery}
+                onChange={(e) => setOriginQuery(e.target.value)}
+                onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); searchOrigin(); } }}
+                maxLength={120}
+                className="pl-9"
+                autoFocus
+              />
+            </div>
+            <Button onClick={searchOrigin} disabled={searchingOrigin || originQuery.trim().length < 3}>
+              {searchingOrigin ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Buscar'}
+            </Button>
+          </div>
+
+          {originError && (
+            <p className="text-xs text-destructive">{originError}</p>
+          )}
+
+          {originSuggestions.length > 0 && (
+            <div className="flex flex-col gap-1.5 max-h-64 overflow-y-auto">
+              {originSuggestions.map((s, i) => (
+                <button
+                  key={`${s.lat}-${s.lng}-${i}`}
+                  onClick={() => selectOrigin(s)}
+                  className="text-left flex items-start gap-2 p-3 rounded-lg border border-border hover:bg-muted transition-colors"
+                >
+                  <MapPin className="h-4 w-4 text-primary mt-0.5 shrink-0" />
+                  <span className="text-sm text-foreground">{s.label}</span>
+                </button>
+              ))}
+            </div>
+          )}
+
+          <p className="text-[11px] text-muted-foreground">
+            Tu ubicación de salida se usará solo para calcular la ruta dentro de la app.
+          </p>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
