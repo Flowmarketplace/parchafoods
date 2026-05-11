@@ -112,7 +112,7 @@ const Listings = () => {
       <div className="flex flex-1 pt-16 md:pt-20">
         <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
         
-        <main className="flex-1 lg:ml-64">
+        <main className="flex-1 min-w-0 lg:ml-64">
           {/* Hero Header */}
           <div className="relative overflow-hidden bg-gradient-to-br from-primary via-primary to-secondary py-5 sm:py-10 md:py-12 px-3 sm:px-6 md:px-8">
             <div className="absolute inset-0 opacity-10 pointer-events-none">

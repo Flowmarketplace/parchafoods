@@ -175,7 +175,7 @@ const BusinessAIConfig = () => {
       <div className="flex">
         <BusinessSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
         
-        <main className="flex-1 p-4 md:p-6 pb-20 md:pb-6 lg:ml-64">
+        <main className="flex-1 min-w-0 p-4 md:p-6 pb-20 md:pb-6 lg:ml-64">
           <div className="max-w-4xl mx-auto space-y-6">
             {/* Header */}
             <div className="flex items-center gap-3">
