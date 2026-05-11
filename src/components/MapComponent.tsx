@@ -21,9 +21,17 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
   const markers = useRef<mapboxgl.Marker[]>([]);
+  const manualOriginMarker = useRef<mapboxgl.Marker | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [mapLoaded, setMapLoaded] = useState(false);
   const [routeInfo, setRouteInfo] = useState<{ name: string; distanceKm: number; durationMin: number; lat: number; lng: number } | null>(null);
+  const [manualOrigin, setManualOrigin] = useState<{ lat: number; lng: number; label: string } | null>(null);
+  const [originDialogOpen, setOriginDialogOpen] = useState(false);
+  const [originQuery, setOriginQuery] = useState('');
+  const [originSuggestions, setOriginSuggestions] = useState<Array<{ label: string; lat: number; lng: number }>>([]);
+  const [searchingOrigin, setSearchingOrigin] = useState(false);
+  const [originError, setOriginError] = useState<string | null>(null);
+  const pendingPlace = useRef<Place | null>(null);
   const navigate = useNavigate();
 
   const clearRoute = () => {
@@ -33,15 +41,23 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
     setRouteInfo(null);
   };
 
+  const getOrigin = (): { lat: number; lng: number } | null => {
+    if (userPosition) return userPosition;
+    if (manualOrigin) return { lat: manualOrigin.lat, lng: manualOrigin.lng };
+    return null;
+  };
+
   const drawRouteToPlace = async (place: Place) => {
     if (!map.current || !mapLoaded) return;
-    if (!userPosition) {
-      // No user position — just fly to the place
-      map.current.flyTo({ center: [place.longitude, place.latitude], zoom: 16, duration: 1000 });
+    const origin = getOrigin();
+    if (!origin) {
+      // No origin available — open manual origin dialog
+      pendingPlace.current = place;
+      setOriginDialogOpen(true);
       return;
     }
     try {
-      const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${userPosition.lng},${userPosition.lat};${place.longitude},${place.latitude}?geometries=geojson&overview=full&access_token=${MAPBOX_TOKEN}`;
+      const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${origin.lng},${origin.lat};${place.longitude},${place.latitude}?geometries=geojson&overview=full&access_token=${MAPBOX_TOKEN}`;
       const res = await fetch(url);
       const data = await res.json();
       const route = data?.routes?.[0];
@@ -85,6 +101,73 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
       console.error('Error fetching route:', err);
     }
   };
+
+  const searchOrigin = async () => {
+    const q = originQuery.trim();
+    if (q.length < 3) {
+      setOriginError('Escribe al menos 3 caracteres');
+      return;
+    }
+    setSearchingOrigin(true);
+    setOriginError(null);
+    try {
+      const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(q)}.json?proximity=-76.5225,3.4516&country=co&limit=5&access_token=${MAPBOX_TOKEN}`;
+      const res = await fetch(url);
+      const data = await res.json();
+      const features = (data?.features || []) as any[];
+      if (features.length === 0) {
+        setOriginSuggestions([]);
+        setOriginError('No encontramos esa dirección. Intenta con otra.');
+      } else {
+        setOriginSuggestions(
+          features.map((f) => ({
+            label: f.place_name,
+            lng: f.center[0],
+            lat: f.center[1],
+          }))
+        );
+      }
+    } catch (e) {
+      console.error('Geocoding error:', e);
+      setOriginError('Error buscando la dirección. Intenta de nuevo.');
+    } finally {
+      setSearchingOrigin(false);
+    }
+  };
+
+  const selectOrigin = (s: { label: string; lat: number; lng: number }) => {
+    setManualOrigin(s);
+    setOriginDialogOpen(false);
+    setOriginSuggestions([]);
+    setOriginQuery('');
+    // Place a marker at the manual origin
+    if (manualOriginMarker.current) {
+      manualOriginMarker.current.remove();
+      manualOriginMarker.current = null;
+    }
+    if (map.current) {
+      const el = document.createElement('div');
+      el.style.cssText = 'width:18px;height:18px;border-radius:50%;background:#16a34a;border:3px solid white;box-shadow:0 0 0 4px rgba(22,163,74,0.3);';
+      manualOriginMarker.current = new mapboxgl.Marker(el).setLngLat([s.lng, s.lat]).addTo(map.current);
+    }
+    // If we had a pending place, draw the route now
+    if (pendingPlace.current) {
+      const place = pendingPlace.current;
+      pendingPlace.current = null;
+      // wait next tick so state has settled (drawRouteToPlace reads manualOrigin via getOrigin)
+      setTimeout(() => drawRouteToPlace(place), 0);
+    }
+  };
+
+  const clearManualOrigin = () => {
+    setManualOrigin(null);
+    if (manualOriginMarker.current) {
+      manualOriginMarker.current.remove();
+      manualOriginMarker.current = null;
+    }
+    clearRoute();
+  };
+
 
 
   const createMarker = (place: Place) => {
