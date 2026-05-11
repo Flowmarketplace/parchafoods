@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 export interface GeolocationPosition {
   latitude: number;
@@ -20,10 +20,52 @@ export const useGeolocation = () => {
     loading: false,
     permissionDenied: false,
   });
+  const watchIdRef = useRef<number | null>(null);
+
+  const handleError = (error: GeolocationPositionError) => {
+    let errorMessage = 'No se pudo obtener tu ubicación';
+    let permissionDenied = false;
+
+    switch (error.code) {
+      case error.PERMISSION_DENIED:
+        errorMessage = 'Permiso de ubicación denegado. Por favor, habilita el acceso a tu ubicación en la configuración del navegador.';
+        permissionDenied = true;
+        break;
+      case error.POSITION_UNAVAILABLE:
+        errorMessage = 'Información de ubicación no disponible';
+        break;
+      case error.TIMEOUT:
+        errorMessage = 'Tiempo de espera agotado al obtener tu ubicación';
+        break;
+    }
+
+    setState((prev) => ({
+      position: prev.position, // keep last known position
+      error: errorMessage,
+      loading: false,
+      permissionDenied,
+    }));
+  };
+
+  // Alias to avoid clashing with our exported interface name
+  type BrowserGeoPosition = globalThis.GeolocationPosition;
+
+  const handleSuccess = (position: BrowserGeoPosition) => {
+    setState({
+      position: {
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+        accuracy: position.coords.accuracy,
+      },
+      error: null,
+      loading: false,
+      permissionDenied: false,
+    });
+  };
 
   const requestLocation = () => {
     if (!navigator.geolocation) {
-      setState(prev => ({
+      setState((prev) => ({
         ...prev,
         error: 'La geolocalización no está soportada en tu navegador',
         loading: false,
@@ -31,55 +73,43 @@ export const useGeolocation = () => {
       return;
     }
 
-    setState(prev => ({ ...prev, loading: true, error: null }));
+    setState((prev) => ({ ...prev, loading: true, error: null }));
 
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        setState({
-          position: {
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-            accuracy: position.coords.accuracy,
-          },
-          error: null,
-          loading: false,
-          permissionDenied: false,
-        });
-      },
-      (error) => {
-        let errorMessage = 'No se pudo obtener tu ubicación';
-        let permissionDenied = false;
+    // First, get a fast initial fix
+    navigator.geolocation.getCurrentPosition(handleSuccess, handleError, {
+      enableHighAccuracy: true,
+      timeout: 10000,
+      maximumAge: 0,
+    });
 
-        switch (error.code) {
-          case error.PERMISSION_DENIED:
-            errorMessage = 'Permiso de ubicación denegado. Por favor, habilita el acceso a tu ubicación en la configuración del navegador.';
-            permissionDenied = true;
-            break;
-          case error.POSITION_UNAVAILABLE:
-            errorMessage = 'Información de ubicación no disponible';
-            break;
-          case error.TIMEOUT:
-            errorMessage = 'Tiempo de espera agotado al obtener tu ubicación';
-            break;
-        }
-
-        setState({
-          position: null,
-          error: errorMessage,
-          loading: false,
-          permissionDenied,
-        });
-      },
-      {
-        enableHighAccuracy: true,
-        timeout: 10000,
-        maximumAge: 0,
-      }
-    );
+    // Then start watching for live updates so the route auto-recalculates
+    if (watchIdRef.current !== null) {
+      navigator.geolocation.clearWatch(watchIdRef.current);
+    }
+    watchIdRef.current = navigator.geolocation.watchPosition(handleSuccess, handleError, {
+      enableHighAccuracy: true,
+      maximumAge: 5000,
+      timeout: 20000,
+    });
   };
+
+  const stopWatching = () => {
+    if (watchIdRef.current !== null) {
+      navigator.geolocation.clearWatch(watchIdRef.current);
+      watchIdRef.current = null;
+    }
+  };
+
+  // Cleanup watcher on unmount
+  useEffect(() => {
+    return () => {
+      stopWatching();
+    };
+  }, []);
 
   return {
     ...state,
     requestLocation,
+    stopWatching,
   };
 };

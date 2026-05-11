@@ -51,7 +51,7 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
     return null;
   };
 
-  const drawRouteToPlace = async (place: Place) => {
+  const drawRouteToPlace = async (place: Place, options?: { fitBounds?: boolean }) => {
     if (!map.current || !mapLoaded) return;
     const origin = getOrigin();
     if (!origin) {
@@ -86,13 +86,15 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
         });
       }
 
-      // Fit bounds to route
-      const coords: [number, number][] = route.geometry.coordinates;
-      const bounds = coords.reduce(
-        (b, c) => b.extend(c as [number, number]),
-        new mapboxgl.LngLatBounds(coords[0], coords[0])
-      );
-      map.current.fitBounds(bounds, { padding: 60, duration: 1200, maxZoom: 15 });
+      // Fit bounds to route only on initial creation (avoid jumpy camera on auto-recalcs)
+      if (options?.fitBounds !== false) {
+        const coords: [number, number][] = route.geometry.coordinates;
+        const bounds = coords.reduce(
+          (b, c) => b.extend(c as [number, number]),
+          new mapboxgl.LngLatBounds(coords[0], coords[0])
+        );
+        map.current.fitBounds(bounds, { padding: 60, duration: 1200, maxZoom: 15 });
+      }
 
       setRouteInfo({
         name: place.name,
@@ -369,6 +371,22 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
         .addTo(map.current);
     }
   }, [userPosition?.lat, userPosition?.lng, mapLoaded]);
+
+  // Auto-recalculate active route when origin (user position or manual) changes
+  useEffect(() => {
+    if (!routeInfo) return;
+    const origin = getOrigin();
+    if (!origin) return;
+    // Re-fetch directions to the same destination using the new origin
+    drawRouteToPlace({
+      id: 'active-route',
+      name: routeInfo.name,
+      latitude: routeInfo.lat,
+      longitude: routeInfo.lng,
+    } as unknown as Place, { fitBounds: false });
+    // We intentionally exclude routeInfo to avoid feedback loops; we trigger on origin change.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userPosition?.lat, userPosition?.lng, manualOrigin?.lat, manualOrigin?.lng, mapLoaded]);
 
   // Initialize map on mount
   useEffect(() => {
