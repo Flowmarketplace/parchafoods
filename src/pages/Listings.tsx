@@ -12,6 +12,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useSearchParams } from 'react-router-dom';
 import { Skeleton } from '@/components/ui/skeleton';
 import { motion, AnimatePresence } from 'framer-motion';
+import { getCategoryFallbackImage } from '@/utils/categoryImages';
 
 const CATEGORY_EMOJIS: Record<string, string> = {
   'Todos': '🍽️',
@@ -59,7 +60,7 @@ const Listings = () => {
           const profileImg = b.business_images?.find((img: any) => img.image_type === 'profile');
           const primaryImg = b.business_images?.find((img: any) => img.is_primary);
           const firstGallery = b.business_images?.sort((a: any, b2: any) => (a.display_order || 0) - (b2.display_order || 0))[0];
-          const imageUrl = profileImg?.image_url || primaryImg?.image_url || firstGallery?.image_url || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80';
+          const imageUrl = profileImg?.image_url || primaryImg?.image_url || firstGallery?.image_url || getCategoryFallbackImage(b.category);
           
           return {
             id: b.id,
