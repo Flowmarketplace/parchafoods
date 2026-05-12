@@ -16,7 +16,8 @@ import {
   Calendar,
   UserCheck,
   ShieldCheck,
-  Megaphone
+  Megaphone,
+  UserCog
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -48,6 +49,7 @@ const AdminSidebar = ({ className }: AdminSidebarWrapperProps = {}) => {
     { icon: Bell, label: 'Notificaciones', path: '/admin/notifications' },
     { icon: Palette, label: 'Personalización', path: '/admin/customization' },
     { icon: Settings, label: 'Configuración', path: '/admin/settings' },
+    { icon: UserCog, label: 'Mi Perfil', path: '/admin/profile' },
   ];
 
   const handleLogout = async () => {
