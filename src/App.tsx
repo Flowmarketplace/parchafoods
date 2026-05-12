@@ -42,6 +42,7 @@ import AdminAnalytics from "./pages/admin/AdminAnalytics";
 import AdminNotifications from "./pages/admin/AdminNotifications";
 import AdminCustomization from "./pages/admin/AdminCustomization";
 import AdminSettings from "./pages/admin/AdminSettings";
+import AdminProfile from "./pages/admin/AdminProfile";
 import AdminEvents from "./pages/admin/AdminEvents";
 import AdminCategories from "./pages/admin/AdminCategories";
 import AdminProspects from "./pages/admin/AdminProspects";
