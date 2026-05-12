@@ -253,49 +253,39 @@ const PlaceDetails = () => {
 
         <Card>
           <CardContent className="p-0">
-            {/* Image Carousel */}
+            {/* Image Carousel - full width hero */}
             <div className="relative">
-              {images && images.length > 0 ? (
-                <Carousel className="w-full" opts={{ loop: true }} plugins={[Autoplay({ delay: 3000, stopOnInteraction: false })]}>
-                  <CarouselContent>
-                    {images.map((image, index) => (
-                      <CarouselItem key={index}>
-                        <div className="relative h-[400px] bg-muted flex items-center justify-center overflow-hidden">
-                          {/* Decorative watermark pattern for lateral spaces */}
-                          <div className="absolute inset-0 opacity-[0.04] pointer-events-none flex items-center justify-between px-4">
-                            <div className="flex flex-col gap-6 items-center">
-                              <UtensilsCrossed className="h-10 w-10" />
-                              <Star className="h-8 w-8" />
-                              <MapPin className="h-10 w-10" />
-                              <Trophy className="h-8 w-8" />
-                              <UtensilsCrossed className="h-10 w-10" />
-                            </div>
-                            <div className="flex flex-col gap-6 items-center">
-                              <Trophy className="h-8 w-8" />
-                              <MapPin className="h-10 w-10" />
-                              <Star className="h-8 w-8" />
-                              <UtensilsCrossed className="h-10 w-10" />
-                              <Trophy className="h-8 w-8" />
-                            </div>
+              {(() => {
+                const displayImages = images && images.length > 0
+                  ? images
+                  : [{ image_url: getCategoryFallbackImage(place.category), description: place.name }];
+                return (
+                  <Carousel className="w-full" opts={{ loop: true }} plugins={[Autoplay({ delay: 4000, stopOnInteraction: false })]}>
+                    <CarouselContent>
+                      {displayImages.map((image, index) => (
+                        <CarouselItem key={index}>
+                          <div className="relative w-full h-[260px] sm:h-[380px] md:h-[480px] lg:h-[560px] bg-muted overflow-hidden">
+                            <img
+                              src={image.image_url}
+                              alt={image.description || `${place.name} - Imagen ${index + 1}`}
+                              loading={index === 0 ? 'eager' : 'lazy'}
+                              decoding="async"
+                              className="w-full h-full object-cover"
+                            />
                           </div>
-                          <img
-                            src={image.image_url}
-                            alt={image.description || `${place.name} - Imagen ${index + 1}`}
-                            className="max-w-full max-h-full object-contain relative z-10"
-                          />
-                        </div>
-                      </CarouselItem>
-                    ))}
-                  </CarouselContent>
-                  <CarouselPrevious className="left-4" />
-                  <CarouselNext className="right-4" />
-                </Carousel>
-              ) : (
-                <div className="relative h-[400px] bg-muted flex items-center justify-center">
-                  <p className="text-muted-foreground">No hay imágenes disponibles</p>
-                </div>
-              )}
-              
+                        </CarouselItem>
+                      ))}
+                    </CarouselContent>
+                    {displayImages.length > 1 && (
+                      <>
+                        <CarouselPrevious className="left-4" />
+                        <CarouselNext className="right-4" />
+                      </>
+                    )}
+                  </Carousel>
+                );
+              })()}
+
               {place.featured && (
                 <Badge className="absolute top-4 right-4 bg-secondary">
                   Destacado
