@@ -258,7 +258,7 @@ const PlaceDetails = () => {
               {(() => {
                 const displayImages = images && images.length > 0
                   ? images
-                  : [{ image_url: getCategoryFallbackImage(place.category), description: place.name }];
+                  : [{ image_url: getCategoryFallbackImage(place.category, place.id || place.name), description: place.name }];
                 return (
                   <Carousel className="w-full" opts={{ loop: true }} plugins={[Autoplay({ delay: 4000, stopOnInteraction: false })]}>
                     <CarouselContent>
