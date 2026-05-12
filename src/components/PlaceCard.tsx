@@ -110,6 +110,8 @@ const PlaceCard = ({ place, featured }: PlaceCardProps) => {
         <img
           src={place.images[0]}
           alt={place.name}
+          loading="lazy"
+          decoding="async"
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
         />
         
