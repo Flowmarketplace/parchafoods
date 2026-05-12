@@ -121,6 +121,7 @@ function App() {
         <Route path="/admin/notifications" element={<AdminNotifications />} />
         <Route path="/admin/customization" element={<AdminCustomization />} />
         <Route path="/admin/settings" element={<AdminSettings />} />
+        <Route path="/admin/profile" element={<AdminProfile />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <InstallPWA />
