@@ -23,6 +23,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel';
+import { getCategoryFallbackImage } from '@/utils/categoryImages';
 
 const PlaceDetails = () => {
   const { id } = useParams(); // This could be an ID or a slug
