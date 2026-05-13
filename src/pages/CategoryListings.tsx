@@ -73,10 +73,19 @@ const CategoryListings = () => {
 
       if (data) {
         const transformed = data.map((b: any) => {
-          const profileImg = b.business_images?.find((img: any) => img.image_type === 'profile');
-          const primaryImg = b.business_images?.find((img: any) => img.is_primary);
-          const firstGallery = b.business_images?.sort((a: any, b2: any) => (a.display_order || 0) - (b2.display_order || 0))[0];
-          const imageUrl = profileImg?.image_url || primaryImg?.image_url || firstGallery?.image_url || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80';
+          const sortedImages = [...(b.business_images || [])].sort(
+            (a: any, c: any) => (a.display_order || 0) - (c.display_order || 0)
+          );
+          const galleryImg = sortedImages.find((img: any) => img.image_type === 'gallery');
+          const primaryImg = sortedImages.find((img: any) => img.is_primary && img.image_type !== 'profile');
+          const anyNonProfile = sortedImages.find((img: any) => img.image_type !== 'profile');
+          const profileImg = sortedImages.find((img: any) => img.image_type === 'profile');
+          const imageUrl =
+            galleryImg?.image_url ||
+            primaryImg?.image_url ||
+            anyNonProfile?.image_url ||
+            profileImg?.image_url ||
+            getCategoryFallbackImage(b.category, b.id || b.name);
 
           return {
             id: b.id,
