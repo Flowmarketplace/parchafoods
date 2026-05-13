@@ -7,6 +7,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import BottomNav from '@/components/BottomNav';
 import { useToast } from '@/hooks/use-toast';
+import { pickBusinessCoverUrl } from '@/utils/businessImages';
 
 const Favorites = () => {
   const navigate = useNavigate();
