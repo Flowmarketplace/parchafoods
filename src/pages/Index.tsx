@@ -27,6 +27,7 @@ import WorldCupCalendar from '@/components/WorldCupCalendar';
 import ColombiaProgress from '@/components/ColombiaProgress';
 import WorldCupProgress from '@/components/WorldCupProgress';
 import WorldCupRoutes from '@/components/WorldCupRoutes';
+import { getCategoryFallbackImage } from '@/utils/categoryImages';
 
 const Index = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -61,11 +62,20 @@ const Index = () => {
       
       if (data) {
         const transformedPlaces = data.map((business: any) => {
-          // Get profile image first, then gallery images, then fallback
-          const profileImg = business.business_images?.find((img: any) => img.image_type === 'profile');
-          const primaryImg = business.business_images?.find((img: any) => img.is_primary);
-          const firstGallery = business.business_images?.sort((a: any, b: any) => (a.display_order || 0) - (b.display_order || 0))[0];
-          const imageUrl = profileImg?.image_url || primaryImg?.image_url || firstGallery?.image_url || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80';
+          const sortedImages = [...(business.business_images || [])].sort(
+            (a: any, c: any) => (a.display_order || 0) - (c.display_order || 0)
+          );
+          // Prefer real cover/gallery photos over the profile (logo).
+          const galleryImg = sortedImages.find((img: any) => img.image_type === 'gallery');
+          const primaryImg = sortedImages.find((img: any) => img.is_primary && img.image_type !== 'profile');
+          const anyNonProfile = sortedImages.find((img: any) => img.image_type !== 'profile');
+          const profileImg = sortedImages.find((img: any) => img.image_type === 'profile');
+          const imageUrl =
+            galleryImg?.image_url ||
+            primaryImg?.image_url ||
+            anyNonProfile?.image_url ||
+            profileImg?.image_url ||
+            getCategoryFallbackImage(business.category, business.id || business.name);
           
           return {
             id: business.id,
