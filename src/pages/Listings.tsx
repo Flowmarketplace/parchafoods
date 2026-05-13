@@ -12,7 +12,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useSearchParams } from 'react-router-dom';
 import { Skeleton } from '@/components/ui/skeleton';
 import { motion, AnimatePresence } from 'framer-motion';
-import { getCategoryFallbackImage } from '@/utils/categoryImages';
+import { pickBusinessCoverUrl } from '@/utils/businessImages';
 
 const CATEGORY_EMOJIS: Record<string, string> = {
   'Todos': '🍽️',
@@ -57,20 +57,7 @@ const Listings = () => {
       
       if (data) {
         const transformed = data.map((b: any) => {
-          const sortedImages = [...(b.business_images || [])].sort(
-            (a: any, c: any) => (a.display_order || 0) - (c.display_order || 0)
-          );
-          // Prefer real cover/gallery photos over the profile (which is usually a logo).
-          const galleryImg = sortedImages.find((img: any) => img.image_type === 'gallery');
-          const primaryImg = sortedImages.find((img: any) => img.is_primary && img.image_type !== 'profile');
-          const anyNonProfile = sortedImages.find((img: any) => img.image_type !== 'profile');
-          const profileImg = sortedImages.find((img: any) => img.image_type === 'profile');
-          const imageUrl =
-            galleryImg?.image_url ||
-            primaryImg?.image_url ||
-            anyNonProfile?.image_url ||
-            profileImg?.image_url ||
-            getCategoryFallbackImage(b.category, b.id || b.name);
+          const imageUrl = pickBusinessCoverUrl(b.business_images, b);
           
           return {
             id: b.id,
