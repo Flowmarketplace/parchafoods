@@ -457,8 +457,14 @@ const PlaceDetails = () => {
                               {mundialItems.map((mundialItem) => (
                                 <div key={mundialItem.id} className="bg-background/80 rounded-lg p-4 border border-primary/10">
                                   {mundialItem.image_url && (
-                                    <div className="rounded-lg overflow-hidden aspect-[4/3] mb-3 bg-muted">
-                                      <img src={mundialItem.image_url} alt={mundialItem.name} className="w-full h-full object-cover" />
+                                    <div className="rounded-lg overflow-hidden aspect-[4/3] sm:aspect-video mb-3 bg-muted max-w-xl mx-auto flex items-center justify-center">
+                                      <img
+                                        src={mundialItem.image_url}
+                                        alt={mundialItem.name}
+                                        loading="lazy"
+                                        decoding="async"
+                                        className="w-full h-full object-contain"
+                                      />
                                     </div>
                                   )}
                                   <p className="font-bold text-primary text-lg mb-1">
