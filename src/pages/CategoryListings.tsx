@@ -13,7 +13,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Skeleton } from '@/components/ui/skeleton';
 import { categories } from '@/data/places';
 import { motion, AnimatePresence } from 'framer-motion';
-import { getCategoryFallbackImage } from '@/utils/categoryImages';
+import { pickBusinessCoverUrl } from '@/utils/businessImages';
 
 const CATEGORY_EMOJIS: Record<string, string> = {
   'Todos': '🍽️',
