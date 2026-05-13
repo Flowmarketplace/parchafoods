@@ -12,7 +12,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useSearchParams } from 'react-router-dom';
 import { Skeleton } from '@/components/ui/skeleton';
 import { motion, AnimatePresence } from 'framer-motion';
-import { getCategoryFallbackImage } from '@/utils/categoryImages';
+import { pickBusinessCoverUrl } from '@/utils/businessImages';
 
 const CATEGORY_EMOJIS: Record<string, string> = {
   'Todos': '🍽️',
