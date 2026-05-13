@@ -50,7 +50,7 @@ const OVERRIDES_RAW: Record<string, string> = {
   '2249e254-1454-40ef-9b69-330a487560c5': 'photo-1561758033-d89a9ad46330', // Burger Lab Cali
   'd402cd46-1650-4e3d-95ba-dee28ac6c642': 'photo-1550547660-d9450f859349', // Burger Master Granada
   'cd077fc4-50f0-4036-9df3-8335ab84bd54': 'photo-1606131731446-5568d87113aa', // Butcher colombia
-  '54ad477f-d0b2-4949-a119-47ccaf58da8c': 'premium_photo-1664476019608-a5f1d3971bf0', // Casa de la arepa - arepas reales con carne
+  '54ad477f-d0b2-4949-a119-47ccaf58da8c': 'photo-1644753787071-8933b5daed2d', // Casa de la arepa - arepas en plato blanco
   'a61acdc7-453a-4913-abf1-6add59743bf3': 'photo-1599599810769-bcde5a160d32', // Chihuahua
   'aaa8a020-3aa9-4b0f-86ae-c26f41db2467': 'photo-1571091718767-18b5b1457add', // El gringo american kitchen
   'da32b271-3654-4226-9792-20ae1803a4f4': 'photo-1565299507177-b0ac66763828', // El paisa
