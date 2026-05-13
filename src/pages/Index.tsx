@@ -27,6 +27,7 @@ import WorldCupCalendar from '@/components/WorldCupCalendar';
 import ColombiaProgress from '@/components/ColombiaProgress';
 import WorldCupProgress from '@/components/WorldCupProgress';
 import WorldCupRoutes from '@/components/WorldCupRoutes';
+import { getCategoryFallbackImage } from '@/utils/categoryImages';
 
 const Index = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
