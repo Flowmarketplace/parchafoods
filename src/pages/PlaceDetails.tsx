@@ -256,8 +256,15 @@ const PlaceDetails = () => {
             {/* Image Carousel - full width hero */}
             <div className="relative">
               {(() => {
-                const displayImages = images && images.length > 0
-                  ? images
+                // Match home/listings: prefer real cover/gallery photos over profile (logo).
+                const sorted = [...(images || [])].sort(
+                  (a: any, b: any) => (a.display_order || 0) - (b.display_order || 0)
+                );
+                const nonProfile = sorted.filter((img: any) => img.image_type !== 'profile');
+                const gallery = nonProfile.filter((img: any) => img.image_type === 'gallery');
+                const ordered = gallery.length > 0 ? gallery : (nonProfile.length > 0 ? nonProfile : sorted);
+                const displayImages = ordered.length > 0
+                  ? ordered
                   : [{ image_url: getCategoryFallbackImage(place.category, place.id || place.name), description: place.name }];
                 return (
                   <Carousel className="w-full" opts={{ loop: true }} plugins={[Autoplay({ delay: 4000, stopOnInteraction: false })]}>
