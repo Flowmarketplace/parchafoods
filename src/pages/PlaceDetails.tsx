@@ -256,13 +256,7 @@ const PlaceDetails = () => {
             {/* Image Carousel - full width hero */}
             <div className="relative">
               {(() => {
-                // Match home/listings: prefer real cover/gallery photos over profile (logo).
-                const sorted = [...(images || [])].sort(
-                  (a: any, b: any) => (a.display_order || 0) - (b.display_order || 0)
-                );
-                const nonProfile = sorted.filter((img: any) => img.image_type !== 'profile');
-                const gallery = nonProfile.filter((img: any) => img.image_type === 'gallery');
-                const ordered = gallery.length > 0 ? gallery : (nonProfile.length > 0 ? nonProfile : sorted);
+                const ordered = pickBusinessCoverImages(images);
                 const displayImages = ordered.length > 0
                   ? ordered
                   : [{ image_url: getCategoryFallbackImage(place.category, place.id || place.name), description: place.name }];
