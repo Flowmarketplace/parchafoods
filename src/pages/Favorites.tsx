@@ -57,11 +57,7 @@ const Favorites = () => {
   };
 
   const getBusinessImage = (business: any) => {
-    const imgs = business.business_images || [];
-    const profile = imgs.find((i: any) => i.image_type === 'profile');
-    const primary = imgs.find((i: any) => i.is_primary);
-    const first = imgs.sort((a: any, b: any) => (a.display_order || 0) - (b.display_order || 0))[0];
-    return profile?.image_url || primary?.image_url || first?.image_url || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80';
+    return pickBusinessCoverUrl(business.business_images, business);
   };
 
   if (loading) {
