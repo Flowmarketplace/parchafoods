@@ -144,8 +144,10 @@ const Index = () => {
     const allPlaces = places.length > 0 ? places : mockPlaces;
     const featured = allPlaces
       .filter(place => place.featured || (place.rating && place.rating >= 4.5));
-    // Perreiranos siempre de primero
+    // Mis costillitas BBQ siempre como principal
     featured.sort((a, b) => {
+      if (a.name === 'Mis costillitas BBQ') return -1;
+      if (b.name === 'Mis costillitas BBQ') return 1;
       if (a.name === 'Perreiranos') return -1;
       if (b.name === 'Perreiranos') return 1;
       return (b.rating || 0) - (a.rating || 0);
