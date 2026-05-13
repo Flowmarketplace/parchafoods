@@ -131,9 +131,14 @@ const OVERRIDES_RAW: Record<string, string> = {
   'f5dbc068-8e4c-4fc0-b427-0766d70d9d08': 'photo-1470337458703-46ad1756a187', // Zaperoco Bar
 };
 
+import casaDeLaArepaImg from '@/assets/casa-de-la-arepa.jpg';
+
 export const RESTAURANT_IMAGE_OVERRIDES: Record<string, string> = Object.fromEntries(
   Object.entries(OVERRIDES_RAW).map(([id, photoId]) => [id, img(photoId)])
 );
+
+// Local asset overrides (use uploaded restaurant photos directly).
+RESTAURANT_IMAGE_OVERRIDES['54ad477f-d0b2-4949-a119-47ccaf58da8c'] = casaDeLaArepaImg; // Casa de la arepa
 
 // ---------------------------------------------------------------------------
 // 2) Per-category pools (used only when no override and no uploaded photo).
