@@ -35,6 +35,7 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
   const [originSuggestions, setOriginSuggestions] = useState<Array<{ label: string; lat: number; lng: number }>>([]);
   const [searchingOrigin, setSearchingOrigin] = useState(false);
   const [originError, setOriginError] = useState<string | null>(null);
+  const [activePlace, setActivePlace] = useState<Place | null>(null);
   const pendingPlace = useRef<Place | null>(null);
   const navigate = useNavigate();
 
@@ -218,40 +219,13 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
         </div>
       `;
 
-      const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
-        <div style="padding: 12px; min-width: 220px; font-family: inherit;">
-          <h3 style="font-weight: 600; margin-bottom: 6px; font-size: 15px; color: #333;">${place.name}</h3>
-          <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
-            <span style="background: ${color}; color: white; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 500;">
-              ${place.category}
-            </span>
-          </div>
-          <p style="color: #666; font-size: 12px; margin-bottom: 4px;">📍 ${place.address}</p>
-          ${place.rating ? `<p style="color: #ff5722; font-size: 12px; font-weight: 500; margin-bottom: 8px;">⭐ ${place.rating}/5</p>` : ''}
-          <div style="display: flex; gap: 6px; margin-top: 8px;">
-            <button data-action="view" style="flex:1; background:#f1f5f9; color:#0f172a; border:none; padding:6px 8px; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer;">Ver lugar</button>
-            <button data-action="route" style="flex:1; background:${color}; color:white; border:none; padding:6px 8px; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer;">Cómo llegar</button>
-          </div>
-        </div>
-      `);
-
-      popup.on('open', () => {
-        const node = popup.getElement();
-        if (!node) return;
-        node.querySelector('[data-action="view"]')?.addEventListener('click', (ev) => {
-          ev.stopPropagation();
-          popup.remove();
-          navigate(`/place/${place.id}`);
-        });
-        node.querySelector('[data-action="route"]')?.addEventListener('click', (ev) => {
-          ev.stopPropagation();
-          drawRouteToPlace(place);
-        });
+      el.addEventListener('click', (event) => {
+        event.stopPropagation();
+        setActivePlace(place);
       });
 
       const marker = new mapboxgl.Marker(el)
         .setLngLat([place.longitude, place.latitude])
-        .setPopup(popup)
         .addTo(map.current);
 
       return marker;
@@ -322,6 +296,10 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
         console.log('Map loaded successfully');
         setIsLoading(false);
         setMapLoaded(true);
+      });
+
+      map.current.on('click', () => {
+        setActivePlace(null);
       });
 
       map.current.addControl(new mapboxgl.NavigationControl(), 'top-right');
