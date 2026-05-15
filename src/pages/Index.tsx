@@ -201,12 +201,12 @@ const Index = () => {
         
         <main className="flex-1 min-w-0">
           {/* Map */}
-          <div className="h-[28vh] sm:h-[35vh] md:h-[40vh] lg:h-[60vh] w-full">
+          <div className="relative z-20 h-[28vh] sm:h-[35vh] md:h-[40vh] lg:h-[60vh] w-full">
             <MapComponent selectedNeighborhood={selectedNeighborhood} selectedCategory={selectedCategory} places={places as any} />
           </div>
 
           {/* Neighborhood Selector */}
-          <div className="w-full bg-card border-b border-border">
+          <div className="relative z-0 w-full bg-card border-b border-border">
             <div className="px-3 sm:px-4 md:px-6 py-2">
               <Popover open={neighborhoodOpen} onOpenChange={setNeighborhoodOpen}>
                 <PopoverTrigger asChild>
