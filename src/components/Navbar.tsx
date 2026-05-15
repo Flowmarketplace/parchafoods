@@ -48,7 +48,7 @@ const Navbar = ({ onMenuClick, searchQuery, onSearchChange, selectedNeighborhood
               variant="ghost"
               size="icon"
               onClick={onMenuClick}
-              className="lg:hidden active:scale-95 transition-transform touch-manipulation shrink-0 h-9 w-9"
+              className="active:scale-95 transition-transform touch-manipulation shrink-0 h-9 w-9"
               data-tour="sidebar-trigger"
             >
               <Menu className="h-5 w-5" />
