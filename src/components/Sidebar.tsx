@@ -45,7 +45,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
             variant="ghost"
             size="icon"
             onClick={onClose}
-            className="lg:hidden"
+            className=""
           >
             <X className="h-5 w-5" />
           </Button>
