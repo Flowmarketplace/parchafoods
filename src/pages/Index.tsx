@@ -199,7 +199,7 @@ const Index = () => {
       <div className="flex flex-1 overflow-x-hidden">
         <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
         
-        <main className="flex-1 min-w-0 lg:ml-64">
+        <main className="flex-1 min-w-0">
           {/* Map */}
           <div className="h-[28vh] sm:h-[35vh] md:h-[40vh] lg:h-[60vh] w-full">
             <MapComponent selectedNeighborhood={selectedNeighborhood} selectedCategory={selectedCategory} places={places as any} />
