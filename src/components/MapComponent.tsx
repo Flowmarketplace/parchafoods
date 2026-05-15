@@ -407,6 +407,54 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
           </div>
         </div>
       )}
+      {activePlace && (
+        <div className="absolute left-2 right-2 bottom-2 z-30 sm:left-4 sm:right-auto sm:bottom-4 sm:w-[320px] max-w-[calc(100%-1rem)] sm:max-w-[min(320px,calc(100%-2rem))]">
+          <div className="rounded-xl border border-border bg-card/95 p-3 shadow-lg backdrop-blur-md">
+            <div className="flex items-start justify-between gap-3">
+              <div className="min-w-0 flex-1">
+                <h3 className="truncate text-sm font-semibold text-foreground">{activePlace.name}</h3>
+                <div className="mt-1 flex items-center gap-2">
+                  <span className="inline-flex rounded-md bg-secondary px-2 py-0.5 text-[11px] font-medium text-secondary-foreground">
+                    {activePlace.category}
+                  </span>
+                </div>
+                <p className="mt-2 text-xs text-muted-foreground line-clamp-2">📍 {activePlace.address}</p>
+                {activePlace.rating ? (
+                  <p className="mt-1 text-xs font-medium text-foreground">⭐ {activePlace.rating}/5</p>
+                ) : null}
+              </div>
+              <button
+                onClick={() => setActivePlace(null)}
+                aria-label="Cerrar información del lugar"
+                className="shrink-0 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="mt-3 grid grid-cols-2 gap-2">
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => {
+                  setActivePlace(null);
+                  navigate(`/place/${activePlace.id}`);
+                }}
+                className="w-full"
+              >
+                Ver lugar
+              </Button>
+              <Button
+                size="sm"
+                onClick={() => drawRouteToPlace(activePlace)}
+                className="w-full"
+              >
+                Cómo llegar
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
       {routeInfo && (
         <div className="absolute left-2 right-2 bottom-2 z-20 bg-card/95 backdrop-blur-md border border-border rounded-xl shadow-lg p-3 flex items-center gap-3">
           <div className="flex-1 min-w-0">
