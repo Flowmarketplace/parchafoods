@@ -148,3 +148,16 @@
     padding-bottom: env(safe-area-inset-bottom);
   }
 }
+
+/* Allow Mapbox popups to overflow the map container */
+.mapboxgl-map { overflow: visible !important; }
+.mapboxgl-canvas-container,
+.mapboxgl-canvas { overflow: hidden; }
+.mapboxgl-popup {
+  z-index: 60;
+  max-width: 280px !important;
+}
+.mapboxgl-popup-content {
+  box-shadow: 0 10px 30px -5px rgba(0,0,0,0.25), 0 4px 12px -2px rgba(0,0,0,0.15);
+  border-radius: 12px;
+}
