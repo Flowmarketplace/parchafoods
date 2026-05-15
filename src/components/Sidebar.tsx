@@ -33,8 +33,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
       <aside
         className={cn(
           'fixed top-0 left-0 h-full w-64 bg-card border-r border-border z-50 transform transition-transform duration-300 ease-in-out',
-          isOpen ? 'translate-x-0' : '-translate-x-full',
-          'lg:translate-x-0'
+          isOpen ? 'translate-x-0' : '-translate-x-full'
         )}
       >
         <div className="flex items-center justify-between p-4 border-b border-border">
