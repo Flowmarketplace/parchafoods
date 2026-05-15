@@ -57,7 +57,7 @@ const RutasMundialistas = () => {
       <Navbar onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
       <div className="flex flex-1 pt-14 md:pt-16">
         <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-        <main className="flex-1 min-w-0 lg:ml-64">
+        <main className="flex-1 min-w-0">
           {/* Hero header */}
           <div className="relative overflow-hidden bg-gradient-to-br from-primary via-primary to-secondary">
             {/* Decorative elements */}

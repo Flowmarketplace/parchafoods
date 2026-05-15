@@ -101,7 +101,7 @@ const Shorts = () => {
       <div className="flex flex-1">
         <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
         
-        <main className="flex-1 min-w-0 lg:ml-64">
+        <main className="flex-1 min-w-0">
           {/* Header */}
           <div className="bg-gradient-to-br from-purple-500/10 via-pink-500/10 to-primary/10 border-b border-border">
             <div className="w-full max-w-screen-2xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
