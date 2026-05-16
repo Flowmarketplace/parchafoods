@@ -1,4 +1,4 @@
-import { getCategoryFallbackImage } from './categoryImages';
+import { getCategoryFallbackImage, RESTAURANT_IMAGE_OVERRIDES } from './categoryImages';
 
 export interface BusinessImageLike {
   image_url: string;
