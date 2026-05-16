@@ -33,7 +33,10 @@ export function pickBusinessCoverUrl(
   business: { id?: string | null; name?: string | null; category?: string | null }
 ): string {
   const id = business.id || '';
-  if (id && RESTAURANT_IMAGE_OVERRIDES[id]) return RESTAURANT_IMAGE_OVERRIDES[id];
+  // Force-override only for businesses with a local uploaded asset (non-Unsplash URL).
+  // This avoids replacing real photos uploaded by other businesses.
+  const override = id ? RESTAURANT_IMAGE_OVERRIDES[id] : undefined;
+  if (override && !override.includes('unsplash.com')) return override;
   const ordered = pickBusinessCoverImages(images);
   return (
     ordered[0]?.image_url ||
