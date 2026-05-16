@@ -32,9 +32,11 @@ export function pickBusinessCoverUrl(
   images: BusinessImageLike[] | null | undefined,
   business: { id?: string | null; name?: string | null; category?: string | null }
 ): string {
+  const id = business.id || '';
+  if (id && RESTAURANT_IMAGE_OVERRIDES[id]) return RESTAURANT_IMAGE_OVERRIDES[id];
   const ordered = pickBusinessCoverImages(images);
   return (
     ordered[0]?.image_url ||
-    getCategoryFallbackImage(business.category || '', business.id || business.name || '')
+    getCategoryFallbackImage(business.category || '', id || business.name || '')
   );
 }
