@@ -12,6 +12,7 @@ import { useToast } from '@/hooks/use-toast';
 import { ArrowLeft, Check, ChevronsUpDown, MapPin } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Switch } from '@/components/ui/switch';
+import BusinessHoursEditor from '@/components/business/BusinessHoursEditor';
 
 const categories = [
   'Restaurante', 'Café', 'Parque', 'Farmacia', 'Banco', 'Centro Comercial',
