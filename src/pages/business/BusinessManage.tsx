@@ -12,6 +12,7 @@ import { useToast } from '@/hooks/use-toast';
 import { ArrowLeft, Check, ChevronsUpDown, MapPin } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Switch } from '@/components/ui/switch';
+import BusinessHoursEditor from '@/components/business/BusinessHoursEditor';
 
 const categories = [
   'Restaurante', 'Café', 'Parque', 'Farmacia', 'Banco', 'Centro Comercial',
@@ -396,6 +397,72 @@ const BusinessManage = () => {
                 </CardContent>
               </Card>
 
+              {/* Ubicación en el Mapa - siempre visible */}
+              <Card className="bg-gradient-to-br from-green-50 to-blue-50 dark:from-green-950/30 dark:to-blue-950/30 border-2 border-primary/20">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <MapPin className="h-5 w-5" />
+                    Ubicación en el Mapa
+                  </CardTitle>
+                  <CardDescription>
+                    Define las coordenadas exactas para que aparezca correctamente en el mapa
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="latitude">Latitud</Label>
+                      <Input
+                        id="latitude"
+                        type="number"
+                        step="0.000001"
+                        value={formData.latitude ?? ''}
+                        onChange={(e) => setFormData({ ...formData, latitude: e.target.value === '' ? null : parseFloat(e.target.value) })}
+                        placeholder="Ej: 3.451647"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="longitude">Longitud</Label>
+                      <Input
+                        id="longitude"
+                        type="number"
+                        step="0.000001"
+                        value={formData.longitude ?? ''}
+                        onChange={(e) => setFormData({ ...formData, longitude: e.target.value === '' ? null : parseFloat(e.target.value) })}
+                        placeholder="Ej: -76.531835"
+                      />
+                    </div>
+                  </div>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => {
+                      if (!navigator.geolocation) {
+                        toast({ title: 'Geolocalización no disponible', variant: 'destructive' });
+                        return;
+                      }
+                      navigator.geolocation.getCurrentPosition(
+                        (pos) => {
+                          setFormData((f) => ({ ...f, latitude: pos.coords.latitude, longitude: pos.coords.longitude }));
+                          toast({ title: '¡Ubicación capturada!', description: 'Recuerda guardar los cambios.' });
+                        },
+                        () => toast({ title: 'No se pudo obtener la ubicación', variant: 'destructive' })
+                      );
+                    }}
+                  >
+                    <MapPin className="mr-2 h-4 w-4" /> Usar mi ubicación actual
+                  </Button>
+                  <div className="bg-yellow-50 dark:bg-yellow-950/30 border border-yellow-200 dark:border-yellow-800 rounded-lg p-3">
+                    <p className="text-sm text-yellow-800 dark:text-yellow-200">
+                      <strong>💡 Tip:</strong> También puedes obtener las coordenadas en Google Maps con clic derecho sobre tu negocio.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Horarios de Atención */}
+              {businessId && <BusinessHoursEditor businessId={businessId} />}
+
               <Card className="bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-950/30 dark:to-purple-950/30 border-2 border-primary/20">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
@@ -419,58 +486,22 @@ const BusinessManage = () => {
                   </div>
 
                   {formData.geo_notifications_enabled && (
-                    <>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                          <Label htmlFor="latitude">Latitud *</Label>
-                          <Input
-                            id="latitude"
-                            type="number"
-                            step="0.000001"
-                            value={formData.latitude || ''}
-                            onChange={(e) => setFormData({ ...formData, latitude: parseFloat(e.target.value) || null })}
-                            placeholder="Ej: 3.451647"
-                            required={formData.geo_notifications_enabled}
-                          />
-                        </div>
-
-                        <div className="space-y-2">
-                          <Label htmlFor="longitude">Longitud *</Label>
-                          <Input
-                            id="longitude"
-                            type="number"
-                            step="0.000001"
-                            value={formData.longitude || ''}
-                            onChange={(e) => setFormData({ ...formData, longitude: parseFloat(e.target.value) || null })}
-                            placeholder="Ej: -76.531835"
-                            required={formData.geo_notifications_enabled}
-                          />
-                        </div>
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label htmlFor="radius">Radio de notificación (km) *</Label>
-                        <Input
-                          id="radius"
-                          type="number"
-                          step="0.1"
-                          min="0.1"
-                          max="50"
-                          value={formData.notification_radius_km}
-                          onChange={(e) => setFormData({ ...formData, notification_radius_km: parseFloat(e.target.value) || 1.0 })}
-                          required={formData.geo_notifications_enabled}
-                        />
-                        <p className="text-xs text-muted-foreground">
-                          Los usuarios recibirán notificaciones cuando estén a {formData.notification_radius_km} km de tu negocio
-                        </p>
-                      </div>
-
-                      <div className="bg-yellow-50 dark:bg-yellow-950/30 border border-yellow-200 dark:border-yellow-800 rounded-lg p-3">
-                        <p className="text-sm text-yellow-800 dark:text-yellow-200">
-                          <strong>💡 Consejo:</strong> Puedes obtener las coordenadas de tu negocio en Google Maps haciendo clic derecho en la ubicación y seleccionando las coordenadas que aparecen.
-                        </p>
-                      </div>
-                    </>
+                    <div className="space-y-2">
+                      <Label htmlFor="radius">Radio de notificación (km) *</Label>
+                      <Input
+                        id="radius"
+                        type="number"
+                        step="0.1"
+                        min="0.1"
+                        max="50"
+                        value={formData.notification_radius_km}
+                        onChange={(e) => setFormData({ ...formData, notification_radius_km: parseFloat(e.target.value) || 1.0 })}
+                        required={formData.geo_notifications_enabled}
+                      />
+                      <p className="text-xs text-muted-foreground">
+                        Los usuarios recibirán notificaciones cuando estén a {formData.notification_radius_km} km de tu negocio (requiere tener las coordenadas configuradas arriba).
+                      </p>
+                    </div>
                   )}
                 </CardContent>
               </Card>
