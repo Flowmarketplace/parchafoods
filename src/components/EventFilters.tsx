@@ -93,6 +93,21 @@ const EventFiltersComponent = ({ filters, onFiltersChange, onClearFilters }: Eve
       </CardHeader>
 
       <CardContent className="space-y-6">
+        {/* Buscar por nombre */}
+        <div className="space-y-2 mb-6">
+          <Label>Buscar por nombre</Label>
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+            <Input
+              type="search"
+              placeholder="Nombre del evento, lugar..."
+              value={filters.searchName}
+              onChange={(e) => updateFilter('searchName', e.target.value)}
+              className="pl-9"
+            />
+          </div>
+        </div>
+
         {/* Fecha del Evento */}
         <div className="space-y-2 mb-6">
           <Label>Fecha del Evento</Label>
