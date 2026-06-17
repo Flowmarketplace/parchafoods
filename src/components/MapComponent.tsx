@@ -401,6 +401,16 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
   return (
     <div className="relative w-full h-full bg-background">
       <div ref={mapContainer} className="absolute inset-0 w-full h-full" />
+      {onToggleExpand && (
+        <button
+          onClick={onToggleExpand}
+          aria-label={expanded ? 'Reducir mapa' : 'Ampliar mapa'}
+          className="absolute top-2 right-2 z-[1] bg-card/95 backdrop-blur-md border border-border rounded-lg shadow-md p-2 hover:bg-card active:scale-95 transition-all"
+          style={{ marginTop: expanded ? '0' : '0' }}
+        >
+          {expanded ? <Minimize2 className="h-4 w-4 text-foreground" /> : <Maximize2 className="h-4 w-4 text-foreground" />}
+        </button>
+      )}
       {isLoading && (
         <div className="absolute inset-0 flex items-center justify-center bg-background/80 z-10">
           <div className="flex flex-col items-center gap-3">
