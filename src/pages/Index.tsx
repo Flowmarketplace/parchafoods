@@ -24,7 +24,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { cn } from '@/lib/utils';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import WorldCupCalendar from '@/components/WorldCupCalendar';
-import ColombiaProgress from '@/components/ColombiaProgress';
+import WorldCupResults from '@/components/WorldCupResults';
 import WorldCupProgress from '@/components/WorldCupProgress';
 import WorldCupRoutes from '@/components/WorldCupRoutes';
 import { pickBusinessCoverUrl } from '@/utils/businessImages';
@@ -330,19 +330,19 @@ const Index = () => {
                 <ShortsCarousel shorts={filteredShorts} />
               </section>
 
-              {/* Colombia & Calendario en Tabs */}
+              {/* Resultados & Calendario en Tabs */}
               <section>
-                <Tabs defaultValue="colombia" className="w-full">
+                <Tabs defaultValue="resultados" className="w-full">
                   <TabsList className="w-full grid grid-cols-2 h-11 rounded-xl bg-muted/60 p-1">
-                    <TabsTrigger value="colombia" className="rounded-lg text-xs sm:text-sm font-semibold gap-1.5 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all">
-                      🇨🇴 Colombia
+                    <TabsTrigger value="resultados" className="rounded-lg text-xs sm:text-sm font-semibold gap-1.5 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all">
+                      🏆 Resultados
                     </TabsTrigger>
                     <TabsTrigger value="calendario" className="rounded-lg text-xs sm:text-sm font-semibold gap-1.5 data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground transition-all">
                       📅 Calendario
                     </TabsTrigger>
                   </TabsList>
-                  <TabsContent value="colombia" className="mt-3 animate-in fade-in-50 slide-in-from-bottom-2 duration-300">
-                    <ColombiaProgress />
+                  <TabsContent value="resultados" className="mt-3 animate-in fade-in-50 slide-in-from-bottom-2 duration-300">
+                    <WorldCupResults />
                   </TabsContent>
                   <TabsContent value="calendario" className="mt-3 animate-in fade-in-50 slide-in-from-bottom-2 duration-300">
                     <WorldCupCalendar />
