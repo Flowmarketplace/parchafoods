@@ -19,6 +19,13 @@ export const categoryIcons: Record<string, string> = {
   'Otro': `<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>`
 };
 
+// Aliases for category variants used in the database
+categoryIcons['Rápidas'] = categoryIcons['Comidas Rápidas'];
+categoryIcons['Cafés'] = categoryIcons['Café'];
+categoryIcons['Cerveza'] = categoryIcons['Bar'];
+categoryIcons['Restaurante'] = categoryIcons['Tradicional'];
+
+
 export const getCategoryIcon = (category: string): string => {
   return categoryIcons[category] || categoryIcons['Otro'];
 };
@@ -26,11 +33,14 @@ export const getCategoryIcon = (category: string): string => {
 export const getCategoryColor = (category: string): string => {
   const colors: Record<string, string> = {
     'Comidas Rápidas': '#ff5722',
+    'Rápidas': '#ff5722',
     'Café': '#795548',
+    'Cafés': '#795548',
     'Food Truck': '#ff9800',
     'Italiana': '#e91e63',
     'Parrilla': '#d32f2f',
     'Tradicional': '#4caf50',
+    'Restaurante': '#4caf50',
     'Saludable': '#8bc34a',
     'Mariscos': '#00bcd4',
     'Postres': '#9c27b0',
@@ -39,6 +49,7 @@ export const getCategoryColor = (category: string): string => {
     'Mexicana': '#e65100',
     'Sushi': '#1565c0',
     'Bar': '#f9a825',
+    'Cerveza': '#f9a825',
     'Rooftop': '#7c4dff',
     'Remate': '#e91e63',
     'Otro': '#9e9e9e'
