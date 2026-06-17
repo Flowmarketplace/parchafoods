@@ -19,6 +19,8 @@ interface MapComponentProps {
   places?: Place[];
   focusCoordinates?: { lat: number; lng: number; zoom?: number; key?: string | number } | null;
   userPosition?: { lat: number; lng: number } | null;
+  expanded?: boolean;
+  onToggleExpand?: () => void;
 }
 
 const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todos', places, focusCoordinates, userPosition }: MapComponentProps) => {
