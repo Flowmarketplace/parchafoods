@@ -8,7 +8,7 @@ import { neighborhoodLocations } from '@/data/neighborhoods';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Loader2, MapPin, Search } from 'lucide-react';
+import { Loader2, MapPin, Search, Maximize2, Minimize2 } from 'lucide-react';
 
 // Mapbox public token (safe to expose in frontend)
 const MAPBOX_TOKEN = 'pk.eyJ1IjoiaGFuZGNpdHkiLCJhIjoiY2syNmp3ZjUxMzJkMzNtcGl6dXR6ZTV0diJ9.0xE-C5rlwWBM80gUY1POzw';
@@ -19,9 +19,11 @@ interface MapComponentProps {
   places?: Place[];
   focusCoordinates?: { lat: number; lng: number; zoom?: number; key?: string | number } | null;
   userPosition?: { lat: number; lng: number } | null;
+  expanded?: boolean;
+  onToggleExpand?: () => void;
 }
 
-const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todos', places, focusCoordinates, userPosition }: MapComponentProps) => {
+const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todos', places, focusCoordinates, userPosition, expanded = false, onToggleExpand }: MapComponentProps) => {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
   const markers = useRef<mapboxgl.Marker[]>([]);
@@ -399,6 +401,16 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
   return (
     <div className="relative w-full h-full bg-background">
       <div ref={mapContainer} className="absolute inset-0 w-full h-full" />
+      {onToggleExpand && (
+        <button
+          onClick={onToggleExpand}
+          aria-label={expanded ? 'Reducir mapa' : 'Ampliar mapa'}
+          className="absolute top-2 right-2 z-[1] bg-card/95 backdrop-blur-md border border-border rounded-lg shadow-md p-2 hover:bg-card active:scale-95 transition-all"
+          style={{ marginTop: expanded ? '0' : '0' }}
+        >
+          {expanded ? <Minimize2 className="h-4 w-4 text-foreground" /> : <Maximize2 className="h-4 w-4 text-foreground" />}
+        </button>
+      )}
       {isLoading && (
         <div className="absolute inset-0 flex items-center justify-center bg-background/80 z-10">
           <div className="flex flex-col items-center gap-3">
