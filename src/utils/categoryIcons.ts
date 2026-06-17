@@ -26,11 +26,14 @@ export const getCategoryIcon = (category: string): string => {
 export const getCategoryColor = (category: string): string => {
   const colors: Record<string, string> = {
     'Comidas Rápidas': '#ff5722',
+    'Rápidas': '#ff5722',
     'Café': '#795548',
+    'Cafés': '#795548',
     'Food Truck': '#ff9800',
     'Italiana': '#e91e63',
     'Parrilla': '#d32f2f',
     'Tradicional': '#4caf50',
+    'Restaurante': '#4caf50',
     'Saludable': '#8bc34a',
     'Mariscos': '#00bcd4',
     'Postres': '#9c27b0',
@@ -39,6 +42,7 @@ export const getCategoryColor = (category: string): string => {
     'Mexicana': '#e65100',
     'Sushi': '#1565c0',
     'Bar': '#f9a825',
+    'Cerveza': '#f9a825',
     'Rooftop': '#7c4dff',
     'Remate': '#e91e63',
     'Otro': '#9e9e9e'
