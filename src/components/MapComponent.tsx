@@ -8,7 +8,7 @@ import { neighborhoodLocations } from '@/data/neighborhoods';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Loader2, MapPin, Search } from 'lucide-react';
+import { Loader2, MapPin, Search, Maximize2, Minimize2 } from 'lucide-react';
 
 // Mapbox public token (safe to expose in frontend)
 const MAPBOX_TOKEN = 'pk.eyJ1IjoiaGFuZGNpdHkiLCJhIjoiY2syNmp3ZjUxMzJkMzNtcGl6dXR6ZTV0diJ9.0xE-C5rlwWBM80gUY1POzw';
