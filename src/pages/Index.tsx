@@ -41,6 +41,7 @@ const Index = () => {
   const [loadingPlaces, setLoadingPlaces] = useState(true);
   const [shorts, setShorts] = useState<any[]>([]);
   const [dbNeighborhoods, setDbNeighborhoods] = useState<string[]>([]);
+  const [mapExpanded, setMapExpanded] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
