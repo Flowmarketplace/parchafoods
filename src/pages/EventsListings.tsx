@@ -16,6 +16,7 @@ const EventsListings = () => {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   
   const [filters, setFilters] = useState<EventFilters>({
+    searchName: '',
     date: undefined,
     type: 'Todos',
     priceRange: 'Todos',
@@ -26,8 +27,17 @@ const EventsListings = () => {
     goodForCouples: false,
   });
 
+  const normalizeText = (t: string) => t.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
   const filteredEvents = useMemo(() => {
     return mockEvents.filter((event: Event) => {
+      // Name search filter
+      if (filters.searchName) {
+        const search = normalizeText(filters.searchName);
+        const text = normalizeText([event.name, event.venue, event.address, event.description].join(' '));
+        if (!text.includes(search)) return false;
+      }
+
       // Date filter - compare only the date part
       if (filters.date) {
         const eventDate = new Date(event.date);
@@ -60,6 +70,7 @@ const EventsListings = () => {
 
   const handleClearFilters = () => {
     setFilters({
+      searchName: '',
       date: undefined,
       type: 'Todos',
       priceRange: 'Todos',
