@@ -1,4 +1,4 @@
-import { Filter, X, CalendarIcon } from 'lucide-react';
+import { Filter, X, CalendarIcon, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -17,6 +17,7 @@ import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 
 export interface EventFilters {
+  searchName: string;
   date?: Date;
   type: string;
   priceRange: string;
@@ -32,6 +33,8 @@ interface EventFiltersProps {
   onFiltersChange: (filters: EventFilters) => void;
   onClearFilters: () => void;
 }
+
+import { Input } from '@/components/ui/input';
 
 const eventTypes = [
   'Todos',
@@ -57,7 +60,8 @@ const EventFiltersComponent = ({ filters, onFiltersChange, onClearFilters }: Eve
     onFiltersChange({ ...filters, [key]: value });
   };
 
-  const hasActiveFilters = 
+  const hasActiveFilters =
+    filters.searchName !== '' ||
     filters.date !== undefined ||
     filters.type !== 'Todos' ||
     filters.priceRange !== 'Todos' ||
@@ -89,6 +93,21 @@ const EventFiltersComponent = ({ filters, onFiltersChange, onClearFilters }: Eve
       </CardHeader>
 
       <CardContent className="space-y-6">
+        {/* Buscar por nombre */}
+        <div className="space-y-2 mb-6">
+          <Label>Buscar por nombre</Label>
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+            <Input
+              type="search"
+              placeholder="Nombre del evento, lugar..."
+              value={filters.searchName}
+              onChange={(e) => updateFilter('searchName', e.target.value)}
+              className="pl-9"
+            />
+          </div>
+        </div>
+
         {/* Fecha del Evento */}
         <div className="space-y-2 mb-6">
           <Label>Fecha del Evento</Label>
