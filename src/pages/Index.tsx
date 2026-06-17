@@ -202,8 +202,27 @@ const Index = () => {
         
         <main className="flex-1 min-w-0">
           {/* Map */}
+          {mapExpanded && (
+            <div className="fixed inset-0 z-[60] bg-background flex flex-col">
+              <div className="flex-1 relative">
+                <MapComponent
+                  selectedNeighborhood={selectedNeighborhood}
+                  selectedCategory={selectedCategory}
+                  places={places as any}
+                  expanded={true}
+                  onToggleExpand={() => setMapExpanded(false)}
+                />
+              </div>
+            </div>
+          )}
           <div className="relative z-20 h-[28vh] sm:h-[35vh] md:h-[40vh] lg:h-[60vh] w-full">
-            <MapComponent selectedNeighborhood={selectedNeighborhood} selectedCategory={selectedCategory} places={places as any} />
+            <MapComponent
+              selectedNeighborhood={selectedNeighborhood}
+              selectedCategory={selectedCategory}
+              places={places as any}
+              expanded={false}
+              onToggleExpand={() => setMapExpanded(true)}
+            />
           </div>
 
           {/* Neighborhood Selector */}
