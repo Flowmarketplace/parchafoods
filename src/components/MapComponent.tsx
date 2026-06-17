@@ -23,7 +23,7 @@ interface MapComponentProps {
   onToggleExpand?: () => void;
 }
 
-const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todos', places, focusCoordinates, userPosition }: MapComponentProps) => {
+const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todos', places, focusCoordinates, userPosition, expanded = false, onToggleExpand }: MapComponentProps) => {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
   const markers = useRef<mapboxgl.Marker[]>([]);
