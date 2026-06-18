@@ -59,7 +59,7 @@ const InstallPWA = () => {
         <div className="flex-1 min-w-0">
           <p className="text-sm font-semibold leading-tight">Instala la app ⚽</p>
           <p className="text-[11px] text-muted-foreground leading-tight mt-0.5">
-            Accede rápido al Mundial del Sabor
+            Accede rápido a Parchafoods
           </p>
         </div>
         <div className="flex items-center gap-1.5 shrink-0">

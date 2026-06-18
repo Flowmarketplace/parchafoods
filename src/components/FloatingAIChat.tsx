@@ -19,7 +19,7 @@ const FloatingAIChat = ({ isHidden }: { isHidden?: boolean }) => {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'assistant',
-      content: '¡Hola! 👋 Soy tu asistente del Mundial del Sabor. ¿En qué puedo ayudarte hoy?'
+      content: '¡Hola! 👋 Soy tu asistente de Parchafoods. ¿En qué puedo ayudarte hoy?'
     }
   ]);
   const [input, setInput] = useState('');
@@ -130,7 +130,7 @@ const FloatingAIChat = ({ isHidden }: { isHidden?: boolean }) => {
     setMessages([
       {
         role: 'assistant',
-        content: '¡Hola! 👋 Soy tu asistente del Mundial del Sabor. ¿En qué puedo ayudarte hoy?'
+        content: '¡Hola! 👋 Soy tu asistente de Parchafoods. ¿En qué puedo ayudarte hoy?'
       }
     ]);
     toast({
@@ -225,7 +225,7 @@ const FloatingAIChat = ({ isHidden }: { isHidden?: boolean }) => {
             <div className="flex items-center gap-2">
               <Bot className="h-5 w-5" />
               <CardTitle className="text-lg font-semibold">
-                Asistente Mundial del Sabor
+                Asistente Parchafoods
               </CardTitle>
             </div>
             <div className="flex items-center gap-2">

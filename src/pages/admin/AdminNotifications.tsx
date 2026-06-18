@@ -241,7 +241,7 @@ const AdminNotifications = () => {
                   variant="outline"
                   className="w-full justify-start"
                   onClick={() => {
-                    setTitle('Bienvenido al Mundial del Sabor');
+                    setTitle('Bienvenido a Parchafoods');
                     setMessage('Descubre los mejores negocios cerca de ti');
                   }}
                 >

@@ -38,8 +38,8 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
       >
         <div className="flex items-center justify-between p-4 border-b border-border">
           <div className="flex items-center gap-2">
-            <img src="/sabor360-logo.png" alt="El Mundial del Sabor 2026" className="h-9 w-auto" />
-            <span className="font-bold text-lg">El Mundial del Sabor</span>
+            <img src="/sabor360-logo.png" alt="Parchafoods" className="h-9 w-auto" />
+            <span className="font-bold text-lg">Parchafoods</span>
           </div>
           <Button
             variant="ghost"

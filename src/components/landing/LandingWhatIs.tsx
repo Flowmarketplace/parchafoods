@@ -27,7 +27,7 @@ const LandingWhatIs = () => {
               </span>
             </h2>
             <p className="text-muted-foreground mt-6 text-lg leading-relaxed">
-              <strong className="text-foreground">El Mundial del Sabor 2026</strong> es la plataforma que conecta a los amantes del fútbol con los mejores restaurantes de Cali durante el Mundial FIFA 2026.
+              <strong className="text-foreground">Parchafoods</strong> es la plataforma que conecta a los amantes del fútbol con los mejores restaurantes de Cali durante el Mundial FIFA 2026.
             </p>
             <p className="text-muted-foreground mt-4 text-lg leading-relaxed">
               Descubre dónde ver los partidos de Colombia, recorre rutas temáticas por la ciudad, acumula puntos en cada visita y disfruta de promociones exclusivas mientras vives la fiesta mundialista.
@@ -138,7 +138,7 @@ const LandingWhatIs = () => {
                     {/* Screen content */}
                     <img
                       src={mockupHome}
-                      alt="El Mundial del Sabor - Inicio"
+                      alt="Parchafoods - Inicio"
                       className="w-full h-full object-cover object-top"
                       loading="lazy"
                     />
