@@ -30,6 +30,10 @@ const Recommendations = () => {
               Volver al inicio
             </Button>
 
+            <h1 className="text-2xl sm:text-3xl font-extrabold mb-4">
+              Recomendaciones Gastronómicas Semanales en Cali
+            </h1>
+
             {/* Weekly Recommendations Component */}
             <WeeklyRecommendations />
           </div>

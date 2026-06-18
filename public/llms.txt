@@ -1,0 +1,21 @@
+# Parcha Foods
+
+> Guía gastronómica de Cali, Colombia: restaurantes, rutas mundialistas y eventos. Comer, saber y vivir.
+
+Parcha Foods ayuda a descubrir los mejores restaurantes y experiencias gastronómicas de Cali, con rutas temáticas para el Mundial 2026, recomendaciones semanales, videos cortos y eventos locales.
+
+## Pages
+
+- [Inicio](/): Descubre restaurantes destacados, rutas mundialistas y videos gastronómicos de Cali.
+- [Eventos](/events): Eventos gastronómicos y partidos del Mundial en Cali.
+- [Todos los eventos](/events-all): Calendario completo de eventos.
+- [Categorías](/listings): Restaurantes por categoría gastronómica.
+- [Barrios](/neighborhoods): Explora la oferta gastronómica por barrio.
+- [Cerca de mí](/near-me): Restaurantes cercanos a tu ubicación.
+- [Shorts](/shorts): Videos cortos de restaurantes y platos.
+- [Recomendaciones](/recommendations): Las mejores recomendaciones semanales para ver el Mundial 2026 en Cali.
+- [Rutas Mundialistas](/rutas): Rutas temáticas por el Mundial 2026.
+
+## Optional
+
+- [Landing](/landing): Página informativa para nuevos visitantes.
