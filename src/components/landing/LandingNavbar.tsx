@@ -15,10 +15,10 @@ const LandingNavbar = () => {
     >
       <div className="container mx-auto px-6 py-3 flex items-center justify-between">
         <a href="/landing" className="flex items-center gap-2.5">
-          <img src="/mundial-sabor-icon.png" alt="Parchafoods" className="h-10 w-10 rounded-lg object-cover" />
+          <img src="/mundial-sabor-icon.png" alt="Parchafoods" className="h-14 w-14 object-contain" />
           <div className="flex flex-col">
-            <span className="font-extrabold text-sm leading-tight text-foreground">El Mundial</span>
-            <span className="font-extrabold text-sm leading-tight bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">del Sabor 2026</span>
+            <span className="font-extrabold text-base leading-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Parchafoods</span>
+            <span className="text-[10px] leading-tight text-muted-foreground">Comer, saber y vivir</span>
           </div>
         </a>
 
