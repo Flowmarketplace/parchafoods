@@ -29,6 +29,11 @@ Deno.serve(async (req) => {
 
     const businesses = await fetchAll("businesses");
     const shorts = await fetchAll("business_shorts");
+    const images = await fetchAll("business_images");
+    const menu = await fetchAll("business_menu");
+    const hours = await fetchAll("business_hours");
+    const branches = await fetchAll("business_branches");
+    const attributes = await fetchAll("business_attributes");
 
     for (const b of businesses) b.owner_id = OWNER;
 
@@ -44,11 +49,35 @@ Deno.serve(async (req) => {
       .upsert(filteredShorts, { onConflict: "id" });
     if (se) throw se;
 
+    const seedChild = async (
+      table: string,
+      rows: any[],
+    ): Promise<number> => {
+      const filtered = rows.filter((r: any) => bizIds.has(r.business_id));
+      if (filtered.length === 0) return 0;
+      const { error } = await admin
+        .from(table)
+        .upsert(filtered, { onConflict: "id" });
+      if (error) throw new Error(`${table}: ${error.message}`);
+      return filtered.length;
+    };
+
+    const imagesCount = await seedChild("business_images", images);
+    const menuCount = await seedChild("business_menu", menu);
+    const hoursCount = await seedChild("business_hours", hours);
+    const branchesCount = await seedChild("business_branches", branches);
+    const attributesCount = await seedChild("business_attributes", attributes);
+
     return new Response(
       JSON.stringify({
         ok: true,
         businesses: businesses.length,
         shorts: filteredShorts.length,
+        images: imagesCount,
+        menu: menuCount,
+        hours: hoursCount,
+        branches: branchesCount,
+        attributes: attributesCount,
       }),
       { headers: { ...cors, "Content-Type": "application/json" } },
     );
