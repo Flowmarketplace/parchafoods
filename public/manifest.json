@@ -1,7 +1,7 @@
 {
   "name": "Parcha Foods",
-  "short_name": "Mundial Sabor",
-  "description": "Descubre los mejores restaurantes y sabores de Cali para el Mundial 2026",
+  "short_name": "Parcha Foods",
+  "description": "Parcha Foods - Descubre los mejores restaurantes y sabores de Cali. Tu guía gastronómica.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
