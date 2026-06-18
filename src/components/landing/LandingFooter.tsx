@@ -4,9 +4,9 @@ const LandingFooter = () => {
       <div className="container mx-auto px-6">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-2.5">
-            <img src="/mundial-sabor-icon.png" alt="Parchafoods" className="h-9 w-9 rounded-lg object-cover" />
+            <img src="/mundial-sabor-icon.png" alt="Parchafoods" className="h-12 w-12 object-contain" />
             <div className="flex flex-col">
-              <span className="font-bold text-sm text-foreground leading-tight">Parchafoods</span>
+              <span className="font-bold text-base leading-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Parchafoods</span>
               <span className="text-[10px] text-muted-foreground">Comer, saber y vivir ⚽</span>
             </div>
           </div>
