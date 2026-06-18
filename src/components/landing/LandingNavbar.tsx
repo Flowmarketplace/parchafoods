@@ -15,9 +15,9 @@ const LandingNavbar = () => {
     >
       <div className="container mx-auto px-6 py-3 flex items-center justify-between">
         <a href="/landing" className="flex items-center gap-2.5">
-          <img src="/mundial-sabor-icon.png" alt="Parchafoods" className="h-14 w-14 object-contain" />
+          <img src="/mundial-sabor-icon.png" alt="Parcha Foods" className="h-14 w-14 object-contain" />
           <div className="flex flex-col">
-            <span className="font-extrabold text-base leading-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Parchafoods</span>
+            <span className="font-extrabold text-base leading-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Parcha Foods</span>
             <span className="text-[10px] leading-tight text-muted-foreground">Comer, saber y vivir</span>
           </div>
         </a>
