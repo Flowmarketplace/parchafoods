@@ -25,7 +25,7 @@ const LandingCTA = () => {
             <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-4">
               ¿Listo para vivir el{" "}
               <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                Mundial del Sabor?
+                Parchafoods?
               </span>
             </h2>
             <p className="text-muted-foreground text-lg max-w-xl mx-auto mb-8">

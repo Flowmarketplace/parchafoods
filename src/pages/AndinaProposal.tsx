@@ -19,13 +19,13 @@ const fadeUp = {
 };
 
 const benefits = [
-  { icon: Trophy, title: "Patrocinio Oficial del Evento", description: "Andina como patrocinador oficial de El Mundial del Sabor 2026 en Cali. Permanencia y presencia en todo el evento.", highlight: true },
+  { icon: Trophy, title: "Patrocinio Oficial del Evento", description: "Andina como patrocinador oficial de Parchafoods en Cali. Permanencia y presencia en todo el evento.", highlight: true },
   { icon: Smartphone, title: "Patrocinio Oficial de la App", description: "Módulo exclusivo de patrocinador oficial dentro de la aplicación con presencia destacada para todos los usuarios.", highlight: true },
   { icon: Tv, title: "Banner y Video Principal en la App", description: "Espacio premium con banner principal y video destacado visible para todos los usuarios al abrir la aplicación." },
   { icon: Bell, title: "Notificaciones Push a Usuarios", description: "Envío de notificaciones push directas a todos los usuarios registrados de la plataforma con campañas personalizadas." },
   { icon: BarChart3, title: "Data de Consumidores y Restaurantes", description: "Acceso a datos de consumo, comportamiento de usuarios y participación de restaurantes en tiempo real." },
   { icon: Gift, title: "Participación en Premios", description: "Participación directa en el sistema de premios y recompensas a usuarios, asociando la marca con experiencias positivas." },
-  { icon: Store, title: "Brandeo en 100 Restaurantes", description: "Sticker oficial del Mundial del Sabor brandeado con Andina en 100 restaurantes participantes de la ciudad." },
+  { icon: Store, title: "Brandeo en 100 Restaurantes", description: "Sticker oficial de Parchafoods brandeado con Andina en 100 restaurantes participantes de la ciudad." },
   { icon: QrCode, title: "QR Brandeados", description: "Códigos QR personalizados con la marca Andina en cada restaurante participante para tracking de visitas." },
   { icon: Megaphone, title: "Presencia en Redes y Pauta", description: "Presencia en todas las redes sociales del evento y pauta publicitaria en comunidad de foodies de Cali." },
   { icon: Video, title: "Videos Brandeados en 100 Restaurantes", description: "Videos con publicidad comercial de Andina reproducidos en los televisores de los 100 restaurantes participantes." },
@@ -86,7 +86,7 @@ const AndinaProposal = () => {
 
           <motion.h1 {...fadeUp} transition={{ duration: 0.6, delay: 0.25 }} className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
             Patrocinador Oficial de<br />
-            <span className="bg-gradient-to-r from-yellow-400 via-amber-300 to-yellow-500 bg-clip-text text-transparent">El Mundial del Sabor</span>
+            <span className="bg-gradient-to-r from-yellow-400 via-amber-300 to-yellow-500 bg-clip-text text-transparent">Parchafoods</span>
           </motion.h1>
 
           <motion.p {...fadeUp} transition={{ duration: 0.6, delay: 0.35 }} className="text-white/70 text-lg md:text-xl max-w-3xl mx-auto mb-10 leading-relaxed">
@@ -287,7 +287,7 @@ const AndinaProposal = () => {
           <div className="grid md:grid-cols-3 gap-5 mb-10">
             {[
               { icon: Bell, color: "from-yellow-500 to-amber-500", iconColor: "text-black", title: "Andina 🍺", msg: "¡Colombia juega hoy a las 4pm! Pide tu Andina helada en cualquier restaurante de la ruta mundialista 🇨🇴⚽", time: "Ahora" },
-              { icon: Gift, color: "from-green-500 to-emerald-500", iconColor: "text-white", title: "Promo Andina", msg: "2x1 en Cerveza Andina este fin de semana en 30 restaurantes del Mundial del Sabor 🎉", time: "Hace 2h" },
+              { icon: Gift, color: "from-green-500 to-emerald-500", iconColor: "text-white", title: "Promo Andina", msg: "2x1 en Cerveza Andina este fin de semana en 30 restaurantes de Parchafoods 🎉", time: "Hace 2h" },
               { icon: Megaphone, color: "from-blue-500 to-indigo-500", iconColor: "text-white", title: "¡Gol de Colombia!", msg: "Celebra con una Andina 🍻 Muestra esta notificación y recibe 20% de descuento", time: "Hace 5min" },
             ].map((notif, i) => (
               <motion.div
@@ -475,7 +475,7 @@ const AndinaProposal = () => {
                 <span className="text-accent font-semibold text-sm tracking-widest uppercase">Alcance Garantizado</span>
                 <h2 className="text-3xl md:text-4xl font-bold text-foreground mt-3 mb-4">Datos que respaldan la inversión</h2>
                 <p className="text-muted-foreground text-base leading-relaxed mb-6">
-                  Con El Mundial del Sabor, Andina accede a una base activa de consumidores gastronómicos en Cali, 
+                  Con Parchafoods, Andina accede a una base activa de consumidores gastronómicos en Cali, 
                   con datos precisos de comportamiento, preferencias y ubicación.
                 </p>
                 <ul className="space-y-3">
@@ -569,7 +569,7 @@ const AndinaProposal = () => {
             <img src={andinaLogo} alt="Cerveza Andina" className="h-16 mx-auto mb-8 opacity-80" />
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">¿Listo para ser el patrocinador oficial?</h2>
             <p className="text-white/60 text-lg max-w-2xl mx-auto mb-10">
-              Hablemos sobre cómo Cerveza Andina puede ser la cerveza oficial de El Mundial del Sabor 2026 en Cali.
+              Hablemos sobre cómo Cerveza Andina puede ser la cerveza oficial de Parchafoods en Cali.
             </p>
             <a
               href="https://wa.me/573146269531?text=Hola%2C%20soy%20de%20Andina%20y%20me%20interesa%20la%20propuesta%20de%20patrocinio"
@@ -587,7 +587,7 @@ const AndinaProposal = () => {
       <footer className="py-8 border-t border-border">
         <div className="container mx-auto px-6 text-center">
           <p className="text-muted-foreground text-sm">
-            El Mundial del Sabor 2026 · Propuesta confidencial para Cerveza Andina · Cali, Colombia
+            Parchafoods · Propuesta confidencial para Cerveza Andina · Cali, Colombia
           </p>
         </div>
       </footer>

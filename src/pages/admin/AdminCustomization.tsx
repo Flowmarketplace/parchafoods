@@ -14,7 +14,7 @@ const AdminCustomization = () => {
   const { toast } = useToast();
   const [primaryColor, setPrimaryColor] = useState('#8B5CF6');
   const [secondaryColor, setSecondaryColor] = useState('#10B981');
-  const [appName, setAppName] = useState('El Mundial del Sabor 2026');
+  const [appName, setAppName] = useState('Parchafoods');
   const [appLogo, setAppLogo] = useState('');
 
   const saveCustomization = useMutation({

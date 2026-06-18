@@ -47,7 +47,7 @@ const features = [
     icon: Star,
     title: "Promociones Exclusivas",
     subtitle: "Ofertas solo en la app",
-    description: "Accede a descuentos especiales, combos mundialistas y ofertas exclusivas que solo están disponibles para usuarios de El Mundial del Sabor.",
+    description: "Accede a descuentos especiales, combos mundialistas y ofertas exclusivas que solo están disponibles para usuarios de Parchafoods.",
     image: featurePromos,
     color: "from-accent/20 to-accent/5",
     iconBg: "bg-accent",

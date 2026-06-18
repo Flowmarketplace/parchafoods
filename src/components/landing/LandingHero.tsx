@@ -116,7 +116,7 @@ const LandingHero = () => {
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-28 h-7 bg-foreground/15 rounded-b-2xl z-10" />
                 <img
                   src={mockupHome}
-                  alt="El Mundial del Sabor App"
+                  alt="Parchafoods App"
                   className="w-full h-full object-cover object-top"
                 />
               </div>
