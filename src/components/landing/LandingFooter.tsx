@@ -4,9 +4,9 @@ const LandingFooter = () => {
       <div className="container mx-auto px-6">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-2.5">
-            <img src="/mundial-sabor-icon.png" alt="Parchafoods" className="h-12 w-12 object-contain" />
+            <img src="/mundial-sabor-icon.png" alt="Parcha Foods" className="h-12 w-12 object-contain" />
             <div className="flex flex-col">
-              <span className="font-bold text-base leading-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Parchafoods</span>
+              <span className="font-bold text-base leading-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Parcha Foods</span>
               <span className="text-[10px] text-muted-foreground">Comer, saber y vivir ⚽</span>
             </div>
           </div>
@@ -21,7 +21,7 @@ const LandingFooter = () => {
               📞 +57 314 626 9531
             </a>
             <p className="text-muted-foreground text-xs">
-              © 2026 Parchafoods. Todos los derechos reservados.
+              © 2026 Parcha Foods. Todos los derechos reservados.
             </p>
           </div>
         </div>

@@ -86,7 +86,7 @@ export function WelcomeDialog({
                   filter: "brightness(0) invert(1)",
                 }}
               />
-              <h2 className="text-2xl font-bold text-white relative z-10">Parchafoods</h2>
+              <h2 className="text-2xl font-bold text-white relative z-10">Parcha Foods</h2>
               <Button
                 onClick={markSeenAndClose}
                 variant="ghost"

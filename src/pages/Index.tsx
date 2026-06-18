@@ -269,7 +269,7 @@ const Index = () => {
                   <span className="text-3xl sm:text-4xl shrink-0">⚽</span>
                   <div className="flex-1 min-w-0">
                     <h2 className="text-base sm:text-xl md:text-2xl font-extrabold leading-tight">
-                      Parchafoods
+                      Parcha Foods
                     </h2>
                     <p className="text-[10px] sm:text-xs opacity-90 mt-0.5">
                       Vive cada partido con los mejores restaurantes 🇨🇴
