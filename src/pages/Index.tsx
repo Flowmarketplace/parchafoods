@@ -268,9 +268,9 @@ const Index = () => {
                 <div className="relative z-10 flex items-center gap-3">
                   <span className="text-3xl sm:text-4xl shrink-0">⚽</span>
                   <div className="flex-1 min-w-0">
-                    <h2 className="text-base sm:text-xl md:text-2xl font-extrabold leading-tight">
-                      Parcha Foods
-                    </h2>
+                    <h1 className="text-base sm:text-xl md:text-2xl font-extrabold leading-tight">
+                      Parcha Foods — Guía Gastronómica de Cali para el Mundial 2026
+                    </h1>
                     <p className="text-[10px] sm:text-xs opacity-90 mt-0.5">
                       Vive cada partido con los mejores restaurantes 🇨🇴
                     </p>
