@@ -408,7 +408,7 @@ const Index = () => {
                   {(selectedCategory !== 'Todos' || searchQuery) && (
                     <div className="mb-3 flex items-center justify-between bg-card border rounded-lg p-2.5 gap-2">
                       <p className="text-xs text-muted-foreground">
-                        {filteredPlaces.length} {filteredPlaces.length === 1 ? 'lugar' : 'lugares'}
+                        {visiblePlaces.length} {visiblePlaces.length === 1 ? 'lugar' : 'lugares'}
                         {searchQuery && <span className="block text-[10px]">"{searchQuery}"</span>}
                       </p>
                       {selectedCategory !== 'Todos' && (
