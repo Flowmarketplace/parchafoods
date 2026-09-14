@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
-import logo from "@/assets/portada_mundial_del_sabor_2026.jpg";
 
 const LandingNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);

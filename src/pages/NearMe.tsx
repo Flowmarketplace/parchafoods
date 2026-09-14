@@ -351,7 +351,7 @@ const NearMe = () => {
           <DialogHeader>
             <DialogTitle>Ingresa tu ubicación de salida</DialogTitle>
             <DialogDescription>
-              Escribe una dirección, barrio o lugar conocido en Cali para calcular distancias y trazar rutas.
+              Escribe una dirección, barrio o lugar conocido para calcular distancias y trazar rutas.
             </DialogDescription>
           </DialogHeader>
 

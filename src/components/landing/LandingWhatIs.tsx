@@ -23,11 +23,11 @@ const LandingWhatIs = () => {
             <h2 className="text-4xl md:text-5xl font-bold mt-3 text-foreground leading-tight">
               La app del{" "}
               <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                Mundial Gastronómico
+                Guía de la ciudad
               </span>
             </h2>
             <p className="text-muted-foreground mt-6 text-lg leading-relaxed">
-              <strong className="text-foreground">La Ciudad en tus Manos</strong> es la plataforma que conecta a los amantes del fútbol con los mejores restaurantes de Cali durante el Mundial FIFA 2026.
+              <strong className="text-foreground">La Ciudad en tus Manos</strong> es la guía digital de negocios de Barbosa (Santander), Santana (Boyacá) y Cali: comida, salud, belleza, ropa, hogar, hospedaje, servicios y más.
             </p>
             <p className="text-muted-foreground mt-4 text-lg leading-relaxed">
               Descubre dónde ver los partidos de Colombia, recorre rutas temáticas por la ciudad, acumula puntos en cada visita y disfruta de promociones exclusivas mientras vives la fiesta mundialista.
@@ -173,7 +173,7 @@ const LandingWhatIs = () => {
                     {/* Status bar / notch */}
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-20 h-5 bg-black rounded-b-xl z-10" />
                     {/* Screen content */}
-                    <img src={mockupRutas} alt="Rutas Mundialistas" className="w-full h-full object-cover object-top" loading="lazy" />
+                    <img src={mockupRutas} alt="Explora la ciudad" className="w-full h-full object-cover object-top" loading="lazy" />
                     {/* Screen glare */}
                     <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent pointer-events-none" />
                   </div>

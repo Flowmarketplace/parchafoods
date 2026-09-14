@@ -36,7 +36,7 @@ const LandingHero = () => {
             >
               <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
               <span className="text-sm text-muted-foreground">
-                La app gastronómica del Mundial 2026 🇨🇴
+                La guía de negocios de tu ciudad 🇨🇴
               </span>
             </motion.div>
 
@@ -46,7 +46,7 @@ const LandingHero = () => {
               transition={{ duration: 0.7, delay: 0.1 }}
               className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[0.95] tracking-tight text-foreground"
             >
-              Vive el Mundial{" "}
+              Vive tu ciudad{" "}
               <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                 con Sabor
               </span>
