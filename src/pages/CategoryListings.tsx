@@ -336,7 +336,7 @@ const CategoryListings = () => {
                   </Badge>
                 )}
                 <button
-                  onClick={() => { setSelectedCategory('Todos'); setSelectedNeighborhood('Todos'); }}
+                  onClick={() => { selectCategory('Todos'); setSelectedNeighborhood('Todos'); }}
                   className="text-xs text-primary hover:underline font-medium"
                 >
                   Limpiar todo
@@ -373,7 +373,7 @@ const CategoryListings = () => {
                 <Button
                   variant="outline"
                   onClick={() => {
-                    setSelectedCategory('Todos');
+                    selectCategory('Todos');
                     setSelectedNeighborhood('Todos');
                     setSearchQuery('');
                   }}
