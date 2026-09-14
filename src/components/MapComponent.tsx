@@ -385,40 +385,42 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
       return dirs[idx];
     };
 
-    // LEVEL 2 — group that category by zone / neighborhood
-    if (!expandedZone) {
+    // Build zone groups (named neighborhoods, compass zones, or a geographic grid)
+    const buildZones = () => {
       const byZone = new Map<string, Place[]>();
       inCategory.forEach((p: Place) => {
         const zone = zoneOf(p);
         byZone.set(zone, [...(byZone.get(zone) || []), p]);
       });
-      // If everything lands in one zone, subdivide geographically so the map stays clean
-      if (byZone.size <= 1 && inCategory.length > 6) {
-        byZone.clear();
-        inCategory.forEach((p: Place) => {
-          const lat = Number(p.latitude);
-          const lng = Number(p.longitude);
-          const key =
-            isFinite(lat) && isFinite(lng)
-              ? `${Math.round(lat / 0.0035)}|${Math.round(lng / 0.0035)}`
-              : 'otras';
-          byZone.set(key, [...(byZone.get(key) || []), p]);
-        });
-        let n = 0;
-        const renamed = new Map<string, Place[]>();
-        byZone.forEach((list) => {
-          n += 1;
-          renamed.set(`Zona ${n}`, list);
-        });
-        byZone.clear();
-        renamed.forEach((v, k) => byZone.set(k, v));
-      }
-      if (byZone.size <= 1 || inCategory.length <= 6) {
+      if (byZone.size > 1 || inCategory.length <= 6) return byZone;
+      // Everything landed in one zone: subdivide geographically so the map stays clean
+      const grid = new Map<string, Place[]>();
+      inCategory.forEach((p: Place) => {
+        const lat = Number(p.latitude);
+        const lng = Number(p.longitude);
+        const key =
+          isFinite(lat) && isFinite(lng)
+            ? `${Math.round(lat / 0.0035)}|${Math.round(lng / 0.0035)}`
+            : 'otras';
+        grid.set(key, [...(grid.get(key) || []), p]);
+      });
+      const renamed = new Map<string, Place[]>();
+      Array.from(grid.keys())
+        .sort()
+        .forEach((k, i) => renamed.set(`Zona ${i + 1}`, grid.get(k)!));
+      return renamed;
+    };
+
+    const zones = buildZones();
+
+    // LEVEL 2 — group that category by zone
+    if (!expandedZone) {
+      if (zones.size <= 1 || inCategory.length <= 6) {
         addAll(inCategory);
         return;
       }
 
-      byZone.forEach((list, zone) => {
+      zones.forEach((list, zone) => {
         const c = centroid(list);
         const marker = createGroupMarker(c.lng, c.lat, {
           label: zone,
@@ -436,7 +438,8 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
     }
 
     // LEVEL 3 — individual businesses inside the zone
-    addAll(inCategory.filter((p: Place) => zoneOf(p) === expandedZone));
+    addAll(zones.get(expandedZone) || []);
+
 
   };
 
