@@ -102,7 +102,7 @@ const DirectionsPanel = ({ destinationLat, destinationLng, destinationName, dest
     if (!userLocation) return '#';
     
     const googleMapsMode = mode === 'driving' ? 'driving' : mode === 'cycling' ? 'bicycling' : 'walking';
-    return `https://www.google.com/maps/dir/?api=1&origin=${userLocation.lat},${userLocation.lng}&destination=${destinationLat},${destinationLng}&travelmode=${googleMapsMode}`;
+    return `https://www.google.com/maps/dir/?api=1&origin=${userLocation.lat},${userLocation.lng}&destination=${encodeURIComponent(destinationQuery)}&travelmode=${googleMapsMode}`;
   };
 
   const openInGoogleMaps = () => {
@@ -169,7 +169,7 @@ const DirectionsPanel = ({ destinationLat, destinationLng, destinationName, dest
     };
   };
 
-  const currentRoute = userLocation ? estimateRoute(selectedMode) : null;
+  const currentRoute = userLocation && hasCoords ? estimateRoute(selectedMode) : null;
 
   return (
     <Card className="overflow-hidden">
@@ -188,7 +188,7 @@ const DirectionsPanel = ({ destinationLat, destinationLng, destinationName, dest
           <div className="text-center py-8">
             <p className="text-muted-foreground mb-4">{locationError}</p>
             <Button
-              onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${destinationLat},${destinationLng}`, '_blank')}
+              onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(destinationQuery)}`, '_blank')}
               className="gap-2"
             >
               <Navigation2 className="h-4 w-4" />
