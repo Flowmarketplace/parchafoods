@@ -25,6 +25,20 @@ export function pickBusinessCoverImages<T extends BusinessImageLike>(images: T[]
 }
 
 /**
+ * Downsizes remote images so cards load fast.
+ * - Unsplash: rewrite width/quality params.
+ * - Supabase storage: leave untouched (originals are already uploaded sized).
+ */
+export function optimizeImageUrl(url: string, width = 800, quality = 70): string {
+  if (!url) return url;
+  if (url.includes('images.unsplash.com')) {
+    const [base] = url.split('?');
+    return `${base}?w=${width}&q=${quality}&auto=format&fit=crop`;
+  }
+  return url;
+}
+
+/**
  * Returns the single best cover image URL for a business card/thumbnail.
  * Falls back to a per-restaurant/category image if no real photos exist.
  */
@@ -44,13 +58,14 @@ export function pickBusinessCoverUrl(
   const override = id ? RESTAURANT_IMAGE_OVERRIDES[id] : undefined;
   if (override && !override.includes('unsplash.com')) return override;
   const ordered = pickBusinessCoverImages(images);
-  return (
+  return optimizeImageUrl(
     ordered[0]?.image_url ||
-    getCategoryFallbackImage(
-      business.category || '',
-      id || business.name || '',
-      business.name || '',
-      business.business_type || business.businessType || ''
-    )
+      getCategoryFallbackImage(
+        business.category || '',
+        id || business.name || '',
+        business.name || '',
+        business.business_type || business.businessType || ''
+      )
   );
 }
+
