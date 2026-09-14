@@ -18,7 +18,7 @@ const CityWelcomeDialog = () => {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="sm:max-w-md" hideClose>
+      <DialogContent className="sm:max-w-md">
         <DialogHeader className="items-center text-center">
           <img src="/ciudad-logo.png" alt="La Ciudad en tus Manos" className="h-20 w-20 object-contain" />
           <DialogTitle className="text-xl">¿En qué ciudad estás?</DialogTitle>
