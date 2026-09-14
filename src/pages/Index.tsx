@@ -308,6 +308,42 @@ const Index = () => {
                 );
               })}
             </div>
+
+            {subcategoryOptions.length > 0 && (
+              <div className="mt-3">
+                <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wide mb-1.5">Escoge una subcategoría</p>
+                <div className="flex gap-2 overflow-x-auto pb-1">
+                  <button
+                    onClick={() => setSelectedSubcategory(null)}
+                    className={cn(
+                      "shrink-0 w-[76px] h-[76px] rounded-2xl border flex flex-col items-center justify-center px-1 transition-all active:scale-95",
+                      !selectedSubcategory ? "bg-primary text-primary-foreground border-primary shadow-md" : "bg-card text-muted-foreground border-border hover:border-primary/30"
+                    )}
+                  >
+                    <LayoutGrid className="h-5 w-5 mb-0.5" />
+                    <span className="text-[10px] font-medium leading-tight">Todas</span>
+                  </button>
+                  {subcategoryOptions.map((sub) => {
+                    const SubIcon = getSubcategoryIcon(sub.name);
+                    const active = selectedSubcategory === sub.name;
+                    return (
+                      <button
+                        key={sub.name}
+                        onClick={() => setSelectedSubcategory(active ? null : sub.name)}
+                        className={cn(
+                          "shrink-0 w-[76px] h-[76px] rounded-2xl border flex flex-col items-center justify-center px-1 transition-all active:scale-95",
+                          active ? "bg-primary text-primary-foreground border-primary shadow-md" : "bg-card text-muted-foreground border-border hover:border-primary/30"
+                        )}
+                      >
+                        <SubIcon className="h-5 w-5 mb-0.5" />
+                        <span className="text-[10px] font-medium leading-tight text-center line-clamp-2">{sub.name}</span>
+                        <span className="text-[9px] opacity-80">{sub.count}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </section>
 
           {!showFilters ? (
