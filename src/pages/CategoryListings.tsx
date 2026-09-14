@@ -219,7 +219,7 @@ const CategoryListings = () => {
                   return (
                     <button
                       key={cat.id}
-                      onClick={() => setSelectedCategory(cat.id)}
+                      onClick={() => selectCategory(cat.id)}
                       className={`flex items-center gap-1.5 px-4 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-200 ${
                         isActive
                           ? 'bg-primary text-primary-foreground shadow-md scale-105'
@@ -233,6 +233,42 @@ const CategoryListings = () => {
                 })}
               </div>
             </div>
+
+            {/* Subcategory chips */}
+            {availableSubcategories.length > 0 && (
+              <div className="pb-4">
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+                  Subcategorías
+                </p>
+                <div className="flex flex-wrap gap-1.5">
+                  <button
+                    onClick={() => setSelectedSubcategory(null)}
+                    className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                      !selectedSubcategory
+                        ? 'bg-secondary text-secondary-foreground shadow-sm'
+                        : 'bg-muted/60 text-muted-foreground hover:bg-muted'
+                    }`}
+                  >
+                    Todas
+                  </button>
+                  {availableSubcategories.map((sub) => (
+                    <button
+                      key={sub.name}
+                      onClick={() =>
+                        setSelectedSubcategory(selectedSubcategory === sub.name ? null : sub.name)
+                      }
+                      className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                        selectedSubcategory === sub.name
+                          ? 'bg-secondary text-secondary-foreground shadow-sm'
+                          : 'bg-muted/60 text-muted-foreground hover:bg-muted'
+                      }`}
+                    >
+                      {sub.name} <span className="opacity-60">({sub.count})</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* Neighborhood filter (expandable) */}
             <AnimatePresence>
