@@ -46,7 +46,7 @@ export const BUSINESS_CATEGORIES: BusinessCategory[] = [
     label: 'Salud y bienestar',
     icon: HeartPulse,
     color: '#0ca678',
-    aliases: ['Droguería', 'Farmacia', 'Consultorio', 'Odontología', 'Veterinaria', 'Óptica', 'Laboratorio', 'IPS'],
+    aliases: ['Droguería', 'Farmacia', 'Odontología', 'Veterinaria', 'Óptica', 'Laboratorio', 'IPS', 'Hospital', 'Naturista', 'Suplementos'],
   },
   {
     id: 'Belleza',
