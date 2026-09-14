@@ -446,16 +446,28 @@ const NAME_KEYWORD_RULES: Array<[RegExp, string]> = [
   [/finca|hacienda|ecohotel|campestre|glamping/i, 'Finca'],
 ];
 
+const lookupPoolKey = (value?: string | null): string | undefined => {
+  if (!value) return undefined;
+  if (CATEGORY_FALLBACK_POOLS[value]) return value;
+  return NORMALIZED_POOL_KEYS[normalize(value)];
+};
+
 const resolveSpecificCategory = (
   category?: string | null,
   name?: string | null,
+  businessType?: string | null,
 ): string | undefined => {
+  // 1) Categoría guardada (exacta o sin tildes/mayúsculas)
+  const byCategory = lookupPoolKey(category);
+  if (byCategory) return byCategory;
+  // 2) Palabras clave del nombre del negocio
   if (name) {
     const rule = NAME_KEYWORD_RULES.find(([re]) => re.test(name));
     if (rule && CATEGORY_FALLBACK_POOLS[rule[1]]) return rule[1];
   }
-  if (category && CATEGORY_FALLBACK_POOLS[category]) return category;
-  return undefined;
+  // 3) Respaldo por tipo de negocio
+  const typeKey = businessType ? BUSINESS_TYPE_FALLBACK[businessType] : undefined;
+  return lookupPoolKey(typeKey) || lookupPoolKey(businessType);
 };
 
 const DEFAULT_POOL = pool([
