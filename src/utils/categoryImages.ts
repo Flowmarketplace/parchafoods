@@ -183,6 +183,32 @@ export const CATEGORY_FALLBACK_POOLS: Record<string, string[]> = {
   'IPS': pool(['photo-1519494026892-80bbd2d6fd0d','photo-1538108149393-fbbd81895907','photo-1586773860418-d37222d8fce3','photo-1504439468489-c8920d796a29','photo-1516549655169-df83a0774514']),
   'Naturista': pool(['photo-1512069772995-ec65ed45afd6','photo-1471864190281-a93a3070b6de','photo-1550572017-edd951aa8f72','photo-1519378058457-4c29a0a2efac','photo-1506484381205-f7945653044d']),
   'Suplementos': pool(['photo-1556909212-d5b604d0c90d','photo-1512069772995-ec65ed45afd6','photo-1584308666744-24d5c474f2ae','photo-1607619056574-7b8d3ee536b2','photo-1519378058457-4c29a0a2efac']),
+
+  // ---- Belleza ----
+  'Peluquería': pool(['photo-1560066984-138dadb4c035','photo-1522337660859-02fbefca4702','photo-1562322140-8baeececf3df','photo-1595476108010-b4d1f102b1b1','photo-1605497788044-5a32c7078486']),
+  'Barbería': pool(['photo-1585747860715-2ba37e788b70','photo-1503951914875-452162b0f3f1','photo-1621605815971-fbc98d665033','photo-1599351431202-1e0f0137899a','photo-1605812860427-4024433a70fd']),
+  'Salón de Belleza': pool(['photo-1487412947147-5cebf100ffc2','photo-1560066984-138dadb4c035','photo-1596462502278-27bfdc403348','photo-1457972729786-0411a3b2b626','photo-1519014816548-bf5fe059798b']),
+  'Spa': pool(['photo-1540555700478-4be289fbecef','photo-1544161515-4ab6ce6db874','photo-1570172619644-dfd03ed5d881','photo-1596178065887-1198b6148b2b','photo-1544161515-4ab6ce6db874']),
+  'Uñas': pool(['photo-1604654894610-df63bc536371','photo-1610992015732-2449b76344bc','photo-1632345031435-8727f6897d53','photo-1607779097040-26e80aa78e66','photo-1595476108010-b4d1f102b1b1']),
+  'Maquillaje': pool(['photo-1487412947147-5cebf100ffc2','photo-1596462502278-27bfdc403348','photo-1512496015851-a90fb38ba796','photo-1516975080664-ed2fc6a32937','photo-1503236823255-94609f598e71']),
+  'Cosmética': pool(['photo-1596462502278-27bfdc403348','photo-1571781926291-c477ebfd024b','photo-1556228720-195a672e8a03','photo-1631729371254-42c2892f0e6e','photo-1608248543803-ba4f8c70ae0b']),
+  'Tatuajes': pool(['photo-1565058379802-bbe93b2f703a','photo-1611501275019-9b5cda994e8d','photo-1568515045052-f9a854d70bfd','photo-1590246814883-57c511e76520','photo-1611124600282-a9dc66aa1351']),
+
+  // ---- Ropa ----
+  'Tienda de Ropa': pool(['photo-1441986300917-64674bd600d8','photo-1445205170230-053b83016050','photo-1490481651871-ab68de25d43d','photo-1489987707025-afc232f7ea0f','photo-1441984904996-e0b6ba687e04']),
+  'Boutique': pool(['photo-1445205170230-053b83016050','photo-1441986300917-64674bd600d8','photo-1483985988355-763728e1935b','photo-1567401893414-76b7b1e5a7a5','photo-1555529669-e69e7aa0ba9a']),
+  'Ropa Deportiva': pool(['photo-1571019613454-1cb2f99b2d8b','photo-1517836357463-d25dfeac3438','photo-1556906781-9a412961c28c','photo-1544367567-0f2fcb009e0b','photo-1461896836934-ffe607ba8211']),
+  'Ropa Infantil': pool(['photo-1519689680058-324335c77eba','photo-1471286174890-9c112ffca5b4','photo-1522771930-78848d9293e8','photo-1560506840-ec148e82a604','photo-1476234251651-f353703a034d']),
+  'Zapatos': pool(['photo-1549298916-b41d501d3772','photo-1543163521-1bf539c55dd2','photo-1460353581641-37baddab0fa2','photo-1560343090-f0409e92791a','photo-1595950653106-6c9ebd614d3a']),
+  'Zapatería': pool(['photo-1549298916-b41d501d3772','photo-1543163521-1bf539c55dd2','photo-1460353581641-37baddab0fa2','photo-1560343090-f0409e92791a','photo-1595950653106-6c9ebd614d3a']),
+  'Accesorios': pool(['photo-1553062407-98eeb64c6a62','photo-1590874103328-eac38a683ce7','photo-1611652022419-a9419f74343d','photo-1571875257727-256c39da42af','photo-1523275335684-37898b6baf30']),
+  'Joyería': pool(['photo-1515562141207-7a88fb7ce338','photo-1506630448388-4e683c67ddb0','photo-1611652022419-a9419f74343d','photo-1599643478518-a784e5dc4c8f','photo-1605100804763-247f67b3557e']),
+  'Relojería': pool(['photo-1523170335258-f5ed11844a49','photo-1523275335684-37898b6baf30','photo-1524805444758-089113d48a6d','photo-1509048191080-d2984bad6ae5','photo-1434056886845-dac89ffe9b56']),
+  'Sastrería': pool(['photo-1558769132-cb1aea458c5e','photo-1584992236310-6edddc08acff','photo-1537832816519-689ad163238b','photo-1575733035784-3b0b77fbf506','photo-1584184924103-e310d9dc82fc']),
+  'Confecciones': pool(['photo-1558769132-cb1aea458c5e','photo-1537832816519-689ad163238b','photo-1584992236310-6edddc08acff','photo-1575733035784-3b0b77fbf506','photo-1445205170230-053b83016050']),
+  'Lencería': pool(['photo-1483985988355-763728e1935b','photo-1445205170230-053b83016050','photo-1441986300917-64674bd600d8','photo-1567401893414-76b7b1e5a7a5','photo-1555529669-e69e7aa0ba9a']),
+  'Almacén': pool(['photo-1441986300917-64674bd600d8','photo-1489987707025-afc232f7ea0f','photo-1445205170230-053b83016050','photo-1490481651871-ab68de25d43d','photo-1555529669-e69e7aa0ba9a']),
+  'Moda': pool(['photo-1483985988355-763728e1935b','photo-1445205170230-053b83016050','photo-1441986300917-64674bd600d8','photo-1567401893414-76b7b1e5a7a5','photo-1555529669-e69e7aa0ba9a']),
 };
 
 // Palabras clave en el nombre del negocio -> categoría específica.
@@ -209,6 +235,23 @@ const NAME_KEYWORD_RULES: Array<[RegExp, string]> = [
   [/hospital|cl[ií]nica|urgencias|centro m[eé]dico|ips\b/i, 'Hospital'],
   [/naturista|natural/i, 'Naturista'],
   [/consultorio|m[eé]dic|psicolog|fisioterap|urolog|pediatr/i, 'Consultorio'],
+  // Belleza
+  [/barber/i, 'Barbería'],
+  [/peluquer|sal[oó]n de belleza|sal[oó]n\b|estilista|hair/i, 'Peluquería'],
+  [/spa|masajes|terapias? corporal/i, 'Spa'],
+  [/u[ñn]as|nails?|manicure|pedicure|acrilic/i, 'Uñas'],
+  [/maquill|make ?up/i, 'Maquillaje'],
+  [/cosm[eé]tic|perfumer|perfume/i, 'Cosmética'],
+  [/tatto|tatuaje|piercing/i, 'Tatuajes'],
+  // Ropa
+  [/zapat|calzado|tenis|botas|sandalia/i, 'Zapatería'],
+  [/joyer|relojer|orfebre|plater/i, 'Joyería'],
+  [/accesorio|marroquiner|bolsos?|carteras?|sombrero/i, 'Accesorios'],
+  [/deportiv|sport|f[uú]tbol store|gym store/i, 'Ropa Deportiva'],
+  [/infantil|beb[eé]|ni[ñn]os|kids/i, 'Ropa Infantil'],
+  [/sastrer|confeccion|modister|almac[eé]n de telas/i, 'Confecciones'],
+  [/lencer[ií]a|íntima|pijama/i, 'Lencería'],
+  [/boutique|moda|ropa|almac[eé]n|fashion|outlet|jeans|vestidos/i, 'Boutique'],
 ];
 
 const resolveSpecificCategory = (
