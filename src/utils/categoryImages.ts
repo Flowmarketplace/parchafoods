@@ -163,6 +163,64 @@ export const CATEGORY_FALLBACK_POOLS: Record<string, string[]> = {
   'Saludable': pool(['photo-1512621776951-a57141f2eefd','photo-1490645935967-10de6ba17061','photo-1546069901-ba9599a7e63c','photo-1505253758473-96b7015fcd40','photo-1540420773420-3366772f4999']),
   'Postres': pool(['photo-1488477181946-6428a0291777','photo-1551024506-0bccd828d307','photo-1497034825429-c343d7c6a68f','photo-1565958011703-44f9829ba187','photo-1563729784474-d77dbb933a9e']),
   'Panadería': pool(['photo-1509440159596-0249088772ff','photo-1555507036-ab1f4038808a','photo-1568254183919-78a4f43a2877','photo-1517686469429-8bdb88b9f907','photo-1608198093002-ad4e005484ec']),
+  // ---- Comida (categorías usadas en Barbosa) ----
+  'Restaurante': pool(['photo-1517248135467-4c7edcad34c4','photo-1552566626-52f8b828add9','photo-1466978913421-dad2ebd01d17','photo-1555396273-367ea4eb4db5','photo-1414235077428-338989a2e8c0']),
+  'Asadero': pool(['photo-1558030006-450675393462','photo-1544025162-d76694265947','photo-1598103442097-8b74394b95c6','photo-1600891964092-4316c288032e','photo-1529193591184-b1d58069ecdd']),
+  'Pizzería': pool(['photo-1513104890138-7c749659a591','photo-1565299624946-b28f40a0ae38','photo-1594007654729-407eedc4be65','photo-1574071318508-1cdbab80d002','photo-1571407970349-bc81e7e96d47']),
+  'Heladería': pool(['photo-1501443762994-82bd5dace89a','photo-1497034825429-c343d7c6a68f','photo-1560008581-09826d1de69e','photo-1567206563064-6f60f40a2b57','photo-1488900128323-21503983a07e']),
+  'Dulces': pool(['photo-1481391319762-47dff72954d9','photo-1558961363-fa8fdf82db35','photo-1548907040-4baa42d10919','photo-1587314168485-3236d6710814','photo-1519915028121-7d3463d20b13']),
+  'Frutería': pool(['photo-1610832958506-aa56368176cf','photo-1519996529931-28324d5a630e','photo-1490474418585-ba9bad8fd0ea','photo-1528825871115-3581a5387919','photo-1502741224143-90386d7f8c82']),
+
+  // ---- Salud ----
+  'Droguería': pool(['photo-1576602976047-174e57a47881','photo-1587854692152-cbe660dbde88','photo-1471864190281-a93a3070b6de','photo-1585435557343-3b092031a831','photo-1550572017-edd951aa8f72']),
+  'Farmacia': pool(['photo-1576602976047-174e57a47881','photo-1585435557343-3b092031a831','photo-1587854692152-cbe660dbde88','photo-1512069772995-ec65ed45afd6','photo-1471864190281-a93a3070b6de']),
+  'Odontología': pool(['photo-1606811841689-23dfddce3e95','photo-1588776814546-1ffcf47267a5','photo-1609840114035-3c981b782dfe','photo-1629909613654-28e377c37b09','photo-1598256989800-fe5f95da9787']),
+  'Veterinaria': pool(['photo-1628009368231-7bb7cfcb0def','photo-1601758228041-f3b2795255f1','photo-1576201836106-db1758fd1c97','photo-1583337130417-3346a1be7dee','photo-1548767797-d8c844163c4c']),
+  'Óptica': pool(['photo-1574258495973-f010dfbb5371','photo-1511499767150-a48a237f0083','photo-1577744486770-020ab432da65','photo-1591076482161-42ce6da69f67','photo-1512099154513-38d3c2ba0d09']),
+  'Consultorio': pool(['photo-1519494026892-80bbd2d6fd0d','photo-1631217868264-e5b90bb7e133','photo-1666214280557-f1b5022eb634','photo-1584982751601-97dcc096659c','photo-1538108149393-fbbd81895907']),
+  'Hospital': pool(['photo-1519494026892-80bbd2d6fd0d','photo-1586773860418-d37222d8fce3','photo-1516549655169-df83a0774514','photo-1538108149393-fbbd81895907','photo-1504439468489-c8920d796a29']),
+  'Laboratorio': pool(['photo-1579154204601-01588f351e67','photo-1582719478250-c89cae4dc85b','photo-1581093458791-9f3c3900df4b','photo-1614308457932-e16d85c5d053','photo-1530026405186-ed1f139313f8']),
+  'IPS': pool(['photo-1519494026892-80bbd2d6fd0d','photo-1538108149393-fbbd81895907','photo-1586773860418-d37222d8fce3','photo-1504439468489-c8920d796a29','photo-1516549655169-df83a0774514']),
+  'Naturista': pool(['photo-1512069772995-ec65ed45afd6','photo-1471864190281-a93a3070b6de','photo-1550572017-edd951aa8f72','photo-1519378058457-4c29a0a2efac','photo-1506484381205-f7945653044d']),
+  'Suplementos': pool(['photo-1556909212-d5b604d0c90d','photo-1512069772995-ec65ed45afd6','photo-1584308666744-24d5c474f2ae','photo-1607619056574-7b8d3ee536b2','photo-1519378058457-4c29a0a2efac']),
+};
+
+// Palabras clave en el nombre del negocio -> categoría específica.
+// Permite afinar la foto cuando la categoría guardada es genérica.
+const NAME_KEYWORD_RULES: Array<[RegExp, string]> = [
+  // Comida
+  [/pizz/i, 'Pizzería'],
+  [/sushi|wok|chino|oriental|japon/i, 'Asiática'],
+  [/hamburgu|burger|perro caliente|hot dog|fast food|comidas? r[aá]pid|broaster|fritanga/i, 'Comidas Rápidas'],
+  [/asader|parrilla|asados?|brasas|bbq|carnes|piqueteader|lech[oó]n|pollo/i, 'Asadero'],
+  [/panader|pasteler|pan\b|reposter/i, 'Panadería'],
+  [/helad|paletas|fruter[ií]a|jugos|smoothie/i, 'Heladería'],
+  [/bocadill|dulce|postre|torta|cake|manjar|obleas/i, 'Dulces'],
+  [/caf[eé]|coffe|cafeter/i, 'Café'],
+  [/marisco|pescader|cevicher/i, 'Mariscos'],
+  [/taco|mexican|burrit/i, 'Mexicana'],
+  [/cervec|bar\b|cantina|licores? bar/i, 'Cerveza'],
+  // Salud
+  [/odont|dental|dentista|ortodonc/i, 'Odontología'],
+  [/veterinar|mascota|animal|pet\b|zoo/i, 'Veterinaria'],
+  [/[oó]ptica|visi[oó]n|optometr/i, 'Óptica'],
+  [/droguer|farmac|drogas|farma/i, 'Droguería'],
+  [/laboratorio|radiograf|im[aá]genes diagn/i, 'Laboratorio'],
+  [/hospital|cl[ií]nica|urgencias|centro m[eé]dico|ips\b/i, 'Hospital'],
+  [/naturista|natural/i, 'Naturista'],
+  [/consultorio|m[eé]dic|psicolog|fisioterap|urolog|pediatr/i, 'Consultorio'],
+];
+
+const resolveSpecificCategory = (
+  category?: string | null,
+  name?: string | null,
+): string | undefined => {
+  if (name) {
+    const rule = NAME_KEYWORD_RULES.find(([re]) => re.test(name));
+    if (rule && CATEGORY_FALLBACK_POOLS[rule[1]]) return rule[1];
+  }
+  if (category && CATEGORY_FALLBACK_POOLS[category]) return category;
+  return undefined;
 };
 
 const DEFAULT_POOL = pool([
@@ -182,15 +240,18 @@ const hash = (s: string): number => {
 /**
  * Returns a high-quality image for a business. Resolution order:
  *   1) Per-restaurant override keyed by business id.
- *   2) Deterministic pick from the category pool, seeded by id/name.
- *   3) Default pool.
+ *   2) Specific category inferred from the business name (pizzería, odontología…).
+ *   3) Deterministic pick from the stored category pool.
+ *   4) Default pool.
  */
 export const getCategoryFallbackImage = (
   category?: string | null,
   seed?: string | null,
+  name?: string | null,
 ): string => {
   if (seed && RESTAURANT_IMAGE_OVERRIDES[seed]) return RESTAURANT_IMAGE_OVERRIDES[seed];
-  const list = (category && CATEGORY_FALLBACK_POOLS[category]) || DEFAULT_POOL;
+  const specific = resolveSpecificCategory(category, name);
+  const list = (specific && CATEGORY_FALLBACK_POOLS[specific]) || DEFAULT_POOL;
   if (!seed) return list[0];
   return list[hash(seed) % list.length];
 };
