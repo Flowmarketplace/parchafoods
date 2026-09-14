@@ -368,18 +368,59 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
     const color = getCategoryColor(effectiveCategory);
     const iconSvg = getCategoryIcon(effectiveCategory);
 
-    // LEVEL 2 — group that category by zone / neighborhood
-    if (!expandedZone) {
+    // Zone name: use the stored neighborhood, otherwise derive it geographically
+    const zoneOf = (p: Place) => {
+      const stored = ((p as any).neighborhood || (p as any).zone || '').toString().trim();
+      if (stored) return stored;
+      const lat = Number(p.latitude);
+      const lng = Number(p.longitude);
+      if (!isFinite(lat) || !isFinite(lng)) return 'Otras zonas';
+      const dLat = lat - city.latitude;
+      const dLng = lng - city.longitude;
+      const dist = Math.sqrt(dLat * dLat + dLng * dLng);
+      if (dist < 0.0045) return 'Centro';
+      const angle = (Math.atan2(dLng, dLat) * 180) / Math.PI; // 0 = norte
+      const dirs = ['Norte', 'Nororiente', 'Oriente', 'Suroriente', 'Sur', 'Suroccidente', 'Occidente', 'Noroccidente'];
+      const idx = Math.round(((angle + 360) % 360) / 45) % 8;
+      return dirs[idx];
+    };
+
+    // Build zone groups (named neighborhoods, compass zones, or a geographic grid)
+    const buildZones = () => {
       const byZone = new Map<string, Place[]>();
       inCategory.forEach((p: Place) => {
-        const zone = (p.neighborhood || p.zone || 'Otras zonas').toString();
+        const zone = zoneOf(p);
         byZone.set(zone, [...(byZone.get(zone) || []), p]);
       });
-      if (byZone.size <= 1 || inCategory.length <= 6) {
+      if (byZone.size > 1 || inCategory.length <= 6) return byZone;
+      // Everything landed in one zone: subdivide geographically so the map stays clean
+      const grid = new Map<string, Place[]>();
+      inCategory.forEach((p: Place) => {
+        const lat = Number(p.latitude);
+        const lng = Number(p.longitude);
+        const key =
+          isFinite(lat) && isFinite(lng)
+            ? `${Math.round(lat / 0.0035)}|${Math.round(lng / 0.0035)}`
+            : 'otras';
+        grid.set(key, [...(grid.get(key) || []), p]);
+      });
+      const renamed = new Map<string, Place[]>();
+      Array.from(grid.keys())
+        .sort()
+        .forEach((k, i) => renamed.set(`Zona ${i + 1}`, grid.get(k)!));
+      return renamed;
+    };
+
+    const zones = buildZones();
+
+    // LEVEL 2 — group that category by zone
+    if (!expandedZone) {
+      if (zones.size <= 1 || inCategory.length <= 6) {
         addAll(inCategory);
         return;
       }
-      byZone.forEach((list, zone) => {
+
+      zones.forEach((list, zone) => {
         const c = centroid(list);
         const marker = createGroupMarker(c.lng, c.lat, {
           label: zone,
@@ -397,11 +438,9 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
     }
 
     // LEVEL 3 — individual businesses inside the zone
-    addAll(
-      inCategory.filter(
-        (p: Place) => (p.neighborhood || p.zone || 'Otras zonas').toString() === expandedZone
-      )
-    );
+    addAll(zones.get(expandedZone) || []);
+
+
   };
 
 
