@@ -277,6 +277,27 @@ const NAME_KEYWORD_RULES: Array<[RegExp, string]> = [
   [/sastrer|confeccion|modister|almac[eé]n de telas/i, 'Confecciones'],
   [/lencer[ií]a|íntima|pijama/i, 'Lencería'],
   [/boutique|moda|ropa|almac[eé]n|fashion|outlet|jeans|vestidos/i, 'Boutique'],
+  // Ocio / Entretenimiento
+  [/gimnasio|gym|fitness|crossfit|musculaci[oó]n|entrenamiento/i, 'Gimnasio'],
+  [/discoteca|discotek|rumba|night club|club nocturno/i, 'Discoteca'],
+  [/billar|pool hall|billares/i, 'Billar'],
+  [/tejo|tejos/i, 'Tejo'],
+  [/cine|cinema|multicine/i, 'Cine'],
+  [/karaoke/i, 'Karaoke'],
+  [/juegos? arcade|sal[oó]n de juegos|videojuegos/i, 'Juegos'],
+  [/parque|plaza|cancha|estadio|canchas sint[eé]tica/i, 'Parque'],
+  [/eventos?|recreaci[oó]n|entretenimiento/i, 'Eventos'],
+  [/bar\b|cantina|licorera|pub\b|discobar/i, 'Bar'],
+  // Hogar
+  [/ferreter[ií]a|ferreter|herramientas|torniller/i, 'Ferretería'],
+  [/muebler[ií]a|muebles|colch[oó]n|sala comedor/i, 'Muebles'],
+  [/electrodom[eé]sticos|nevera|lavadora|televisor/i, 'Electrodomésticos'],
+  [/decoraci[oó]n|adornos|cuadros|alfombra/i, 'Decoración'],
+  [/construcci[oó]n|materiales|cemento|ladrillo/i, 'Construcción'],
+  [/pintura|pinturas|pinturer/i, 'Pintura'],
+  [/baño|sanitario|grifer/i, 'Baño'],
+  [/cocina|ollas|utensilios|vajilla/i, 'Cocina'],
+  [/iluminaci[oó]n|l[aá]mparas|luces/i, 'Iluminación'],
 ];
 
 const resolveSpecificCategory = (
