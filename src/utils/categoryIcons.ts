@@ -37,6 +37,7 @@ categoryIcons['Hogar'] = `<path d="M3 11l9-8 9 8M5 10v10h14V10" fill="none" stro
 categoryIcons['Servicios'] = `<path d="M14.7 6.3a4 4 0 01-5.4 5.4L4 17v3h3l5.3-5.3a4 4 0 015.4-5.4l-2.6 2.6-1.4-1.4 2.6-2.6z" fill="none" stroke="white" stroke-width="2" stroke-linejoin="round"/>`;
 categoryIcons['Hospedaje'] = `<path d="M3 18V8m0 4h18v6M7 11a2 2 0 100-4 2 2 0 000 4zM11 12h8a2 2 0 012 2" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;
 categoryIcons['Mercados'] = `<path d="M3 6h18l-2 12H5L3 6zM8 6V4a4 4 0 018 0v2" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;
+categoryIcons['Profesionales'] = `<path d="M3 8h18v11a1 1 0 01-1 1H4a1 1 0 01-1-1V8zM9 8V6a2 2 0 012-2h2a2 2 0 012 2v2M3 13h18" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;
 
 export const getCategoryIcon = (category: string): string => {
   return (
