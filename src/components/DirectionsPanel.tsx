@@ -142,11 +142,13 @@ const DirectionsPanel = ({ destinationLat, destinationLng, destinationName, dest
 
   // Simulated route estimation (in a real app, you'd use a routing API)
   const estimateRoute = (mode: TransportMode): RouteInfo => {
-    if (!userLocation) return { distance: '-', duration: '-', steps: [] };
+    if (!userLocation || !hasCoords) return { distance: '-', duration: '-', steps: [] };
 
+    const destLat = destinationLat as number;
+    const destLng = destinationLng as number;
     const R = 6371; // Earth's radius in km
-    const dLat = (destinationLat - userLocation.lat) * Math.PI / 180;
-    const dLon = (destinationLng - userLocation.lng) * Math.PI / 180;
+    const dLat = (destLat - userLocation.lat) * Math.PI / 180;
+    const dLon = (destLng - userLocation.lng) * Math.PI / 180;
     const a = 
       Math.sin(dLat/2) * Math.sin(dLat/2) +
       Math.cos(userLocation.lat * Math.PI / 180) * Math.cos(destinationLat * Math.PI / 180) *
