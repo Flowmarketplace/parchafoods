@@ -7,6 +7,7 @@ import {
   Music,
   Hammer,
   Wrench,
+  Briefcase,
   BedDouble,
   ShoppingBasket,
   type LucideIcon,
