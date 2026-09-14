@@ -368,11 +368,28 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
     const color = getCategoryColor(effectiveCategory);
     const iconSvg = getCategoryIcon(effectiveCategory);
 
+    // Zone name: use the stored neighborhood, otherwise derive it geographically
+    const zoneOf = (p: Place) => {
+      const stored = ((p as any).neighborhood || (p as any).zone || '').toString().trim();
+      if (stored) return stored;
+      const lat = Number(p.latitude);
+      const lng = Number(p.longitude);
+      if (!isFinite(lat) || !isFinite(lng)) return 'Otras zonas';
+      const dLat = lat - city.latitude;
+      const dLng = lng - city.longitude;
+      const dist = Math.sqrt(dLat * dLat + dLng * dLng);
+      if (dist < 0.0045) return 'Centro';
+      const angle = (Math.atan2(dLng, dLat) * 180) / Math.PI; // 0 = norte
+      const dirs = ['Norte', 'Nororiente', 'Oriente', 'Suroriente', 'Sur', 'Suroccidente', 'Occidente', 'Noroccidente'];
+      const idx = Math.round(((angle + 360) % 360) / 45) % 8;
+      return dirs[idx];
+    };
+
     // LEVEL 2 — group that category by zone / neighborhood
     if (!expandedZone) {
       const byZone = new Map<string, Place[]>();
       inCategory.forEach((p: Place) => {
-        const zone = (p.neighborhood || p.zone || 'Otras zonas').toString();
+        const zone = zoneOf(p);
         byZone.set(zone, [...(byZone.get(zone) || []), p]);
       });
       if (byZone.size <= 1 || inCategory.length <= 6) {
@@ -397,11 +414,8 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
     }
 
     // LEVEL 3 — individual businesses inside the zone
-    addAll(
-      inCategory.filter(
-        (p: Place) => (p.neighborhood || p.zone || 'Otras zonas').toString() === expandedZone
-      )
-    );
+    addAll(inCategory.filter((p: Place) => zoneOf(p) === expandedZone));
+
   };
 
 
