@@ -8,8 +8,6 @@ import EventCard from '@/components/EventCard';
 import BottomNav from '@/components/BottomNav';
 import FloatingAIChat from '@/components/FloatingAIChat';
 import { neighborhoods } from '@/data/places';
-import { mockEvents } from '@/data/events';
-import { mockShorts } from '@/data/shorts';
 import { Button } from '@/components/ui/button';
 import { ChevronRight, Star, Video, MapPin, Check } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -125,7 +123,7 @@ const Index = () => {
         }));
         setShorts(transformedShorts);
       } else {
-        setShorts(mockShorts);
+        setShorts([]);
       }
     };
     loadShorts();
@@ -149,7 +147,6 @@ const Index = () => {
     return featured.slice(0, 6);
   }, [places]);
 
-  const featuredEvents = useMemo(() => mockEvents.filter(e => e.featured).slice(0, 4), []);
 
   const filteredShorts = useMemo(() => {
     if (selectedCategory === 'Todos') return shorts;
