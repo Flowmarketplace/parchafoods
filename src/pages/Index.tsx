@@ -9,9 +9,10 @@ import BottomNav from '@/components/BottomNav';
 import FloatingAIChat from '@/components/FloatingAIChat';
 import { neighborhoods } from '@/data/places';
 import { Button } from '@/components/ui/button';
-import { ChevronRight, Star, Video, MapPin, Check } from 'lucide-react';
+import { ChevronRight, Star, Sparkles, MapPin, Check } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import ShortsCarousel from '@/components/ShortsCarousel';
+import RecommendedPlans from '@/components/RecommendedPlans';
+import LoyaltyPointsCard from '@/components/LoyaltyPointsCard';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { supabase } from '@/integrations/supabase/client';
@@ -331,21 +332,24 @@ const Index = () => {
               </section>
 
 
-              {/* Videos Recomendados */}
+              {/* Planes recomendados */}
               <section className="bg-muted/30 -mx-3 sm:mx-0 px-3 sm:px-0 py-3 sm:py-0 sm:bg-transparent">
                 <div className="flex items-center justify-between mb-2.5">
                   <div className="flex items-center gap-2">
                     <div className="p-1 bg-primary/10 rounded-md">
-                      <Video className="h-4 w-4 text-primary" />
+                      <Sparkles className="h-4 w-4 text-primary" />
                     </div>
-                    <h2 className="text-sm sm:text-lg font-bold">Videos de la ciudad 🎬</h2>
+                    <h2 className="text-sm sm:text-lg font-bold">Planes recomendados en {city.label} ✨</h2>
                   </div>
-                  <Button variant="ghost" className="gap-1 h-7 text-[11px] shrink-0 px-2" onClick={() => navigate('/shorts')}>
-                    Ver todos <ChevronRight className="h-3 w-3" />
+                  <Button variant="ghost" className="gap-1 h-7 text-[11px] shrink-0 px-2" onClick={() => navigate('/listings')}>
+                    Ver más <ChevronRight className="h-3 w-3" />
                   </Button>
                 </div>
-                <ShortsCarousel shorts={filteredShorts} />
+                <RecommendedPlans places={places} cityLabel={city.label} />
               </section>
+
+              {/* Puntos de fidelización */}
+              <LoyaltyPointsCard />
 
 
             </div>
