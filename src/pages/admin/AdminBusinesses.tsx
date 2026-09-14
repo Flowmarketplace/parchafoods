@@ -34,7 +34,6 @@ const ATTRIBUTE_OPTIONS = [
   { type: 'ambiente', values: ['Pet Friendly', 'Familiar', 'Romántico', 'Terraza', 'Rooftop', 'Live Music', 'WiFi Gratis', 'Parqueadero'] },
   { type: 'tipo_comida', values: ['Comida Rápida', 'Gourmet', 'Fusión', 'Tradicional', 'Internacional', 'Vegano', 'Vegetariano'] },
   { type: 'ruta', values: ['Ruta del Café', 'Ruta de la Parrilla', 'Ruta Italiana', 'Ruta Mexicana', 'Ruta del Sushi', 'Ruta Food Truck', 'Ruta Cervecera', 'Ruta Tradicional', 'Ruta del Remate'] },
-  { type: 'mundial', values: ['Plato Mundialista', 'Fan Zone', 'Pantalla Gigante', 'Menú Copa del Mundo'] },
 ];
 
 const AdminBusinesses = () => {
@@ -1297,10 +1296,10 @@ const AdminBusinesses = () => {
                           <Label>Categoría</Label>
                           <Input value={menuForm.category} onChange={e => setMenuForm({ ...menuForm, category: e.target.value })} placeholder="Entradas, Platos Fuertes..." />
                           <div className="flex flex-wrap gap-1">
-                            {['Plato Mundialista', 'Entradas', 'Platos Fuertes', 'Bebidas', 'Postres'].map(cat => (
+                            {['Especial de la casa', 'Entradas', 'Platos Fuertes', 'Bebidas', 'Postres'].map(cat => (
                               <Button key={cat} type="button" variant={menuForm.category === cat ? 'default' : 'outline'} size="sm" className="text-[10px] h-6 px-2"
                                 onClick={() => setMenuForm({ ...menuForm, category: cat })}>
-                                {cat === 'Plato Mundialista' ? '⚽ ' : ''}{cat}
+                                {cat}
                               </Button>
                             ))}
                           </div>
@@ -1659,8 +1658,7 @@ const AdminBusinesses = () => {
                           {group.type === 'ambiente' && '🏠 Ambiente'}
                           {group.type === 'tipo_comida' && '🍽️ Tipo de Comida'}
                           {group.type === 'ruta' && '🗺️ Rutas Gastronómicas'}
-                          {group.type === 'mundial' && '⚽ Mundial 2026'}
-                        </CardTitle>
+                                                  </CardTitle>
                         <CardDescription>
                           Selecciona las etiquetas que aplican a este restaurante
                         </CardDescription>

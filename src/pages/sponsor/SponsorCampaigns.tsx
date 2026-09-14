@@ -442,7 +442,7 @@ const Inner = () => {
                             )}
                           </div>
                           <span className="text-[9px] font-semibold text-slate-700 uppercase tracking-wide flex-1 truncate">
-                            {sponsor?.brand_name || 'Sabor 360'}
+                            {sponsor?.brand_name || 'La Ciudad en tus Manos'}
                           </span>
                           <span className="text-[9px] text-slate-500">ahora</span>
                         </div>

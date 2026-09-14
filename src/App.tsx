@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import RoleBasedRedirect from "./components/RoleBasedRedirect";
 import InstallPWA from "./components/InstallPWA";
+import CityWelcomeDialog from "./components/CityWelcomeDialog";
 import Index from "./pages/Index";
 import PlaceDetails from "./pages/PlaceDetails";
 import EventDetails from "./pages/EventDetails";
@@ -16,7 +17,6 @@ import Profile from "./pages/Profile";
 import MyLoyalty from "./pages/MyLoyalty";
 import Shorts from "./pages/Shorts";
 import NotFound from "./pages/NotFound";
-import RutasMundialistas from "./pages/RutasMundialistas";
 import BusinessDashboard from "./pages/BusinessDashboard";
 import BusinessSetup from "./pages/business/BusinessSetup";
 import Recommendations from "./pages/Recommendations";
@@ -82,7 +82,6 @@ function App() {
         <Route path="/favorites" element={<Favorites />} />
         <Route path="/shorts" element={<Shorts />} />
         <Route path="/recommendations" element={<Recommendations />} />
-        <Route path="/rutas" element={<RutasMundialistas />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/business-dashboard" element={<BusinessDashboard />} />
         <Route path="/business-setup" element={<BusinessSetup />} />
@@ -125,6 +124,7 @@ function App() {
         <Route path="*" element={<NotFound />} />
       </Routes>
       <InstallPWA />
+      <CityWelcomeDialog />
     </RoleBasedRedirect>
   );
 }

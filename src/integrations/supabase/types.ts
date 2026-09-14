@@ -475,7 +475,9 @@ export type Database = {
       businesses: {
         Row: {
           address: string
+          business_type: string
           category: string
+          city: string
           created_at: string | null
           description: string | null
           email: string | null
@@ -506,7 +508,9 @@ export type Database = {
         }
         Insert: {
           address: string
+          business_type?: string
           category: string
+          city?: string
           created_at?: string | null
           description?: string | null
           email?: string | null
@@ -537,7 +541,9 @@ export type Database = {
         }
         Update: {
           address?: string
+          business_type?: string
           category?: string
+          city?: string
           created_at?: string | null
           description?: string | null
           email?: string | null
@@ -640,6 +646,7 @@ export type Database = {
         Row: {
           address: string | null
           category: string
+          city: string
           created_at: string
           description: string | null
           end_date: string | null
@@ -660,6 +667,7 @@ export type Database = {
         Insert: {
           address?: string | null
           category: string
+          city?: string
           created_at?: string
           description?: string | null
           end_date?: string | null
@@ -680,6 +688,7 @@ export type Database = {
         Update: {
           address?: string | null
           category?: string
+          city?: string
           created_at?: string
           description?: string | null
           end_date?: string | null

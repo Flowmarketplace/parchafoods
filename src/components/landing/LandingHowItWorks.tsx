@@ -6,7 +6,7 @@ const steps = [
     icon: Search,
     number: "01",
     title: "Explora restaurantes",
-    description: "Busca por categoría, barrio o cercanía. Descubre los mejores lugares para ver cada partido del Mundial.",
+    description: "Busca por categoría, barrio o cercanía. Descubre los mejores negocios de tu ciudad.",
   },
   {
     icon: QrCode,

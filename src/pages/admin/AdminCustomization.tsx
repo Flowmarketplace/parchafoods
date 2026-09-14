@@ -14,7 +14,7 @@ const AdminCustomization = () => {
   const { toast } = useToast();
   const [primaryColor, setPrimaryColor] = useState('#8B5CF6');
   const [secondaryColor, setSecondaryColor] = useState('#10B981');
-  const [appName, setAppName] = useState('Parcha Foods');
+  const [appName, setAppName] = useState('La Ciudad en tus Manos');
   const [appLogo, setAppLogo] = useState('');
 
   const saveCustomization = useMutation({

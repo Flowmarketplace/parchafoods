@@ -171,7 +171,7 @@ const SponsorDashboard = () => {
                 ¡Bienvenido de nuevo!
               </h2>
               <p className="text-sm md:text-base opacity-90 max-w-xl">
-                Aquí puedes monitorear el impacto de tu marca en la red de Sabor 360 y lanzar nuevas campañas dirigidas.
+                Aquí puedes monitorear el impacto de tu marca en la red de La Ciudad en tus Manos y lanzar nuevas campañas dirigidas.
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-2 w-full md:w-auto">

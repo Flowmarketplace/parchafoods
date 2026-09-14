@@ -414,12 +414,8 @@ const PlaceDetails = () => {
               </div>
 
               {/* Tabs Section */}
-              <Tabs defaultValue="mundialista" className="w-full">
+              <Tabs defaultValue="menu" className="w-full">
                 <TabsList className="w-full overflow-x-auto flex justify-start gap-1 h-auto flex-wrap">
-                  <TabsTrigger value="mundialista" className="text-xs gap-1 px-2.5 py-1.5">
-                    <Trophy className="h-3.5 w-3.5" />
-                    Mundialista
-                  </TabsTrigger>
                   <TabsTrigger value="menu" className="text-xs gap-1 px-2.5 py-1.5">
                     <UtensilsCrossed className="h-3.5 w-3.5" />
                     Menú
@@ -440,92 +436,6 @@ const PlaceDetails = () => {
                   )}
                   <TabsTrigger value="resenas" className="text-xs gap-1 px-2.5 py-1.5">Reseñas</TabsTrigger>
                 </TabsList>
-
-                {/* Platos Mundialistas */}
-                <TabsContent value="mundialista" className="mt-4">
-                  <Card className="overflow-hidden border-primary/20 bg-gradient-to-br from-primary/5 to-secondary/5">
-                    <CardContent className="p-4 sm:p-6">
-                      <div className="flex items-center gap-2 mb-4">
-                        <span className="text-2xl">⚽</span>
-                        <h3 className="text-lg sm:text-xl font-bold">Platos Mundialistas</h3>
-                      </div>
-                      {(() => {
-                        const mundialItems = menu.filter(m => m.category === 'Plato Mundialista');
-                        if (mundialItems.length > 0) {
-                          return (
-                            <div className="space-y-4">
-                              {mundialItems.map((mundialItem) => (
-                                <div key={mundialItem.id} className="bg-background/80 rounded-lg p-4 border border-primary/10">
-                                  {mundialItem.image_url && (
-                                    <div className="rounded-lg overflow-hidden aspect-[4/3] sm:aspect-video mb-3 bg-muted max-w-xl mx-auto flex items-center justify-center">
-                                      <img
-                                        src={mundialItem.image_url}
-                                        alt={mundialItem.name}
-                                        loading="lazy"
-                                        decoding="async"
-                                        className="w-full h-full object-contain"
-                                      />
-                                    </div>
-                                  )}
-                                  <p className="font-bold text-primary text-lg mb-1">
-                                    🍽️ {mundialItem.name}
-                                  </p>
-                                  {mundialItem.description && (
-                                    <p className="text-sm text-muted-foreground mb-2">{mundialItem.description}</p>
-                                  )}
-                                  <p className="text-xl font-bold text-secondary">
-                                    ${Number(mundialItem.price).toLocaleString('es-CO')}
-                                  </p>
-                                </div>
-                              ))}
-                              <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                                <Trophy className="h-3.5 w-3.5 text-secondary" />
-                                <span>Pide estos platos y gana goles para tu pasaporte mundialista</span>
-                              </div>
-                            </div>
-                          );
-                        }
-                        if (place.worldCupSpecial || place.loyalty_reward_description) {
-                          return (
-                            <>
-                              <div className="bg-background/80 rounded-lg p-4 mb-3 border border-primary/10">
-                                <p className="font-semibold text-primary mb-1">
-                                  🍽️ {place.worldCupSpecial || 'Plato especial del Mundial'}
-                                </p>
-                                <p className="text-sm text-muted-foreground">
-                                  {place.loyalty_reward_description || 'Pregunta por nuestro plato mundialista y acumula goles en tu pasaporte.'}
-                                </p>
-                              </div>
-                              {place.loyalty_reward_image && (
-                                <div className="rounded-lg overflow-hidden aspect-[4/3] sm:aspect-video mb-3 bg-muted max-w-xl mx-auto flex items-center justify-center">
-                                  <img
-                                    src={place.loyalty_reward_image}
-                                    alt="Plato mundialista"
-                                    loading="lazy"
-                                    decoding="async"
-                                    className="w-full h-full object-contain"
-                                  />
-                                </div>
-                              )}
-                              <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                                <Trophy className="h-3.5 w-3.5 text-secondary" />
-                                <span>Pide este plato y gana goles para tu pasaporte mundialista</span>
-                              </div>
-                            </>
-                          );
-                        }
-                        return (
-                          <div className="text-center py-6">
-                            <span className="text-3xl mb-2 block">🏟️</span>
-                            <p className="text-muted-foreground text-sm">
-                              Próximamente el plato mundialista de {place.name}
-                            </p>
-                          </div>
-                        );
-                      })()}
-                    </CardContent>
-                  </Card>
-                </TabsContent>
 
                 {/* Horarios */}
                 <TabsContent value="horarios" className="mt-4">

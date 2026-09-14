@@ -321,10 +321,10 @@ const BusinessMenu = () => {
                     placeholder="Ej: Entradas, Platos Fuertes, Bebidas"
                   />
                   <div className="flex flex-wrap gap-1">
-                    {['Plato Mundialista', 'Entradas', 'Platos Fuertes', 'Bebidas', 'Postres'].map(cat => (
+                    {['Especial de la casa', 'Entradas', 'Platos Fuertes', 'Bebidas', 'Postres'].map(cat => (
                       <Button key={cat} type="button" variant={formData.category === cat ? 'default' : 'outline'} size="sm" className="text-[10px] h-6 px-2"
                         onClick={() => setFormData({ ...formData, category: cat })}>
-                        {cat === 'Plato Mundialista' ? '⚽ ' : ''}{cat}
+                        {cat}
                       </Button>
                     ))}
                   </div>

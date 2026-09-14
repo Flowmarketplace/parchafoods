@@ -25,11 +25,11 @@ const LandingCTA = () => {
             <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-4">
               ¿Listo para vivir el{" "}
               <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                Parcha Foods?
+                La Ciudad en tus Manos?
               </span>
             </h2>
             <p className="text-muted-foreground text-lg max-w-xl mx-auto mb-8">
-              Explora los mejores restaurantes de Cali, acumula puntos y disfruta la experiencia gastronómica más grande del Mundial 2026.
+              Explora los mejores negocios de tu ciudad, acumula puntos y aprovecha promociones exclusivas.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
@@ -40,7 +40,7 @@ const LandingCTA = () => {
                 <ChevronRight className="w-5 h-5" />
               </a>
               <a
-                href="https://wa.me/573146269531?text=Hola%2C%20quiero%20saber%20más%20sobre%20El%20Mundial%20del%20Sabor"
+                href="https://wa.me/573146269531?text=Hola%2C%20quiero%20saber%20más%20sobre%20La%20Ciudad%20en%20tus%20Manos"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-muted text-foreground font-semibold text-base hover:bg-muted/80 transition-all"

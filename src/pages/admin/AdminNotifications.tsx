@@ -241,7 +241,7 @@ const AdminNotifications = () => {
                   variant="outline"
                   className="w-full justify-start"
                   onClick={() => {
-                    setTitle('Bienvenido a Parcha Foods');
+                    setTitle('Bienvenido a La Ciudad en tus Manos');
                     setMessage('Descubre los mejores negocios cerca de ti');
                   }}
                 >

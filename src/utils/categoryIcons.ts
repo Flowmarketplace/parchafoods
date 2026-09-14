@@ -1,3 +1,5 @@
+import { getBusinessTypeColor, resolveBusinessType } from '@/data/categories';
+
 // SVG paths for category icons
 export const categoryIcons: Record<string, string> = {
   'Comidas Rápidas': `<path d="M3 2v10c0 1.1.9 2 2 2h2v5a1 1 0 002 0v-5h2a2 2 0 002-2V2a1 1 0 00-2 0v8H5V2a1 1 0 00-2 0zm16 0a1 1 0 00-1 1v5c0 1.66-1.34 3-3 3v8a1 1 0 002 0v-6.1c1.49-.44 3-1.89 3-3.9V3a1 1 0 00-1-1z"/>`,
@@ -25,9 +27,23 @@ categoryIcons['Cafés'] = categoryIcons['Café'];
 categoryIcons['Cerveza'] = categoryIcons['Bar'];
 categoryIcons['Restaurante'] = categoryIcons['Tradicional'];
 
+// Macro business-type icons (La Ciudad en tus Manos taxonomy)
+categoryIcons['Comida'] = categoryIcons['Tradicional'];
+categoryIcons['Salud'] = `<path d="M12 3v18M3 12h18" fill="none" stroke="white" stroke-width="3.5" stroke-linecap="round"/>`;
+categoryIcons['Belleza'] = `<path d="M6 3l12 12M18 3L6 15" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"/><circle cx="6" cy="19" r="2.5" fill="none" stroke="white" stroke-width="2"/><circle cx="18" cy="19" r="2.5" fill="none" stroke="white" stroke-width="2"/>`;
+categoryIcons['Ropa'] = `<path d="M8 3l4 2 4-2 5 4-3 3v11H6V10L3 7l5-4z" fill="none" stroke="white" stroke-width="2" stroke-linejoin="round"/>`;
+categoryIcons['Entretenimiento'] = `<path d="M9 18V5l12-2v13" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="18" r="3" fill="none" stroke="white" stroke-width="2"/><circle cx="18" cy="16" r="3" fill="none" stroke="white" stroke-width="2"/>`;
+categoryIcons['Hogar'] = `<path d="M3 11l9-8 9 8M5 10v10h14V10" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;
+categoryIcons['Servicios'] = `<path d="M14.7 6.3a4 4 0 01-5.4 5.4L4 17v3h3l5.3-5.3a4 4 0 015.4-5.4l-2.6 2.6-1.4-1.4 2.6-2.6z" fill="none" stroke="white" stroke-width="2" stroke-linejoin="round"/>`;
+categoryIcons['Hospedaje'] = `<path d="M3 18V8m0 4h18v6M7 11a2 2 0 100-4 2 2 0 000 4zM11 12h8a2 2 0 012 2" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;
+categoryIcons['Mercados'] = `<path d="M3 6h18l-2 12H5L3 6zM8 6V4a4 4 0 018 0v2" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;
 
 export const getCategoryIcon = (category: string): string => {
-  return categoryIcons[category] || categoryIcons['Otro'];
+  return (
+    categoryIcons[category] ||
+    categoryIcons[resolveBusinessType(category)] ||
+    categoryIcons['Otro']
+  );
 };
 
 export const getCategoryColor = (category: string): string => {
@@ -55,5 +71,5 @@ export const getCategoryColor = (category: string): string => {
     'Otro': '#9e9e9e'
   };
   
-  return colors[category] || colors['Otro'];
+  return colors[category] || getBusinessTypeColor(category);
 };

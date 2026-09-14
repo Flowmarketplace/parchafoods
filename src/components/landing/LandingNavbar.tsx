@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
-import logo from "@/assets/portada_mundial_del_sabor_2026.jpg";
 
 const LandingNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,10 +14,10 @@ const LandingNavbar = () => {
     >
       <div className="container mx-auto px-6 py-3 flex items-center justify-between">
         <a href="/landing" className="flex items-center gap-2.5">
-          <img src="/mundial-sabor-icon.png" alt="Parcha Foods" className="h-14 w-14 object-contain" />
+          <img src="/ciudad-logo.png" alt="La Ciudad en tus Manos" className="h-14 w-14 object-contain" />
           <div className="flex flex-col">
-            <span className="font-extrabold text-base leading-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Parcha Foods</span>
-            <span className="text-[10px] leading-tight text-muted-foreground">Comer, saber y vivir</span>
+            <span className="font-extrabold text-base leading-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">La Ciudad en tus Manos</span>
+            <span className="text-[10px] leading-tight text-muted-foreground">Tu ciudad, en tus manos</span>
           </div>
         </a>
 

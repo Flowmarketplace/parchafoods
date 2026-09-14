@@ -18,7 +18,7 @@ const features = [
   },
   {
     icon: Trophy,
-    title: "Rutas Mundialistas",
+    title: "Rutas por la ciudad",
     subtitle: "Recorre Cali y gana premios",
     description: "Completa rutas temáticas visitando restaurantes, acumula goles y desbloquea recompensas exclusivas. ¡Convierte cada comida en una aventura mundialista!",
     image: "",
@@ -47,7 +47,7 @@ const features = [
     icon: Star,
     title: "Promociones Exclusivas",
     subtitle: "Ofertas solo en la app",
-    description: "Accede a descuentos especiales, combos mundialistas y ofertas exclusivas que solo están disponibles para usuarios de Parcha Foods.",
+    description: "Accede a descuentos especiales, combos mundialistas y ofertas exclusivas que solo están disponibles para usuarios de La Ciudad en tus Manos.",
     image: featurePromos,
     color: "from-accent/20 to-accent/5",
     iconBg: "bg-accent",
@@ -176,7 +176,7 @@ const LandingFeatures = () => {
             </span>
           </h2>
           <p className="text-muted-foreground mt-4 max-w-2xl mx-auto text-lg">
-            La plataforma más completa para vivir la experiencia gastronómica del Mundial 2026 en Cali.
+            La plataforma más completa para descubrir los negocios de tu ciudad.
           </p>
         </motion.div>
       </div>
