@@ -264,7 +264,98 @@ export const CATEGORY_FALLBACK_POOLS: Record<string, string[]> = {
   'Finca': pool(['photo-1501785888041-af3ef285b470','photo-1520250497591-112f2f40a3f4','photo-1449824913935-59a10b8d2000','photo-1518780664697-55e3ad937233','photo-1470770841072-f978cf4d019e']),
   'Cabañas': pool(['photo-1470770841072-f978cf4d019e','photo-1449158743715-0a90ebb6d2d8','photo-1501785888041-af3ef285b470','photo-1520250497591-112f2f40a3f4','photo-1542718610-a1d656d1884c']),
   'Motel': pool(['photo-1611892440504-42a792e24d32','photo-1590490360182-c33d57733427','photo-1445019980597-93fa8acb246c','photo-1631049307264-da0ec9d70304','photo-1582719478250-c89cae4dc85b']),
+
+  // ---- Categorías adicionales presentes en la base de datos ----
+  // Servicios
+  'Repuestos': pool(['photo-1486262715619-67b85e0b08d3','photo-1625047509168-a7026f36de04','photo-1530046339160-ce3e530c7d2f','photo-1487754180451-c456f719a1fc','photo-1632823469850-1b7b1e8b7e2e']),
+  'Repuestos de moto': pool(['photo-1558981403-c5f9899a28bc','photo-1591637333184-19aa84b3e01f','photo-1568772585407-9361f9bf3a87','photo-1449426468159-d96dbf08f19f','photo-1486262715619-67b85e0b08d3']),
+  'Motos': pool(['photo-1558981403-c5f9899a28bc','photo-1591637333184-19aa84b3e01f','photo-1568772585407-9361f9bf3a87','photo-1449426468159-d96dbf08f19f','photo-1571068316344-75bc76f77890']),
+  'Taller de motos': pool(['photo-1591637333184-19aa84b3e01f','photo-1558981403-c5f9899a28bc','photo-1486262715619-67b85e0b08d3','photo-1487754180451-c456f719a1fc','photo-1530046339160-ce3e530c7d2f']),
+  'Taller automotriz': pool(['photo-1486262715619-67b85e0b08d3','photo-1487754180451-c456f719a1fc','photo-1632823469850-1b7b1e8b7e2e','photo-1530046339160-ce3e530c7d2f','photo-1625047509168-a7026f36de04']),
+  'Tecnomecánica': pool(['photo-1486262715619-67b85e0b08d3','photo-1530046339160-ce3e530c7d2f','photo-1625047509168-a7026f36de04','photo-1487754180451-c456f719a1fc','photo-1632823469850-1b7b1e8b7e2e']),
+  'Llantas': pool(['photo-1449965408869-eaa3f722e40d','photo-1568844293986-8d0400bd4745','photo-1486262715619-67b85e0b08d3','photo-1530046339160-ce3e530c7d2f','photo-1625047509168-a7026f36de04']),
+  'Gasolinera': pool(['photo-1545558014-8692077e9b5c','photo-1527018601619-a508a2be00cd','photo-1607603750909-408e193868c7','photo-1611587529972-6e3a9c9c1d72','photo-1517524008697-84bbe3c3fd98']),
+  'Celulares': pool(['photo-1512941937669-90a1b58e7e9c','photo-1510557880182-3d4d3cba35a5','photo-1580910051074-3eb694886505','photo-1585060544812-6b45742d762f','photo-1556656793-08538906a9f8']),
+  'Computadores': pool(['photo-1517336714731-489689fd1ca8','photo-1498049794561-7780e7231661','photo-1531297484001-80022131f5a1','photo-1518770660439-4636190af475','photo-1547082299-de196ea013d6']),
+  'Electrónica': pool(['photo-1518770660439-4636190af475','photo-1550009158-9ebf69173e03','photo-1498049794561-7780e7231661','photo-1588508065123-287b28e013da','photo-1517336714731-489689fd1ca8']),
+  'Reparación electrónica': pool(['photo-1588508065123-287b28e013da','photo-1518770660439-4636190af475','photo-1581092921461-eab62e97a780','photo-1591488320449-011701bb6704','photo-1517336714731-489689fd1ca8']),
+  'Reparación de calzado': pool(['photo-1595341888016-a392ef81b7de','photo-1449505278894-297fdb3edbc1','photo-1556906781-9a412961c28c','photo-1543163521-1bf539c55dd2','photo-1560343090-f0409e92791a']),
+  'Funeraria': pool(['photo-1516575150278-77136aed6920','photo-1478760329108-5c3ed9d495a0','photo-1520962922320-2038eebab146','photo-1518709414768-a88981a4515d','photo-1508921340878-ba53e1f016ec']),
+  'Correo': pool(['photo-1586769852044-692d6e3703f0','photo-1553413077-190dd305871c','photo-1568010434642-2b0ff5b9c4d3','photo-1607083206968-13611e3d76db','photo-1580674285054-bed31e145f99']),
+  'Contaduría': pool(['photo-1554224155-6726b3ff858f','photo-1450101499163-c8848c66ca85','photo-1460925895917-afdab827c52f','photo-1551288049-bebda4e38f71','photo-1521791136064-7986c2920216']),
+  'Abogados': pool(['photo-1589829545856-d10d557cf95f','photo-1505664194779-8beaceb93744','photo-1436450412740-6b988f486c6b','photo-1521791136064-7986c2920216','photo-1450101499163-c8848c66ca85']),
+  'Notaría': pool(['photo-1450101499163-c8848c66ca85','photo-1589829545856-d10d557cf95f','photo-1521791136064-7986c2920216','photo-1554224155-6726b3ff858f','photo-1436450412740-6b988f486c6b']),
+  'Topografía': pool(['photo-1503387762-592deb58ef4e','photo-1541888946425-d81bb19240f5','photo-1581091226825-a6a2a5aee158','photo-1590649917466-7e4ea762c4a1','photo-1504307651094-9b1b1b0e6b6e']),
+  'Publicidad': pool(['photo-1561070791-2526d30994b5','photo-1611532736597-de2d4265fba3','photo-1562564055-71e051d33c19','photo-1542744094-3a31f272c490','photo-1552664730-d307ca884978']),
+  'Diseño gráfico': pool(['photo-1626785774573-4b799315345d','photo-1561070791-2526d30994b5','photo-1558655146-9f40138edfeb','photo-1572044162444-ad60f128bdea','photo-1542744094-3a31f272c490']),
+  'Impresión': pool(['photo-1601645191163-3fc0d5d64e35','photo-1562564055-71e051d33c19','photo-1611532736597-de2d4265fba3','photo-1586953208448-b95a79798f07','photo-1568667256549-094345857637']),
+  'Fiestas': pool(['photo-1530103862676-de8c9debad1d','photo-1519671482749-fd09be7ccebf','photo-1464366400600-7168b8af9bc3','photo-1492684223066-81342ee5ff30','photo-1513151233558-d860c5398176']),
+  'Compraventa': pool(['photo-1556742049-0cfed4f6a45d','photo-1554224155-6726b3ff858f','photo-1441986300917-64674bd600d8','photo-1560518883-ce09059eeffa','photo-1521791136064-7986c2920216']),
+  'Comercio': pool(['photo-1441986300917-64674bd600d8','photo-1489987707025-afc232f7ea0f','photo-1604719312566-8912e9227c6a','photo-1556742049-0cfed4f6a45d','photo-1521791136064-7986c2920216']),
+
+  // Mercados
+  'Plaza de mercado': pool(['photo-1488459716781-31db52582fe9','photo-1542838132-92c53300491e','photo-1518843875459-f738682238a6','photo-1519996529931-28324d5a630e','photo-1506806732259-39c2d0268443']),
+  'Bebidas': pool(['photo-1544145945-f90425340c7e','photo-1437418747212-8d9709afab22','photo-1621263764928-df1444c5e859','photo-1571950006418-f226dc106482','photo-1595981267035-7b04ca84a82d']),
+  'Variedades': pool(['photo-1604719312566-8912e9227c6a','photo-1441986300917-64674bd600d8','photo-1489987707025-afc232f7ea0f','photo-1578916171728-46686eac8d58','photo-1534723452862-4c874018d66d']),
+  'Agropecuaria': pool(['photo-1500595046743-cd271d694d30','photo-1574943320219-553eb213f72d','photo-1464226184884-fa280b87c399','photo-1416879595882-3373a0480b5b','photo-1560493676-04071c5f467b']),
+  'Centro comercial': pool(['photo-1519567241348-6b3fdb2a0b6d','photo-1441986300917-64674bd600d8','photo-1567449303078-57ad995bd17a','photo-1481437156560-3205f6a85705','photo-1555529669-e69e7aa0ba9a']),
+  'Quesos': pool(['photo-1486297678162-eb2a19b0a32d','photo-1452195100486-9cc805987862','photo-1589881133595-a3c085cb731d','photo-1618164436241-4473940d1f5c','photo-1566454419290-57a0af40c8d4']),
+
+  // Hogar
+  'Pinturas': pool(['photo-1562259949-e8e7689d7828','photo-1580674285054-bed31e145f99','photo-1558618666-fcd25c85cd64','photo-1595814433015-e6f5ce69614e','photo-1600585152220-90363fe7e115']),
+  'Colchones': pool(['photo-1505693416388-ac5ce068fe85','photo-1522771739844-6a9f6d5f14af','photo-1560185007-cde436f6a4d0','photo-1586023492125-27b2c045efd7','photo-1555041469-a586c61ea9bc']),
+  'Gas': pool(['photo-1581093588401-fbb62a02f120','photo-1607603750909-408e193868c7','photo-1581092160562-40aa08e78837','photo-1581094794329-c8112a89af12','photo-1504307651094-9b1b1b0e6b6e']),
+  'Vidriería': pool(['photo-1503387762-592deb58ef4e','photo-1581093458791-9f3c3900df4b','photo-1600607687920-4e2a09cf159d','photo-1600585154340-be6161a56a0c','photo-1541888946425-d81bb19240f5']),
+  'Cerámica': pool(['photo-1578749556568-bc2c40e68b61','photo-1565193298357-c5b46b0cdd8b','photo-1604014237800-1c08f3b2f6c3','photo-1584622650111-993a426fbf0a','photo-1556228453-efd6c1ff04f0']),
+  'Metalistería': pool(['photo-1504307651094-9b1b1b0e6b6e','photo-1581093458791-9f3c3900df4b','photo-1565087000234-5b0e61f2e2bc','photo-1618090584176-7132b9911657','photo-1572981779307-38d843f3a9f3']),
+  'Jardinería': pool(['photo-1466692476868-aef1dfb1e735','photo-1416879595882-3373a0480b5b','photo-1585320806297-9794b3e4eeae','photo-1523348837708-15d4a09cfac2','photo-1558904541-efa843a96f01']),
+  'Pisos': pool(['photo-1581858726788-75bc0f6a952d','photo-1615873963966-7b21a0a2e5a3','photo-1600607687920-4e2a09cf159d','photo-1600585154340-be6161a56a0c','photo-1556228453-efd6c1ff04f0']),
+  'Baños': pool(['photo-1584622650111-993a426fbf0a','photo-1552321554-5f1da427a6b5','photo-1604014237800-1c08f3b2f6c3','photo-1558618666-fcd25c85cd64','photo-1616486338812-3dadae4b4f9d']),
+  'Carpintería': pool(['photo-1504148455328-c376907d081c','photo-1572297870735-1f6d4b7c3e6a','photo-1611021061285-d3e7e3a0a1e9','photo-1581093458791-9f3c3900df4b','photo-1555041469-a586c61ea9bc']),
+  'Artesanías': pool(['photo-1513519245088-0e12902e5a38','photo-1528283648649-33347faa5d9e','photo-1519996529931-28324d5a630e','photo-1503602642458-232111445657','photo-1509395176047-4a66953fd231']),
+  'Cortinas': pool(['photo-1513161455079-7dc1de15ef3e','photo-1616486338812-3dadae4b4f9d','photo-1583847661858-3b26973d8194','photo-1556228453-efd6c1ff04f0','photo-1586023492125-27b2c045efd7']),
+  'Eléctricos': pool(['photo-1565814326012-3b444a9bbbc9','photo-1581093458791-9f3c3900df4b','photo-1558618666-fcd25c85cd64','photo-1621905251189-08b45d6a2694','photo-1513506003011-3b03c80175e8']),
+
+  // Ropa
+  'Ropa': pool(['photo-1441986300917-64674bd600d8','photo-1483985988355-763728e1935b','photo-1567401893414-76b7b1e5a7a5','photo-1445205170230-053b83016050','photo-1555529669-e69e7aa0ba9a']),
+  'Calzado': pool(['photo-1549298916-b41d501d3772','photo-1460353581641-37baddab0fa2','photo-1543163521-1bf539c55dd2','photo-1556906781-9a412961c28c','photo-1595341888016-a392ef81b7de']),
+  'Regalos': pool(['photo-1513885535751-8b9238bd345a','photo-1549465220-1a8b9238cd48','photo-1512909006721-3d6018887383','photo-1607083206968-13611e3d76db','photo-1519681393784-d120267933ba']),
+  'Juguetería': pool(['photo-1566576912321-d58ddd7a6088','photo-1558060370-d644479cb6f7','photo-1587654780291-39c9404d746b','photo-1596461404969-9ae70f2830c1','photo-1515488042361-ee00e0ddd4e4']),
+  'Telas': pool(['photo-1558769132-cb1aea458c5e','photo-1528795259021-d8c86e14354c','photo-1537832816519-689ad163238b','photo-1584992236310-6edddc08acff','photo-1445205170230-053b83016050']),
+
+  // Belleza
+  'Cosméticos': pool(['photo-1522335789203-aabd1fc54bc9','photo-1596462502278-27bfdc403348','photo-1512496015851-a90fb38ba796','photo-1571781926291-c477ebfd024b','photo-1583241800698-9c2e0a1a1a5b']),
+  'Perfumería': pool(['photo-1541643600914-78b084683601','photo-1587017539504-67cfbddac569','photo-1592945403244-b3fbafd7f539','photo-1594035910387-fea47794261f','photo-1610461888750-10bfc601b874']),
+
+  // Entretenimiento
+  'Casino': pool(['photo-1596838132731-3301c3fd4317','photo-1511193311914-0346f16efe90','photo-1541278107931-e006523892df','photo-1518893063132-36e46dbe2428','photo-1606167668584-78701c57f13d']),
+  'Piscina': pool(['photo-1576013551627-0cc20b96c2a7','photo-1571902943202-507ec2618e8f','photo-1551882547-ff40c63fe5fa','photo-1519046904884-53103b34b206','photo-1502680390469-be75c86b636f']),
 };
+
+// Respaldo por tipo de negocio cuando la categoría específica no tiene pool.
+const BUSINESS_TYPE_FALLBACK: Record<string, string> = {
+  Comida: 'Restaurante',
+  Salud: 'Consultorio',
+  Belleza: 'Peluquería',
+  Ropa: 'Ropa',
+  Ocio: 'Entretenimiento',
+  Entretenimiento: 'Entretenimiento',
+  Hogar: 'Hogar',
+  Servicios: 'Servicios',
+  Hospedaje: 'Hospedaje',
+  Mercados: 'Mercados',
+};
+
+const normalize = (s: string) =>
+  s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+
+const NORMALIZED_POOL_KEYS: Record<string, string> = Object.keys(CATEGORY_FALLBACK_POOLS).reduce(
+  (acc, key) => {
+    acc[normalize(key)] = key;
+    return acc;
+  },
+  {} as Record<string, string>,
+);
 
 // Palabras clave en el nombre del negocio -> categoría específica.
 // Permite afinar la foto cuando la categoría guardada es genérica.
@@ -355,16 +446,28 @@ const NAME_KEYWORD_RULES: Array<[RegExp, string]> = [
   [/finca|hacienda|ecohotel|campestre|glamping/i, 'Finca'],
 ];
 
+const lookupPoolKey = (value?: string | null): string | undefined => {
+  if (!value) return undefined;
+  if (CATEGORY_FALLBACK_POOLS[value]) return value;
+  return NORMALIZED_POOL_KEYS[normalize(value)];
+};
+
 const resolveSpecificCategory = (
   category?: string | null,
   name?: string | null,
+  businessType?: string | null,
 ): string | undefined => {
+  // 1) Categoría guardada (exacta o sin tildes/mayúsculas)
+  const byCategory = lookupPoolKey(category);
+  if (byCategory) return byCategory;
+  // 2) Palabras clave del nombre del negocio
   if (name) {
     const rule = NAME_KEYWORD_RULES.find(([re]) => re.test(name));
     if (rule && CATEGORY_FALLBACK_POOLS[rule[1]]) return rule[1];
   }
-  if (category && CATEGORY_FALLBACK_POOLS[category]) return category;
-  return undefined;
+  // 3) Respaldo por tipo de negocio
+  const typeKey = businessType ? BUSINESS_TYPE_FALLBACK[businessType] : undefined;
+  return lookupPoolKey(typeKey) || lookupPoolKey(businessType);
 };
 
 const DEFAULT_POOL = pool([
@@ -392,9 +495,10 @@ export const getCategoryFallbackImage = (
   category?: string | null,
   seed?: string | null,
   name?: string | null,
+  businessType?: string | null,
 ): string => {
   if (seed && RESTAURANT_IMAGE_OVERRIDES[seed]) return RESTAURANT_IMAGE_OVERRIDES[seed];
-  const specific = resolveSpecificCategory(category, name);
+  const specific = resolveSpecificCategory(category, name, businessType);
   const list = (specific && CATEGORY_FALLBACK_POOLS[specific]) || DEFAULT_POOL;
   if (!seed) return list[0];
   return list[hash(seed) % list.length];
