@@ -209,6 +209,30 @@ export const CATEGORY_FALLBACK_POOLS: Record<string, string[]> = {
   'Lencería': pool(['photo-1483985988355-763728e1935b','photo-1445205170230-053b83016050','photo-1441986300917-64674bd600d8','photo-1567401893414-76b7b1e5a7a5','photo-1555529669-e69e7aa0ba9a']),
   'Almacén': pool(['photo-1441986300917-64674bd600d8','photo-1489987707025-afc232f7ea0f','photo-1445205170230-053b83016050','photo-1490481651871-ab68de25d43d','photo-1555529669-e69e7aa0ba9a']),
   'Moda': pool(['photo-1483985988355-763728e1935b','photo-1445205170230-053b83016050','photo-1441986300917-64674bd600d8','photo-1567401893414-76b7b1e5a7a5','photo-1555529669-e69e7aa0ba9a']),
+
+  // ---- Ocio / Entretenimiento ----
+  'Entretenimiento': pool(['photo-1514525253440-b393452e8d26','photo-1492684223066-81342ee5ff30','photo-1516450360452-9312f6e1fc63','photo-1533174072545-e8d4aa97edf9','photo-1524368535928-5b5e00ddc76b']),
+  'Billar': pool(['photo-1559128529-e4c78b484e73','photo-1596436884306-0b0b0b0b0b0b','photo-1550745165-9bc0b252726f','photo-1534158914592-062992fbe900','photo-1606167668954']),
+  'Gimnasio': pool(['photo-1534438327276-14e5300c3a48','photo-1571902943202-507ec2618e8f','photo-1540497077202-7c8a3999166f','photo-1581009146145-b5ef050c2e1e','photo-1593079831268-3381b0db4a26']),
+  'Discoteca': pool(['photo-1571266028243-3716f02d2d2e','photo-1493225255756-d9584f8606e0','photo-1514525253440-b393452e8d26','photo-1566737236500-c8a4302a5bf7','photo-1545128488-c0eccc5b9fdf']),
+  'Tejo': pool(['photo-1540497077202-7c8a3999166f','photo-1550745165-9bc0b252726f','photo-1534158914592-062992fbe900','photo-1571266028243-3716f02d2d2e','photo-1516450360452-9312f6e1fc63']),
+  'Cine': pool(['photo-1489599849927-2ee91cede3ba','photo-1517604931442-7105376f9e3d','photo-1524985069026-dd778a71c25b','photo-1536440136628-849c177e76a1','photo-1585647347483-22f6620d7d4c']),
+  'Eventos': pool(['photo-1514525253440-b393452e8d26','photo-1492684223066-81342ee5ff30','photo-1516450360452-9312f6e1fc63','photo-1523580494863-6f4c2d91e0e2','photo-1533174072545-e8d4aa97edf9']),
+  'Karaoke': pool(['photo-1514525253440-b393452e8d26','photo-1493225255756-d9584f8606e0','photo-1516450360452-9312f6e1fc63','photo-1470337458703-46ad1756a187','photo-1514362545857-3bc16c4c7d1b']),
+  'Juegos': pool(['photo-1550745165-9bc0b252726f','photo-1534158914592-062992fbe900','photo-1559128529-e4c78b484e73','photo-1516450360452-9312f6e1fc63','photo-1606167668954']),
+  'Parque': pool(['photo-1558961363-f1e013643d5e','photo-1502082553048-f009c37129b9','photo-1477959858617-78f1e015f411','photo-1519331379826-f10be5486c6e','photo-1441974231531-c6227db76b6e']),
+
+  // ---- Hogar ----
+  'Hogar': pool(['photo-1556912173-3db996ea0624','photo-1584622650111-993a426fbf0a','photo-1556228453-efd6c1ff04f0','photo-1616486338812-3dadae4b4f9d','photo-1583847661858-3b26973d8194']),
+  'Ferretería': pool(['photo-1581140946338-2d4b5f170e8b','photo-1572981779307-38d843f3a9f3','photo-1621905251189-08b45d6a2694','photo-1581093458791-9f3c3900df4b','photo-1615873963966-7b21a0a2e5a3']),
+  'Muebles': pool(['photo-1555041469-a586c61ea9bc','photo-1556228453-efd6c1ff04f0','photo-1618221195710-dd6b41faaea6','photo-1586023492125-27b2c045efd7','photo-1595428774223-ef52624120d1']),
+  'Electrodomésticos': pool(['photo-1556910638-4cdac43e89ad','photo-1584622650111-993a426fbf0a','photo-1593507744424-074f6f63f0ce','photo-1605218427306-022ba6b9c379','photo-1616486338812-3dadae4b4f9d']),
+  'Decoración': pool(['photo-1616486338812-3dadae4b4f9d','photo-1583847661858-3b26973d8194','photo-1556228453-efd6c1ff04f0','photo-1618221195710-dd6b41faaea6','photo-1586023492125-27b2c045efd7']),
+  'Construcción': pool(['photo-1504307651094-9b1b1b0e6b6e','photo-1541888946421-d628b7705e00','photo-1503387762-592deb58ef4e','photo-1581093458791-9f3c3900df4b','photo-1590649917466-7e4ea762c4a1']),
+  'Pintura': pool(['photo-1562259949-e8e7689d7828','photo-1580674285054-bed31e145f99','photo-1558618666-fcd25c85cd64','photo-1595814433015-e6f5ce69614e','photo-1600585152220-90363fe7e115']),
+  'Baño': pool(['photo-1584622650111-993a426fbf0a','photo-1552321554-5f1da427a6b5','photo-1604014237800-1c08f3b2f6c3','photo-1558618666-fcd25c85cd64','photo-1616486338812-3dadae4b4f9d']),
+  'Cocina': pool(['photo-1556910638-4cdac43e89ad','photo-1556912173-3db996ea0624','photo-1584622650111-993a426fbf0a','photo-1616486338812-3dadae4b4f9d','photo-1556228453-efd6c1ff04f0']),
+  'Iluminación': pool(['photo-1565814326012-3b444a9bbbc9','photo-1513506003011-3b03c80175e8','photo-1558618666-fcd25c85cd64','photo-1583847661858-3b26973d8194','photo-1616486338812-3dadae4b4f9d']),
 };
 
 // Palabras clave en el nombre del negocio -> categoría específica.
@@ -252,6 +276,27 @@ const NAME_KEYWORD_RULES: Array<[RegExp, string]> = [
   [/sastrer|confeccion|modister|almac[eé]n de telas/i, 'Confecciones'],
   [/lencer[ií]a|íntima|pijama/i, 'Lencería'],
   [/boutique|moda|ropa|almac[eé]n|fashion|outlet|jeans|vestidos/i, 'Boutique'],
+  // Ocio / Entretenimiento
+  [/gimnasio|gym|fitness|crossfit|musculaci[oó]n|entrenamiento/i, 'Gimnasio'],
+  [/discoteca|discotek|rumba|night club|club nocturno/i, 'Discoteca'],
+  [/billar|pool hall|billares/i, 'Billar'],
+  [/tejo|tejos/i, 'Tejo'],
+  [/cine|cinema|multicine/i, 'Cine'],
+  [/karaoke/i, 'Karaoke'],
+  [/juegos? arcade|sal[oó]n de juegos|videojuegos/i, 'Juegos'],
+  [/parque|plaza|cancha|estadio|canchas sint[eé]tica/i, 'Parque'],
+  [/eventos?|recreaci[oó]n|entretenimiento/i, 'Eventos'],
+  [/bar\b|cantina|licorera|pub\b|discobar/i, 'Bar'],
+  // Hogar
+  [/ferreter[ií]a|ferreter|herramientas|torniller/i, 'Ferretería'],
+  [/muebler[ií]a|muebles|colch[oó]n|sala comedor/i, 'Muebles'],
+  [/electrodom[eé]sticos|nevera|lavadora|televisor/i, 'Electrodomésticos'],
+  [/decoraci[oó]n|adornos|cuadros|alfombra/i, 'Decoración'],
+  [/construcci[oó]n|materiales|cemento|ladrillo/i, 'Construcción'],
+  [/pintura|pinturas|pinturer/i, 'Pintura'],
+  [/baño|sanitario|grifer/i, 'Baño'],
+  [/cocina|ollas|utensilios|vajilla/i, 'Cocina'],
+  [/iluminaci[oó]n|l[aá]mparas|luces/i, 'Iluminación'],
 ];
 
 const resolveSpecificCategory = (
