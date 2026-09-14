@@ -40,6 +40,6 @@ export function pickBusinessCoverUrl(
   const ordered = pickBusinessCoverImages(images);
   return (
     ordered[0]?.image_url ||
-    getCategoryFallbackImage(business.category || '', id || business.name || '')
+    getCategoryFallbackImage(business.category || '', id || business.name || '', business.name || '')
   );
 }
