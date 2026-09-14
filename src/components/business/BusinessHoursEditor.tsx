@@ -27,7 +27,7 @@ const DAYS = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', '
 
 const defaultRows = (): DayRow[] =>
   DAYS.map((_, i) => ({
-    day_of_week: i + 1, // 1..7 (Mon..Sun)
+    day_of_week: i + 1 === 7 ? 0 : i + 1, // 0=Domingo, 1=Lunes...6=Sábado (igual que JS getDay)
     time_ranges: [{ open_time: '09:00', close_time: '18:00' }],
     is_closed: false,
   }));
