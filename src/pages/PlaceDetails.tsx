@@ -535,29 +535,41 @@ const PlaceDetails = () => {
                 <TabsContent value="ubicacion" className="mt-6">
                   <div className="space-y-6">
                     {/* Main location */}
-                    {place.latitude && place.longitude && (
-                      <div>
-                        <h3 className="font-semibold text-sm mb-2 flex items-center gap-2">
-                          <MapPin className="h-4 w-4 text-primary" />
-                          {branches.length > 0 ? 'Ubicación Principal' : 'Ubicación'}
-                        </h3>
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                          <div className="rounded-lg overflow-hidden border border-border h-[300px]">
+                    <div>
+                      <h3 className="font-semibold text-sm mb-2 flex items-center gap-2">
+                        <MapPin className="h-4 w-4 text-primary" />
+                        {branches.length > 0 ? 'Ubicación Principal' : 'Ubicación'}
+                      </h3>
+                      {place.address && (
+                        <p className="text-sm text-muted-foreground mb-3">{place.address}</p>
+                      )}
+                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                        <div className="rounded-lg overflow-hidden border border-border h-[300px]">
+                          {place.latitude && place.longitude ? (
                             <PlaceMap
                               latitude={place.latitude}
                               longitude={place.longitude}
                               placeName={place.name}
                               category={place.category}
                             />
-                          </div>
-                          <DirectionsPanel 
-                            destinationLat={place.latitude}
-                            destinationLng={place.longitude}
-                            destinationName={place.name}
-                          />
+                          ) : (
+                            <iframe
+                              title={`Mapa de ${place.name}`}
+                              className="w-full h-full"
+                              loading="lazy"
+                              referrerPolicy="no-referrer-when-downgrade"
+                              src={`https://maps.google.com/maps?q=${encodeURIComponent(`${place.name}, ${place.address || ''}, Colombia`)}&output=embed`}
+                            />
+                          )}
                         </div>
+                        <DirectionsPanel 
+                          destinationLat={place.latitude}
+                          destinationLng={place.longitude}
+                          destinationName={place.name}
+                          destinationAddress={place.address}
+                        />
                       </div>
-                    )}
+                    </div>
 
                     {/* Branches */}
                     {branches.length > 0 && (

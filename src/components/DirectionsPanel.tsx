@@ -7,9 +7,10 @@ import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 
 interface DirectionsPanelProps {
-  destinationLat: number;
-  destinationLng: number;
+  destinationLat?: number | null;
+  destinationLng?: number | null;
   destinationName: string;
+  destinationAddress?: string | null;
 }
 
 interface RouteInfo {
@@ -20,7 +21,11 @@ interface RouteInfo {
 
 type TransportMode = 'driving' | 'cycling' | 'walking';
 
-const DirectionsPanel = ({ destinationLat, destinationLng, destinationName }: DirectionsPanelProps) => {
+const DirectionsPanel = ({ destinationLat, destinationLng, destinationName, destinationAddress }: DirectionsPanelProps) => {
+  const hasCoords = typeof destinationLat === 'number' && typeof destinationLng === 'number';
+  const destinationQuery = hasCoords
+    ? `${destinationLat},${destinationLng}`
+    : [destinationName, destinationAddress].filter(Boolean).join(', ');
   const [selectedMode, setSelectedMode] = useState<TransportMode>('driving');
   const [userLocation, setUserLocation] = useState<{lat: number; lng: number} | null>(null);
   const [locationError, setLocationError] = useState<string | null>(null);
@@ -97,7 +102,7 @@ const DirectionsPanel = ({ destinationLat, destinationLng, destinationName }: Di
     if (!userLocation) return '#';
     
     const googleMapsMode = mode === 'driving' ? 'driving' : mode === 'cycling' ? 'bicycling' : 'walking';
-    return `https://www.google.com/maps/dir/?api=1&origin=${userLocation.lat},${userLocation.lng}&destination=${destinationLat},${destinationLng}&travelmode=${googleMapsMode}`;
+    return `https://www.google.com/maps/dir/?api=1&origin=${userLocation.lat},${userLocation.lng}&destination=${encodeURIComponent(destinationQuery)}&travelmode=${googleMapsMode}`;
   };
 
   const openInGoogleMaps = () => {
@@ -137,14 +142,16 @@ const DirectionsPanel = ({ destinationLat, destinationLng, destinationName }: Di
 
   // Simulated route estimation (in a real app, you'd use a routing API)
   const estimateRoute = (mode: TransportMode): RouteInfo => {
-    if (!userLocation) return { distance: '-', duration: '-', steps: [] };
+    if (!userLocation || !hasCoords) return { distance: '-', duration: '-', steps: [] };
 
+    const destLat = destinationLat as number;
+    const destLng = destinationLng as number;
     const R = 6371; // Earth's radius in km
-    const dLat = (destinationLat - userLocation.lat) * Math.PI / 180;
-    const dLon = (destinationLng - userLocation.lng) * Math.PI / 180;
+    const dLat = (destLat - userLocation.lat) * Math.PI / 180;
+    const dLon = (destLng - userLocation.lng) * Math.PI / 180;
     const a = 
       Math.sin(dLat/2) * Math.sin(dLat/2) +
-      Math.cos(userLocation.lat * Math.PI / 180) * Math.cos(destinationLat * Math.PI / 180) *
+      Math.cos(userLocation.lat * Math.PI / 180) * Math.cos(destLat * Math.PI / 180) *
       Math.sin(dLon/2) * Math.sin(dLon/2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
     const distance = R * c;
@@ -164,7 +171,7 @@ const DirectionsPanel = ({ destinationLat, destinationLng, destinationName }: Di
     };
   };
 
-  const currentRoute = userLocation ? estimateRoute(selectedMode) : null;
+  const currentRoute = userLocation && hasCoords ? estimateRoute(selectedMode) : null;
 
   return (
     <Card className="overflow-hidden">
@@ -183,7 +190,7 @@ const DirectionsPanel = ({ destinationLat, destinationLng, destinationName }: Di
           <div className="text-center py-8">
             <p className="text-muted-foreground mb-4">{locationError}</p>
             <Button
-              onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${destinationLat},${destinationLng}`, '_blank')}
+              onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(destinationQuery)}`, '_blank')}
               className="gap-2"
             >
               <Navigation2 className="h-4 w-4" />
@@ -210,6 +217,22 @@ const DirectionsPanel = ({ destinationLat, destinationLng, destinationName }: Di
               </TabsList>
 
               {/* Route Information */}
+              {!currentRoute && (
+                <div className="space-y-4">
+                  <div className="bg-muted/30 rounded-lg p-4 text-sm text-muted-foreground">
+                    <div className="flex items-center gap-2 mb-2 text-foreground font-medium">
+                      {getModeIcon(selectedMode)}
+                      <span>{getModeLabel(selectedMode)}</span>
+                    </div>
+                    <p>Te llevamos hasta {destinationName}{destinationAddress ? ` (${destinationAddress})` : ''} con la ruta paso a paso.</p>
+                  </div>
+                  <Button onClick={openInGoogleMaps} className="w-full gap-2" size="lg">
+                    <Navigation2 className="h-5 w-5" />
+                    Ver ruta {getModeLabel(selectedMode).toLowerCase()}
+                  </Button>
+                </div>
+              )}
+
               {currentRoute && (
                 <div className="space-y-4">
                   {/* Duration and Distance */}
