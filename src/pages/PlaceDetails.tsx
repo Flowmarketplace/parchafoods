@@ -234,8 +234,7 @@ const PlaceDetails = () => {
   }
 
   const businessType = resolveBusinessType(
-    (place as any).business_type || (place as any).businessType || place.category,
-    place.name
+    (place as any).business_type || (place as any).businessType || place.category
   );
   const catalog = getCatalogMeta(businessType);
 
