@@ -10,7 +10,7 @@ const BottomNav = () => {
     { id: 'home', name: 'Inicio', icon: Home, path: '/' },
     { id: 'nearme', name: 'Cerca de mí', icon: Navigation, path: '/near-me' },
     { id: 'favorites', name: 'Favoritos', icon: Heart, path: '/favorites' },
-    { id: 'routes', name: 'Rutas M', icon: MapPinned, path: '/listings' },
+    { id: 'listings', name: 'Negocios', icon: MapPinned, path: '/listings' },
     { id: 'settings', name: 'Ajustes', icon: Settings, path: '/settings' },
   ];
 
