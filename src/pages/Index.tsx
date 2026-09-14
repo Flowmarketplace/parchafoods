@@ -280,7 +280,7 @@ const Index = () => {
             </div>
             <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
               <button
-                onClick={() => setSelectedCategory('Todos')}
+                onClick={() => { setSelectedCategory('Todos'); setSelectedSubcategory(null); }}
                 className={cn(
                   "flex flex-col items-center gap-1.5 rounded-xl border p-3 transition-all hover:shadow-md active:scale-95",
                   selectedCategory === 'Todos' ? "border-primary bg-primary/5 shadow-sm" : "border-border bg-card"
@@ -297,7 +297,7 @@ const Index = () => {
                 return (
                   <button
                     key={cat.id}
-                    onClick={() => setSelectedCategory(isActive ? 'Todos' : cat.id)}
+                    onClick={() => { setSelectedCategory(isActive ? 'Todos' : cat.id); setSelectedSubcategory(null); }}
                     className={cn(
                       "flex flex-col items-center gap-1.5 rounded-xl border p-3 transition-all hover:shadow-md active:scale-95",
                       isActive ? "border-primary bg-primary/5 shadow-sm" : "border-border bg-card"
