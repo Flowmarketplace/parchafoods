@@ -139,7 +139,6 @@ export const SUBCATEGORY_ICONS: Record<string, LucideIcon> = {
   'Hospital / Clínica': Hospital,
   'IPS': Building,
   'Fisioterapia': Activity,
-  'Psicología': Brain,
   'Nutrición': Apple,
   'Naturista': Leaf,
   'Suplementos': PillBottle,
