@@ -1,0 +1,331 @@
+import {
+  LayoutGrid,
+  Soup,
+  Flame,
+  Pizza,
+  Croissant,
+  Coffee,
+  IceCream,
+  Candy,
+  Flag,
+  Leaf,
+  Globe,
+  Fish,
+  Beer,
+  Stethoscope,
+  Baby,
+  Smile,
+  PawPrint,
+  Glasses,
+  Pill,
+  Microscope,
+  Hospital,
+  Building,
+  Activity,
+  Brain,
+  Apple,
+  PillBottle,
+  Scissors,
+  User,
+  Sparkles,
+  Hand,
+  Paintbrush,
+  Bath,
+  ShoppingBag,
+  SprayCanIcon,
+  Syringe,
+  Shirt,
+  ShoppingCart,
+  BabyIcon,
+  Dumbbell,
+  Gem,
+  Watch,
+  Ruler,
+  ScissorsLineDashed,
+  Gift,
+  Gamepad2,
+  Music2,
+  Disc,
+  Billiards,
+  Target,
+  Clapperboard,
+  Mic2,
+  Dices,
+  Waves,
+  Trees,
+  Calendar,
+  Camera,
+  Hammer,
+  HardHat,
+  PaintBucket,
+  Sofa,
+  BedDouble,
+  Plug,
+  Lamp,
+  Blinds,
+  BrickWall,
+  BathIcon,
+  Drill,
+  Flower2,
+  Paintbrush2,
+  Wrench,
+  Car,
+  Fuel,
+  Bus,
+  Landmark,
+  Printer,
+  Smartphone,
+  Monitor,
+  Cpu,
+  ShirtIcon,
+  PartyPopper,
+  Store,
+  Mail,
+  Cross,
+  GraduationCap,
+  BabyCarriage,
+  School,
+  University,
+  BookOpen,
+  Music,
+  Palette,
+  CarIcon,
+  PenTool,
+  FileText,
+  Scale,
+  Calculator,
+  Briefcase,
+  Home,
+  Mountain,
+  MapPin,
+  BedSingle,
+  Tent,
+  Building2,
+  Warehouse,
+  ShoppingBasket,
+  Beef,
+  Carrot,
+  Milk,
+  Wine,
+  Wheat,
+  Sprout,
+  StoreIcon,
+  type LucideIcon,
+} from 'lucide-react';
+
+export const SUBCATEGORY_ICONS: Record<string, LucideIcon> = {
+  // Comida
+  'Restaurante': Soup,
+  'Comidas Rápidas': ShoppingBag,
+  'Asadero': Flame,
+  'Parrilla': Flame,
+  'Pizzería': Pizza,
+  'Panadería': Croissant,
+  'Café': Coffee,
+  'Heladería': IceCream,
+  'Dulces': Candy,
+  'Comida típica': Flag,
+  'Comida saludable': Leaf,
+  'Comida internacional': Globe,
+  'Mariscos': Fish,
+  'Bar y cerveza': Beer,
+
+  // Salud
+  'Medicina general': Stethoscope,
+  'Pediatría': Baby,
+  'Odontología': Smile,
+  'Veterinaria': PawPrint,
+  'Óptica': Glasses,
+  'Droguería': Pill,
+  'Laboratorio clínico': Microscope,
+  'Hospital / Clínica': Hospital,
+  'IPS': Building,
+  'Fisioterapia': Activity,
+  'Psicología': Brain,
+  'Nutrición': Apple,
+  'Naturista': Leaf,
+  'Suplementos': PillBottle,
+
+  // Belleza
+  'Peluquería': Scissors,
+  'Barbería': User,
+  'Salón de belleza': Sparkles,
+  'Uñas': Hand,
+  'Maquillaje': Paintbrush,
+  'Spa y masajes': Bath,
+  'Estética': Sparkles,
+  'Cosméticos': ShoppingBag,
+  'Perfumería': SprayCanIcon,
+  'Tatuajes': Syringe,
+
+  // Ropa
+  'Ropa para dama': Shirt,
+  'Ropa para caballero': Shirt,
+  'Ropa infantil': BabyIcon,
+  'Ropa deportiva': Dumbbell,
+  'Boutique': ShoppingBag,
+  'Calzado': ShoppingCart,
+  'Accesorios': Gem,
+  'Joyería': Gem,
+  'Relojería': Watch,
+  'Telas': Ruler,
+  'Sastrería': ScissorsLineDashed,
+  'Regalos': Gift,
+  'Juguetería': Gamepad2,
+
+  // Entretenimiento
+  'Bar': Beer,
+  'Discoteca': Music2,
+  'Billar': Billiards,
+  'Tejo': Target,
+  'Gimnasio': Dumbbell,
+  'Cine': Clapperboard,
+  'Karaoke': Mic2,
+  'Casino': Dices,
+  'Juegos': Gamepad2,
+  'Piscina': Waves,
+  'Parque': Trees,
+  'Eventos': Calendar,
+  'Turismo': Camera,
+
+  // Hogar
+  'Ferretería': Hammer,
+  'Construcción': HardHat,
+  'Pinturas': PaintBucket,
+  'Muebles': Sofa,
+  'Colchones': BedDouble,
+  'Electrodomésticos': Plug,
+  'Decoración': Lamp,
+  'Cortinas': Blinds,
+  'Cerámica y pisos': BrickWall,
+  'Baños y cocina': BathIcon,
+  'Vidriería': Paintbrush2,
+  'Metalistería': Wrench,
+  'Carpintería': Hammer,
+  'Eléctricos': Plug,
+  'Gas': Flame,
+  'Jardinería': Flower2,
+  'Artesanías': Paintbrush,
+
+  // Servicios
+  'Repuestos': Wrench,
+  'Llantas': CircleIcon,
+  'Lavadero de autos': Car,
+  'Gasolinera': Fuel,
+  'Transporte': Bus,
+  'Banco y financiero': Landmark,
+  'Papelería e impresión': Printer,
+  'Celulares y tecnología': Smartphone,
+  'Computadores': Monitor,
+  'Electrónica': Cpu,
+  'Lavandería': ShirtIcon,
+  'Reparación de calzado': Wrench,
+  'Fiestas y eventos': PartyPopper,
+  'Compraventa': Store,
+  'Correo y encomiendas': Mail,
+  'Funeraria': Cross,
+
+  // Educación
+  'Jardín infantil': BabyCarriage,
+  'Preescolar': Baby,
+  'Colegio': School,
+  'Universidad': University,
+  'Instituto técnico': BookOpen,
+  'Academia de idiomas': BookOpen,
+  'Escuela de música': Music,
+  'Escuela de danza': Music,
+  'Escuela de conducción': CarIcon,
+  'Refuerzo escolar': BookOpen,
+  'Cursos y talleres': PenTool,
+  'Biblioteca': BookOpen,
+
+  // Profesionales
+  'Abogados': Scale,
+  'Contaduría': Calculator,
+  'Notaría': FileText,
+  'Consultorio médico particular': Stethoscope,
+  'Psicología': Brain,
+  'Arquitectura': PenTool,
+  'Ingeniería': Wrench,
+  'Topografía': MapPin,
+  'Publicidad y diseño': Paintbrush,
+  'Mecánica automotriz': Car,
+  'Taller de motos': BikeIcon,
+  'Tecnomecánica': Car,
+  'Reparación electrónica': Cpu,
+  'Seguros': Briefcase,
+
+  // Inmuebles
+  'Arriendos': Home,
+  'En venta': Store,
+  'Proyectos': Building2,
+  'Inmobiliarias': Building2,
+  'Lotes y terrenos': Mountain,
+  'Fincas y campestre': Trees,
+  'Locales y oficinas': Building,
+  'Constructoras': HardHat,
+  'Avalúos y asesoría': FileText,
+
+  // Hospedaje
+  'Hotel': Building,
+  'Hostal': BedSingle,
+  'Motel': BedDouble,
+  'Posada': Home,
+  'Finca': Trees,
+  'Cabaña': Tent,
+  'Camping': Tent,
+  'Apartamentos': Building2,
+
+  // Mercados
+  'Supermercado': Store,
+  'Tienda de barrio': StoreIcon,
+  'Plaza de mercado': Warehouse,
+  'Carnicería': Beef,
+  'Fruver': Carrot,
+  'Quesos y lácteos': Milk,
+  'Panadería y víveres': Croissant,
+  'Licorera': Wine,
+  'Bebidas': Wine,
+  'Granero': Wheat,
+  'Agropecuaria': Sprout,
+  'Variedades': ShoppingBasket,
+  'Centro comercial': Building2,
+};
+
+function CircleIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      <circle cx="12" cy="12" r="10" />
+    </svg>
+  );
+}
+
+function BikeIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      <circle cx="5.5" cy="17.5" r="3.5" />
+      <circle cx="18.5" cy="17.5" r="3.5" />
+      <path d="M15 6a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-3 11.5V14l-3-3 4-3 2 3h2" />
+    </svg>
+  );
+}
+
+export const getSubcategoryIcon = (subcategory: string): LucideIcon => {
+  return SUBCATEGORY_ICONS[subcategory] || LayoutGrid;
+};
