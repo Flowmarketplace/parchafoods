@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Search, SlidersHorizontal, X, Sparkles } from 'lucide-react';
+import { ArrowLeft, Search, SlidersHorizontal, X, Sparkles, LayoutGrid } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -14,6 +14,7 @@ import { ALL_CATEGORY, BUSINESS_CATEGORIES, resolveBusinessType, resolveSubcateg
 import { useCity } from '@/contexts/CityContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { pickBusinessCoverUrl } from '@/utils/businessImages';
+import { getSubcategoryIcon } from '@/utils/subcategoryIcons';
 
 const CATEGORY_ITEMS = [ALL_CATEGORY, ...BUSINESS_CATEGORIES];
 
