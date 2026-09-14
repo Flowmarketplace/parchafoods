@@ -25,6 +25,39 @@ import {
 } from '@/components/ui/carousel';
 import { getCategoryFallbackImage } from '@/utils/categoryImages';
 import { pickBusinessCoverImages } from '@/utils/businessImages';
+import { resolveBusinessType } from '@/data/categories';
+
+type CatalogMeta = {
+  label: string;
+  icon: typeof UtensilsCrossed;
+  empty: string;
+  hint: string;
+};
+
+const CATALOG_BY_TYPE: Record<string, CatalogMeta> = {
+  Comida: { label: 'Menú', icon: UtensilsCrossed, empty: 'Menú no disponible aún', hint: 'Contacta al negocio para más info' },
+  Mercados: { label: 'Productos', icon: ShoppingBag, empty: 'Productos no disponibles aún', hint: 'Contacta al negocio para conocer su catálogo' },
+  Ropa: { label: 'Productos', icon: ShoppingBag, empty: 'Productos no disponibles aún', hint: 'Contacta al negocio para conocer su catálogo' },
+  Hogar: { label: 'Productos', icon: ShoppingBag, empty: 'Productos no disponibles aún', hint: 'Contacta al negocio para conocer su catálogo' },
+  Belleza: { label: 'Servicios', icon: Briefcase, empty: 'Servicios no disponibles aún', hint: 'Contacta al negocio para conocer sus servicios' },
+  Profesionales: { label: 'Servicios', icon: Briefcase, empty: 'Servicios no disponibles aún', hint: 'Contacta al negocio para conocer sus servicios' },
+  Servicios: { label: 'Servicios', icon: Briefcase, empty: 'Servicios no disponibles aún', hint: 'Contacta al negocio para conocer sus servicios' },
+  Educación: { label: 'Programas', icon: Briefcase, empty: 'Programas no disponibles aún', hint: 'Contacta a la institución para más info' },
+  Inmuebles: { label: 'Servicios', icon: Briefcase, empty: 'Servicios no disponibles aún', hint: 'Contacta al negocio para conocer su oferta' },
+  Salud: { label: 'Servicios y productos', icon: Store, empty: 'Servicios y productos no disponibles aún', hint: 'Contacta al negocio para más info' },
+  Ocio: { label: 'Servicios y productos', icon: Store, empty: 'Servicios y productos no disponibles aún', hint: 'Contacta al negocio para más info' },
+  Hospedaje: { label: 'Servicios y productos', icon: Store, empty: 'Servicios y productos no disponibles aún', hint: 'Contacta al negocio para más info' },
+};
+
+const DEFAULT_CATALOG: CatalogMeta = {
+  label: 'Servicios y productos',
+  icon: Store,
+  empty: 'Información no disponible aún',
+  hint: 'Contacta al negocio para más info',
+};
+
+const getCatalogMeta = (businessType: string): CatalogMeta =>
+  CATALOG_BY_TYPE[businessType] || DEFAULT_CATALOG;
 
 const PlaceDetails = () => {
   const { id } = useParams(); // This could be an ID or a slug
@@ -233,6 +266,11 @@ const PlaceDetails = () => {
     );
   }
 
+  const businessType = resolveBusinessType(
+    (place as any).business_type || (place as any).businessType || place.category
+  );
+  const catalog = getCatalogMeta(businessType);
+
   return (
     <div className="min-h-screen bg-background">
       {/* AI Chat Widget */}
@@ -417,8 +455,8 @@ const PlaceDetails = () => {
               <Tabs defaultValue="menu" className="w-full">
                 <TabsList className="w-full overflow-x-auto flex justify-start gap-1 h-auto flex-wrap">
                   <TabsTrigger value="menu" className="text-xs gap-1 px-2.5 py-1.5">
-                    <UtensilsCrossed className="h-3.5 w-3.5" />
-                    Menú
+                    <catalog.icon className="h-3.5 w-3.5" />
+                    {catalog.label}
                   </TabsTrigger>
                   <TabsTrigger value="horarios" className="text-xs gap-1 px-2.5 py-1.5">
                     <Clock className="h-3.5 w-3.5" />
@@ -659,9 +697,9 @@ const PlaceDetails = () => {
                     </div>
                   ) : (
                     <div className="text-center py-8">
-                      <UtensilsCrossed className="h-8 w-8 mx-auto mb-2 text-muted-foreground/40" />
-                      <p className="text-muted-foreground text-sm">Menú no disponible aún</p>
-                      <p className="text-xs text-muted-foreground mt-1">Contacta al restaurante para más info</p>
+                      <catalog.icon className="h-8 w-8 mx-auto mb-2 text-muted-foreground/40" />
+                      <p className="text-muted-foreground text-sm">{catalog.empty}</p>
+                      <p className="text-xs text-muted-foreground mt-1">{catalog.hint}</p>
                     </div>
                   )}
                 </TabsContent>
