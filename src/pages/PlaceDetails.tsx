@@ -489,6 +489,20 @@ const PlaceDetails = () => {
                             const dayNames = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
                             const today = new Date().getDay();
                             const isToday = h.day_of_week === today;
+
+                            const ranges: { open_time?: string; close_time?: string }[] =
+                              Array.isArray(h.time_ranges) && h.time_ranges.length > 0
+                                ? h.time_ranges
+                                : h.open_time && h.close_time
+                                ? [{ open_time: h.open_time, close_time: h.close_time }]
+                                : [];
+
+                            const rangeText = h.is_closed
+                              ? 'Cerrado'
+                              : ranges
+                                  .map((r) => `${r.open_time?.slice(0, 5)} - ${r.close_time?.slice(0, 5)}`)
+                                  .join('  /  ');
+
                             return (
                               <div
                                 key={h.id}
@@ -501,7 +515,7 @@ const PlaceDetails = () => {
                                   {dayNames[h.day_of_week]}
                                 </span>
                                 <span className={h.is_closed ? 'text-destructive' : 'text-muted-foreground'}>
-                                  {h.is_closed ? 'Cerrado' : `${h.open_time?.slice(0,5)} - ${h.close_time?.slice(0,5)}`}
+                                  {rangeText}
                                 </span>
                               </div>
                             );
