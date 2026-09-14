@@ -175,6 +175,25 @@ const Index = () => {
     });
   }, [selectedCategory, selectedNeighborhood, searchQuery, places]);
 
+  const subcategoryOptions = useMemo(() => {
+    if (selectedCategory === 'Todos') return [];
+    const counts = new Map<string, number>();
+    filteredPlaces.forEach((p: any) => {
+      const sub = resolveSubcategory(p.category, p.business_type || p.businessType, p.name);
+      if (sub) counts.set(sub, (counts.get(sub) || 0) + 1);
+    });
+    return getSubcategories(selectedCategory)
+      .filter((s) => counts.has(s))
+      .map((s) => ({ name: s, count: counts.get(s) || 0 }));
+  }, [selectedCategory, filteredPlaces]);
+
+  const visiblePlaces = useMemo(() => {
+    if (!selectedSubcategory) return filteredPlaces;
+    return filteredPlaces.filter((p: any) =>
+      resolveSubcategory(p.category, p.business_type || p.businessType, p.name) === selectedSubcategory
+    );
+  }, [filteredPlaces, selectedSubcategory]);
+
   const showFilters = selectedCategory !== 'Todos' || searchQuery !== '' || selectedNeighborhood !== 'Todos';
 
   return (
