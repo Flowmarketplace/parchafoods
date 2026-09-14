@@ -30,7 +30,13 @@ export function pickBusinessCoverImages<T extends BusinessImageLike>(images: T[]
  */
 export function pickBusinessCoverUrl(
   images: BusinessImageLike[] | null | undefined,
-  business: { id?: string | null; name?: string | null; category?: string | null }
+  business: {
+    id?: string | null;
+    name?: string | null;
+    category?: string | null;
+    business_type?: string | null;
+    businessType?: string | null;
+  }
 ): string {
   const id = business.id || '';
   // Force-override only for businesses with a local uploaded asset (non-Unsplash URL).
@@ -40,6 +46,11 @@ export function pickBusinessCoverUrl(
   const ordered = pickBusinessCoverImages(images);
   return (
     ordered[0]?.image_url ||
-    getCategoryFallbackImage(business.category || '', id || business.name || '', business.name || '')
+    getCategoryFallbackImage(
+      business.category || '',
+      id || business.name || '',
+      business.name || '',
+      business.business_type || business.businessType || ''
+    )
   );
 }
