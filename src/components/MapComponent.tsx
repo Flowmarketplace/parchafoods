@@ -41,7 +41,10 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
   const [searchingOrigin, setSearchingOrigin] = useState(false);
   const [originError, setOriginError] = useState<string | null>(null);
   const [activePlace, setActivePlace] = useState<Place | null>(null);
+  const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
+  const [expandedZone, setExpandedZone] = useState<string | null>(null);
   const pendingPlace = useRef<Place | null>(null);
+
   const navigate = useNavigate();
 
   const clearRoute = () => {
@@ -241,6 +244,58 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
     }
   };
 
+  // Grouped ("cluster") marker: icon bubble + count badge + label
+  const createGroupMarker = (
+    lng: number,
+    lat: number,
+    opts: { label: string; count: number; color: string; iconSvg?: string; onClick: () => void }
+  ) => {
+    if (!map.current) return null;
+    const el = document.createElement('div');
+    el.style.cursor = 'pointer';
+    el.innerHTML = `
+      <div style="display:flex;flex-direction:column;align-items:center;transition:transform .15s;">
+        <div style="
+          min-width:26px;height:22px;padding:0 7px;margin-bottom:-6px;
+          background:white;color:${opts.color};border:2px solid ${opts.color};
+          border-radius:999px;display:flex;align-items:center;justify-content:center;
+          font-size:12px;font-weight:800;line-height:1;box-shadow:0 2px 6px rgba(0,0,0,.25);z-index:2;
+        ">${opts.count}</div>
+        <div style="
+          width:46px;height:46px;background:${opts.color};border-radius:50%;
+          display:flex;align-items:center;justify-content:center;
+          border:3px solid white;box-shadow:0 4px 14px rgba(0,0,0,.3);
+        ">
+          ${opts.iconSvg ? `<svg style="width:22px;height:22px" fill="white" viewBox="0 0 24 24">${opts.iconSvg}</svg>` : ''}
+        </div>
+        <div style="
+          margin-top:4px;max-width:110px;padding:2px 6px;background:rgba(255,255,255,.95);
+          border-radius:6px;font-size:10px;font-weight:600;color:#111;white-space:nowrap;
+          overflow:hidden;text-overflow:ellipsis;box-shadow:0 1px 4px rgba(0,0,0,.2);
+        ">${opts.label}</div>
+      </div>
+    `;
+    el.addEventListener('click', (event) => {
+      event.stopPropagation();
+      opts.onClick();
+    });
+    return new mapboxgl.Marker(el).setLngLat([lng, lat]).addTo(map.current);
+  };
+
+  const fitToPlaces = (list: Place[]) => {
+    if (!map.current || list.length === 0) return;
+    if (list.length === 1) {
+      map.current.flyTo({ center: [list[0].longitude, list[0].latitude], zoom: 16, duration: 900 });
+      return;
+    }
+    const bounds = new mapboxgl.LngLatBounds(
+      [list[0].longitude, list[0].latitude],
+      [list[0].longitude, list[0].latitude]
+    );
+    list.forEach((p) => bounds.extend([p.longitude, p.latitude]));
+    map.current.fitBounds(bounds, { padding: 70, duration: 900, maxZoom: 16 });
+  };
+
   const updateMarkers = () => {
     // Remove existing markers
     markers.current.forEach(marker => marker.remove());
@@ -253,21 +308,102 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
 
     // Use provided places or fallback to mock
     const allPlaces = places && places.length > 0 ? places : mockPlaces;
-    const filteredPlaces = selectedCategory === 'Todos' 
-      ? allPlaces 
+    const filteredPlaces = (selectedCategory === 'Todos'
+      ? allPlaces
       : allPlaces.filter((place: Place) => {
           const type = resolveBusinessType((place as any).businessType || place.category);
           return type === selectedCategory || place.category === selectedCategory;
-        });
+        })
+    ).filter((p: Place) => Number(p.latitude) && Number(p.longitude));
 
-    // Add new markers
-    filteredPlaces.forEach((place: Place) => {
-      const marker = createMarker(place);
-      if (marker) {
-        markers.current.push(marker);
+    const centroid = (list: Place[]) => {
+      const lat = list.reduce((s, p) => s + Number(p.latitude), 0) / list.length;
+      const lng = list.reduce((s, p) => s + Number(p.longitude), 0) / list.length;
+      return { lat, lng };
+    };
+
+    const addAll = (list: Place[]) => {
+      list.forEach((place: Place) => {
+        const marker = createMarker(place);
+        if (marker) markers.current.push(marker);
+      });
+    };
+
+    const effectiveCategory = selectedCategory !== 'Todos' ? selectedCategory : expandedCategory;
+
+    // LEVEL 1 — one marker per category
+    if (!effectiveCategory) {
+      const byType = new Map<string, Place[]>();
+      filteredPlaces.forEach((p: Place) => {
+        const type = resolveBusinessType((p as any).businessType || p.category);
+        byType.set(type, [...(byType.get(type) || []), p]);
+      });
+      if (byType.size <= 1) {
+        addAll(filteredPlaces);
+        return;
       }
+      byType.forEach((list, type) => {
+        const c = centroid(list);
+        const marker = createGroupMarker(c.lng, c.lat, {
+          label: type,
+          count: list.length,
+          color: getCategoryColor(type),
+          iconSvg: getCategoryIcon(type),
+          onClick: () => {
+            setExpandedCategory(type);
+            setExpandedZone(null);
+            fitToPlaces(list);
+          },
+        });
+        if (marker) markers.current.push(marker);
+      });
+      return;
+    }
+
+    const inCategory = filteredPlaces.filter((p: Place) => {
+      const type = resolveBusinessType((p as any).businessType || p.category);
+      return type === effectiveCategory || p.category === effectiveCategory;
     });
+
+    const color = getCategoryColor(effectiveCategory);
+    const iconSvg = getCategoryIcon(effectiveCategory);
+
+    // LEVEL 2 — group that category by zone / neighborhood
+    if (!expandedZone) {
+      const byZone = new Map<string, Place[]>();
+      inCategory.forEach((p: Place) => {
+        const zone = (p.neighborhood || p.zone || 'Otras zonas').toString();
+        byZone.set(zone, [...(byZone.get(zone) || []), p]);
+      });
+      if (byZone.size <= 1 || inCategory.length <= 6) {
+        addAll(inCategory);
+        return;
+      }
+      byZone.forEach((list, zone) => {
+        const c = centroid(list);
+        const marker = createGroupMarker(c.lng, c.lat, {
+          label: zone,
+          count: list.length,
+          color,
+          iconSvg,
+          onClick: () => {
+            setExpandedZone(zone);
+            fitToPlaces(list);
+          },
+        });
+        if (marker) markers.current.push(marker);
+      });
+      return;
+    }
+
+    // LEVEL 3 — individual businesses inside the zone
+    addAll(
+      inCategory.filter(
+        (p: Place) => (p.neighborhood || p.zone || 'Otras zonas').toString() === expandedZone
+      )
+    );
   };
+
 
   const initializeMap = () => {
     if (!mapContainer.current) {
@@ -315,13 +451,19 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
     }
   };
 
+  // Reset grouping when the category filter or the dataset changes
+  useEffect(() => {
+    setExpandedCategory(null);
+    setExpandedZone(null);
+  }, [selectedCategory, places]);
+
   // Effect to update markers when category changes or map loads
   useEffect(() => {
     if (map.current && mapLoaded) {
-      console.log('Updating markers for category:', selectedCategory);
       updateMarkers();
     }
-  }, [selectedCategory, mapLoaded, places]);
+  }, [selectedCategory, mapLoaded, places, expandedCategory, expandedZone]);
+
 
   // Effect to center map on selected neighborhood
   useEffect(() => {
@@ -426,6 +568,23 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
           {expanded ? <Minimize2 className="h-4 w-4 text-foreground" /> : <Maximize2 className="h-4 w-4 text-foreground" />}
         </button>
       )}
+      {(expandedCategory || expandedZone) && (
+        <div className="absolute top-2 left-2 z-[2] flex items-center gap-1.5 rounded-lg border border-border bg-card/95 px-2 py-1.5 shadow-md backdrop-blur-md">
+          <button
+            onClick={() => {
+              if (expandedZone) setExpandedZone(null);
+              else setExpandedCategory(null);
+            }}
+            className="text-xs font-semibold text-primary hover:underline"
+          >
+            ← Volver
+          </button>
+          <span className="max-w-[150px] truncate text-xs text-muted-foreground">
+            {expandedZone || expandedCategory}
+          </span>
+        </div>
+      )}
+
       {isLoading && (
         <div className="absolute inset-0 flex items-center justify-center bg-background/80 z-10">
           <div className="flex flex-col items-center gap-3">
