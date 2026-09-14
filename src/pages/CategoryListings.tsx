@@ -10,7 +10,7 @@ import Sidebar from '@/components/Sidebar';
 import BottomNav from '@/components/BottomNav';
 import { supabase } from '@/integrations/supabase/client';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ALL_CATEGORY, BUSINESS_CATEGORIES, resolveBusinessType } from '@/data/categories';
+import { ALL_CATEGORY, BUSINESS_CATEGORIES, resolveBusinessType, resolveSubcategory, getSubcategories } from '@/data/categories';
 import { useCity } from '@/contexts/CityContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { pickBusinessCoverUrl } from '@/utils/businessImages';
@@ -25,6 +25,7 @@ const CategoryListings = () => {
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
+  const [selectedSubcategory, setSelectedSubcategory] = useState<string | null>(null);
   const [selectedNeighborhood, setSelectedNeighborhood] = useState('Todos');
   const [searchQuery, setSearchQuery] = useState('');
   const [places, setPlaces] = useState<any[]>([]);
@@ -57,6 +58,7 @@ const CategoryListings = () => {
             name: b.name,
             category: b.category,
             businessType: resolveBusinessType(b.business_type || b.category),
+            subcategory: resolveSubcategory(b.category, b.business_type, b.name),
             address: b.address,
             neighborhood: b.neighborhood,
             zone: b.zone,
@@ -86,13 +88,40 @@ const CategoryListings = () => {
   const filteredPlaces = useMemo(() => {
     return places.filter((place) => {
       const categoryMatch = selectedCategory === 'Todos' || place.businessType === selectedCategory;
+      const subcategoryMatch = !selectedSubcategory || place.subcategory === selectedSubcategory;
       const neighborhoodMatch = selectedNeighborhood === 'Todos' || normalizeText(place.neighborhood || '') === normalizeText(selectedNeighborhood);
       const searchMatch = !searchQuery || normalizeText(place.name).includes(normalizeText(searchQuery)) || normalizeText(place.address || '').includes(normalizeText(searchQuery));
-      return categoryMatch && neighborhoodMatch && searchMatch;
+      return categoryMatch && subcategoryMatch && neighborhoodMatch && searchMatch;
     });
-  }, [places, selectedCategory, selectedNeighborhood, searchQuery]);
+  }, [places, selectedCategory, selectedSubcategory, selectedNeighborhood, searchQuery]);
 
-  const activeFilters = (selectedCategory !== 'Todos' ? 1 : 0) + (selectedNeighborhood !== 'Todos' ? 1 : 0);
+  /** Subcategories of the selected macro category that actually have places. */
+  const availableSubcategories = useMemo(() => {
+    if (selectedCategory === 'Todos') return [] as { name: string; count: number }[];
+    const inCategory = places.filter((p) => p.businessType === selectedCategory);
+    const counts = new Map<string, number>();
+    inCategory.forEach((p) => {
+      if (p.subcategory) counts.set(p.subcategory, (counts.get(p.subcategory) || 0) + 1);
+    });
+    const ordered = getSubcategories(selectedCategory)
+      .filter((s) => counts.has(s))
+      .map((s) => ({ name: s, count: counts.get(s)! }));
+    const extras = [...counts.entries()]
+      .filter(([name]) => !ordered.some((o) => o.name === name))
+      .map(([name, count]) => ({ name, count }))
+      .sort((a, b) => b.count - a.count);
+    return [...ordered, ...extras];
+  }, [places, selectedCategory]);
+
+  const selectCategory = (id: string) => {
+    setSelectedCategory(id);
+    setSelectedSubcategory(null);
+  };
+
+  const activeFilters =
+    (selectedCategory !== 'Todos' ? 1 : 0) +
+    (selectedSubcategory ? 1 : 0) +
+    (selectedNeighborhood !== 'Todos' ? 1 : 0);
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -190,7 +219,7 @@ const CategoryListings = () => {
                   return (
                     <button
                       key={cat.id}
-                      onClick={() => setSelectedCategory(cat.id)}
+                      onClick={() => selectCategory(cat.id)}
                       className={`flex items-center gap-1.5 px-4 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-200 ${
                         isActive
                           ? 'bg-primary text-primary-foreground shadow-md scale-105'
@@ -204,6 +233,42 @@ const CategoryListings = () => {
                 })}
               </div>
             </div>
+
+            {/* Subcategory chips */}
+            {availableSubcategories.length > 0 && (
+              <div className="pb-4">
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+                  Subcategorías
+                </p>
+                <div className="flex flex-wrap gap-1.5">
+                  <button
+                    onClick={() => setSelectedSubcategory(null)}
+                    className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                      !selectedSubcategory
+                        ? 'bg-secondary text-secondary-foreground shadow-sm'
+                        : 'bg-muted/60 text-muted-foreground hover:bg-muted'
+                    }`}
+                  >
+                    Todas
+                  </button>
+                  {availableSubcategories.map((sub) => (
+                    <button
+                      key={sub.name}
+                      onClick={() =>
+                        setSelectedSubcategory(selectedSubcategory === sub.name ? null : sub.name)
+                      }
+                      className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                        selectedSubcategory === sub.name
+                          ? 'bg-secondary text-secondary-foreground shadow-sm'
+                          : 'bg-muted/60 text-muted-foreground hover:bg-muted'
+                      }`}
+                    >
+                      {sub.name} <span className="opacity-60">({sub.count})</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* Neighborhood filter (expandable) */}
             <AnimatePresence>
@@ -244,9 +309,19 @@ const CategoryListings = () => {
                   <Badge
                     variant="secondary"
                     className="cursor-pointer hover:bg-destructive/10 hover:text-destructive transition-colors gap-1"
-                    onClick={() => setSelectedCategory('Todos')}
+                    onClick={() => selectCategory('Todos')}
                   >
                     {selectedCategory}
+                    <X className="h-3 w-3" />
+                  </Badge>
+                )}
+                {selectedSubcategory && (
+                  <Badge
+                    variant="secondary"
+                    className="cursor-pointer hover:bg-destructive/10 hover:text-destructive transition-colors gap-1"
+                    onClick={() => setSelectedSubcategory(null)}
+                  >
+                    {selectedSubcategory}
                     <X className="h-3 w-3" />
                   </Badge>
                 )}
@@ -261,7 +336,7 @@ const CategoryListings = () => {
                   </Badge>
                 )}
                 <button
-                  onClick={() => { setSelectedCategory('Todos'); setSelectedNeighborhood('Todos'); }}
+                  onClick={() => { selectCategory('Todos'); setSelectedNeighborhood('Todos'); }}
                   className="text-xs text-primary hover:underline font-medium"
                 >
                   Limpiar todo
@@ -298,7 +373,7 @@ const CategoryListings = () => {
                 <Button
                   variant="outline"
                   onClick={() => {
-                    setSelectedCategory('Todos');
+                    selectCategory('Todos');
                     setSelectedNeighborhood('Todos');
                     setSearchQuery('');
                   }}
