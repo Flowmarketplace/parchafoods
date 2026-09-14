@@ -2,12 +2,18 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://parchafood.com/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>
   <url><loc>https://parchafood.com/landing</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://parchafood.com/events</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
-  <url><loc>https://parchafood.com/events-all</loc><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://parchafood.com/listings</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://parchafood.com/neighborhoods</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://parchafood.com/listings</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://parchafood.com/listings?category=Comida</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://parchafood.com/listings?category=Salud</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://parchafood.com/listings?category=Belleza</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://parchafood.com/listings?category=Ropa</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://parchafood.com/listings?category=Entretenimiento</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://parchafood.com/listings?category=Hogar</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://parchafood.com/listings?category=Servicios</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://parchafood.com/listings?category=Hospedaje</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://parchafood.com/listings?category=Mercados</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://parchafood.com/events</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://parchafood.com/near-me</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://parchafood.com/shorts</loc><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://parchafood.com/recommendations</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://parchafood.com/rutas</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://parchafood.com/shorts</loc><changefreq>daily</changefreq><priority>0.6</priority></url>
+  <url><loc>https://parchafood.com/recommendations</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
 </urlset>
