@@ -58,6 +58,7 @@ const CategoryListings = () => {
             name: b.name,
             category: b.category,
             businessType: resolveBusinessType(b.business_type || b.category),
+            subcategory: resolveSubcategory(b.category, b.business_type, b.name),
             address: b.address,
             neighborhood: b.neighborhood,
             zone: b.zone,
@@ -87,13 +88,40 @@ const CategoryListings = () => {
   const filteredPlaces = useMemo(() => {
     return places.filter((place) => {
       const categoryMatch = selectedCategory === 'Todos' || place.businessType === selectedCategory;
+      const subcategoryMatch = !selectedSubcategory || place.subcategory === selectedSubcategory;
       const neighborhoodMatch = selectedNeighborhood === 'Todos' || normalizeText(place.neighborhood || '') === normalizeText(selectedNeighborhood);
       const searchMatch = !searchQuery || normalizeText(place.name).includes(normalizeText(searchQuery)) || normalizeText(place.address || '').includes(normalizeText(searchQuery));
-      return categoryMatch && neighborhoodMatch && searchMatch;
+      return categoryMatch && subcategoryMatch && neighborhoodMatch && searchMatch;
     });
-  }, [places, selectedCategory, selectedNeighborhood, searchQuery]);
+  }, [places, selectedCategory, selectedSubcategory, selectedNeighborhood, searchQuery]);
 
-  const activeFilters = (selectedCategory !== 'Todos' ? 1 : 0) + (selectedNeighborhood !== 'Todos' ? 1 : 0);
+  /** Subcategories of the selected macro category that actually have places. */
+  const availableSubcategories = useMemo(() => {
+    if (selectedCategory === 'Todos') return [] as { name: string; count: number }[];
+    const inCategory = places.filter((p) => p.businessType === selectedCategory);
+    const counts = new Map<string, number>();
+    inCategory.forEach((p) => {
+      if (p.subcategory) counts.set(p.subcategory, (counts.get(p.subcategory) || 0) + 1);
+    });
+    const ordered = getSubcategories(selectedCategory)
+      .filter((s) => counts.has(s))
+      .map((s) => ({ name: s, count: counts.get(s)! }));
+    const extras = [...counts.entries()]
+      .filter(([name]) => !ordered.some((o) => o.name === name))
+      .map(([name, count]) => ({ name, count }))
+      .sort((a, b) => b.count - a.count);
+    return [...ordered, ...extras];
+  }, [places, selectedCategory]);
+
+  const selectCategory = (id: string) => {
+    setSelectedCategory(id);
+    setSelectedSubcategory(null);
+  };
+
+  const activeFilters =
+    (selectedCategory !== 'Todos' ? 1 : 0) +
+    (selectedSubcategory ? 1 : 0) +
+    (selectedNeighborhood !== 'Todos' ? 1 : 0);
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
