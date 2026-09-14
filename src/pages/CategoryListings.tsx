@@ -309,9 +309,19 @@ const CategoryListings = () => {
                   <Badge
                     variant="secondary"
                     className="cursor-pointer hover:bg-destructive/10 hover:text-destructive transition-colors gap-1"
-                    onClick={() => setSelectedCategory('Todos')}
+                    onClick={() => selectCategory('Todos')}
                   >
                     {selectedCategory}
+                    <X className="h-3 w-3" />
+                  </Badge>
+                )}
+                {selectedSubcategory && (
+                  <Badge
+                    variant="secondary"
+                    className="cursor-pointer hover:bg-destructive/10 hover:text-destructive transition-colors gap-1"
+                    onClick={() => setSelectedSubcategory(null)}
+                  >
+                    {selectedSubcategory}
                     <X className="h-3 w-3" />
                   </Badge>
                 )}
