@@ -233,6 +233,12 @@ const PlaceDetails = () => {
     );
   }
 
+  const businessType = resolveBusinessType(
+    (place as any).business_type || (place as any).businessType || place.category,
+    place.name
+  );
+  const catalog = getCatalogMeta(businessType);
+
   return (
     <div className="min-h-screen bg-background">
       {/* AI Chat Widget */}
