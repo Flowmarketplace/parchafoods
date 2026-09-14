@@ -495,9 +495,10 @@ export const getCategoryFallbackImage = (
   category?: string | null,
   seed?: string | null,
   name?: string | null,
+  businessType?: string | null,
 ): string => {
   if (seed && RESTAURANT_IMAGE_OVERRIDES[seed]) return RESTAURANT_IMAGE_OVERRIDES[seed];
-  const specific = resolveSpecificCategory(category, name);
+  const specific = resolveSpecificCategory(category, name, businessType);
   const list = (specific && CATEGORY_FALLBACK_POOLS[specific]) || DEFAULT_POOL;
   if (!seed) return list[0];
   return list[hash(seed) % list.length];
