@@ -223,7 +223,7 @@ export const SUBCATEGORY_ICONS: Record<string, LucideIcon> = {
   'Funeraria': Cross,
 
   // Educación
-  'Jardín infantil': BabyCarriage,
+  'Jardín infantil': Baby,
   'Preescolar': Baby,
   'Colegio': School,
   'Universidad': University,
