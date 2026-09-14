@@ -7,7 +7,7 @@ import PlacesList from '@/components/PlacesList';
 import EventCard from '@/components/EventCard';
 import BottomNav from '@/components/BottomNav';
 import FloatingAIChat from '@/components/FloatingAIChat';
-import { mockPlaces, neighborhoods } from '@/data/places';
+import { neighborhoods } from '@/data/places';
 import { mockEvents } from '@/data/events';
 import { mockShorts } from '@/data/shorts';
 import { Button } from '@/components/ui/button';
