@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Search, SlidersHorizontal, X, Sparkles } from 'lucide-react';
+import { ArrowLeft, Search, SlidersHorizontal, X, Sparkles, LayoutGrid } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -14,6 +14,7 @@ import { ALL_CATEGORY, BUSINESS_CATEGORIES, resolveBusinessType, resolveSubcateg
 import { useCity } from '@/contexts/CityContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { pickBusinessCoverUrl } from '@/utils/businessImages';
+import { getSubcategoryIcon } from '@/utils/subcategoryIcons';
 
 const CATEGORY_ITEMS = [ALL_CATEGORY, ...BUSINESS_CATEGORIES];
 
@@ -234,38 +235,45 @@ const CategoryListings = () => {
               </div>
             </div>
 
-            {/* Subcategory chips */}
+            {/* Subcategory icon selector */}
             {availableSubcategories.length > 0 && (
-              <div className="pb-4">
+              <div className="pb-4 -mx-3 sm:-mx-4 md:-mx-6 px-3 sm:px-4 md:px-6">
                 <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
-                  Subcategorías
+                  Escoge una subcategoría
                 </p>
-                <div className="flex flex-wrap gap-1.5">
+                <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-1">
                   <button
                     onClick={() => setSelectedSubcategory(null)}
-                    className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                    className={`flex flex-col items-center justify-center gap-1 min-w-[72px] h-[72px] rounded-2xl border transition-all active:scale-95 ${
                       !selectedSubcategory
-                        ? 'bg-secondary text-secondary-foreground shadow-sm'
-                        : 'bg-muted/60 text-muted-foreground hover:bg-muted'
+                        ? 'bg-primary text-primary-foreground border-primary shadow-md scale-105'
+                        : 'bg-card text-muted-foreground border-border hover:bg-muted hover:text-foreground'
                     }`}
                   >
-                    Todas
+                    <LayoutGrid className="h-5 w-5" />
+                    <span className="text-[10px] font-medium leading-tight text-center px-1">Todas</span>
                   </button>
-                  {availableSubcategories.map((sub) => (
-                    <button
-                      key={sub.name}
-                      onClick={() =>
-                        setSelectedSubcategory(selectedSubcategory === sub.name ? null : sub.name)
-                      }
-                      className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
-                        selectedSubcategory === sub.name
-                          ? 'bg-secondary text-secondary-foreground shadow-sm'
-                          : 'bg-muted/60 text-muted-foreground hover:bg-muted'
-                      }`}
-                    >
-                      {sub.name} <span className="opacity-60">({sub.count})</span>
-                    </button>
-                  ))}
+                  {availableSubcategories.map((sub) => {
+                    const SubIcon = getSubcategoryIcon(sub.name);
+                    const isActive = selectedSubcategory === sub.name;
+                    return (
+                      <button
+                        key={sub.name}
+                        onClick={() => setSelectedSubcategory(isActive ? null : sub.name)}
+                        className={`flex flex-col items-center justify-center gap-1 min-w-[72px] h-[72px] rounded-2xl border transition-all active:scale-95 ${
+                          isActive
+                            ? 'bg-primary text-primary-foreground border-primary shadow-md scale-105'
+                            : 'bg-card text-muted-foreground border-border hover:bg-muted hover:text-foreground'
+                        }`}
+                      >
+                        <SubIcon className="h-5 w-5" />
+                        <span className="text-[10px] font-medium leading-tight text-center px-1 line-clamp-2">
+                          {sub.name}
+                        </span>
+                        <span className="text-[9px] opacity-70">({sub.count})</span>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             )}
