@@ -5,6 +5,7 @@ import { Place } from '@/types/place';
 import { mockPlaces } from '@/data/places';
 import { useNavigate } from 'react-router-dom';
 import { getCategoryIcon, getCategoryColor } from '@/utils/categoryIcons';
+import { resolveBusinessType } from '@/data/categories';
 import { neighborhoodLocations } from '@/data/neighborhoods';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
@@ -188,8 +189,9 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
     }
 
     try {
-      const iconSvg = getCategoryIcon(place.category);
-      const color = getCategoryColor(place.category);
+      const placeType = resolveBusinessType((place as any).businessType || place.category);
+      const iconSvg = getCategoryIcon(placeType);
+      const color = getCategoryColor(placeType);
       
       const el = document.createElement('div');
       el.className = 'marker';
@@ -253,7 +255,10 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
     const allPlaces = places && places.length > 0 ? places : mockPlaces;
     const filteredPlaces = selectedCategory === 'Todos' 
       ? allPlaces 
-      : allPlaces.filter(place => place.category === selectedCategory);
+      : allPlaces.filter((place: Place) => {
+          const type = resolveBusinessType((place as any).businessType || place.category);
+          return type === selectedCategory || place.category === selectedCategory;
+        });
 
     // Add new markers
     filteredPlaces.forEach((place: Place) => {
