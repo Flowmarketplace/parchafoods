@@ -568,6 +568,23 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
           {expanded ? <Minimize2 className="h-4 w-4 text-foreground" /> : <Maximize2 className="h-4 w-4 text-foreground" />}
         </button>
       )}
+      {(expandedCategory || expandedZone) && (
+        <div className="absolute top-2 left-2 z-[2] flex items-center gap-1.5 rounded-lg border border-border bg-card/95 px-2 py-1.5 shadow-md backdrop-blur-md">
+          <button
+            onClick={() => {
+              if (expandedZone) setExpandedZone(null);
+              else setExpandedCategory(null);
+            }}
+            className="text-xs font-semibold text-primary hover:underline"
+          >
+            ← Volver
+          </button>
+          <span className="max-w-[150px] truncate text-xs text-muted-foreground">
+            {expandedZone || expandedCategory}
+          </span>
+        </div>
+      )}
+
       {isLoading && (
         <div className="absolute inset-0 flex items-center justify-center bg-background/80 z-10">
           <div className="flex flex-col items-center gap-3">
