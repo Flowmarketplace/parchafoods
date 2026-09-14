@@ -344,6 +344,7 @@ const BUSINESS_TYPE_FALLBACK: Record<string, string> = {
   Servicios: 'Servicios',
   Hospedaje: 'Hospedaje',
   Mercados: 'Mercados',
+  Profesionales: 'Abogados',
 };
 
 const normalize = (s: string) =>

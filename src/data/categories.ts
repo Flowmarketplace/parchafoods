@@ -7,6 +7,7 @@ import {
   Music,
   Hammer,
   Wrench,
+  Briefcase,
   BedDouble,
   ShoppingBasket,
   type LucideIcon,
@@ -45,7 +46,7 @@ export const BUSINESS_CATEGORIES: BusinessCategory[] = [
     label: 'Salud y bienestar',
     icon: HeartPulse,
     color: '#0ca678',
-    aliases: ['Droguería', 'Farmacia', 'Consultorio', 'Odontología', 'Veterinaria', 'Óptica', 'Laboratorio', 'IPS'],
+    aliases: ['Droguería', 'Farmacia', 'Odontología', 'Veterinaria', 'Óptica', 'Laboratorio', 'IPS', 'Hospital', 'Naturista', 'Suplementos'],
   },
   {
     id: 'Belleza',
@@ -85,7 +86,20 @@ export const BUSINESS_CATEGORIES: BusinessCategory[] = [
     label: 'Servicios',
     icon: Wrench,
     color: '#0b7285',
-    aliases: ['Taller', 'Lavandería', 'Papelería', 'Tecnología', 'Transporte', 'Financiero', 'Educación'],
+    aliases: ['Lavandería', 'Papelería', 'Tecnología', 'Transporte', 'Financiero', 'Educación', 'Celulares', 'Banco', 'Gasolinera'],
+  },
+  {
+    id: 'Profesionales',
+    name: 'Profesionales',
+    label: 'Servicios profesionales',
+    icon: Briefcase,
+    color: '#364fc7',
+    aliases: [
+      'Abogados', 'Notaría', 'Contaduría', 'Consultorio', 'Médico', 'Psicología',
+      'Arquitectura', 'Ingeniería', 'Topografía', 'Diseño gráfico', 'Publicidad',
+      'Inmobiliaria', 'Taller', 'Taller automotriz', 'Taller de motos', 'Mecánica',
+      'Tecnomecánica', 'Reparación electrónica',
+    ],
   },
   {
     id: 'Hospedaje',
