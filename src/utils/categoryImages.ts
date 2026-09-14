@@ -18,7 +18,7 @@ const OVERRIDES_RAW: Record<string, string> = {
   // Cervecerías / Bares
   'f4fe2d5a-c591-42a2-abde-ca019d42180c': 'photo-1535958636474-b021ee887b13', // 3 Cordilleras Cali
   '997f208f-5d6a-4fa2-adb0-75a8572976fb': 'photo-1546726747-421c6d69c929', // BBC Granada
-  '8a8c7fc8-b744-4eb6-8a28-511625e51173': 'photo-1470229722913-7ea0d7a20ba0', // Cilindro Municipal
+  '8a8c7fc8-b744-4eb6-8a28-511625e51173': 'photo-1514933651103-005eec06c04b', // Cilindro Municipal
   '07ff1fbe-3160-4b09-ab49-124ae6bfeeb7': 'photo-1436076863939-06870fe779c2', // Malta Cervecería
   'b8d67412-dc58-4b9d-bb8c-966cc7a0d24f': 'photo-1518176258769-f227c798150e', // La Topa Tolondra
 
