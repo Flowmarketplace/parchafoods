@@ -41,7 +41,10 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
   const [searchingOrigin, setSearchingOrigin] = useState(false);
   const [originError, setOriginError] = useState<string | null>(null);
   const [activePlace, setActivePlace] = useState<Place | null>(null);
+  const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
+  const [expandedZone, setExpandedZone] = useState<string | null>(null);
   const pendingPlace = useRef<Place | null>(null);
+
   const navigate = useNavigate();
 
   const clearRoute = () => {
