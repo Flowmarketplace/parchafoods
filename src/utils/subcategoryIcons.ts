@@ -82,7 +82,6 @@ import {
   Mail,
   Cross,
   GraduationCap,
-  BabyCarriage,
   School,
   University,
   BookOpen,
