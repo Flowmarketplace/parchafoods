@@ -7,9 +7,10 @@ import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 
 interface DirectionsPanelProps {
-  destinationLat: number;
-  destinationLng: number;
+  destinationLat?: number | null;
+  destinationLng?: number | null;
   destinationName: string;
+  destinationAddress?: string | null;
 }
 
 interface RouteInfo {
@@ -20,7 +21,11 @@ interface RouteInfo {
 
 type TransportMode = 'driving' | 'cycling' | 'walking';
 
-const DirectionsPanel = ({ destinationLat, destinationLng, destinationName }: DirectionsPanelProps) => {
+const DirectionsPanel = ({ destinationLat, destinationLng, destinationName, destinationAddress }: DirectionsPanelProps) => {
+  const hasCoords = typeof destinationLat === 'number' && typeof destinationLng === 'number';
+  const destinationQuery = hasCoords
+    ? `${destinationLat},${destinationLng}`
+    : [destinationName, destinationAddress].filter(Boolean).join(', ');
   const [selectedMode, setSelectedMode] = useState<TransportMode>('driving');
   const [userLocation, setUserLocation] = useState<{lat: number; lng: number} | null>(null);
   const [locationError, setLocationError] = useState<string | null>(null);
