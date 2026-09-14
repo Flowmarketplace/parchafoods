@@ -23,11 +23,14 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { cn } from '@/lib/utils';
 import { pickBusinessCoverUrl } from '@/utils/businessImages';
 import { useCity } from '@/contexts/CityContext';
-import { BUSINESS_CATEGORIES, resolveBusinessType } from '@/data/categories';
+import { BUSINESS_CATEGORIES, resolveBusinessType, resolveSubcategory, getSubcategories } from '@/data/categories';
+import { getSubcategoryIcon } from '@/utils/subcategoryIcons';
+import { LayoutGrid } from 'lucide-react';
 
 const Index = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('Todos');
+  const [selectedSubcategory, setSelectedSubcategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedNeighborhood, setSelectedNeighborhood] = useState('Todos');
   const [isSearching, setIsSearching] = useState(false);
