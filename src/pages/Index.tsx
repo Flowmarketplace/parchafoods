@@ -277,46 +277,6 @@ const Index = () => {
                 </Button>
               </section>
 
-              {/* Categorías */}
-              <section>
-                <div className="flex items-center gap-2 mb-2.5">
-                  <span className="text-lg">🧭</span>
-                  <h2 className="text-sm sm:text-lg font-bold">Explora por categoría</h2>
-                </div>
-                <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
-                  <button
-                    onClick={() => setSelectedCategory('Todos')}
-                    className={cn(
-                      "flex flex-col items-center gap-1.5 rounded-xl border p-3 transition-all hover:shadow-md active:scale-95",
-                      selectedCategory === 'Todos' ? "border-primary bg-primary/5 shadow-sm" : "border-border bg-card"
-                    )}
-                  >
-                    <span className="rounded-full p-2 bg-primary/10 text-primary">
-                      <MapPin className="h-5 w-5" />
-                    </span>
-                    <span className="text-[11px] font-medium text-center leading-tight">Todas</span>
-                  </button>
-                  {BUSINESS_CATEGORIES.map((cat) => {
-                    const Icon = cat.icon;
-                    const isActive = selectedCategory === cat.id;
-                    return (
-                      <button
-                        key={cat.id}
-                        onClick={() => setSelectedCategory(isActive ? 'Todos' : cat.id)}
-                        className={cn(
-                          "flex flex-col items-center gap-1.5 rounded-xl border p-3 transition-all hover:shadow-md active:scale-95",
-                          isActive ? "border-primary bg-primary/5 shadow-sm" : "border-border bg-card"
-                        )}
-                      >
-                        <span className="rounded-full p-2" style={{ backgroundColor: `${cat.color}1A`, color: cat.color }}>
-                          <Icon className="h-5 w-5" />
-                        </span>
-                        <span className="text-[11px] font-medium text-center leading-tight">{cat.name}</span>
-                      </button>
-                    );
-                  })}
-                </div>
-              </section>
 
               {/* Restaurantes Destacados */}
               <section>
