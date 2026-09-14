@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
+import { useCity } from '@/contexts/CityContext';
 import { Place } from '@/types/place';
 import { mockPlaces } from '@/data/places';
 import { useNavigate } from 'react-router-dom';
@@ -120,7 +121,7 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
     setSearchingOrigin(true);
     setOriginError(null);
     try {
-      const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(q)}.json?proximity=-76.5225,3.4516&country=co&limit=5&access_token=${MAPBOX_TOKEN}`;
+      const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(q)}.json?proximity=${city.longitude},${city.latitude}&country=co&limit=5&access_token=${MAPBOX_TOKEN}`;
       const res = await fetch(url);
       const data = await res.json();
       const features = (data?.features || []) as any[];
@@ -280,13 +281,9 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
       map.current = new mapboxgl.Map({
         container: mapContainer.current,
         style: 'mapbox://styles/mapbox/streets-v12',
-        center: [-76.5225, 3.4516], // Cali, Colombia
-        zoom: isMobile ? 13.5 : 12,
-        pitch: isMobile ? 0 : 0,
-        maxBounds: isMobile ? [
-          [-76.6, 3.35], // Southwest coordinates
-          [-76.45, 3.55]  // Northeast coordinates
-        ] : undefined,
+        center: [city.longitude, city.latitude],
+        zoom: isMobile ? city.zoom + 0.5 : city.zoom,
+        pitch: 0,
       });
       
       // On mobile, keep basic interactions but disable scroll zoom to avoid conflicts with page scrolling
@@ -335,6 +332,18 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
       }
     }
   }, [selectedNeighborhood, mapLoaded]);
+
+  // Recenter when the selected city changes
+  useEffect(() => {
+    if (map.current && mapLoaded) {
+      map.current.flyTo({
+        center: [city.longitude, city.latitude],
+        zoom: city.zoom,
+        duration: 1200,
+        essential: true,
+      });
+    }
+  }, [city.id, mapLoaded]);
 
   // Fly to focused coordinates when badge is clicked
   useEffect(() => {
