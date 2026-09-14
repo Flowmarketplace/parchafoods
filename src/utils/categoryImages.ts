@@ -328,6 +328,31 @@ const NAME_KEYWORD_RULES: Array<[RegExp, string]> = [
   [/baño|sanitario|grifer/i, 'Baño'],
   [/cocina|ollas|utensilios|vajilla/i, 'Cocina'],
   [/iluminaci[oó]n|l[aá]mparas|luces/i, 'Iluminación'],
+  // Servicios
+  [/taller|mec[aá]nic|montallantas|servitec|automotriz|latoner/i, 'Taller'],
+  [/lavadero|autolavado|car wash/i, 'Lavadero'],
+  [/lavander[ií]a|tintorer/i, 'Lavandería'],
+  [/papeler[ií]a|librer[ií]a|cacharrer|miscel[aá]ne/i, 'Papelería'],
+  [/imprenta|litograf|publicidad|avisos|serigraf/i, 'Imprenta'],
+  [/sistemas|computador|celulares?|tecnolog|inform[aá]tic|internet|soporte t[eé]cnic/i, 'Tecnología'],
+  [/banco|bancolombia|davivienda|cooperativa|corresponsal|giros|cajero/i, 'Banco'],
+  [/transporte|cooperativa de transporte|taxis?|flota|encomiendas|mensajer/i, 'Transporte'],
+  [/colegio|escuela|instituci[oó]n educativa|universidad|academia|jard[ií]n infantil|preescolar|sena\b/i, 'Educación'],
+  [/inmobiliar|finca ra[ií]z|arriendos|constructora/i, 'Inmobiliaria'],
+  [/fotograf|foto studio|estudio fotogr/i, 'Fotografía'],
+  // Mercados
+  [/supermercado|autoservicio|super\b|surtimax|ara\b|d1\b|justo & bueno/i, 'Supermercado'],
+  [/plaza de mercado|galer[ií]a|mercado campesino/i, 'Plaza de Mercado'],
+  [/carnicer|carnes fr[ií]as|expendio de carne|famas?\b/i, 'Carnicería'],
+  [/licorer|distribuidora de licores|vinos y licores/i, 'Licorera'],
+  [/granero|v[ií]veres|abarrotes|rancho y licores/i, 'Granero'],
+  [/tienda\b|minimercado|mini market|estanquillo/i, 'Tienda'],
+  // Hospedaje
+  [/hotel\b|hoteles/i, 'Hotel'],
+  [/hostal|hostel|residencias?\b|posada/i, 'Hostal'],
+  [/motel/i, 'Motel'],
+  [/caba[ñn]a/i, 'Cabañas'],
+  [/finca|hacienda|ecohotel|campestre|glamping/i, 'Finca'],
 ];
 
 const resolveSpecificCategory = (
