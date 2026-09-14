@@ -697,9 +697,9 @@ const PlaceDetails = () => {
                     </div>
                   ) : (
                     <div className="text-center py-8">
-                      <UtensilsCrossed className="h-8 w-8 mx-auto mb-2 text-muted-foreground/40" />
-                      <p className="text-muted-foreground text-sm">Menú no disponible aún</p>
-                      <p className="text-xs text-muted-foreground mt-1">Contacta al restaurante para más info</p>
+                      <catalog.icon className="h-8 w-8 mx-auto mb-2 text-muted-foreground/40" />
+                      <p className="text-muted-foreground text-sm">{catalog.empty}</p>
+                      <p className="text-xs text-muted-foreground mt-1">{catalog.hint}</p>
                     </div>
                   )}
                 </TabsContent>
