@@ -5,7 +5,9 @@
 // 2) CATEGORY_FALLBACK_POOLS — per-category pools used only when a business
 //    has no override and no uploaded photo.
 
-const PARAMS = '?w=1600&q=85&auto=format&fit=crop';
+// Lighter params: cards never need more than ~800px wide, and auto=format
+// serves WebP/AVIF where supported. This cuts image weight by ~4x.
+const PARAMS = '?w=800&q=70&auto=format&fit=crop';
 const img = (id: string) => `https://images.unsplash.com/${id}${PARAMS}`;
 const pool = (ids: string[]) => ids.map(img);
 
