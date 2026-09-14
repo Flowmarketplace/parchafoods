@@ -1,20 +1,19 @@
-# Parcha Foods
+# La Ciudad en tus Manos
 
-> Guía gastronómica de Cali, Colombia: restaurantes, rutas mundialistas y eventos. Comer, saber y vivir.
+> Guía de negocios locales de Barbosa (Santander), Santana (Boyacá) y Cali: comida, salud, belleza, ropa, entretenimiento, servicios y más.
 
-Parcha Foods ayuda a descubrir los mejores restaurantes y experiencias gastronómicas de Cali, con rutas temáticas para el Mundial 2026, recomendaciones semanales, videos cortos y eventos locales.
+La Ciudad en tus Manos ayuda a descubrir los negocios de tu ciudad por categoría, barrio y cercanía, con promociones, videos cortos y eventos locales.
 
 ## Pages
 
-- [Inicio](/): Descubre restaurantes destacados, rutas mundialistas y videos gastronómicos de Cali.
-- [Eventos](/events): Eventos gastronómicos y partidos del Mundial en Cali.
+- [Inicio](/): Negocios destacados, categorías y mapa de tu ciudad.
+- [Categorías](/listings): Negocios por tipo: comida, salud, belleza, ropa, entretenimiento, hogar, servicios, hospedaje y mercados.
+- [Barrios](/neighborhoods): Explora los negocios por barrio.
+- [Cerca de mí](/near-me): Negocios cercanos a tu ubicación.
+- [Eventos](/events): Eventos y actividades de la ciudad.
 - [Todos los eventos](/events-all): Calendario completo de eventos.
-- [Categorías](/listings): Restaurantes por categoría gastronómica.
-- [Barrios](/neighborhoods): Explora la oferta gastronómica por barrio.
-- [Cerca de mí](/near-me): Restaurantes cercanos a tu ubicación.
-- [Shorts](/shorts): Videos cortos de restaurantes y platos.
-- [Recomendaciones](/recommendations): Las mejores recomendaciones semanales para ver el Mundial 2026 en Cali.
-- [Rutas Mundialistas](/rutas): Rutas temáticas por el Mundial 2026.
+- [Shorts](/shorts): Videos cortos de negocios locales.
+- [Recomendaciones](/recommendations): Recomendaciones semanales.
 
 ## Optional
 

@@ -55,11 +55,11 @@ const Navbar = ({ onMenuClick, searchQuery, onSearchChange, selectedNeighborhood
             </Button>
             
             <div className="flex items-center gap-1.5 sm:gap-2 min-w-0" onClick={() => navigate('/')} role="button">
-              <img src="/mundial-sabor-icon.png" alt="Parcha Foods" className="h-12 sm:h-16 w-auto shrink-0 drop-shadow-md" />
+              <img src="/ciudad-logo.png" alt="La Ciudad en tus Manos" className="h-12 sm:h-16 w-auto shrink-0 drop-shadow-md" />
               <div className="flex flex-col leading-none min-w-0">
                 <span className="text-[10px] sm:text-xs font-semibold text-muted-foreground">🏆 2026</span>
                 <h1 className="text-sm sm:text-lg font-extrabold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent truncate">
-                  Parcha Foods
+                  La Ciudad en tus Manos
                 </h1>
               </div>
             </div>

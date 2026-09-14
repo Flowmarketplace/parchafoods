@@ -20,13 +20,13 @@ const fadeUp = {
 };
 
 const benefits = [
-  { icon: Trophy, title: "Patrocinio Oficial del Evento", description: "Q'Menu como distribuidor oficial de carnes de Parcha Foods en Cali. Permanencia y presencia en todo el evento.", highlight: true },
+  { icon: Trophy, title: "Patrocinio Oficial del Evento", description: "Q'Menu como distribuidor oficial de carnes de La Ciudad en tus Manos en Cali. Permanencia y presencia en todo el evento.", highlight: true },
   { icon: Smartphone, title: "Patrocinio Oficial de la App", description: "Módulo exclusivo de patrocinador oficial dentro de la aplicación con presencia destacada para todos los usuarios.", highlight: true },
   { icon: Tv, title: "Banner y Video Principal en la App", description: "Espacio premium con banner principal y video destacado visible para todos los usuarios al abrir la aplicación." },
   { icon: Bell, title: "Notificaciones Push a Usuarios", description: "Envío de notificaciones push directas a todos los usuarios registrados con campañas personalizadas según el plan contratado." },
   { icon: BarChart3, title: "Data de Restaurantes y Consumidores", description: "Acceso a datos de consumo de carnes, comportamiento de usuarios y rotación en restaurantes en tiempo real." },
   { icon: Gift, title: "Participación en Premios", description: "Participación directa en el sistema de premios y recompensas asociando Q'Menu a la mejor parrilla del Mundial." },
-  { icon: Store, title: "Brandeo en Restaurantes Aliados", description: "Sticker oficial de Parcha Foods brandeado con Q'Menu. Inicio con 100 restaurantes durante el Mundial y proyección de 1,200 al cierre de 2026." },
+  { icon: Store, title: "Brandeo en Restaurantes Aliados", description: "Sticker oficial de La Ciudad en tus Manos brandeado con Q'Menu. Inicio con 100 restaurantes durante el Mundial y proyección de 1,200 al cierre de 2026." },
   { icon: QrCode, title: "QR Brandeados Q'Menu", description: "Códigos QR personalizados con la marca Q'Menu en cada restaurante participante para tracking de visitas y consumo." },
   { icon: Megaphone, title: "Presencia en Redes y Pauta", description: "Presencia en todas las redes sociales del evento y pauta publicitaria en la comunidad de foodies de Cali." },
   { icon: Video, title: "Videos Brandeados en Restaurantes", description: "Videos con publicidad comercial de Q'Menu reproducidos en los televisores de los restaurantes participantes (100 al inicio, escalando a 1,200 en 2026)." },
@@ -151,7 +151,7 @@ const QmenuProposal = () => {
 
           <motion.h1 {...fadeUp} transition={{ duration: 0.6, delay: 0.25 }} className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
             Distribuidor Oficial de Carnes<br />
-            <span className="bg-gradient-to-r from-red-500 via-orange-400 to-yellow-400 bg-clip-text text-transparent">Parcha Foods</span>
+            <span className="bg-gradient-to-r from-red-500 via-orange-400 to-yellow-400 bg-clip-text text-transparent">La Ciudad en tus Manos</span>
           </motion.h1>
 
           <motion.p {...fadeUp} transition={{ duration: 0.6, delay: 0.35 }} className="text-white/70 text-lg md:text-xl max-w-3xl mx-auto mb-10 leading-relaxed">
@@ -252,7 +252,7 @@ const QmenuProposal = () => {
                 <p className="text-muted-foreground text-sm leading-relaxed">
                   Cada partido es una excusa para reunirse a comer. La parrilla, los asados y la picada son los protagonistas de cada celebración mundialista.
                   Según proyecciones, <strong className="text-foreground">el consumo de carnes aumenta hasta un 45% durante mundiales</strong> y los restaurantes
-                  con parrilla son los más visitados. Q'Menu tiene la oportunidad de posicionarse como la carne oficial detrás de cada parrilla de Parcha Foods.
+                  con parrilla son los más visitados. Q'Menu tiene la oportunidad de posicionarse como la carne oficial detrás de cada parrilla de La Ciudad en tus Manos.
                 </p>
               </div>
             </div>
@@ -820,7 +820,7 @@ const QmenuProposal = () => {
           <div className="grid md:grid-cols-3 gap-5 mb-10">
             {[
               { icon: Bell, color: "from-red-600 to-orange-500", iconColor: "text-white", title: "Q'Menu 🥩", msg: "¡Hoy juega Colombia! Reserva tu mesa en los restaurantes con la mejor parrilla Q'Menu de Cali 🇨🇴⚽", time: "Ahora" },
-              { icon: Gift, color: "from-orange-500 to-amber-500", iconColor: "text-white", title: "Promo Q'Menu", msg: "20% off en cortes premium este fin de semana en 30 restaurantes de Parcha Foods 🔥", time: "Hace 2h" },
+              { icon: Gift, color: "from-orange-500 to-amber-500", iconColor: "text-white", title: "Promo Q'Menu", msg: "20% off en cortes premium este fin de semana en 30 restaurantes de La Ciudad en tus Manos 🔥", time: "Hace 2h" },
               { icon: Megaphone, color: "from-yellow-500 to-amber-500", iconColor: "text-black", title: "¡Gol de Colombia!", msg: "Celebra con una parrillada Q'Menu 🥩 Muestra esta notificación y recibe entrada gratis", time: "Hace 5min" },
             ].map((notif, i) => (
               <motion.div
@@ -1004,7 +1004,7 @@ const QmenuProposal = () => {
                 <span className="text-accent font-semibold text-sm tracking-widest uppercase">Alcance Garantizado</span>
                 <h2 className="text-3xl md:text-4xl font-bold text-foreground mt-3 mb-4">Datos que respaldan la inversión</h2>
                 <p className="text-muted-foreground text-base leading-relaxed mb-6">
-                  Con Parcha Foods, Q'Menu accede a una base activa de consumidores gastronómicos en Cali,
+                  Con La Ciudad en tus Manos, Q'Menu accede a una base activa de consumidores gastronómicos en Cali,
                   con datos precisos de comportamiento, preferencias y ubicación.
                 </p>
                 <ul className="space-y-3">
@@ -1115,7 +1115,7 @@ const QmenuProposal = () => {
             <h3 className="text-5xl md:text-6xl font-black text-white mb-8 tracking-tight" style={{ letterSpacing: '-0.04em' }}>Q'menu</h3>
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">¿Listo para ser el patrocinador oficial?</h2>
             <p className="text-white/60 text-lg max-w-2xl mx-auto mb-10">
-              Hablemos sobre cómo Q'Menu puede ser la carne oficial de Parcha Foods en Cali.
+              Hablemos sobre cómo Q'Menu puede ser la carne oficial de La Ciudad en tus Manos en Cali.
             </p>
             <a
               href="https://wa.me/573146269531?text=Hola%2C%20soy%20de%20Q%27Menu%20y%20me%20interesa%20la%20propuesta%20de%20patrocinio"
@@ -1133,7 +1133,7 @@ const QmenuProposal = () => {
       <footer className="py-8 border-t border-border">
         <div className="container mx-auto px-6 text-center">
           <p className="text-muted-foreground text-sm">
-            Parcha Foods · Propuesta confidencial para Q'Menu · Cali, Colombia
+            La Ciudad en tus Manos · Propuesta confidencial para Q'Menu · Cali, Colombia
           </p>
         </div>
       </footer>

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mundial-sabor-v2';
+const CACHE_NAME = 'ciudad-en-tus-manos-v1';
 const urlsToCache = [
   '/',
   '/manifest.json',

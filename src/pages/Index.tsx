@@ -111,9 +111,9 @@ const Index = () => {
           videoUrl: short.video_url,
           thumbnailUrl: short.thumbnail_url,
           creator: {
-            name: 'Sabor 360',
-            username: '@sabor360',
-            avatarUrl: '/sabor360-logo.png',
+            name: 'La Ciudad en tus Manos',
+            username: '@laciudadentusmanos',
+            avatarUrl: '/ciudad-logo.png',
             verified: true
           },
           views: short.views || 0,
@@ -269,7 +269,7 @@ const Index = () => {
                   <span className="text-3xl sm:text-4xl shrink-0">⚽</span>
                   <div className="flex-1 min-w-0">
                     <h1 className="text-base sm:text-xl md:text-2xl font-extrabold leading-tight">
-                      Parcha Foods — Guía Gastronómica de Cali para el Mundial 2026
+                      La Ciudad en tus Manos — Guía Gastronómica de Cali para el Mundial 2026
                     </h1>
                     <p className="text-[10px] sm:text-xs opacity-90 mt-0.5">
                       Vive cada partido con los mejores restaurantes 🇨🇴

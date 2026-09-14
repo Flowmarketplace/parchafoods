@@ -1,14 +1,14 @@
 {
-  "name": "Parcha Foods",
-  "short_name": "Parcha Foods",
-  "description": "Parcha Foods - Descubre los mejores restaurantes y sabores de Cali. Tu guía gastronómica.",
+  "name": "La Ciudad en tus Manos",
+  "short_name": "Ciudad",
+  "description": "Guía de negocios locales: comida, salud, belleza, ropa, entretenimiento y servicios en tu ciudad.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#1B7A3D",
+  "theme_color": "#0B4F9E",
   "orientation": "portrait-primary",
-  "categories": ["food", "travel", "lifestyle"],
+  "categories": ["business", "travel", "lifestyle"],
   "lang": "es-CO",
   "dir": "ltr",
   "icons": [
@@ -27,15 +27,15 @@
   ],
   "shortcuts": [
     {
-      "name": "Rutas Mundialistas",
-      "short_name": "Rutas",
-      "url": "/rutas",
+      "name": "Cerca de mí",
+      "short_name": "Cerca",
+      "url": "/near-me",
       "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
     },
     {
-      "name": "Eventos",
-      "short_name": "Eventos",
-      "url": "/events-all",
+      "name": "Categorías",
+      "short_name": "Categorías",
+      "url": "/listings",
       "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
     }
   ]
