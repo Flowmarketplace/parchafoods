@@ -451,13 +451,19 @@ const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todo
     }
   };
 
+  // Reset grouping when the category filter or the dataset changes
+  useEffect(() => {
+    setExpandedCategory(null);
+    setExpandedZone(null);
+  }, [selectedCategory, places]);
+
   // Effect to update markers when category changes or map loads
   useEffect(() => {
     if (map.current && mapLoaded) {
-      console.log('Updating markers for category:', selectedCategory);
       updateMarkers();
     }
-  }, [selectedCategory, mapLoaded, places]);
+  }, [selectedCategory, mapLoaded, places, expandedCategory, expandedZone]);
+
 
   // Effect to center map on selected neighborhood
   useEffect(() => {
