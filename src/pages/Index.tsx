@@ -23,11 +23,14 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { cn } from '@/lib/utils';
 import { pickBusinessCoverUrl } from '@/utils/businessImages';
 import { useCity } from '@/contexts/CityContext';
-import { BUSINESS_CATEGORIES, resolveBusinessType } from '@/data/categories';
+import { BUSINESS_CATEGORIES, resolveBusinessType, resolveSubcategory, getSubcategories } from '@/data/categories';
+import { getSubcategoryIcon } from '@/utils/subcategoryIcons';
+import { LayoutGrid } from 'lucide-react';
 
 const Index = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('Todos');
+  const [selectedSubcategory, setSelectedSubcategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedNeighborhood, setSelectedNeighborhood] = useState('Todos');
   const [isSearching, setIsSearching] = useState(false);
@@ -175,6 +178,25 @@ const Index = () => {
     });
   }, [selectedCategory, selectedNeighborhood, searchQuery, places]);
 
+  const subcategoryOptions = useMemo(() => {
+    if (selectedCategory === 'Todos') return [];
+    const counts = new Map<string, number>();
+    filteredPlaces.forEach((p: any) => {
+      const sub = resolveSubcategory(p.category, p.business_type || p.businessType, p.name);
+      if (sub) counts.set(sub, (counts.get(sub) || 0) + 1);
+    });
+    return getSubcategories(selectedCategory)
+      .filter((s) => counts.has(s))
+      .map((s) => ({ name: s, count: counts.get(s) || 0 }));
+  }, [selectedCategory, filteredPlaces]);
+
+  const visiblePlaces = useMemo(() => {
+    if (!selectedSubcategory) return filteredPlaces;
+    return filteredPlaces.filter((p: any) =>
+      resolveSubcategory(p.category, p.business_type || p.businessType, p.name) === selectedSubcategory
+    );
+  }, [filteredPlaces, selectedSubcategory]);
+
   const showFilters = selectedCategory !== 'Todos' || searchQuery !== '' || selectedNeighborhood !== 'Todos';
 
   return (
@@ -258,7 +280,7 @@ const Index = () => {
             </div>
             <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
               <button
-                onClick={() => setSelectedCategory('Todos')}
+                onClick={() => { setSelectedCategory('Todos'); setSelectedSubcategory(null); }}
                 className={cn(
                   "flex flex-col items-center gap-1.5 rounded-xl border p-3 transition-all hover:shadow-md active:scale-95",
                   selectedCategory === 'Todos' ? "border-primary bg-primary/5 shadow-sm" : "border-border bg-card"
@@ -275,7 +297,7 @@ const Index = () => {
                 return (
                   <button
                     key={cat.id}
-                    onClick={() => setSelectedCategory(isActive ? 'Todos' : cat.id)}
+                    onClick={() => { setSelectedCategory(isActive ? 'Todos' : cat.id); setSelectedSubcategory(null); }}
                     className={cn(
                       "flex flex-col items-center gap-1.5 rounded-xl border p-3 transition-all hover:shadow-md active:scale-95",
                       isActive ? "border-primary bg-primary/5 shadow-sm" : "border-border bg-card"
@@ -289,6 +311,42 @@ const Index = () => {
                 );
               })}
             </div>
+
+            {subcategoryOptions.length > 0 && (
+              <div className="mt-3">
+                <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wide mb-1.5">Escoge una subcategoría</p>
+                <div className="flex gap-2 overflow-x-auto pb-1">
+                  <button
+                    onClick={() => setSelectedSubcategory(null)}
+                    className={cn(
+                      "shrink-0 w-[76px] h-[76px] rounded-2xl border flex flex-col items-center justify-center px-1 transition-all active:scale-95",
+                      !selectedSubcategory ? "bg-primary text-primary-foreground border-primary shadow-md" : "bg-card text-muted-foreground border-border hover:border-primary/30"
+                    )}
+                  >
+                    <LayoutGrid className="h-5 w-5 mb-0.5" />
+                    <span className="text-[10px] font-medium leading-tight">Todas</span>
+                  </button>
+                  {subcategoryOptions.map((sub) => {
+                    const SubIcon = getSubcategoryIcon(sub.name);
+                    const active = selectedSubcategory === sub.name;
+                    return (
+                      <button
+                        key={sub.name}
+                        onClick={() => setSelectedSubcategory(active ? null : sub.name)}
+                        className={cn(
+                          "shrink-0 w-[76px] h-[76px] rounded-2xl border flex flex-col items-center justify-center px-1 transition-all active:scale-95",
+                          active ? "bg-primary text-primary-foreground border-primary shadow-md" : "bg-card text-muted-foreground border-border hover:border-primary/30"
+                        )}
+                      >
+                        <SubIcon className="h-5 w-5 mb-0.5" />
+                        <span className="text-[10px] font-medium leading-tight text-center line-clamp-2">{sub.name}</span>
+                        <span className="text-[9px] opacity-80">{sub.count}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </section>
 
           {!showFilters ? (
@@ -389,7 +447,7 @@ const Index = () => {
                   {(selectedCategory !== 'Todos' || searchQuery) && (
                     <div className="mb-3 flex items-center justify-between bg-card border rounded-lg p-2.5 gap-2">
                       <p className="text-xs text-muted-foreground">
-                        {filteredPlaces.length} {filteredPlaces.length === 1 ? 'lugar' : 'lugares'}
+                        {visiblePlaces.length} {visiblePlaces.length === 1 ? 'lugar' : 'lugares'}
                         {searchQuery && <span className="block text-[10px]">"{searchQuery}"</span>}
                       </p>
                       {selectedCategory !== 'Todos' && (
@@ -399,7 +457,7 @@ const Index = () => {
                       )}
                     </div>
                   )}
-                  <PlacesList places={filteredPlaces} />
+                  <PlacesList places={visiblePlaces} />
                 </>
               )}
             </div>
