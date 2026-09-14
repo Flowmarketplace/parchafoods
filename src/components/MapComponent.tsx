@@ -25,6 +25,7 @@ interface MapComponentProps {
 }
 
 const MapComponent = ({ selectedNeighborhood = 'Todos', selectedCategory = 'Todos', places, focusCoordinates, userPosition, expanded = false, onToggleExpand }: MapComponentProps) => {
+  const { city } = useCity();
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
   const markers = useRef<mapboxgl.Marker[]>([]);
