@@ -18,8 +18,8 @@ const OVERRIDES_RAW: Record<string, string> = {
   // Cervecerías / Bares
   'f4fe2d5a-c591-42a2-abde-ca019d42180c': 'photo-1535958636474-b021ee887b13', // 3 Cordilleras Cali
   '997f208f-5d6a-4fa2-adb0-75a8572976fb': 'photo-1546726747-421c6d69c929', // BBC Granada
-  '8a8c7fc8-b744-4eb6-8a28-511625e51173': 'photo-1571767454098-246b94fbcf38', // Cilindro Municipal
-  '07ff1fbe-3160-4b09-ab49-124ae6bfeeb7': 'photo-1577905394164-d566267e7c46', // Malta Cervecería
+  '8a8c7fc8-b744-4eb6-8a28-511625e51173': 'photo-1470229722913-7ea0d7a20ba0', // Cilindro Municipal
+  '07ff1fbe-3160-4b09-ab49-124ae6bfeeb7': 'photo-1436076863939-06870fe779c2', // Malta Cervecería
   'b8d67412-dc58-4b9d-bb8c-966cc7a0d24f': 'photo-1518176258769-f227c798150e', // La Topa Tolondra
 
   // Mexicana
@@ -55,15 +55,15 @@ const OVERRIDES_RAW: Record<string, string> = {
   'aaa8a020-3aa9-4b0f-86ae-c26f41db2467': 'photo-1571091718767-18b5b1457add', // El gringo american kitchen
   'da32b271-3654-4226-9792-20ae1803a4f4': 'photo-1565299507177-b0ac66763828', // El paisa
   '4ae5ad7f-92e1-4f7e-81fa-a1716e0a630f': 'photo-1551782450-a2132b4ba21d', // El paso hamburguesas
-  'defe753c-3f13-4fde-9d0d-19e77470dfc9': 'photo-1612392062798-2dc1ec5d2c34', // El Rey del Perro
+  'defe753c-3f13-4fde-9d0d-19e77470dfc9': 'photo-1612392062631-94dd858cba88', // El Rey del Perro
   'd2d0d691-c13f-48b3-b4f4-48b8aa27f04b': 'photo-1601050690597-df0568f70950', // GAÓN
   '240dbbc2-72d8-41a0-8964-d2b83b808703': 'photo-1612392061787-2d078b3e573c', // Hot Dog Boyacá
   '3a37d2be-5c87-4e7b-9d03-ed94fb40a5a5': 'photo-1572802419224-296b0aeee0d9', // La clasica
-  '8344dceb-2ca3-4ed2-a8a6-20dd6b154752': 'photo-1620083920192-c9d3b4dfb1f9', // La Picotada
+  '8344dceb-2ca3-4ed2-a8a6-20dd6b154752': 'photo-1544025162-d76694265947', // La Picotada
   'a29287b4-47f9-461a-98c4-a2796c45dca2': 'photo-1572802419224-296b0aeee0d9', // Local burger
   '5863f8a1-9ed3-41b5-9f91-743c3957402e': 'photo-1604908176997-125f25cc6f3d', // Maduro Express
   '816de61f-73ec-40a6-a653-f33dbe2932ae': 'photo-1559847844-5315695dadae', // Perreiranos
-  'dab18ada-a9a3-41c0-ae63-9ebcdb48a105': 'photo-1572448862527-d3d9b71e8b50', // Republic burger
+  'dab18ada-a9a3-41c0-ae63-9ebcdb48a105': 'photo-1568901346375-23c9450c58cd', // Republic burger
 
   // Cafés
   'd0a8e4d0-9b0c-46df-ba51-74542aad2ed6': 'photo-1453614512568-c4024d13c247', // Café Libre
@@ -82,7 +82,7 @@ const OVERRIDES_RAW: Record<string, string> = {
 
   // Tradicional / Colombiana
   '1dafa49e-44af-4dab-9f11-5be81c99a118': 'photo-1551218808-94e220e084d2', // Casa Vieja Cali
-  '132f78a6-85ed-4fd7-825e-84940ea12ad6': 'photo-1604908554007-3a5fdd2f9b3a', // Choclos y Asados la Finca
+  '132f78a6-85ed-4fd7-825e-84940ea12ad6': 'photo-1555939594-58d7cb561ad1', // Choclos y Asados la Finca
   '475c7ebe-1721-4f62-9544-2e2a28a642f7': 'photo-1565557623262-b51c2513a641', // El Solar
   '367c4602-84f3-4677-b0eb-6dc7837d89bc': 'photo-1567337710282-00832b415979', // El Zaguán
   '83731afe-a937-460a-847a-08d4c849e5a6': 'photo-1592861956120-e524fc739696', // Platillos Voladores
@@ -93,7 +93,7 @@ const OVERRIDES_RAW: Record<string, string> = {
   'd3e7a823-bd4a-45f7-a205-d39b0f746887': 'photo-1532980400857-e8d9d275d858', // El Cangrejo Azul
   'f738b8be-c224-435c-abb7-83b4c5f629b0': 'photo-1579631542720-3a87824fff86', // La Cosecha Marina
   'ee4bfa8e-62b0-4482-a4b4-6f6853b6748e': 'photo-1565680018434-b513d5e5fd47', // Mariscos El Puerto
-  '5b808ad1-a1dd-4552-8f18-3cce63474f46': 'photo-1535140728325-a4d3707eee94', // Pesca del Día
+  '5b808ad1-a1dd-4552-8f18-3cce63474f46': 'photo-1519708227418-c8fd9a32b7a2', // Pesca del Día
 
   // Italiana
   '9f1e2e39-f6a8-4a3a-9ceb-be4d79bbdfe0': 'photo-1574071318508-1cdbab80d002', // Il Forno
