@@ -46,7 +46,6 @@ import {
   Gamepad2,
   Music2,
   Disc,
-  Billiards,
   Target,
   Clapperboard,
   Mic2,
@@ -89,7 +88,6 @@ import {
   BookOpen,
   Music,
   Palette,
-  CarIcon,
   PenTool,
   FileText,
   Scale,
@@ -110,6 +108,7 @@ import {
   Wheat,
   Sprout,
   StoreIcon,
+  Circle,
   type LucideIcon,
 } from 'lucide-react';
 
@@ -176,7 +175,7 @@ export const SUBCATEGORY_ICONS: Record<string, LucideIcon> = {
   // Entretenimiento
   'Bar': Beer,
   'Discoteca': Music2,
-  'Billar': Billiards,
+  'Billar': Circle,
   'Tejo': Target,
   'Gimnasio': Dumbbell,
   'Cine': Clapperboard,
@@ -209,7 +208,7 @@ export const SUBCATEGORY_ICONS: Record<string, LucideIcon> = {
 
   // Servicios
   'Repuestos': Wrench,
-  'Llantas': CircleIcon,
+  'Llantas': Circle,
   'Lavadero de autos': Car,
   'Gasolinera': Fuel,
   'Transporte': Bus,
@@ -234,7 +233,7 @@ export const SUBCATEGORY_ICONS: Record<string, LucideIcon> = {
   'Academia de idiomas': BookOpen,
   'Escuela de música': Music,
   'Escuela de danza': Music,
-  'Escuela de conducción': CarIcon,
+  'Escuela de conducción': Car,
   'Refuerzo escolar': BookOpen,
   'Cursos y talleres': PenTool,
   'Biblioteca': BookOpen,
@@ -250,7 +249,7 @@ export const SUBCATEGORY_ICONS: Record<string, LucideIcon> = {
   'Topografía': MapPin,
   'Publicidad y diseño': Paintbrush,
   'Mecánica automotriz': Car,
-  'Taller de motos': BikeIcon,
+  'Taller de motos': Wrench,
   'Tecnomecánica': Car,
   'Reparación electrónica': Cpu,
   'Seguros': Briefcase,
@@ -291,40 +290,6 @@ export const SUBCATEGORY_ICONS: Record<string, LucideIcon> = {
   'Variedades': ShoppingBasket,
   'Centro comercial': Building2,
 };
-
-function CircleIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-    >
-      <circle cx="12" cy="12" r="10" />
-    </svg>
-  );
-}
-
-function BikeIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-    >
-      <circle cx="5.5" cy="17.5" r="3.5" />
-      <circle cx="18.5" cy="17.5" r="3.5" />
-      <path d="M15 6a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-3 11.5V14l-3-3 4-3 2 3h2" />
-    </svg>
-  );
-}
 
 export const getSubcategoryIcon = (subcategory: string): LucideIcon => {
   return SUBCATEGORY_ICONS[subcategory] || LayoutGrid;
