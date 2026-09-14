@@ -418,7 +418,7 @@ const Index = () => {
                       )}
                     </div>
                   )}
-                  <PlacesList places={filteredPlaces} />
+                  <PlacesList places={visiblePlaces} />
                 </>
               )}
             </div>
