@@ -10,7 +10,7 @@ import Sidebar from '@/components/Sidebar';
 import BottomNav from '@/components/BottomNav';
 import { supabase } from '@/integrations/supabase/client';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ALL_CATEGORY, BUSINESS_CATEGORIES, resolveBusinessType } from '@/data/categories';
+import { ALL_CATEGORY, BUSINESS_CATEGORIES, resolveBusinessType, resolveSubcategory, getSubcategories } from '@/data/categories';
 import { useCity } from '@/contexts/CityContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { pickBusinessCoverUrl } from '@/utils/businessImages';
@@ -25,6 +25,7 @@ const CategoryListings = () => {
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
+  const [selectedSubcategory, setSelectedSubcategory] = useState<string | null>(null);
   const [selectedNeighborhood, setSelectedNeighborhood] = useState('Todos');
   const [searchQuery, setSearchQuery] = useState('');
   const [places, setPlaces] = useState<any[]>([]);
