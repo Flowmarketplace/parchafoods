@@ -164,6 +164,7 @@ export type Database = {
           id: string
           is_closed: boolean | null
           open_time: string | null
+          time_ranges: Json | null
         }
         Insert: {
           business_id: string
@@ -173,6 +174,7 @@ export type Database = {
           id?: string
           is_closed?: boolean | null
           open_time?: string | null
+          time_ranges?: Json | null
         }
         Update: {
           business_id?: string
@@ -182,6 +184,7 @@ export type Database = {
           id?: string
           is_closed?: boolean | null
           open_time?: string | null
+          time_ranges?: Json | null
         }
         Relationships: [
           {
