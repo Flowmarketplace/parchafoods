@@ -11,6 +11,7 @@ import {
   BedDouble,
   ShoppingBasket,
   GraduationCap,
+  Building2,
   type LucideIcon,
 } from 'lucide-react';
 
@@ -165,14 +166,30 @@ export const BUSINESS_CATEGORIES: BusinessCategory[] = [
     aliases: [
       'Abogados', 'Notaría', 'Contaduría', 'Consultorio', 'Médico', 'Psicología',
       'Arquitectura', 'Ingeniería', 'Topografía', 'Diseño gráfico', 'Publicidad',
-      'Inmobiliaria', 'Taller', 'Taller automotriz', 'Taller de motos', 'Mecánica',
+      'Taller', 'Taller automotriz', 'Taller de motos', 'Mecánica',
       'Tecnomecánica', 'Reparación electrónica', 'Motos', 'Profesionales',
     ],
     subcategories: [
       'Abogados', 'Contaduría', 'Notaría', 'Consultorio médico particular',
-      'Psicología', 'Arquitectura', 'Ingeniería', 'Topografía', 'Inmobiliaria',
+      'Psicología', 'Arquitectura', 'Ingeniería', 'Topografía',
       'Publicidad y diseño', 'Mecánica automotriz', 'Taller de motos',
       'Tecnomecánica', 'Reparación electrónica', 'Seguros',
+    ],
+  },
+  {
+    id: 'Inmuebles',
+    name: 'Inmuebles',
+    label: 'Inmuebles y finca raíz',
+    icon: Building2,
+    color: '#087f5b',
+    aliases: [
+      'Inmuebles', 'Inmobiliaria', 'Finca raíz', 'Arriendos', 'Arriendo',
+      'Venta de inmuebles', 'Proyectos', 'Constructora', 'Lotes', 'Bienes raíces',
+    ],
+    subcategories: [
+      'Arriendos', 'En venta', 'Proyectos', 'Inmobiliarias', 'Lotes y terrenos',
+      'Fincas y campestre', 'Locales y oficinas', 'Constructoras',
+      'Avalúos y asesoría',
     ],
   },
   {
