@@ -151,7 +151,7 @@ const DirectionsPanel = ({ destinationLat, destinationLng, destinationName, dest
     const dLon = (destLng - userLocation.lng) * Math.PI / 180;
     const a = 
       Math.sin(dLat/2) * Math.sin(dLat/2) +
-      Math.cos(userLocation.lat * Math.PI / 180) * Math.cos(destinationLat * Math.PI / 180) *
+      Math.cos(userLocation.lat * Math.PI / 180) * Math.cos(destLat * Math.PI / 180) *
       Math.sin(dLon/2) * Math.sin(dLon/2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
     const distance = R * c;
@@ -217,6 +217,22 @@ const DirectionsPanel = ({ destinationLat, destinationLng, destinationName, dest
               </TabsList>
 
               {/* Route Information */}
+              {!currentRoute && (
+                <div className="space-y-4">
+                  <div className="bg-muted/30 rounded-lg p-4 text-sm text-muted-foreground">
+                    <div className="flex items-center gap-2 mb-2 text-foreground font-medium">
+                      {getModeIcon(selectedMode)}
+                      <span>{getModeLabel(selectedMode)}</span>
+                    </div>
+                    <p>Te llevamos hasta {destinationName}{destinationAddress ? ` (${destinationAddress})` : ''} con la ruta paso a paso.</p>
+                  </div>
+                  <Button onClick={openInGoogleMaps} className="w-full gap-2" size="lg">
+                    <Navigation2 className="h-5 w-5" />
+                    Ver ruta {getModeLabel(selectedMode).toLowerCase()}
+                  </Button>
+                </div>
+              )}
+
               {currentRoute && (
                 <div className="space-y-4">
                   {/* Duration and Distance */}
