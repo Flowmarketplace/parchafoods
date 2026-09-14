@@ -455,8 +455,8 @@ const PlaceDetails = () => {
               <Tabs defaultValue="menu" className="w-full">
                 <TabsList className="w-full overflow-x-auto flex justify-start gap-1 h-auto flex-wrap">
                   <TabsTrigger value="menu" className="text-xs gap-1 px-2.5 py-1.5">
-                    <UtensilsCrossed className="h-3.5 w-3.5" />
-                    Menú
+                    <catalog.icon className="h-3.5 w-3.5" />
+                    {catalog.label}
                   </TabsTrigger>
                   <TabsTrigger value="horarios" className="text-xs gap-1 px-2.5 py-1.5">
                     <Clock className="h-3.5 w-3.5" />
