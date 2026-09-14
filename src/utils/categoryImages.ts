@@ -233,6 +233,37 @@ export const CATEGORY_FALLBACK_POOLS: Record<string, string[]> = {
   'Baño': pool(['photo-1584622650111-993a426fbf0a','photo-1552321554-5f1da427a6b5','photo-1604014237800-1c08f3b2f6c3','photo-1558618666-fcd25c85cd64','photo-1616486338812-3dadae4b4f9d']),
   'Cocina': pool(['photo-1556910638-4cdac43e89ad','photo-1556912173-3db996ea0624','photo-1584622650111-993a426fbf0a','photo-1616486338812-3dadae4b4f9d','photo-1556228453-efd6c1ff04f0']),
   'Iluminación': pool(['photo-1565814326012-3b444a9bbbc9','photo-1513506003011-3b03c80175e8','photo-1558618666-fcd25c85cd64','photo-1583847661858-3b26973d8194','photo-1616486338812-3dadae4b4f9d']),
+
+  // ---- Servicios ----
+  'Servicios': pool(['photo-1521791136064-7986c2920216','photo-1497366216548-37526070297c','photo-1454165804606-c3d57bc86b40','photo-1552664730-d307ca884978','photo-1600880292203-757bb62b4baf']),
+  'Taller': pool(['photo-1486262715619-67b85e0b08d3','photo-1487754180451-c456f719a1fc','photo-1632823469850-1b7b1e8b7e2e','photo-1530046339160-ce3e530c7d2f','photo-1625047509168-a7026f36de04']),
+  'Lavadero': pool(['photo-1520340356584-f9917d1eea6f','photo-1607860108855-64acf2078ed9','photo-1552930294-6b595f4c2d78','photo-1558618666-fcd25c85cd64','photo-1486262715619-67b85e0b08d3']),
+  'Lavandería': pool(['photo-1545173168-9f1947eebb7f','photo-1604335399105-a0c585fd81a1','photo-1582735689369-4fe89db7114c','photo-1626806787461-102c1bfaaea1','photo-1517677208171-0bc6725a3e60']),
+  'Papelería': pool(['photo-1568667256549-094345857637','photo-1503676260728-1c00da094a0b','photo-1455390582262-044cdead277a','photo-1524995997946-a1c2e315a42f','photo-1587145820266-a5951ee6f620']),
+  'Tecnología': pool(['photo-1518770660439-4636190af475','photo-1498049794561-7780e7231661','photo-1517336714731-489689fd1ca8','photo-1531297484001-80022131f5a1','photo-1550009158-9ebf69173e03']),
+  'Banco': pool(['photo-1541354329998-f4d9a9f9297f','photo-1554224155-6726b3ff858f','photo-1560520653-9e0e4c89eb11','photo-1601597111158-2fceff292cdc','photo-1526304640581-d334cdbbf45e']),
+  'Transporte': pool(['photo-1544620347-c4fd4a3d5957','photo-1519003722824-194d4455a60c','photo-1494515843206-f3117d3f51b7','photo-1570125909232-eb263c188f7e','photo-1464219789935-c2d9d9aba644']),
+  'Educación': pool(['photo-1523050854058-8df90110c9f1','photo-1503676260728-1c00da094a0b','photo-1497486751825-1233686d5d80','photo-1509062522246-3755977927d7','photo-1580582932707-520aed937b7b']),
+  'Inmobiliaria': pool(['photo-1560518883-ce09059eeffa','photo-1568605114967-8130f3a36994','photo-1600585154340-be6161a56a0c','photo-1512917774080-9991f1c4c750','photo-1580587771525-78b9dba3b914']),
+  'Fotografía': pool(['photo-1452587925148-ce544e77e70d','photo-1516035069371-29a1b244cc32','photo-1471341971476-ae15ff5dd4ea','photo-1493863641943-9b68992a8d07','photo-1502920917128-1aa500764cbd']),
+  'Imprenta': pool(['photo-1601645191163-3fc0d5d64e35','photo-1562564055-71e051d33c19','photo-1611532736597-de2d4265fba3','photo-1586953208448-b95a79798f07','photo-1568667256549-094345857637']),
+
+  // ---- Mercados ----
+  'Mercados': pool(['photo-1542838132-92c53300491e','photo-1488459716781-31db52582fe9','photo-1578916171728-46686eac8d58','photo-1518843875459-f738682238a6','photo-1604719312566-8912e9227c6a']),
+  'Supermercado': pool(['photo-1601598851547-4302969d0614','photo-1578916171728-46686eac8d58','photo-1534723452862-4c874018d66d','photo-1604719312566-8912e9227c6a','photo-1583258292688-d0213dc5a3a8']),
+  'Tienda': pool(['photo-1604719312566-8912e9227c6a','photo-1578916171728-46686eac8d58','photo-1542838132-92c53300491e','photo-1568254183919-78a4f43a2877','photo-1534723452862-4c874018d66d']),
+  'Plaza de Mercado': pool(['photo-1488459716781-31db52582fe9','photo-1542838132-92c53300491e','photo-1518843875459-f738682238a6','photo-1519996529931-28324d5a630e','photo-1506806732259-39c2d0268443']),
+  'Carnicería': pool(['photo-1607623814075-e51df1bdc82f','photo-1558030006-450675393462','photo-1529692236671-f1f6cf9683ba','photo-1602470520998-f4a52199a3d6','photo-1588347818036-558601350947']),
+  'Licorera': pool(['photo-1569529465841-dfecdab7503b','photo-1510812431401-41d2bd2722f3','photo-1470158499416-75be9aa0c4db','photo-1514362545857-3bc16c4c7d1b','photo-1516594915697-87eb3b1c14ea']),
+  'Granero': pool(['photo-1604719312566-8912e9227c6a','photo-1542838132-92c53300491e','photo-1488459716781-31db52582fe9','photo-1534723452862-4c874018d66d','photo-1583258292688-d0213dc5a3a8']),
+
+  // ---- Hospedaje ----
+  'Hospedaje': pool(['photo-1566073771259-6a8506099945','photo-1551882547-ff40c63fe5fa','photo-1445019980597-93fa8acb246c','photo-1590490360182-c33d57733427','photo-1611892440504-42a792e24d32']),
+  'Hotel': pool(['photo-1566073771259-6a8506099945','photo-1542314831-068cd1dbfeeb','photo-1551882547-ff40c63fe5fa','photo-1611892440504-42a792e24d32','photo-1590490360182-c33d57733427']),
+  'Hostal': pool(['photo-1555854877-bab0e564b8d5','photo-1560347876-aeef00ee58a1','photo-1596394516093-501ba68a0ba6','photo-1631049307264-da0ec9d70304','photo-1522798514-97ceb8c4f1c8']),
+  'Finca': pool(['photo-1501785888041-af3ef285b470','photo-1520250497591-112f2f40a3f4','photo-1449824913935-59a10b8d2000','photo-1518780664697-55e3ad937233','photo-1470770841072-f978cf4d019e']),
+  'Cabañas': pool(['photo-1470770841072-f978cf4d019e','photo-1449158743715-0a90ebb6d2d8','photo-1501785888041-af3ef285b470','photo-1520250497591-112f2f40a3f4','photo-1542718610-a1d656d1884c']),
+  'Motel': pool(['photo-1611892440504-42a792e24d32','photo-1590490360182-c33d57733427','photo-1445019980597-93fa8acb246c','photo-1631049307264-da0ec9d70304','photo-1582719478250-c89cae4dc85b']),
 };
 
 // Palabras clave en el nombre del negocio -> categoría específica.
@@ -297,6 +328,31 @@ const NAME_KEYWORD_RULES: Array<[RegExp, string]> = [
   [/baño|sanitario|grifer/i, 'Baño'],
   [/cocina|ollas|utensilios|vajilla/i, 'Cocina'],
   [/iluminaci[oó]n|l[aá]mparas|luces/i, 'Iluminación'],
+  // Servicios
+  [/taller|mec[aá]nic|montallantas|servitec|automotriz|latoner/i, 'Taller'],
+  [/lavadero|autolavado|car wash/i, 'Lavadero'],
+  [/lavander[ií]a|tintorer/i, 'Lavandería'],
+  [/papeler[ií]a|librer[ií]a|cacharrer|miscel[aá]ne/i, 'Papelería'],
+  [/imprenta|litograf|publicidad|avisos|serigraf/i, 'Imprenta'],
+  [/sistemas|computador|celulares?|tecnolog|inform[aá]tic|internet|soporte t[eé]cnic/i, 'Tecnología'],
+  [/banco|bancolombia|davivienda|cooperativa|corresponsal|giros|cajero/i, 'Banco'],
+  [/transporte|cooperativa de transporte|taxis?|flota|encomiendas|mensajer/i, 'Transporte'],
+  [/colegio|escuela|instituci[oó]n educativa|universidad|academia|jard[ií]n infantil|preescolar|sena\b/i, 'Educación'],
+  [/inmobiliar|finca ra[ií]z|arriendos|constructora/i, 'Inmobiliaria'],
+  [/fotograf|foto studio|estudio fotogr/i, 'Fotografía'],
+  // Mercados
+  [/supermercado|autoservicio|super\b|surtimax|ara\b|d1\b|justo & bueno/i, 'Supermercado'],
+  [/plaza de mercado|galer[ií]a|mercado campesino/i, 'Plaza de Mercado'],
+  [/carnicer|carnes fr[ií]as|expendio de carne|famas?\b/i, 'Carnicería'],
+  [/licorer|distribuidora de licores|vinos y licores/i, 'Licorera'],
+  [/granero|v[ií]veres|abarrotes|rancho y licores/i, 'Granero'],
+  [/tienda\b|minimercado|mini market|estanquillo/i, 'Tienda'],
+  // Hospedaje
+  [/hotel\b|hoteles/i, 'Hotel'],
+  [/hostal|hostel|residencias?\b|posada/i, 'Hostal'],
+  [/motel/i, 'Motel'],
+  [/caba[ñn]a/i, 'Cabañas'],
+  [/finca|hacienda|ecohotel|campestre|glamping/i, 'Finca'],
 ];
 
 const resolveSpecificCategory = (
