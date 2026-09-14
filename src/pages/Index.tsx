@@ -11,7 +11,7 @@ import { mockPlaces, neighborhoods } from '@/data/places';
 import { mockEvents } from '@/data/events';
 import { mockShorts } from '@/data/shorts';
 import { Button } from '@/components/ui/button';
-import { ChevronRight, Star, Calendar, Video, MapPin, Check, Trophy } from 'lucide-react';
+import { ChevronRight, Star, Video, MapPin, Check } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import ShortsCarousel from '@/components/ShortsCarousel';
 import { Badge } from '@/components/ui/badge';
@@ -22,12 +22,9 @@ import {
 } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import WorldCupCalendar from '@/components/WorldCupCalendar';
-import WorldCupResults from '@/components/WorldCupResults';
-import WorldCupProgress from '@/components/WorldCupProgress';
-import WorldCupRoutes from '@/components/WorldCupRoutes';
 import { pickBusinessCoverUrl } from '@/utils/businessImages';
+import { useCity } from '@/contexts/CityContext';
+import { BUSINESS_CATEGORIES, resolveBusinessType } from '@/data/categories';
 
 const Index = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -43,6 +40,7 @@ const Index = () => {
   const [dbNeighborhoods, setDbNeighborhoods] = useState<string[]>([]);
   const [mapExpanded, setMapExpanded] = useState(false);
   const navigate = useNavigate();
+  const { city } = useCity();
 
   useEffect(() => {
     const loadBusinesses = async () => {
@@ -58,6 +56,7 @@ const Index = () => {
             display_order
           )
         `)
+        .eq('city', city.id)
         .order('featured', { ascending: false })
         .order('name');
       
@@ -70,6 +69,7 @@ const Index = () => {
             slug: business.slug,
             name: business.name,
             category: business.category,
+            businessType: resolveBusinessType(business.business_type || business.category),
             address: business.address,
             neighborhood: business.neighborhood,
             zone: business.zone,
@@ -93,7 +93,7 @@ const Index = () => {
       setLoadingPlaces(false);
     };
     loadBusinesses();
-  }, []);
+  }, [city.id]);
 
   useEffect(() => {
     const loadShorts = async () => {
@@ -129,7 +129,7 @@ const Index = () => {
       }
     };
     loadShorts();
-  }, []);
+  }, [city.name]);
 
   useEffect(() => {
     if (searchQuery === '' && selectedCategory === 'Todos' && selectedNeighborhood === 'Todos') {
@@ -142,17 +142,10 @@ const Index = () => {
   }, [searchQuery, selectedCategory, selectedNeighborhood]);
 
   const featuredPlaces = useMemo(() => {
-    const allPlaces = places.length > 0 ? places : mockPlaces;
+    const allPlaces = places;
     const featured = allPlaces
       .filter(place => place.featured || (place.rating && place.rating >= 4.5));
-    // Mis costillitas BBQ siempre como principal
-    featured.sort((a, b) => {
-      if (a.name === 'Mis costillitas BBQ') return -1;
-      if (b.name === 'Mis costillitas BBQ') return 1;
-      if (a.name === 'Perreiranos') return -1;
-      if (b.name === 'Perreiranos') return 1;
-      return (b.rating || 0) - (a.rating || 0);
-    });
+    featured.sort((a, b) => (b.rating || 0) - (a.rating || 0));
     return featured.slice(0, 6);
   }, [places]);
 
@@ -160,16 +153,16 @@ const Index = () => {
 
   const filteredShorts = useMemo(() => {
     if (selectedCategory === 'Todos') return shorts;
-    return shorts.filter(s => s.category === selectedCategory);
+    return shorts.filter(s => resolveBusinessType(s.category) === selectedCategory);
   }, [selectedCategory, shorts]);
 
   const filteredPlaces = useMemo(() => {
-    const allPlaces = places.length > 0 ? places : mockPlaces;
+    const allPlaces = places;
     const normalizeText = (t: string) => t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
     if (!searchQuery || searchQuery.trim() === '') {
       return allPlaces.filter((p) => {
-        const catMatch = selectedCategory === 'Todos' || p.category === selectedCategory;
+        const catMatch = selectedCategory === 'Todos' || resolveBusinessType(p.business_type || p.category) === selectedCategory;
         const nMatch = selectedNeighborhood === 'Todos' || normalizeText(p.neighborhood || '') === normalizeText(selectedNeighborhood);
         return catMatch && nMatch;
       });
@@ -177,7 +170,7 @@ const Index = () => {
 
     const searchLower = normalizeText(searchQuery.trim());
     return allPlaces.filter((p) => {
-      const catMatch = selectedCategory === 'Todos' || p.category === selectedCategory;
+      const catMatch = selectedCategory === 'Todos' || resolveBusinessType(p.business_type || p.category) === selectedCategory;
       const nMatch = selectedNeighborhood === 'Todos' || normalizeText(p.neighborhood || '') === normalizeText(selectedNeighborhood);
       const text = normalizeText([p.name, p.category, p.address, p.neighborhood, p.description || '', ...(p.foodType || [])].join(' '));
       return text.includes(searchLower) && catMatch && nMatch;
@@ -262,42 +255,53 @@ const Index = () => {
           {!showFilters ? (
             <div className="px-3 sm:px-4 md:px-6 py-3 sm:py-5 space-y-4 sm:space-y-6 pb-20 md:pb-8">
 
-              {/* World Cup Hero Banner */}
+              {/* Hero */}
               <section className="relative rounded-xl overflow-hidden bg-gradient-to-r from-primary via-primary/90 to-secondary text-primary-foreground p-3 sm:p-5">
                 <div className="absolute inset-0 opacity-[0.06]" style={{ backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '24px 24px' }} />
                 <div className="relative z-10 flex items-center gap-3">
-                  <span className="text-3xl sm:text-4xl shrink-0">⚽</span>
+                  <img src="/ciudad-logo.png" alt="" className="h-12 w-12 sm:h-16 sm:w-16 object-contain shrink-0 drop-shadow" />
                   <div className="flex-1 min-w-0">
                     <h1 className="text-base sm:text-xl md:text-2xl font-extrabold leading-tight">
-                      La Ciudad en tus Manos — Guía Gastronómica de Cali para el Mundial 2026
+                      La Ciudad en tus Manos — Guía de negocios de {city.label}
                     </h1>
                     <p className="text-[10px] sm:text-xs opacity-90 mt-0.5">
-                      Vive cada partido con los mejores restaurantes 🇨🇴
+                      Comida, salud, belleza, ropa, hogar, servicios y mucho más cerca de ti.
                     </p>
                   </div>
                 </div>
                 <Button
                   variant="secondary"
                   size="sm"
-                  onClick={() => navigate('/recommendations')}
+                  onClick={() => navigate('/listings')}
                   className="gap-1 mt-2 w-full sm:w-auto text-xs"
                 >
-                  ¿Dónde ver los partidos? <ChevronRight className="h-3.5 w-3.5" />
+                  Explorar negocios <ChevronRight className="h-3.5 w-3.5" />
                 </Button>
               </section>
 
-              {/* Rutas Mundialistas */}
+              {/* Categorías */}
               <section>
-                <div className="flex items-center justify-between mb-2.5">
-                  <div className="flex items-center gap-2">
-                    <span className="text-lg">🗺️</span>
-                    <h2 className="text-sm sm:text-lg font-bold">Las Rutas Mundialistas</h2>
-                  </div>
-                  <Button variant="ghost" className="gap-1 h-7 text-[11px] shrink-0 px-2" onClick={() => navigate('/rutas')}>
-                    Ver todas <ChevronRight className="h-3 w-3" />
-                  </Button>
+                <div className="flex items-center gap-2 mb-2.5">
+                  <span className="text-lg">🧭</span>
+                  <h2 className="text-sm sm:text-lg font-bold">Explora por categoría</h2>
                 </div>
-                <WorldCupRoutes />
+                <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
+                  {BUSINESS_CATEGORIES.map((cat) => {
+                    const Icon = cat.icon;
+                    return (
+                      <button
+                        key={cat.id}
+                        onClick={() => navigate(`/listings?category=${encodeURIComponent(cat.id)}`)}
+                        className="flex flex-col items-center gap-1.5 rounded-xl border border-border bg-card p-3 transition-all hover:shadow-md active:scale-95"
+                      >
+                        <span className="rounded-full p-2" style={{ backgroundColor: `${cat.color}1A`, color: cat.color }}>
+                          <Icon className="h-5 w-5" />
+                        </span>
+                        <span className="text-[11px] font-medium text-center leading-tight">{cat.name}</span>
+                      </button>
+                    );
+                  })}
+                </div>
               </section>
 
               {/* Restaurantes Destacados */}
@@ -307,7 +311,7 @@ const Index = () => {
                     <div className="p-1 bg-accent/10 rounded-md">
                       <Star className="h-4 w-4 text-accent" />
                     </div>
-                    <h2 className="text-sm sm:text-lg font-bold">Restaurantes Destacados</h2>
+                    <h2 className="text-sm sm:text-lg font-bold">Negocios Destacados</h2>
                   </div>
                   <Button variant="ghost" className="gap-1 h-7 text-[11px] shrink-0 px-2" onClick={() => navigate('/listings')}>
                     Ver todos <ChevronRight className="h-3 w-3" />
@@ -324,15 +328,11 @@ const Index = () => {
                   onClick={() => navigate('/listings')}
                 >
                   <MapPin className="h-4 w-4" />
-                  Ver todos los restaurantes
+                  Ver todos los negocios
                   <ChevronRight className="h-4 w-4" />
                 </Button>
               </section>
 
-              {/* Mi Avance Mundialista */}
-              <section>
-                <WorldCupProgress />
-              </section>
 
               {/* Videos Recomendados */}
               <section className="bg-muted/30 -mx-3 sm:mx-0 px-3 sm:px-0 py-3 sm:py-0 sm:bg-transparent">
@@ -341,33 +341,13 @@ const Index = () => {
                     <div className="p-1 bg-primary/10 rounded-md">
                       <Video className="h-4 w-4 text-primary" />
                     </div>
-                    <h2 className="text-sm sm:text-lg font-bold">Videos Mundialistas 🎬⚽</h2>
+                    <h2 className="text-sm sm:text-lg font-bold">Videos de la ciudad 🎬</h2>
                   </div>
                   <Button variant="ghost" className="gap-1 h-7 text-[11px] shrink-0 px-2" onClick={() => navigate('/shorts')}>
                     Ver todos <ChevronRight className="h-3 w-3" />
                   </Button>
                 </div>
                 <ShortsCarousel shorts={filteredShorts} />
-              </section>
-
-              {/* Resultados & Calendario en Tabs */}
-              <section>
-                <Tabs defaultValue="resultados" className="w-full">
-                  <TabsList className="w-full grid grid-cols-2 h-11 rounded-xl bg-muted/60 p-1">
-                    <TabsTrigger value="resultados" className="rounded-lg text-xs sm:text-sm font-semibold gap-1.5 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all">
-                      🏆 Resultados
-                    </TabsTrigger>
-                    <TabsTrigger value="calendario" className="rounded-lg text-xs sm:text-sm font-semibold gap-1.5 data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground transition-all">
-                      📅 Calendario
-                    </TabsTrigger>
-                  </TabsList>
-                  <TabsContent value="resultados" className="mt-3 animate-in fade-in-50 slide-in-from-bottom-2 duration-300">
-                    <WorldCupResults />
-                  </TabsContent>
-                  <TabsContent value="calendario" className="mt-3 animate-in fade-in-50 slide-in-from-bottom-2 duration-300">
-                    <WorldCupCalendar />
-                  </TabsContent>
-                </Tabs>
               </section>
 
 
