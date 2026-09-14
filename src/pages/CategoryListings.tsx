@@ -8,45 +8,19 @@ import PlaceCard from '@/components/PlaceCard';
 import Navbar from '@/components/Navbar';
 import Sidebar from '@/components/Sidebar';
 import BottomNav from '@/components/BottomNav';
-import RouteMap from '@/components/RouteMap';
 import { supabase } from '@/integrations/supabase/client';
 import { Skeleton } from '@/components/ui/skeleton';
-import { categories } from '@/data/places';
+import { ALL_CATEGORY, BUSINESS_CATEGORIES, resolveBusinessType } from '@/data/categories';
+import { useCity } from '@/contexts/CityContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { pickBusinessCoverUrl } from '@/utils/businessImages';
 
-const CATEGORY_EMOJIS: Record<string, string> = {
-  'Todos': '🍽️',
-  'Comidas Rápidas': '🍔',
-  'Café': '☕',
-  'Food Truck': '🚚',
-  'Mexicana': '🌮',
-  'Asiática': '🍣',
-  'Bar': '🍺',
-  'Parrilla': '🥩',
-  'Italiana': '🍕',
-  'Rooftop': '🏙️',
-  'Tradicional': '🍲',
-  'Remate': '🎉',
-};
-
-const ROUTE_META: Record<string, { name: string; emoji: string }> = {
-  'Comidas Rápidas': { name: 'Ruta de las Comidas Rápidas', emoji: '🍔' },
-  'Tradicional': { name: 'Ruta de la Comida Tradicional', emoji: '🍲' },
-  'Café': { name: 'La Ruta del Café', emoji: '☕' },
-  'Mexicana': { name: 'Ruta de la Comida Mexicana', emoji: '🌮' },
-  'Asiática': { name: 'La Ruta del Sushi', emoji: '🍣' },
-  'Food Truck': { name: 'Ruta de los Food Trucks', emoji: '🚚' },
-  'Bar': { name: 'La Ruta de la Cerveza', emoji: '🍺' },
-  'Parrilla': { name: 'Ruta Mundialista del Asado', emoji: '🥩' },
-  'Italiana': { name: 'La Ruta Italiana', emoji: '🍕' },
-  'Rooftop': { name: 'La Ruta de los Rooftops', emoji: '🏙️' },
-  'Remate': { name: 'La Ruta del Remate', emoji: '🎉' },
-};
+const CATEGORY_ITEMS = [ALL_CATEGORY, ...BUSINESS_CATEGORIES];
 
 const CategoryListings = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const { city } = useCity();
   const initialCategory = searchParams.get('category') || 'Todos';
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -69,6 +43,7 @@ const CategoryListings = () => {
       const { data } = await supabase
         .from('businesses')
         .select(`*, business_images (image_url, image_type, is_primary, display_order)`)
+        .eq('city', city.id)
         .order('featured', { ascending: false })
         .order('name');
 
@@ -81,6 +56,7 @@ const CategoryListings = () => {
             slug: b.slug,
             name: b.name,
             category: b.category,
+            businessType: resolveBusinessType(b.business_type || b.category),
             address: b.address,
             neighborhood: b.neighborhood,
             zone: b.zone,
@@ -103,21 +79,19 @@ const CategoryListings = () => {
       setLoading(false);
     };
     loadBusinesses();
-  }, []);
+  }, [city.id]);
 
   const normalizeText = (t: string) => t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
   const filteredPlaces = useMemo(() => {
     return places.filter((place) => {
-      const categoryMatch = selectedCategory === 'Todos' || place.category === selectedCategory;
+      const categoryMatch = selectedCategory === 'Todos' || place.businessType === selectedCategory;
       const neighborhoodMatch = selectedNeighborhood === 'Todos' || normalizeText(place.neighborhood || '') === normalizeText(selectedNeighborhood);
       const searchMatch = !searchQuery || normalizeText(place.name).includes(normalizeText(searchQuery)) || normalizeText(place.address || '').includes(normalizeText(searchQuery));
       return categoryMatch && neighborhoodMatch && searchMatch;
     });
   }, [places, selectedCategory, selectedNeighborhood, searchQuery]);
 
-  const routeMeta = ROUTE_META[selectedCategory];
-  const hasRoute = routeMeta && selectedCategory !== 'Todos';
   const activeFilters = (selectedCategory !== 'Todos' ? 1 : 0) + (selectedNeighborhood !== 'Todos' ? 1 : 0);
 
   return (
@@ -132,9 +106,9 @@ const CategoryListings = () => {
           <div className="relative overflow-hidden bg-gradient-to-br from-primary via-primary to-secondary py-8 sm:py-10 px-4 sm:px-6 md:px-8">
             <div className="absolute inset-0 opacity-10">
               <div className="absolute top-4 right-8 text-6xl animate-bounce" style={{ animationDuration: '3s' }}>
-                {CATEGORY_EMOJIS[selectedCategory] || '⚽'}
+                🏙️
               </div>
-              <div className="absolute bottom-4 left-12 text-5xl animate-bounce" style={{ animationDuration: '4s', animationDelay: '1s' }}>🏆</div>
+              <div className="absolute bottom-4 left-12 text-5xl animate-bounce" style={{ animationDuration: '4s', animationDelay: '1s' }}>📍</div>
             </div>
 
             <div className="relative max-w-screen-2xl mx-auto">
@@ -152,10 +126,9 @@ const CategoryListings = () => {
                 </button>
 
                 <div className="flex items-center gap-3 mb-2">
-                  <span className="text-4xl sm:text-5xl">{CATEGORY_EMOJIS[selectedCategory] || '🍽️'}</span>
                   <div>
                     <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-primary-foreground">
-                      {selectedCategory === 'Todos' ? 'Todos los restaurantes' : selectedCategory}
+                      {selectedCategory === 'Todos' ? `Negocios en ${city.name}` : `${selectedCategory} en ${city.name}`}
                     </h1>
                     <p className="text-primary-foreground/70 text-sm">
                       {loading ? 'Cargando...' : (
@@ -211,20 +184,21 @@ const CategoryListings = () => {
             {/* Category chips */}
             <div className="py-4 -mx-3 sm:-mx-4 md:-mx-6 px-3 sm:px-4 md:px-6 overflow-x-auto scrollbar-hide">
               <div className="flex gap-2 min-w-max">
-                {categories.map((cat) => {
-                  const isActive = selectedCategory === cat;
+                {CATEGORY_ITEMS.map((cat) => {
+                  const isActive = selectedCategory === cat.id;
+                  const Icon = cat.icon;
                   return (
                     <button
-                      key={cat}
-                      onClick={() => setSelectedCategory(cat)}
+                      key={cat.id}
+                      onClick={() => setSelectedCategory(cat.id)}
                       className={`flex items-center gap-1.5 px-4 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-200 ${
                         isActive
                           ? 'bg-primary text-primary-foreground shadow-md scale-105'
                           : 'bg-muted text-muted-foreground hover:bg-muted/80 hover:text-foreground'
                       }`}
                     >
-                      <span>{CATEGORY_EMOJIS[cat] || '🍽️'}</span>
-                      {cat}
+                      <Icon className="h-4 w-4" />
+                      {cat.label}
                     </button>
                   );
                 })}
@@ -272,7 +246,7 @@ const CategoryListings = () => {
                     className="cursor-pointer hover:bg-destructive/10 hover:text-destructive transition-colors gap-1"
                     onClick={() => setSelectedCategory('Todos')}
                   >
-                    {CATEGORY_EMOJIS[selectedCategory]} {selectedCategory}
+                    {selectedCategory}
                     <X className="h-3 w-3" />
                   </Badge>
                 )}
@@ -295,17 +269,6 @@ const CategoryListings = () => {
               </div>
             )}
 
-            {/* Route Map */}
-            {hasRoute && !loading && filteredPlaces.length > 0 && (
-              <div className="mb-6">
-                <RouteMap
-                  places={filteredPlaces}
-                  category={selectedCategory}
-                  routeName={routeMeta.name}
-                  routeEmoji={routeMeta.emoji}
-                />
-              </div>
-            )}
 
             {/* Results */}
             {loading ? (
