@@ -116,7 +116,7 @@ const BusinessSidebar = ({ isOpen, onClose }: BusinessSidebarProps) => {
             })}
           </nav>
         </div>
-      </div>
+      </aside>
 
       {/* Logout button at bottom */}
       <div className="p-4 border-t border-border">
