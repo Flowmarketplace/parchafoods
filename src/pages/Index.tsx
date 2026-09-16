@@ -148,7 +148,15 @@ const Index = () => {
     const allPlaces = places;
     const featured = allPlaces
       .filter(place => place.featured || (place.rating && place.rating >= 4.5));
-    featured.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+    featured.sort((a, b) => {
+      const aFeatured = a.featured ? 1 : 0;
+      const bFeatured = b.featured ? 1 : 0;
+      if (aFeatured !== bFeatured) return bFeatured - aFeatured;
+      const aDate = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+      const bDate = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+      if (aDate !== bDate) return bDate - aDate;
+      return (b.rating || 0) - (a.rating || 0);
+    });
     return featured.slice(0, 6);
   }, [places]);
 
