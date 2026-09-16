@@ -46,6 +46,12 @@ const BusinessSidebar = ({ isOpen, onClose }: BusinessSidebarProps) => {
     { icon: Settings, label: 'Configuración', path: '/business-settings' },
   ];
 
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    toast.success('Sesión cerrada');
+    navigate('/auth');
+  };
+
   return (
     <>
       {/* Mobile Overlay */}
@@ -71,7 +77,22 @@ const BusinessSidebar = ({ isOpen, onClose }: BusinessSidebarProps) => {
             <h2 className="text-xl font-bold">Panel de Negocio</h2>
           </div>
 
-          <nav className="space-y-1">
+        <div className="flex gap-2 mb-4">
+          <Button variant="outline" className="flex-1" size="sm" onClick={() => navigate(-1)}>
+            <ArrowLeft className="h-4 w-4 mr-1" />
+            Atrás
+          </Button>
+          <NavLink to="/app" className="flex-1">
+            <Button variant="outline" className="w-full" size="sm">
+              <Home className="h-4 w-4 mr-1" />
+              App
+            </Button>
+          </NavLink>
+        </div>
+
+        <Separator className="mb-4" />
+
+        <nav className="space-y-1">
             {menuItems.map((item) => {
               const Icon = item.icon;
               return (
