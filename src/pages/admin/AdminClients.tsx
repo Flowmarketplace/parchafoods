@@ -112,17 +112,26 @@ const AdminClients = () => {
 
   const fetchClients = async () => {
     setLoading(true);
-    const { data, error } = await supabase
-      .from('clients')
-      .select('*')
-      .order('created_at', { ascending: false });
+    const [{ data, error }, { data: sellersData }, { data: subsData }] = await Promise.all([
+      supabase.from('clients').select('*').order('created_at', { ascending: false }),
+      supabase.from('sellers').select('id, full_name'),
+      supabase
+        .from('business_subscriptions')
+        .select('*, subscription_plans(name, price)')
+        .order('start_date', { ascending: false }),
+    ]);
     if (error) {
       toast.error('Error al cargar clientes: ' + error.message);
     } else {
-      setClients(data || []);
+      setClients((data as any) || []);
     }
+    setSellers(sellersData || []);
+    setSubs(subsData || []);
     setLoading(false);
   };
+
+  const sellerName = (id?: string | null) => sellers.find((s) => s.id === id)?.full_name || null;
+  const subFor = (c: Client) => subs.find((s) => s.business_id && s.business_id === c.business_id);
 
   const handleSave = async () => {
     if (!form.name.trim()) { toast.error('El nombre es obligatorio'); return; }
