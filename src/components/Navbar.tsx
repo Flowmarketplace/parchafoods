@@ -115,19 +115,19 @@ const Navbar = ({ onMenuClick, searchQuery, onSearchChange, selectedNeighborhood
         
         {/* Search Bar only - no neighborhood selector */}
         {showFilter && onSearchChange && (
-          <div className="pb-2 sm:pb-3 max-w-2xl" data-tour="navbar-search">
-            <div className="relative">
+          <div className="w-full pb-2.5 sm:pb-3" data-tour="navbar-search">
+            <div className="relative w-full max-w-full md:max-w-2xl">
               {isSearching ? (
-                <Loader2 className="absolute left-2.5 sm:left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary animate-spin" />
+                <Loader2 className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-primary animate-spin pointer-events-none" />
               ) : (
-                <Search className="absolute left-2.5 sm:left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
               )}
               <Input
                 type="search"
                 placeholder="¿Qué estás buscando?"
                 value={searchQuery}
                 onChange={(e) => onSearchChange(e.target.value)}
-                className="pl-8 sm:pl-10 bg-muted/50 h-9 sm:h-10 text-sm"
+                className="w-full min-w-0 pl-10 pr-3 bg-muted/50 h-11 text-base sm:text-sm rounded-xl truncate [&::-webkit-search-cancel-button]:appearance-none"
               />
             </div>
           </div>

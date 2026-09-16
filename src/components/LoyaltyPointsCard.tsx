@@ -224,10 +224,67 @@ const LoyaltyPointsCard = () => {
         </div>
       ) : (
         <div className="mt-3 space-y-3">
-          <div className="flex items-center gap-2 rounded-lg border border-dashed border-border bg-muted/30 p-3">
-            <Star className="h-5 w-5 text-muted-foreground" />
-            <p className="text-xs text-muted-foreground">Ingresa para empezar a acumular puntos en tus negocios favoritos.</p>
+          {/* Vista previa del diseño real (datos de ejemplo) */}
+          <div className="relative space-y-3 rounded-lg border border-dashed border-border bg-muted/20 p-3">
+            <span className="absolute -top-2 right-3 rounded-full bg-muted px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wider text-muted-foreground">
+              Ejemplo
+            </span>
+
+            <div className="space-y-1.5">
+              <div className="flex items-center justify-between">
+                <p className="text-[11px] font-semibold">Avance general</p>
+                <p className="text-[11px] font-bold text-primary">60 / 100</p>
+              </div>
+              <Progress value={60} className="h-2" />
+              <p className="text-[11px] text-muted-foreground flex items-center gap-1">
+                <Sparkles className="h-3 w-3 text-accent" />
+                Te faltarían 40 puntos para tu próximo premio
+              </p>
+            </div>
+
+            <div className="grid gap-2">
+              {[
+                { name: 'Restaurante del barrio', place: 'Centro · Barbosa', points: 4, goal: 5 },
+                { name: 'Café de la esquina', place: 'Santa Fe · Barbosa', points: 5, goal: 5 },
+              ].map((demo) => {
+                const complete = demo.points >= demo.goal;
+                return (
+                  <Card key={demo.name} className={complete ? 'border-primary/40 bg-primary/5' : 'bg-card/60'}>
+                    <CardContent className="p-2.5">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="min-w-0">
+                          <p className="text-xs font-bold truncate">{demo.name}</p>
+                          <p className="text-[10px] text-muted-foreground flex items-center gap-1 mt-0.5">
+                            <MapPin className="h-3 w-3" />
+                            {demo.place}
+                          </p>
+                        </div>
+                        <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full shrink-0 ${complete ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'}`}>
+                          {demo.points}/{demo.goal}
+                        </span>
+                      </div>
+                      <Progress value={Math.round((demo.points / demo.goal) * 100)} className="h-1.5 mt-2" />
+                      <p className="text-[10px] text-muted-foreground mt-1 flex items-center gap-1">
+                        {complete ? (
+                          <><Gift className="h-3 w-3 text-primary" /> ¡Premio disponible!</>
+                        ) : (
+                          <><Sparkles className="h-3 w-3 text-accent" /> Faltan {demo.goal - demo.points} para tu premio</>
+                        )}
+                      </p>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
+
+            <div className="flex items-center gap-2 rounded-lg border border-border bg-card/60 p-2.5">
+              <Star className="h-4 w-4 text-accent shrink-0" />
+              <p className="text-[11px] text-muted-foreground">
+                Así verás tus puntos reales: escanea el QR en cada negocio y acumula premios.
+              </p>
+            </div>
           </div>
+
           <Button size="sm" className="w-full gap-1 text-xs" onClick={() => navigate('/auth')}>
             Ingresa para acumular puntos <ChevronRight className="h-3 w-3" />
           </Button>
