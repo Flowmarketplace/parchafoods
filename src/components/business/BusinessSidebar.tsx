@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { 
   Store, 
   CreditCard,
@@ -12,9 +12,15 @@ import {
   Users,
   Settings,
   Home,
-  Brain
+  Brain,
+  LogOut,
+  ArrowLeft
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
 interface BusinessSidebarProps {
   isOpen: boolean;
@@ -22,6 +28,7 @@ interface BusinessSidebarProps {
 }
 
 const BusinessSidebar = ({ isOpen, onClose }: BusinessSidebarProps) => {
+  const navigate = useNavigate();
   const menuItems = [
     { icon: Home, label: 'Dashboard', path: '/business-dashboard' },
     { icon: CreditCard, label: 'Mi Suscripción', path: '/business-subscription' },
