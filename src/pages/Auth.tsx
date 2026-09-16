@@ -10,7 +10,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { useToast } from '@/hooks/use-toast';
 import { z } from 'zod';
 import { User, Session } from '@supabase/supabase-js';
-import { Store, UserCircle, ArrowLeft, ShieldCheck, Megaphone } from 'lucide-react';
+import { Store, UserCircle, ArrowLeft, ShieldCheck, Megaphone, Briefcase } from 'lucide-react';
 
 const emailSchema = z.string().trim().email({ message: "Email inválido" });
 const passwordSchema = z.string().min(6, { message: "La contraseña debe tener al menos 6 caracteres" });
@@ -26,7 +26,7 @@ const Auth = () => {
   // Login form
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
-  const [loginAccountType, setLoginAccountType] = useState<'customer' | 'business_owner' | 'sponsor' | 'admin'>('customer');
+  const [loginAccountType, setLoginAccountType] = useState<'customer' | 'business_owner' | 'sponsor' | 'seller' | 'admin'>('customer');
 
   // Signup form
   const [signupEmail, setSignupEmail] = useState('');
@@ -34,7 +34,7 @@ const Auth = () => {
   const [signupConfirmPassword, setSignupConfirmPassword] = useState('');
   const [signupFullName, setSignupFullName] = useState('');
   const [signupBrandName, setSignupBrandName] = useState('');
-  const [accountType, setAccountType] = useState<'customer' | 'business_owner' | 'sponsor'>('customer');
+  const [accountType, setAccountType] = useState<'customer' | 'business_owner' | 'sponsor' | 'seller'>('customer');
 
   // Password reset
   const [showResetPassword, setShowResetPassword] = useState(false);
@@ -58,6 +58,7 @@ const Auth = () => {
             const isAdmin = roles?.some(r => r.role === 'admin');
             const isBusinessOwner = roles?.some(r => r.role === 'business_owner');
             const isSponsor = roles?.some(r => r.role === 'sponsor');
+            const isSeller = roles?.some((r: any) => r.role === 'seller');
             
             if (isAdmin) {
               navigate('/admin');
@@ -65,6 +66,8 @@ const Auth = () => {
               navigate('/business-dashboard');
             } else if (isSponsor) {
               navigate('/sponsor');
+            } else if (isSeller) {
+              navigate('/seller');
             } else {
               navigate('/');
             }
@@ -87,6 +90,7 @@ const Auth = () => {
         const isAdmin = roles?.some(r => r.role === 'admin');
         const isBusinessOwner = roles?.some(r => r.role === 'business_owner');
         const isSponsor = roles?.some(r => r.role === 'sponsor');
+        const isSeller = roles?.some((r: any) => r.role === 'seller');
         
         if (isAdmin) {
           navigate('/admin');
@@ -94,6 +98,8 @@ const Auth = () => {
           navigate('/business-dashboard');
         } else if (isSponsor) {
           navigate('/sponsor');
+        } else if (isSeller) {
+          navigate('/seller');
         } else {
           navigate('/');
         }
@@ -236,6 +242,16 @@ const Auth = () => {
             title: "¡Solicitud enviada!",
             description: "Tu cuenta de patrocinador está pendiente de aprobación por el administrador.",
           });
+        } else if (accountType === 'seller' && signupData.user) {
+          await supabase.from('sellers').insert({
+            user_id: signupData.user.id,
+            full_name: signupFullName,
+            email: signupEmail,
+          });
+          toast({
+            title: "¡Cuenta de vendedor creada!",
+            description: "Verifica tu correo e inicia sesión como Vendedor.",
+          });
         } else {
           toast({
             title: "¡Cuenta creada!",
@@ -330,7 +346,7 @@ const Auth = () => {
                     <RadioGroup
                       value={loginAccountType}
                       onValueChange={(value) => setLoginAccountType(value as any)}
-                      className="grid grid-cols-4 gap-2"
+                      className="grid grid-cols-5 gap-2"
                     >
                       <div>
                         <RadioGroupItem value="customer" id="login-customer" className="peer sr-only" />
@@ -351,6 +367,13 @@ const Auth = () => {
                         <Label htmlFor="login-sponsor" className="flex flex-col items-center justify-center rounded-lg border-2 border-muted bg-popover p-2 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer">
                           <Megaphone className="mb-1 h-5 w-5" />
                           <span className="text-[10px] font-medium text-center">Patrocinador</span>
+                        </Label>
+                      </div>
+                      <div>
+                        <RadioGroupItem value="seller" id="login-seller" className="peer sr-only" />
+                        <Label htmlFor="login-seller" className="flex flex-col items-center justify-center rounded-lg border-2 border-muted bg-popover p-2 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer">
+                          <Briefcase className="mb-1 h-5 w-5" />
+                          <span className="text-[10px] font-medium text-center">Vendedor</span>
                         </Label>
                       </div>
                       <div>
@@ -431,8 +454,8 @@ const Auth = () => {
                   <Label>Tipo de Cuenta</Label>
                   <RadioGroup
                     value={accountType}
-                    onValueChange={(value) => setAccountType(value as 'customer' | 'business_owner' | 'sponsor')}
-                    className="grid grid-cols-3 gap-2"
+                    onValueChange={(value) => setAccountType(value as 'customer' | 'business_owner' | 'sponsor' | 'seller')}
+                    className="grid grid-cols-4 gap-2"
                   >
                     <div>
                       <RadioGroupItem value="customer" id="customer" className="peer sr-only" />
@@ -453,6 +476,13 @@ const Auth = () => {
                       <Label htmlFor="sponsor" className="flex flex-col items-center justify-center rounded-lg border-2 border-muted bg-popover p-3 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer">
                         <Megaphone className="mb-1 h-5 w-5" />
                         <span className="text-xs font-medium text-center">Patrocinador</span>
+                      </Label>
+                    </div>
+                    <div>
+                      <RadioGroupItem value="seller" id="seller" className="peer sr-only" />
+                      <Label htmlFor="seller" className="flex flex-col items-center justify-center rounded-lg border-2 border-muted bg-popover p-3 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer">
+                        <Briefcase className="mb-1 h-5 w-5" />
+                        <span className="text-xs font-medium text-center">Vendedor</span>
                       </Label>
                     </div>
                   </RadioGroup>

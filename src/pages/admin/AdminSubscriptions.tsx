@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import AdminSidebar, { AdminSidebarDesktop } from '@/components/admin/AdminSidebar';
@@ -9,16 +9,29 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Search, Calendar, DollarSign, TrendingUp, AlertCircle , Menu } from 'lucide-react';
+import { Search, Calendar, DollarSign, TrendingUp, AlertCircle, Menu, UserCog } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
+import { Textarea } from '@/components/ui/textarea';
+import { toast } from 'sonner';
+import { formatMoney, subscriptionCommission, subscriptionValue } from '@/lib/sellerMath';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 
 const AdminSubscriptions = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
+  const [sellers, setSellers] = useState<any[]>([]);
+  const [editing, setEditing] = useState<any | null>(null);
+  const [form, setForm] = useState({ seller_id: 'none', custom_price: '', commission_percentage: '25', collected: false, collected_amount: '', seller_notes: '' });
+
+  useEffect(() => {
+    supabase.from('sellers').select('id, full_name, commission_percentage').eq('active', true).then(({ data }) => setSellers(data || []));
+  }, []);
 
   // Fetch subscriptions with business and plan details
-  const { data: subscriptions, isLoading } = useQuery({
+  const { data: subscriptions, isLoading, refetch } = useQuery({
     queryKey: ['admin-subscriptions', statusFilter],
     queryFn: async () => {
       let query = supabase
@@ -36,6 +49,10 @@ const AdminSubscriptions = () => {
             price,
             currency,
             duration_days
+          ),
+          sellers (
+            id,
+            full_name
           )
         `)
         .order('created_at', { ascending: false });
@@ -68,6 +85,41 @@ const AdminSubscriptions = () => {
     const matchesSearch = (sub.businesses as any).name?.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesSearch;
   });
+
+  const openAssign = (sub: any) => {
+    setEditing(sub);
+    setForm({
+      seller_id: sub.seller_id || 'none',
+      custom_price: String(sub.custom_price ?? sub.subscription_plans?.price ?? ''),
+      commission_percentage: String(sub.commission_percentage ?? 25),
+      collected: !!sub.collected,
+      collected_amount: String(sub.collected_amount ?? ''),
+      seller_notes: sub.seller_notes || '',
+    });
+  };
+
+  const saveAssign = async () => {
+    if (!editing) return;
+    const { error } = await supabase
+      .from('business_subscriptions')
+      .update({
+        seller_id: form.seller_id === 'none' ? null : form.seller_id,
+        custom_price: form.custom_price === '' ? null : Number(form.custom_price),
+        commission_percentage: Number(form.commission_percentage || 25),
+        collected: form.collected,
+        collected_at: form.collected ? new Date().toISOString() : null,
+        collected_amount: form.collected_amount === '' ? null : Number(form.collected_amount),
+        seller_notes: form.seller_notes || null,
+      })
+      .eq('id', editing.id);
+    if (error) {
+      toast.error('No se pudo guardar');
+      return;
+    }
+    toast.success('Suscripción actualizada');
+    setEditing(null);
+    refetch();
+  };
 
   const getStatusBadge = (status: string) => {
     const variants: Record<string, 'default' | 'secondary' | 'destructive'> = {
@@ -192,7 +244,10 @@ const AdminSubscriptions = () => {
                   <TableRow>
                     <TableHead>Negocio</TableHead>
                     <TableHead>Plan</TableHead>
-                    <TableHead>Precio</TableHead>
+                    <TableHead>Valor</TableHead>
+                    <TableHead>Vendedor</TableHead>
+                    <TableHead>Comisión</TableHead>
+                    <TableHead>Recaudo</TableHead>
                     <TableHead>Inicio</TableHead>
                     <TableHead>Fin</TableHead>
                     <TableHead>Estado</TableHead>
@@ -206,8 +261,19 @@ const AdminSubscriptions = () => {
                         {(subscription.businesses as any)?.name || 'N/A'}
                       </TableCell>
                       <TableCell>{subscription.subscription_plans?.name}</TableCell>
+                      <TableCell>{formatMoney(subscriptionValue(subscription as any))}</TableCell>
                       <TableCell>
-                        ${subscription.subscription_plans?.price} {subscription.subscription_plans?.currency}
+                        {(subscription as any).sellers?.full_name || (
+                          <span className="text-muted-foreground text-xs">Sin asignar</span>
+                        )}
+                      </TableCell>
+                      <TableCell className="text-primary font-medium">
+                        {formatMoney(subscriptionCommission(subscription as any))}
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant={(subscription as any).collected ? 'default' : 'secondary'}>
+                          {(subscription as any).collected ? 'Recaudado' : 'Pendiente'}
+                        </Badge>
                       </TableCell>
                       <TableCell>
                         {format(new Date(subscription.start_date), 'PP', { locale: es })}
@@ -217,8 +283,9 @@ const AdminSubscriptions = () => {
                       </TableCell>
                       <TableCell>{getStatusBadge(subscription.status)}</TableCell>
                       <TableCell>
-                        <Button variant="ghost" size="sm">
-                          Ver detalles
+                        <Button variant="outline" size="sm" onClick={() => openAssign(subscription)}>
+                          <UserCog className="h-4 w-4 mr-1" />
+                          Asignar vendedor
                         </Button>
                       </TableCell>
                     </TableRow>
@@ -229,6 +296,49 @@ const AdminSubscriptions = () => {
           </CardContent>
         </Card>
         </div>
+
+        <Dialog open={!!editing} onOpenChange={(o) => !o && setEditing(null)}>
+          <DialogContent className="max-h-[85vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>{(editing?.businesses as any)?.name || 'Suscripción'}</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-3">
+              <div>
+                <Label>Vendedor asignado</Label>
+                <Select value={form.seller_id} onValueChange={(v) => setForm({ ...form, seller_id: v })}>
+                  <SelectTrigger><SelectValue placeholder="Selecciona un vendedor" /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="none">Sin asignar</SelectItem>
+                    {sellers.map((s) => (
+                      <SelectItem key={s.id} value={s.id}>{s.full_name}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label>Valor de la suscripción (personalizado)</Label>
+                <Input type="number" value={form.custom_price} onChange={(e) => setForm({ ...form, custom_price: e.target.value })} />
+              </div>
+              <div>
+                <Label>Porcentaje de comisión (%)</Label>
+                <Input type="number" value={form.commission_percentage} onChange={(e) => setForm({ ...form, commission_percentage: e.target.value })} />
+              </div>
+              <div className="flex items-center gap-3">
+                <Switch checked={form.collected} onCheckedChange={(v) => setForm({ ...form, collected: v })} />
+                <span className="text-sm">Recaudado</span>
+              </div>
+              <div>
+                <Label>Valor recaudado</Label>
+                <Input type="number" value={form.collected_amount} onChange={(e) => setForm({ ...form, collected_amount: e.target.value })} />
+              </div>
+              <div>
+                <Label>Notas</Label>
+                <Textarea rows={3} value={form.seller_notes} onChange={(e) => setForm({ ...form, seller_notes: e.target.value })} />
+              </div>
+              <Button className="w-full" onClick={saveAssign}>Guardar</Button>
+            </div>
+          </DialogContent>
+        </Dialog>
 
       </div>
     </div>
