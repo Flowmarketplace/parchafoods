@@ -259,9 +259,9 @@ export const SUBCATEGORY_ICONS: Record<string, LucideIcon> = {
   // Consultoría y edificaciones
   'Ingeniería estructural': Building2,
   'Interventoría de obras': HardHat,
-  'Diseño y planos': Pencil,
+  'Diseño y planos': Ruler,
   'Licencias de construcción': FileText,
-  'Avalúos técnicos': Clipboard,
+  'Avalúos técnicos': FileText,
   'Sismología y riesgo': Activity,
   'Inmobiliarias': Building2,
   'Lotes y terrenos': Mountain,
