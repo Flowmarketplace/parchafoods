@@ -193,6 +193,21 @@ export const BUSINESS_CATEGORIES: BusinessCategory[] = [
     ],
   },
   {
+    id: 'Consultoría',
+    name: 'Consultoría',
+    label: 'Consultoría y edificaciones',
+    icon: Building2,
+    color: '#a61e4d',
+    aliases: [
+      'Consultoría', 'Edificaciones', 'Ingeniería estructural', 'Interventoría',
+      'Diseño estructural', 'Sismorresistencia', 'Construcción civil',
+    ],
+    subcategories: [
+      'Ingeniería estructural', 'Interventoría de obras', 'Diseño y planos',
+      'Licencias de construcción', 'Avalúos técnicos', 'Sismología y riesgo',
+    ],
+  },
+  {
     id: 'Hospedaje',
     name: 'Hospedaje',
     label: 'Hospedaje',
