@@ -38,6 +38,8 @@ const SellerDashboard = () => {
   const totalSold = subs.reduce((sum, s) => sum + subscriptionValue(s), 0);
   const collected = subs.filter((s) => s.collected).reduce((sum, s) => sum + Number(s.collected_amount ?? subscriptionValue(s)), 0);
   const commission = subs.filter((s) => s.collected).reduce((sum, s) => sum + subscriptionCommission(s), 0);
+  const pendingAmount = subs.filter((s) => !s.collected).reduce((sum, s) => sum + subscriptionValue(s), 0);
+  const pendingCommission = subs.filter((s) => !s.collected).reduce((sum, s) => sum + subscriptionCommission(s), 0);
 
   return (
     <SellerLayout title={`Hola, ${seller?.full_name || 'vendedor'}`} description="Resumen de tu gestión comercial">
