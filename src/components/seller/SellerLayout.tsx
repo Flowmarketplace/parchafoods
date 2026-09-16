@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import {
   LayoutDashboard,
   Users,
@@ -13,6 +13,7 @@ import {
   Repeat,
   Menu,
   Briefcase,
+  CreditCard,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -21,17 +22,22 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
-const menuItems = [
-  { icon: LayoutDashboard, label: 'Resumen', path: '/seller' },
-  { icon: Users, label: 'Mis Clientes', path: '/seller/clients' },
-  { icon: UserPlus, label: 'Prospectos', path: '/seller/prospects' },
-  { icon: Video, label: 'Videos Entregados', path: '/seller/videos' },
-  { icon: StickyNote, label: 'Notas', path: '/seller/notes' },
-  { icon: UserCog, label: 'Mi Perfil', path: '/seller/profile' },
+const buildMenu = (base: string) => [
+  { icon: LayoutDashboard, label: 'Resumen', path: base },
+  { icon: Users, label: 'Mis Clientes', path: `${base}/clients` },
+  { icon: CreditCard, label: 'Suscripciones', path: `${base}/subscriptions` },
+  { icon: UserPlus, label: 'Prospectos', path: `${base}/prospects` },
+  { icon: Video, label: 'Videos Entregados', path: `${base}/videos` },
+  { icon: StickyNote, label: 'Notas', path: `${base}/notes` },
+  { icon: UserCog, label: 'Mi Perfil', path: `${base}/profile` },
 ];
 
 export const SellerSidebar = ({ className }: { className?: string }) => {
   const navigate = useNavigate();
+  const { sellerId } = useParams();
+  const isAdminView = Boolean(sellerId);
+  const base = isAdminView ? `/admin/seller/${sellerId}` : '/seller';
+  const menuItems = buildMenu(base).filter((item) => !(isAdminView && item.label === 'Mi Perfil'));
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -48,7 +54,7 @@ export const SellerSidebar = ({ className }: { className?: string }) => {
           </div>
           <div>
             <h2 className="text-xl font-bold">Vendedor</h2>
-            <p className="text-xs text-muted-foreground">Panel Comercial</p>
+            <p className="text-xs text-muted-foreground">{isAdminView ? 'Vista de administrador' : 'Panel Comercial'}</p>
           </div>
         </div>
 
@@ -57,10 +63,10 @@ export const SellerSidebar = ({ className }: { className?: string }) => {
             <ArrowLeft className="h-4 w-4 mr-1" />
             Atrás
           </Button>
-          <NavLink to="/app" className="flex-1">
+          <NavLink to={isAdminView ? '/admin/sellers' : '/app'} className="flex-1">
             <Button variant="outline" className="w-full" size="sm">
               <Home className="h-4 w-4 mr-1" />
-              App
+              {isAdminView ? 'Admin' : 'App'}
             </Button>
           </NavLink>
         </div>
@@ -72,7 +78,7 @@ export const SellerSidebar = ({ className }: { className?: string }) => {
             <NavLink
               key={item.path}
               to={item.path}
-              end={item.path === '/seller'}
+              end={item.path === base}
               className={({ isActive }) =>
                 cn(
                   'flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors',
@@ -87,16 +93,18 @@ export const SellerSidebar = ({ className }: { className?: string }) => {
         </nav>
       </div>
 
-      <div className="p-4 border-t border-border space-y-1">
-        <Button variant="ghost" className="w-full justify-start" onClick={() => navigate('/panel')}>
-          <Repeat className="h-4 w-4 mr-2" />
-          Cambiar de perfil
-        </Button>
-        <Button variant="ghost" className="w-full justify-start text-destructive" onClick={handleLogout}>
-          <LogOut className="h-4 w-4 mr-2" />
-          Cerrar Sesión
-        </Button>
-      </div>
+      {!isAdminView && (
+        <div className="p-4 border-t border-border space-y-1">
+          <Button variant="ghost" className="w-full justify-start" onClick={() => navigate('/panel')}>
+            <Repeat className="h-4 w-4 mr-2" />
+            Cambiar de perfil
+          </Button>
+          <Button variant="ghost" className="w-full justify-start text-destructive" onClick={handleLogout}>
+            <LogOut className="h-4 w-4 mr-2" />
+            Cerrar Sesión
+          </Button>
+        </div>
+      )}
     </aside>
   );
 };
