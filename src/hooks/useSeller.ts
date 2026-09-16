@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 
 export interface SellerProfile {
@@ -15,6 +15,7 @@ export interface SellerProfile {
 
 export const useSeller = () => {
   const navigate = useNavigate();
+  const { sellerId } = useParams();
   const [seller, setSeller] = useState<SellerProfile | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -25,6 +26,20 @@ export const useSeller = () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user) {
         navigate('/auth');
+        return;
+      }
+
+      // Admin viewing a specific seller panel
+      if (sellerId) {
+        const { data: viewed } = await supabase
+          .from('sellers')
+          .select('*')
+          .eq('id', sellerId)
+          .maybeSingle();
+        if (!cancelled) {
+          setSeller((viewed as any) || null);
+          setLoading(false);
+        }
         return;
       }
 
@@ -59,7 +74,7 @@ export const useSeller = () => {
     return () => {
       cancelled = true;
     };
-  }, [navigate]);
+  }, [navigate, sellerId]);
 
-  return { seller, setSeller, loading };
+  return { seller, setSeller, loading, isAdminView: Boolean(sellerId) };
 };
