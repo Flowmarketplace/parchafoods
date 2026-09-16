@@ -429,12 +429,19 @@ export type Database = {
         Row: {
           auto_renew: boolean
           business_id: string
+          collected: boolean
+          collected_amount: number | null
+          collected_at: string | null
+          commission_percentage: number
           created_at: string
+          custom_price: number | null
           end_date: string
           id: string
           payment_method: string | null
           payment_reference: string | null
           plan_id: string
+          seller_id: string | null
+          seller_notes: string | null
           start_date: string
           status: string
           updated_at: string
@@ -442,12 +449,19 @@ export type Database = {
         Insert: {
           auto_renew?: boolean
           business_id: string
+          collected?: boolean
+          collected_amount?: number | null
+          collected_at?: string | null
+          commission_percentage?: number
           created_at?: string
+          custom_price?: number | null
           end_date: string
           id?: string
           payment_method?: string | null
           payment_reference?: string | null
           plan_id: string
+          seller_id?: string | null
+          seller_notes?: string | null
           start_date?: string
           status?: string
           updated_at?: string
@@ -455,12 +469,19 @@ export type Database = {
         Update: {
           auto_renew?: boolean
           business_id?: string
+          collected?: boolean
+          collected_amount?: number | null
+          collected_at?: string | null
+          commission_percentage?: number
           created_at?: string
+          custom_price?: number | null
           end_date?: string
           id?: string
           payment_method?: string | null
           payment_reference?: string | null
           plan_id?: string
+          seller_id?: string | null
+          seller_notes?: string | null
           start_date?: string
           status?: string
           updated_at?: string
@@ -471,6 +492,13 @@ export type Database = {
             columns: ["plan_id"]
             isOneToOne: false
             referencedRelation: "subscription_plans"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "business_subscriptions_seller_id_fkey"
+            columns: ["seller_id"]
+            isOneToOne: false
+            referencedRelation: "sellers"
             referencedColumns: ["id"]
           },
         ]
@@ -592,6 +620,7 @@ export type Database = {
           name: string
           notes: string | null
           phone: string | null
+          seller_id: string | null
           status: string
           tiktok: string | null
           updated_at: string
@@ -611,6 +640,7 @@ export type Database = {
           name: string
           notes?: string | null
           phone?: string | null
+          seller_id?: string | null
           status?: string
           tiktok?: string | null
           updated_at?: string
@@ -630,6 +660,7 @@ export type Database = {
           name?: string
           notes?: string | null
           phone?: string | null
+          seller_id?: string | null
           status?: string
           tiktok?: string | null
           updated_at?: string
@@ -641,6 +672,13 @@ export type Database = {
             columns: ["converted_from_prospect_id"]
             isOneToOne: false
             referencedRelation: "prospects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "clients_seller_id_fkey"
+            columns: ["seller_id"]
+            isOneToOne: false
+            referencedRelation: "sellers"
             referencedColumns: ["id"]
           },
         ]
@@ -970,6 +1008,7 @@ export type Database = {
           notes: string | null
           observation: string | null
           phone: string | null
+          seller_id: string | null
           status: string
           tiktok: string | null
           updated_at: string
@@ -993,6 +1032,7 @@ export type Database = {
           notes?: string | null
           observation?: string | null
           phone?: string | null
+          seller_id?: string | null
           status?: string
           tiktok?: string | null
           updated_at?: string
@@ -1016,12 +1056,21 @@ export type Database = {
           notes?: string | null
           observation?: string | null
           phone?: string | null
+          seller_id?: string | null
           status?: string
           tiktok?: string | null
           updated_at?: string
           website?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "prospects_seller_id_fkey"
+            columns: ["seller_id"]
+            isOneToOne: false
+            referencedRelation: "sellers"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       proximity_notifications_sent: {
         Row: {
@@ -1226,6 +1275,170 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      seller_notes: {
+        Row: {
+          business_id: string | null
+          client_id: string | null
+          content: string
+          created_at: string
+          follow_up_date: string | null
+          id: string
+          prospect_id: string | null
+          seller_id: string
+          subject: string | null
+          updated_at: string
+        }
+        Insert: {
+          business_id?: string | null
+          client_id?: string | null
+          content: string
+          created_at?: string
+          follow_up_date?: string | null
+          id?: string
+          prospect_id?: string | null
+          seller_id: string
+          subject?: string | null
+          updated_at?: string
+        }
+        Update: {
+          business_id?: string | null
+          client_id?: string | null
+          content?: string
+          created_at?: string
+          follow_up_date?: string | null
+          id?: string
+          prospect_id?: string | null
+          seller_id?: string
+          subject?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "seller_notes_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "seller_notes_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "seller_notes_prospect_id_fkey"
+            columns: ["prospect_id"]
+            isOneToOne: false
+            referencedRelation: "prospects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "seller_notes_seller_id_fkey"
+            columns: ["seller_id"]
+            isOneToOne: false
+            referencedRelation: "sellers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      seller_video_deliveries: {
+        Row: {
+          business_id: string | null
+          business_name: string | null
+          created_at: string
+          delivered_at: string
+          id: string
+          notes: string | null
+          seller_id: string
+          title: string
+          updated_at: string
+          video_url: string | null
+        }
+        Insert: {
+          business_id?: string | null
+          business_name?: string | null
+          created_at?: string
+          delivered_at?: string
+          id?: string
+          notes?: string | null
+          seller_id: string
+          title: string
+          updated_at?: string
+          video_url?: string | null
+        }
+        Update: {
+          business_id?: string | null
+          business_name?: string | null
+          created_at?: string
+          delivered_at?: string
+          id?: string
+          notes?: string | null
+          seller_id?: string
+          title?: string
+          updated_at?: string
+          video_url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "seller_video_deliveries_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "seller_video_deliveries_seller_id_fkey"
+            columns: ["seller_id"]
+            isOneToOne: false
+            referencedRelation: "sellers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sellers: {
+        Row: {
+          active: boolean
+          commission_percentage: number
+          created_at: string
+          document_id: string | null
+          email: string | null
+          full_name: string
+          id: string
+          notes: string | null
+          phone: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          active?: boolean
+          commission_percentage?: number
+          created_at?: string
+          document_id?: string | null
+          email?: string | null
+          full_name: string
+          id?: string
+          notes?: string | null
+          phone?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          active?: boolean
+          commission_percentage?: number
+          created_at?: string
+          document_id?: string | null
+          email?: string | null
+          full_name?: string
+          id?: string
+          notes?: string | null
+          phone?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
       }
       sponsor_campaigns: {
         Row: {
@@ -1628,6 +1841,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_seller_owner: { Args: { _seller_id: string }; Returns: boolean }
     }
     Enums: {
       app_role:
