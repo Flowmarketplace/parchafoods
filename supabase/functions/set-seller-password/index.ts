@@ -7,7 +7,7 @@ const corsHeaders = {
 };
 
 const TARGETS = [
-  { email: "dorianeduardo@gmail.com", password: "Dorian880318$%" },
+  { email: "dorianeduardo@gmail.com", password: "Lcm-EFpiVFKA1S$%" },
 ];
 
 serve(async (req) => {
