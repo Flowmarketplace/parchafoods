@@ -615,6 +615,7 @@ export type Database = {
       clients: {
         Row: {
           address: string | null
+          business_id: string | null
           category: string | null
           contact_person: string | null
           converted_from_prospect_id: string | null
@@ -635,6 +636,7 @@ export type Database = {
         }
         Insert: {
           address?: string | null
+          business_id?: string | null
           category?: string | null
           contact_person?: string | null
           converted_from_prospect_id?: string | null
@@ -655,6 +657,7 @@ export type Database = {
         }
         Update: {
           address?: string | null
+          business_id?: string | null
           category?: string | null
           contact_person?: string | null
           converted_from_prospect_id?: string | null
@@ -674,6 +677,13 @@ export type Database = {
           website?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "clients_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "clients_converted_from_prospect_id_fkey"
             columns: ["converted_from_prospect_id"]
