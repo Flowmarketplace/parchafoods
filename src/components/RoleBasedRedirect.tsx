@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
+import { destinationForRoles } from '@/lib/rolePanels';
 
 const RoleBasedRedirect = ({ children }: { children: React.ReactNode }) => {
   const navigate = useNavigate();
@@ -28,21 +29,12 @@ const RoleBasedRedirect = ({ children }: { children: React.ReactNode }) => {
           .select('role')
           .eq('user_id', session.user.id);
 
-        const isAdmin = roles?.some(r => r.role === 'admin');
-        const isBusinessOwner = roles?.some(r => r.role === 'business_owner');
-        const isSponsor = roles?.some((r: any) => r.role === 'sponsor');
-        const isSeller = roles?.some((r: any) => r.role === 'seller');
-        
-        if (isAdmin) {
-          navigate('/admin', { replace: true });
-        } else if (isBusinessOwner) {
-          navigate('/business-dashboard', { replace: true });
-        } else if (isSponsor) {
-          navigate('/sponsor', { replace: true });
-        } else if (isSeller) {
-          navigate('/seller', { replace: true });
-        } else {
+        const destination = destinationForRoles(roles);
+
+        if (destination === '/') {
           setLoading(false);
+        } else {
+          navigate(destination, { replace: true });
         }
       } catch (error) {
         console.error('Error checking role:', error);

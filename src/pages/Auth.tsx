@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
+import { destinationForRoles } from '@/lib/rolePanels';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -55,22 +56,7 @@ const Auth = () => {
               .select('role')
               .eq('user_id', session.user.id);
             
-            const isAdmin = roles?.some(r => r.role === 'admin');
-            const isBusinessOwner = roles?.some(r => r.role === 'business_owner');
-            const isSponsor = roles?.some(r => r.role === 'sponsor');
-            const isSeller = roles?.some((r: any) => r.role === 'seller');
-            
-            if (isAdmin) {
-              navigate('/admin');
-            } else if (isBusinessOwner) {
-              navigate('/business-dashboard');
-            } else if (isSponsor) {
-              navigate('/sponsor');
-            } else if (isSeller) {
-              navigate('/seller');
-            } else {
-              navigate('/');
-            }
+            navigate(destinationForRoles(roles));
           }, 0);
         }
       }
@@ -87,22 +73,7 @@ const Auth = () => {
           .select('role')
           .eq('user_id', session.user.id);
         
-        const isAdmin = roles?.some(r => r.role === 'admin');
-        const isBusinessOwner = roles?.some(r => r.role === 'business_owner');
-        const isSponsor = roles?.some(r => r.role === 'sponsor');
-        const isSeller = roles?.some((r: any) => r.role === 'seller');
-        
-        if (isAdmin) {
-          navigate('/admin');
-        } else if (isBusinessOwner) {
-          navigate('/business-dashboard');
-        } else if (isSponsor) {
-          navigate('/sponsor');
-        } else if (isSeller) {
-          navigate('/seller');
-        } else {
-          navigate('/');
-        }
+        navigate(destinationForRoles(roles));
       }
     });
 
