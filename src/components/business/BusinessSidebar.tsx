@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { 
   Store, 
   CreditCard,
@@ -12,9 +12,15 @@ import {
   Users,
   Settings,
   Home,
-  Brain
+  Brain,
+  LogOut,
+  ArrowLeft
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
 interface BusinessSidebarProps {
   isOpen: boolean;
@@ -22,6 +28,7 @@ interface BusinessSidebarProps {
 }
 
 const BusinessSidebar = ({ isOpen, onClose }: BusinessSidebarProps) => {
+  const navigate = useNavigate();
   const menuItems = [
     { icon: Home, label: 'Dashboard', path: '/business-dashboard' },
     { icon: CreditCard, label: 'Mi Suscripción', path: '/business-subscription' },
@@ -38,6 +45,12 @@ const BusinessSidebar = ({ isOpen, onClose }: BusinessSidebarProps) => {
     { icon: Users, label: 'Clientes', path: '/business-customers' },
     { icon: Settings, label: 'Configuración', path: '/business-settings' },
   ];
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    toast.success('Sesión cerrada');
+    navigate('/auth');
+  };
 
   return (
     <>
@@ -64,7 +77,22 @@ const BusinessSidebar = ({ isOpen, onClose }: BusinessSidebarProps) => {
             <h2 className="text-xl font-bold">Panel de Negocio</h2>
           </div>
 
-          <nav className="space-y-1">
+        <div className="flex gap-2 mb-4">
+          <Button variant="outline" className="flex-1" size="sm" onClick={() => navigate(-1)}>
+            <ArrowLeft className="h-4 w-4 mr-1" />
+            Atrás
+          </Button>
+          <NavLink to="/app" className="flex-1">
+            <Button variant="outline" className="w-full" size="sm">
+              <Home className="h-4 w-4 mr-1" />
+              App
+            </Button>
+          </NavLink>
+        </div>
+
+        <Separator className="mb-4" />
+
+        <nav className="space-y-1">
             {menuItems.map((item) => {
               const Icon = item.icon;
               return (
@@ -89,6 +117,19 @@ const BusinessSidebar = ({ isOpen, onClose }: BusinessSidebarProps) => {
           </nav>
         </div>
       </aside>
+
+      {/* Logout button at bottom */}
+      <div className="p-4 border-t border-border">
+        <Button
+          variant="ghost"
+          className="w-full justify-start text-destructive hover:text-destructive hover:bg-destructive/10"
+          size="sm"
+          onClick={handleLogout}
+        >
+          <LogOut className="h-4 w-4 mr-2" />
+          Cerrar Sesión
+        </Button>
+      </div>
     </>
   );
 };
