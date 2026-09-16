@@ -57,6 +57,7 @@ import SponsorPlans from "./pages/sponsor/SponsorPlans";
 import SponsorProfile from "./pages/sponsor/SponsorProfile";
 import SponsorBusinessStats from "./pages/sponsor/SponsorBusinessStats";
 import AdminSellers from "./pages/admin/AdminSellers";
+import ChoosePanel from "./pages/ChoosePanel";
 import SellerDashboard from "./pages/seller/SellerDashboard";
 import SellerClients from "./pages/seller/SellerClients";
 import SellerProspects from "./pages/seller/SellerProspects";
@@ -124,7 +125,8 @@ function App() {
         <Route path="/sponsor/profile" element={<SponsorProfile />} />
         <Route path="/sponsor/business/:id" element={<SponsorBusinessStats />} />
         <Route path="/admin/sellers" element={<AdminSellers />} />
-        <Route path="/seller" element={<SellerDashboard />} />
+        <Route path="/panel" element={<ChoosePanel />} />
+            <Route path="/seller" element={<SellerDashboard />} />
         <Route path="/seller/clients" element={<SellerClients />} />
         <Route path="/seller/prospects" element={<SellerProspects />} />
         <Route path="/seller/videos" element={<SellerVideos />} />
