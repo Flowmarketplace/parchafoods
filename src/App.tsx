@@ -132,6 +132,13 @@ function App() {
         <Route path="/seller/videos" element={<SellerVideos />} />
         <Route path="/seller/notes" element={<SellerNotes />} />
         <Route path="/seller/profile" element={<SellerProfile />} />
+        <Route path="/seller/subscriptions" element={<SellerSubscriptions />} />
+        <Route path="/admin/seller/:sellerId" element={<SellerDashboard />} />
+        <Route path="/admin/seller/:sellerId/clients" element={<SellerClients />} />
+        <Route path="/admin/seller/:sellerId/subscriptions" element={<SellerSubscriptions />} />
+        <Route path="/admin/seller/:sellerId/prospects" element={<SellerProspects />} />
+        <Route path="/admin/seller/:sellerId/videos" element={<SellerVideos />} />
+        <Route path="/admin/seller/:sellerId/notes" element={<SellerNotes />} />
         <Route path="/admin/analytics" element={<AdminAnalytics />} />
         <Route path="/admin/notifications" element={<AdminNotifications />} />
         <Route path="/admin/customization" element={<AdminCustomization />} />
