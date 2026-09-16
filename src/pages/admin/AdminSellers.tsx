@@ -8,35 +8,47 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
+import { Progress } from '@/components/ui/progress';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { toast } from 'sonner';
 import { Menu, Plus, Video, StickyNote } from 'lucide-react';
 import { formatMoney, subscriptionCommission, subscriptionValue } from '@/lib/sellerMath';
+import {
+  DAILY_CLIENT_GOAL,
+  MONTHLY_CLIENT_GOAL,
+  goalProgress,
+  salesThisMonth,
+  salesToday,
+} from '@/lib/sellerGoals';
 
 const AdminSellers = () => {
   const [sellers, setSellers] = useState<any[]>([]);
   const [subs, setSubs] = useState<any[]>([]);
   const [videos, setVideos] = useState<any[]>([]);
   const [notes, setNotes] = useState<any[]>([]);
+  const [sales, setSales] = useState<any[]>([]);
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState({ full_name: '', email: '', phone: '', commission_percentage: '25' });
 
   const load = useCallback(async () => {
-    const [{ data: s }, { data: sub }, { data: v }, { data: n }] = await Promise.all([
+    const [{ data: s }, { data: sub }, { data: v }, { data: n }, { data: sl }] = await Promise.all([
       supabase.from('sellers').select('*').order('created_at', { ascending: false }),
       supabase.from('business_subscriptions').select('*, businesses(name), subscription_plans(price)').not('seller_id', 'is', null),
       supabase.from('seller_video_deliveries').select('id, seller_id'),
       supabase.from('seller_notes').select('id, seller_id'),
+      supabase.from('seller_sales').select('id, seller_id, sale_type, amount, sale_date'),
     ]);
     setSellers(s || []);
     setSubs(sub || []);
     setVideos(v || []);
     setNotes(n || []);
+    setSales(sl || []);
   }, []);
 
   useEffect(() => {
     load();
   }, [load]);
+
 
   const create = async () => {
     if (!form.full_name.trim()) return toast.error('Escribe el nombre del vendedor');
