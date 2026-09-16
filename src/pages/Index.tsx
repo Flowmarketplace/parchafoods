@@ -82,6 +82,7 @@ const Index = () => {
             longitude: Number(business.longitude) || 0,
             priceRange: business.price_range,
             featured: business.featured,
+            createdAt: business.created_at,
             rating: 4.5,
           };
         });
