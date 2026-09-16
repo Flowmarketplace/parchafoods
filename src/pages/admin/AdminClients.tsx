@@ -201,14 +201,16 @@ const AdminClients = () => {
       c.name.toLowerCase().includes(search.toLowerCase()) ||
       (c.contact_person || '').toLowerCase().includes(search.toLowerCase()) ||
       (c.phone || '').includes(search);
-    const matchStatus = filterStatus === 'all' || c.status === filterStatus;
+    const matchStatus =
+      filterStatus === 'all' ||
+      (filterStatus === 'activo' ? isActiveStatus(c.status) : !isActiveStatus(c.status));
     return matchSearch && matchStatus;
   });
 
   const counts = {
     total: clients.length,
-    activo: clients.filter(c => c.status === 'activo').length,
-    inactivo: clients.filter(c => c.status === 'inactivo').length,
+    activo: clients.filter(c => isActiveStatus(c.status)).length,
+    inactivo: clients.filter(c => !isActiveStatus(c.status)).length,
   };
 
   return (
