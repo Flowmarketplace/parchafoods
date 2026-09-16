@@ -38,6 +38,8 @@ const SellerDashboard = () => {
   const totalSold = subs.reduce((sum, s) => sum + subscriptionValue(s), 0);
   const collected = subs.filter((s) => s.collected).reduce((sum, s) => sum + Number(s.collected_amount ?? subscriptionValue(s)), 0);
   const commission = subs.filter((s) => s.collected).reduce((sum, s) => sum + subscriptionCommission(s), 0);
+  const pendingAmount = subs.filter((s) => !s.collected).reduce((sum, s) => sum + subscriptionValue(s), 0);
+  const pendingCommission = subs.filter((s) => !s.collected).reduce((sum, s) => sum + subscriptionCommission(s), 0);
 
   return (
     <SellerLayout title={`Hola, ${seller?.full_name || 'vendedor'}`} description="Resumen de tu gestión comercial">
@@ -74,6 +76,7 @@ const SellerDashboard = () => {
               <CardContent>
                 <div className="text-xl font-bold text-green-600">{formatMoney(collected)}</div>
                 <p className="text-xs text-muted-foreground">Vendido: {formatMoney(totalSold)}</p>
+                <p className="text-xs text-muted-foreground">Pendiente: {formatMoney(pendingAmount)}</p>
               </CardContent>
             </Card>
             <Card>
@@ -83,9 +86,11 @@ const SellerDashboard = () => {
               </CardHeader>
               <CardContent>
                 <div className="text-xl font-bold text-primary">{formatMoney(commission)}</div>
-                <p className="text-xs text-muted-foreground">{seller?.commission_percentage ?? 25}% sobre recaudo</p>
+                <p className="text-xs text-muted-foreground">25% sobre recaudo</p>
+                <p className="text-xs text-muted-foreground">Por cobrar: {formatMoney(pendingCommission)}</p>
               </CardContent>
             </Card>
+
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2">
