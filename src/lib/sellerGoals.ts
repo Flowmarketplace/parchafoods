@@ -5,6 +5,7 @@ export interface SaleLike {
   sale_type?: string | null;
   amount?: number | null;
   sale_date?: string | null;
+  [key: string]: any;
 }
 
 export const todayKey = () => new Date().toISOString().slice(0, 10);
