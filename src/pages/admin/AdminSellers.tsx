@@ -17,9 +17,9 @@ import { formatMoney, subscriptionCommission, subscriptionValue } from '@/lib/se
 import {
   DAILY_CLIENT_GOAL,
   MONTHLY_CLIENT_GOAL,
+  clientsThisMonth,
+  clientsToday,
   goalProgress,
-  salesThisMonth,
-  salesToday,
 } from '@/lib/sellerGoals';
 
 const AdminSellers = () => {
@@ -75,7 +75,6 @@ const AdminSellers = () => {
   const statsFor = (sellerId: string) => {
     const mine = subs.filter((s) => s.seller_id === sellerId);
     const collected = mine.filter((s) => s.collected);
-    const mySales = sales.filter((s) => s.seller_id === sellerId);
     return {
       clients: mine.length,
       sold: mine.reduce((sum, s) => sum + subscriptionValue(s), 0),
@@ -83,8 +82,8 @@ const AdminSellers = () => {
       commission: collected.reduce((sum, s) => sum + subscriptionCommission(s), 0),
       videos: videos.filter((v) => v.seller_id === sellerId).length,
       notes: notes.filter((n) => n.seller_id === sellerId).length,
-      today: salesToday(mySales).length,
-      month: salesThisMonth(mySales).length,
+      today: clientsToday(mine).length,
+      month: clientsThisMonth(mine).length,
     };
   };
 

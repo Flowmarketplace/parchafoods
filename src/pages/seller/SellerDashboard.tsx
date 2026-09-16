@@ -16,9 +16,9 @@ import {
   DAILY_CLIENT_GOAL,
   MONTHLY_CLIENT_GOAL,
   amountThisMonth,
+  clientsThisMonth,
+  clientsToday,
   goalProgress,
-  salesThisMonth,
-  salesToday,
 } from '@/lib/sellerGoals';
 
 const SellerDashboard = () => {
@@ -56,8 +56,8 @@ const SellerDashboard = () => {
   const pendingAmount = subs.filter((s) => !s.collected).reduce((sum, s) => sum + subscriptionValue(s), 0);
   const pendingCommission = subs.filter((s) => !s.collected).reduce((sum, s) => sum + subscriptionCommission(s), 0);
 
-  const today = salesToday(sales);
-  const month = salesThisMonth(sales);
+  const today = clientsToday(subs);
+  const month = clientsThisMonth(subs);
   const monthMoney = amountThisMonth(sales);
   const dayDone = today.length >= DAILY_CLIENT_GOAL;
 
@@ -118,7 +118,7 @@ const SellerDashboard = () => {
                 </div>
                 {today.length > 0 && (
                   <p className="text-xs text-muted-foreground mt-2">
-                    Ventas de hoy: {today.map((s) => s.client_name).filter(Boolean).join(', ')}
+                    Clientes de hoy: {today.map((s) => s.businesses?.name).filter(Boolean).join(', ')}
                   </p>
                 )}
               </div>
