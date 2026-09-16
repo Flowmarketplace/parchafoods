@@ -8,35 +8,47 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
+import { Progress } from '@/components/ui/progress';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { toast } from 'sonner';
 import { Menu, Plus, Video, StickyNote } from 'lucide-react';
 import { formatMoney, subscriptionCommission, subscriptionValue } from '@/lib/sellerMath';
+import {
+  DAILY_CLIENT_GOAL,
+  MONTHLY_CLIENT_GOAL,
+  goalProgress,
+  salesThisMonth,
+  salesToday,
+} from '@/lib/sellerGoals';
 
 const AdminSellers = () => {
   const [sellers, setSellers] = useState<any[]>([]);
   const [subs, setSubs] = useState<any[]>([]);
   const [videos, setVideos] = useState<any[]>([]);
   const [notes, setNotes] = useState<any[]>([]);
+  const [sales, setSales] = useState<any[]>([]);
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState({ full_name: '', email: '', phone: '', commission_percentage: '25' });
 
   const load = useCallback(async () => {
-    const [{ data: s }, { data: sub }, { data: v }, { data: n }] = await Promise.all([
+    const [{ data: s }, { data: sub }, { data: v }, { data: n }, { data: sl }] = await Promise.all([
       supabase.from('sellers').select('*').order('created_at', { ascending: false }),
       supabase.from('business_subscriptions').select('*, businesses(name), subscription_plans(price)').not('seller_id', 'is', null),
       supabase.from('seller_video_deliveries').select('id, seller_id'),
       supabase.from('seller_notes').select('id, seller_id'),
+      supabase.from('seller_sales').select('id, seller_id, sale_type, amount, sale_date'),
     ]);
     setSellers(s || []);
     setSubs(sub || []);
     setVideos(v || []);
     setNotes(n || []);
+    setSales(sl || []);
   }, []);
 
   useEffect(() => {
     load();
   }, [load]);
+
 
   const create = async () => {
     if (!form.full_name.trim()) return toast.error('Escribe el nombre del vendedor');
@@ -62,6 +74,7 @@ const AdminSellers = () => {
   const statsFor = (sellerId: string) => {
     const mine = subs.filter((s) => s.seller_id === sellerId);
     const collected = mine.filter((s) => s.collected);
+    const mySales = sales.filter((s) => s.seller_id === sellerId);
     return {
       clients: mine.length,
       sold: mine.reduce((sum, s) => sum + subscriptionValue(s), 0),
@@ -69,8 +82,11 @@ const AdminSellers = () => {
       commission: collected.reduce((sum, s) => sum + subscriptionCommission(s), 0),
       videos: videos.filter((v) => v.seller_id === sellerId).length,
       notes: notes.filter((n) => n.seller_id === sellerId).length,
+      today: salesToday(mySales).length,
+      month: salesThisMonth(mySales).length,
     };
   };
+
 
   return (
     <div className="flex min-h-screen w-full bg-background">
@@ -137,10 +153,29 @@ const AdminSellers = () => {
                     <div><p className="text-xs text-muted-foreground">Recaudado</p><p className="font-semibold text-green-600">{formatMoney(st.collected)}</p></div>
                     <div><p className="text-xs text-muted-foreground">Comisión</p><p className="font-semibold text-primary">{formatMoney(st.commission)}</p></div>
                   </div>
+                  <div className="space-y-3 rounded-lg border p-3">
+                    <div>
+                      <div className="flex items-center justify-between text-xs mb-1">
+                        <span className="font-medium">Hoy: {st.today} de {DAILY_CLIENT_GOAL} clientes</span>
+                        <Badge variant={st.today >= DAILY_CLIENT_GOAL ? 'default' : 'secondary'}>
+                          {st.today >= DAILY_CLIENT_GOAL ? 'Meta cumplida' : `Faltan ${DAILY_CLIENT_GOAL - st.today}`}
+                        </Badge>
+                      </div>
+                      <Progress value={goalProgress(st.today, DAILY_CLIENT_GOAL)} className="h-2" />
+                    </div>
+                    <div>
+                      <div className="flex items-center justify-between text-xs mb-1">
+                        <span className="font-medium">Este mes: {st.month} de {MONTHLY_CLIENT_GOAL} clientes</span>
+                        <span className="text-muted-foreground">{goalProgress(st.month, MONTHLY_CLIENT_GOAL)}%</span>
+                      </div>
+                      <Progress value={goalProgress(st.month, MONTHLY_CLIENT_GOAL)} className="h-2" />
+                    </div>
+                  </div>
                   <div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
                     <span className="flex items-center gap-1"><Video className="h-3.5 w-3.5" /> {st.videos} videos</span>
                     <span className="flex items-center gap-1"><StickyNote className="h-3.5 w-3.5" /> {st.notes} notas</span>
                   </div>
+
                   <div className="flex items-end gap-2 max-w-xs">
                     <div className="flex-1">
                       <Label className="text-xs">Comisión (%)</Label>

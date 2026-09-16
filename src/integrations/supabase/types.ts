@@ -1351,6 +1351,70 @@ export type Database = {
           },
         ]
       }
+      seller_sales: {
+        Row: {
+          amount: number
+          business_id: string | null
+          client_name: string | null
+          created_at: string
+          id: string
+          notes: string | null
+          sale_date: string
+          sale_type: string
+          seller_id: string
+          subscription_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          amount?: number
+          business_id?: string | null
+          client_name?: string | null
+          created_at?: string
+          id?: string
+          notes?: string | null
+          sale_date?: string
+          sale_type?: string
+          seller_id: string
+          subscription_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          business_id?: string | null
+          client_name?: string | null
+          created_at?: string
+          id?: string
+          notes?: string | null
+          sale_date?: string
+          sale_type?: string
+          seller_id?: string
+          subscription_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "seller_sales_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "seller_sales_seller_id_fkey"
+            columns: ["seller_id"]
+            isOneToOne: false
+            referencedRelation: "sellers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "seller_sales_subscription_id_fkey"
+            columns: ["subscription_id"]
+            isOneToOne: false
+            referencedRelation: "business_subscriptions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       seller_video_deliveries: {
         Row: {
           business_id: string | null
