@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
@@ -7,42 +7,29 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { useToast } from '@/hooks/use-toast';
-import { ArrowLeft, Check, ChevronsUpDown } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { ArrowLeft } from 'lucide-react';
+import { BUSINESS_CATEGORIES, getSubcategories } from '@/data/categories';
+import { CITIES, DEFAULT_CITY_ID, getCityById } from '@/data/cities';
 
-const categories = [
-  'Restaurante',
-  'Café',
-  'Parque',
-  'Farmacia',
-  'Banco',
-  'Centro Comercial',
-  'Hospital',
-  'Hotel',
-  'Entretenimiento',
-  'Servicios',
-  'Gym',
-  'Gasolinera',
-  'Otro'
-];
-
-// Importar barrios desde la fuente centralizada (sin 'Todos')
-import { neighborhoods as allNeighborhoods } from '@/data/places';
-const neighborhoods = allNeighborhoods.filter(n => n !== 'Todos');
+const slugify = (value: string) =>
+  value
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
 
 const BusinessSetup = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
-  const [openCategory, setOpenCategory] = useState(false);
-  const [openNeighborhood, setOpenNeighborhood] = useState(false);
-  
+
   const [formData, setFormData] = useState({
     name: '',
+    business_type: '',
     category: '',
+    city: DEFAULT_CITY_ID,
     description: '',
     address: '',
     neighborhood: '',
@@ -50,46 +37,66 @@ const BusinessSetup = () => {
     whatsapp: '',
     email: '',
     website: '',
-    price_range: '$'
+    price_range: '$',
   });
+
+  const subcategories = formData.business_type ? getSubcategories(formData.business_type) : [];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!formData.business_type) {
+      toast({ title: 'Falta la categoría', description: 'Selecciona la categoría de tu negocio', variant: 'destructive' });
+      return;
+    }
+
     setLoading(true);
 
     try {
       const { data: { user } } = await supabase.auth.getUser();
-      
+
       if (!user) {
-        toast({
-          title: "Error",
-          description: "Debes iniciar sesión",
-          variant: "destructive",
-        });
+        toast({ title: 'Error', description: 'Debes iniciar sesión', variant: 'destructive' });
         return;
       }
 
-      const { error } = await supabase
-        .from('businesses')
-        .insert({
-          owner_id: user.id,
-          ...formData
-        });
+      const city = getCityById(formData.city);
+      const baseSlug = slugify(formData.name) || `negocio-${Date.now()}`;
+      const slug = `${baseSlug}-${Math.random().toString(36).slice(2, 6)}`;
+
+      const { error } = await supabase.from('businesses').insert({
+        owner_id: user.id,
+        name: formData.name,
+        business_type: formData.business_type,
+        category: formData.category || formData.business_type,
+        city: formData.city,
+        description: formData.description,
+        address: formData.address,
+        neighborhood: formData.neighborhood || 'Centro',
+        phone: formData.phone,
+        whatsapp: formData.whatsapp,
+        email: formData.email,
+        website: formData.website,
+        price_range: formData.price_range,
+        slug,
+        latitude: city.latitude,
+        longitude: city.longitude,
+      });
 
       if (error) throw error;
 
       toast({
-        title: "¡Negocio creado!",
-        description: "Tu negocio ha sido registrado exitosamente",
+        title: '¡Tu negocio ya está publicado!',
+        description: `Aparece en la app dentro de ${formData.business_type} en ${city.name}.`,
       });
 
       navigate('/business-dashboard');
     } catch (error: any) {
       console.error('Error:', error);
       toast({
-        title: "Error",
-        description: error.message || "No se pudo crear el negocio",
-        variant: "destructive",
+        title: 'Error',
+        description: error.message || 'No se pudo crear el negocio',
+        variant: 'destructive',
       });
     } finally {
       setLoading(false);
@@ -99,11 +106,7 @@ const BusinessSetup = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5 p-4 md:p-8">
       <div className="max-w-3xl mx-auto">
-        <Button
-          variant="ghost"
-          onClick={() => navigate('/business-dashboard')}
-          className="mb-6"
-        >
+        <Button variant="ghost" onClick={() => navigate('/business-dashboard')} className="mb-6">
           <ArrowLeft className="mr-2 h-4 w-4" />
           Volver al Dashboard
         </Button>
@@ -112,7 +115,7 @@ const BusinessSetup = () => {
           <CardHeader>
             <CardTitle>Registra tu Negocio</CardTitle>
             <CardDescription>
-              Completa la información básica de tu establecimiento
+              Al guardar, tu negocio se publica de inmediato en la app dentro de su categoría y ciudad.
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -131,92 +134,74 @@ const BusinessSetup = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label>Categoría *</Label>
-                  <Popover open={openCategory} onOpenChange={setOpenCategory}>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant="outline"
-                        role="combobox"
-                        aria-expanded={openCategory}
-                        className="w-full justify-between"
-                      >
-                        {formData.category || "Selecciona una categoría"}
-                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-full p-0" align="start">
-                      <Command>
-                        <CommandInput placeholder="Buscar categoría..." />
-                        <CommandList>
-                          <CommandEmpty>No se encontró categoría.</CommandEmpty>
-                          <CommandGroup>
-                            {categories.map((cat) => (
-                              <CommandItem
-                                key={cat}
-                                value={cat}
-                                onSelect={() => {
-                                  setFormData({ ...formData, category: cat });
-                                  setOpenCategory(false);
-                                }}
-                              >
-                                <Check
-                                  className={cn(
-                                    "mr-2 h-4 w-4",
-                                    formData.category === cat ? "opacity-100" : "opacity-0"
-                                  )}
-                                />
-                                {cat}
-                              </CommandItem>
-                            ))}
-                          </CommandGroup>
-                        </CommandList>
-                      </Command>
-                    </PopoverContent>
-                  </Popover>
+                  <Select
+                    value={formData.business_type}
+                    onValueChange={(value) =>
+                      setFormData({ ...formData, business_type: value, category: '' })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Selecciona una categoría" />
+                    </SelectTrigger>
+                    <SelectContent position="popper" sideOffset={5} className="max-h-72">
+                      {BUSINESS_CATEGORIES.map((cat) => (
+                        <SelectItem key={cat.id} value={cat.id}>
+                          {cat.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
 
                 <div className="space-y-2">
-                  <Label>Barrio *</Label>
-                  <Popover open={openNeighborhood} onOpenChange={setOpenNeighborhood}>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant="outline"
-                        role="combobox"
-                        aria-expanded={openNeighborhood}
-                        className="w-full justify-between"
-                      >
-                        {formData.neighborhood || "Selecciona un barrio"}
-                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-full p-0" align="start">
-                      <Command>
-                        <CommandInput placeholder="Buscar barrio..." />
-                        <CommandList>
-                          <CommandEmpty>No se encontró barrio.</CommandEmpty>
-                          <CommandGroup>
-                            {neighborhoods.map((nbh) => (
-                              <CommandItem
-                                key={nbh}
-                                value={nbh}
-                                onSelect={() => {
-                                  setFormData({ ...formData, neighborhood: nbh });
-                                  setOpenNeighborhood(false);
-                                }}
-                              >
-                                <Check
-                                  className={cn(
-                                    "mr-2 h-4 w-4",
-                                    formData.neighborhood === nbh ? "opacity-100" : "opacity-0"
-                                  )}
-                                />
-                                {nbh}
-                              </CommandItem>
-                            ))}
-                          </CommandGroup>
-                        </CommandList>
-                      </Command>
-                    </PopoverContent>
-                  </Popover>
+                  <Label>Subcategoría</Label>
+                  <Select
+                    value={formData.category}
+                    onValueChange={(value) => setFormData({ ...formData, category: value })}
+                    disabled={!formData.business_type}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder={formData.business_type ? 'Selecciona una subcategoría' : 'Primero la categoría'} />
+                    </SelectTrigger>
+                    <SelectContent position="popper" sideOffset={5} className="max-h-72">
+                      {subcategories.map((sub) => (
+                        <SelectItem key={sub} value={sub}>
+                          {sub}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label>Ciudad *</Label>
+                  <Select
+                    value={formData.city}
+                    onValueChange={(value) => setFormData({ ...formData, city: value })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent position="popper" sideOffset={5}>
+                      {CITIES.map((c) => (
+                        <SelectItem key={c.id} value={c.id}>
+                          {c.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="neighborhood">Barrio / Zona</Label>
+                  <Input
+                    id="neighborhood"
+                    value={formData.neighborhood}
+                    onChange={(e) => setFormData({ ...formData, neighborhood: e.target.value })}
+                    placeholder="Ej: Centro"
+                  />
                 </div>
               </div>
 
@@ -237,7 +222,7 @@ const BusinessSetup = () => {
                   id="address"
                   value={formData.address}
                   onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                  placeholder="Calle 10 # 45-67"
+                  placeholder="Cra 9 # 17-12"
                   required
                 />
               </div>
@@ -250,7 +235,7 @@ const BusinessSetup = () => {
                     type="tel"
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    placeholder="(604) 123-4567"
+                    placeholder="3001234567"
                   />
                 </div>
 
@@ -318,7 +303,7 @@ const BusinessSetup = () => {
                   Cancelar
                 </Button>
                 <Button type="submit" disabled={loading}>
-                  {loading ? 'Creando...' : 'Crear Negocio'}
+                  {loading ? 'Publicando...' : 'Publicar negocio'}
                 </Button>
               </div>
             </form>
