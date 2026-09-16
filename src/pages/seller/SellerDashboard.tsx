@@ -76,6 +76,7 @@ const SellerDashboard = () => {
               <CardContent>
                 <div className="text-xl font-bold text-green-600">{formatMoney(collected)}</div>
                 <p className="text-xs text-muted-foreground">Vendido: {formatMoney(totalSold)}</p>
+                <p className="text-xs text-muted-foreground">Pendiente: {formatMoney(pendingAmount)}</p>
               </CardContent>
             </Card>
             <Card>
@@ -85,9 +86,11 @@ const SellerDashboard = () => {
               </CardHeader>
               <CardContent>
                 <div className="text-xl font-bold text-primary">{formatMoney(commission)}</div>
-                <p className="text-xs text-muted-foreground">{seller?.commission_percentage ?? 25}% sobre recaudo</p>
+                <p className="text-xs text-muted-foreground">25% sobre recaudo</p>
+                <p className="text-xs text-muted-foreground">Por cobrar: {formatMoney(pendingCommission)}</p>
               </CardContent>
             </Card>
+
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2">
