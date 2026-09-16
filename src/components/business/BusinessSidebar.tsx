@@ -130,7 +130,7 @@ const BusinessSidebar = ({ isOpen, onClose }: BusinessSidebarProps) => {
           Cerrar Sesión
         </Button>
       </div>
-    </aside>
+    </>
   );
 };
 
