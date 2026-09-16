@@ -305,12 +305,40 @@ const AdminClients = () => {
                               </div>
                             </div>
                           </TableCell>
-                          <TableCell className="hidden md:table-cell">{c.contact_person || '-'}</TableCell>
-                          <TableCell className="hidden md:table-cell">{c.phone || '-'}</TableCell>
-                          <TableCell className="hidden lg:table-cell">{c.category || '-'}</TableCell>
+                          <TableCell className="hidden md:table-cell">
+                            {sellerName(c.seller_id) || <span className="text-muted-foreground">Sin vendedor</span>}
+                          </TableCell>
+                          <TableCell className="hidden lg:table-cell text-sm">
+                            {(() => {
+                              const sub = subFor(c);
+                              const date = sub?.start_date || c.created_at;
+                              return format(new Date(date), 'PP', { locale: es });
+                            })()}
+                          </TableCell>
+                          <TableCell className="hidden lg:table-cell text-sm">
+                            {(() => {
+                              const sub = subFor(c);
+                              if (!sub) return <span className="text-muted-foreground">-</span>;
+                              const value = Number(sub.custom_price ?? sub.subscription_plans?.price ?? 0);
+                              return (
+                                <div>
+                                  <p className="font-medium">{money(value)}</p>
+                                  <p className={`text-[11px] ${sub.collected ? 'text-green-600' : 'text-amber-600'}`}>
+                                    {sub.collected ? 'Pagado' : 'Pendiente'}
+                                  </p>
+                                </div>
+                              );
+                            })()}
+                          </TableCell>
+                          <TableCell className="hidden xl:table-cell text-sm">
+                            {(() => {
+                              const sub = subFor(c);
+                              return sub ? format(new Date(sub.end_date), 'PP', { locale: es }) : '-';
+                            })()}
+                          </TableCell>
                           <TableCell>
-                            <Badge className={`border-0 text-xs ${c.status === 'activo' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-                              {c.status === 'activo' ? '✅ Activo' : '❌ Inactivo'}
+                            <Badge className={`border-0 text-xs ${isActiveStatus(c.status) ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                              {isActiveStatus(c.status) ? '✅ Activo' : '❌ Inactivo'}
                             </Badge>
                           </TableCell>
                           <TableCell className="text-right">
