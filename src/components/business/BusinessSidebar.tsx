@@ -116,8 +116,21 @@ const BusinessSidebar = ({ isOpen, onClose }: BusinessSidebarProps) => {
             })}
           </nav>
         </div>
-      </aside>
-    </>
+      </div>
+
+      {/* Logout button at bottom */}
+      <div className="p-4 border-t border-border">
+        <Button
+          variant="ghost"
+          className="w-full justify-start text-destructive hover:text-destructive hover:bg-destructive/10"
+          size="sm"
+          onClick={handleLogout}
+        >
+          <LogOut className="h-4 w-4 mr-2" />
+          Cerrar Sesión
+        </Button>
+      </div>
+    </aside>
   );
 };
 
