@@ -114,7 +114,16 @@ const AdminSidebar = ({ className }: AdminSidebarWrapperProps = {}) => {
       </div>
 
       {/* Logout button at bottom */}
-      <div className="p-4 border-t border-border">
+      <div className="p-4 border-t border-border space-y-1">
+        <Button
+          variant="ghost"
+          className="w-full justify-start"
+          size="sm"
+          onClick={() => navigate('/panel')}
+        >
+          <UserCog className="h-4 w-4 mr-2" />
+          Cambiar de perfil
+        </Button>
         <Button
           variant="ghost"
           className="w-full justify-start text-destructive hover:text-destructive hover:bg-destructive/10"
