@@ -67,6 +67,8 @@ const categories = [
 
 const AdminClients = () => {
   const [clients, setClients] = useState<Client[]>([]);
+  const [sellers, setSellers] = useState<any[]>([]);
+  const [subs, setSubs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [filterStatus, setFilterStatus] = useState<string>('all');
