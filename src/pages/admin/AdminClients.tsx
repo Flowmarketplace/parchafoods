@@ -438,8 +438,8 @@ const AdminClients = () => {
                   <h3 className="text-lg font-bold">{selectedClient.name}</h3>
                   {selectedClient.category && <p className="text-sm text-muted-foreground">{selectedClient.category}</p>}
                 </div>
-                <Badge className={`ml-auto border-0 text-xs ${selectedClient.status === 'activo' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-                  {selectedClient.status === 'activo' ? '✅ Activo' : '❌ Inactivo'}
+                <Badge className={`ml-auto border-0 text-xs ${isActiveStatus(selectedClient.status) ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                  {isActiveStatus(selectedClient.status) ? '✅ Activo' : '❌ Inactivo'}
                 </Badge>
               </div>
               <div className="space-y-2">
