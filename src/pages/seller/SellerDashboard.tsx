@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import SellerLayout from '@/components/seller/SellerLayout';
 import SaleDialog from '@/components/seller/SaleDialog';
@@ -23,6 +23,8 @@ import {
 
 const SellerDashboard = () => {
   const { seller, loading } = useSeller();
+  const { sellerId } = useParams();
+  const base = sellerId ? `/admin/seller/${sellerId}` : '/seller';
   const [subs, setSubs] = useState<any[]>([]);
   const [sales, setSales] = useState<any[]>([]);
   const [counts, setCounts] = useState({ prospects: 0, videos: 0, notes: 0 });
@@ -189,7 +191,7 @@ const SellerDashboard = () => {
               </CardHeader>
               <CardContent className="flex items-center justify-between">
                 <div className="text-2xl font-bold">{counts.videos}</div>
-                <Link to="/seller/videos"><Button variant="outline" size="sm">Ver</Button></Link>
+                <Link to={`${base}/videos`}><Button variant="outline" size="sm">Ver</Button></Link>
               </CardContent>
             </Card>
             <Card>
@@ -199,7 +201,7 @@ const SellerDashboard = () => {
               </CardHeader>
               <CardContent className="flex items-center justify-between">
                 <div className="text-2xl font-bold">{counts.notes}</div>
-                <Link to="/seller/notes"><Button variant="outline" size="sm">Ver</Button></Link>
+                <Link to={`${base}/notes`}><Button variant="outline" size="sm">Ver</Button></Link>
               </CardContent>
             </Card>
           </div>
@@ -258,7 +260,7 @@ const SellerDashboard = () => {
                   </div>
                 </div>
               ))}
-              <Link to="/seller/clients">
+              <Link to={`${base}/clients`}>
                 <Button variant="outline" className="w-full mt-2">Ver todos mis clientes</Button>
               </Link>
             </CardContent>
