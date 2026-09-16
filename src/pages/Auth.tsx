@@ -59,7 +59,6 @@ const Auth = () => {
             const isBusinessOwner = roles?.some(r => r.role === 'business_owner');
             const isSponsor = roles?.some(r => r.role === 'sponsor');
             const isSeller = roles?.some((r: any) => r.role === 'seller');
-        const isSeller = roles?.some((r: any) => r.role === 'seller');
             
             if (isAdmin) {
               navigate('/admin');
