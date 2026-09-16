@@ -35,7 +35,13 @@ interface Client {
   converted_from_prospect_id: string | null;
   created_at: string;
   updated_at: string;
+  seller_id?: string | null;
+  business_id?: string | null;
 }
+
+const isActiveStatus = (status: string) => ['activo', 'active'].includes((status || '').toLowerCase());
+
+const money = (value: number) => `$${Math.round(value).toLocaleString('es-CO')}`;
 
 const emptyForm = {
   name: '',
