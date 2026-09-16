@@ -35,7 +35,13 @@ interface Client {
   converted_from_prospect_id: string | null;
   created_at: string;
   updated_at: string;
+  seller_id?: string | null;
+  business_id?: string | null;
 }
+
+const isActiveStatus = (status: string) => ['activo', 'active'].includes((status || '').toLowerCase());
+
+const money = (value: number) => `$${Math.round(value).toLocaleString('es-CO')}`;
 
 const emptyForm = {
   name: '',
@@ -61,6 +67,8 @@ const categories = [
 
 const AdminClients = () => {
   const [clients, setClients] = useState<Client[]>([]);
+  const [sellers, setSellers] = useState<any[]>([]);
+  const [subs, setSubs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [filterStatus, setFilterStatus] = useState<string>('all');
@@ -106,17 +114,26 @@ const AdminClients = () => {
 
   const fetchClients = async () => {
     setLoading(true);
-    const { data, error } = await supabase
-      .from('clients')
-      .select('*')
-      .order('created_at', { ascending: false });
+    const [{ data, error }, { data: sellersData }, { data: subsData }] = await Promise.all([
+      supabase.from('clients').select('*').order('created_at', { ascending: false }),
+      supabase.from('sellers').select('id, full_name'),
+      supabase
+        .from('business_subscriptions')
+        .select('*, subscription_plans(name, price)')
+        .order('start_date', { ascending: false }),
+    ]);
     if (error) {
       toast.error('Error al cargar clientes: ' + error.message);
     } else {
-      setClients(data || []);
+      setClients((data as any) || []);
     }
+    setSellers(sellersData || []);
+    setSubs(subsData || []);
     setLoading(false);
   };
+
+  const sellerName = (id?: string | null) => sellers.find((s) => s.id === id)?.full_name || null;
+  const subFor = (c: Client) => subs.find((s) => s.business_id && s.business_id === c.business_id);
 
   const handleSave = async () => {
     if (!form.name.trim()) { toast.error('El nombre es obligatorio'); return; }
@@ -184,14 +201,16 @@ const AdminClients = () => {
       c.name.toLowerCase().includes(search.toLowerCase()) ||
       (c.contact_person || '').toLowerCase().includes(search.toLowerCase()) ||
       (c.phone || '').includes(search);
-    const matchStatus = filterStatus === 'all' || c.status === filterStatus;
+    const matchStatus =
+      filterStatus === 'all' ||
+      (filterStatus === 'activo' ? isActiveStatus(c.status) : !isActiveStatus(c.status));
     return matchSearch && matchStatus;
   });
 
   const counts = {
     total: clients.length,
-    activo: clients.filter(c => c.status === 'activo').length,
-    inactivo: clients.filter(c => c.status === 'inactivo').length,
+    activo: clients.filter(c => isActiveStatus(c.status)).length,
+    inactivo: clients.filter(c => !isActiveStatus(c.status)).length,
   };
 
   return (
@@ -266,9 +285,10 @@ const AdminClients = () => {
                     <TableHeader>
                       <TableRow>
                         <TableHead>Nombre</TableHead>
-                        <TableHead className="hidden md:table-cell">Encargado</TableHead>
-                        <TableHead className="hidden md:table-cell">Teléfono</TableHead>
-                        <TableHead className="hidden lg:table-cell">Categoría</TableHead>
+                        <TableHead className="hidden md:table-cell">Vendedor</TableHead>
+                        <TableHead className="hidden lg:table-cell">Venta</TableHead>
+                        <TableHead className="hidden lg:table-cell">Membresía</TableHead>
+                        <TableHead className="hidden xl:table-cell">Renueva</TableHead>
                         <TableHead>Estado</TableHead>
                         <TableHead className="text-right">Acciones</TableHead>
                       </TableRow>
@@ -285,12 +305,40 @@ const AdminClients = () => {
                               </div>
                             </div>
                           </TableCell>
-                          <TableCell className="hidden md:table-cell">{c.contact_person || '-'}</TableCell>
-                          <TableCell className="hidden md:table-cell">{c.phone || '-'}</TableCell>
-                          <TableCell className="hidden lg:table-cell">{c.category || '-'}</TableCell>
+                          <TableCell className="hidden md:table-cell">
+                            {sellerName(c.seller_id) || <span className="text-muted-foreground">Sin vendedor</span>}
+                          </TableCell>
+                          <TableCell className="hidden lg:table-cell text-sm">
+                            {(() => {
+                              const sub = subFor(c);
+                              const date = sub?.start_date || c.created_at;
+                              return format(new Date(date), 'PP', { locale: es });
+                            })()}
+                          </TableCell>
+                          <TableCell className="hidden lg:table-cell text-sm">
+                            {(() => {
+                              const sub = subFor(c);
+                              if (!sub) return <span className="text-muted-foreground">-</span>;
+                              const value = Number(sub.custom_price ?? sub.subscription_plans?.price ?? 0);
+                              return (
+                                <div>
+                                  <p className="font-medium">{money(value)}</p>
+                                  <p className={`text-[11px] ${sub.collected ? 'text-green-600' : 'text-amber-600'}`}>
+                                    {sub.collected ? 'Pagado' : 'Pendiente'}
+                                  </p>
+                                </div>
+                              );
+                            })()}
+                          </TableCell>
+                          <TableCell className="hidden xl:table-cell text-sm">
+                            {(() => {
+                              const sub = subFor(c);
+                              return sub ? format(new Date(sub.end_date), 'PP', { locale: es }) : '-';
+                            })()}
+                          </TableCell>
                           <TableCell>
-                            <Badge className={`border-0 text-xs ${c.status === 'activo' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-                              {c.status === 'activo' ? '✅ Activo' : '❌ Inactivo'}
+                            <Badge className={`border-0 text-xs ${isActiveStatus(c.status) ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                              {isActiveStatus(c.status) ? '✅ Activo' : '❌ Inactivo'}
                             </Badge>
                           </TableCell>
                           <TableCell className="text-right">
@@ -390,8 +438,8 @@ const AdminClients = () => {
                   <h3 className="text-lg font-bold">{selectedClient.name}</h3>
                   {selectedClient.category && <p className="text-sm text-muted-foreground">{selectedClient.category}</p>}
                 </div>
-                <Badge className={`ml-auto border-0 text-xs ${selectedClient.status === 'activo' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-                  {selectedClient.status === 'activo' ? '✅ Activo' : '❌ Inactivo'}
+                <Badge className={`ml-auto border-0 text-xs ${isActiveStatus(selectedClient.status) ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                  {isActiveStatus(selectedClient.status) ? '✅ Activo' : '❌ Inactivo'}
                 </Badge>
               </div>
               <div className="space-y-2">

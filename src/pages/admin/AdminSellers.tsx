@@ -11,7 +11,8 @@ import { Switch } from '@/components/ui/switch';
 import { Progress } from '@/components/ui/progress';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { toast } from 'sonner';
-import { Menu, Plus, Video, StickyNote } from 'lucide-react';
+import { Menu, Plus, Video, StickyNote, Eye } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { formatMoney, subscriptionCommission, subscriptionValue } from '@/lib/sellerMath';
 import {
   DAILY_CLIENT_GOAL,
@@ -144,6 +145,13 @@ const AdminSellers = () => {
                       <Badge variant={s.user_id ? 'default' : 'secondary'}>{s.user_id ? 'Con acceso' : 'Sin cuenta'}</Badge>
                       <Switch checked={s.active} onCheckedChange={(v) => update(s.id, { active: v })} />
                     </div>
+                  </div>
+                  <div className="pt-3">
+                    <Link to={`/admin/seller/${s.id}`}>
+                      <Button size="sm" variant="outline" className="gap-1">
+                        <Eye className="h-4 w-4" /> Entrar a su panel
+                      </Button>
+                    </Link>
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-3">
