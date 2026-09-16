@@ -10,6 +10,7 @@ import {
   Home,
   ArrowLeft,
   LogOut,
+  Repeat,
   Menu,
   Briefcase,
 } from 'lucide-react';
@@ -86,7 +87,11 @@ export const SellerSidebar = ({ className }: { className?: string }) => {
         </nav>
       </div>
 
-      <div className="p-4 border-t border-border">
+      <div className="p-4 border-t border-border space-y-1">
+        <Button variant="ghost" className="w-full justify-start" onClick={() => navigate('/panel')}>
+          <Repeat className="h-4 w-4 mr-2" />
+          Cambiar de perfil
+        </Button>
         <Button variant="ghost" className="w-full justify-start text-destructive" onClick={handleLogout}>
           <LogOut className="h-4 w-4 mr-2" />
           Cerrar Sesión
