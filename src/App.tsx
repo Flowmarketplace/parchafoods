@@ -64,6 +64,7 @@ import SellerProspects from "./pages/seller/SellerProspects";
 import SellerVideos from "./pages/seller/SellerVideos";
 import SellerNotes from "./pages/seller/SellerNotes";
 import SellerProfile from "./pages/seller/SellerProfile";
+import SellerSubscriptions from "./pages/seller/SellerSubscriptions";
 import Landing from "./pages/Landing";
 import AndinaProposal from "./pages/AndinaProposal";
 import QmenuProposal from "./pages/QmenuProposal";
