@@ -285,9 +285,10 @@ const AdminClients = () => {
                     <TableHeader>
                       <TableRow>
                         <TableHead>Nombre</TableHead>
-                        <TableHead className="hidden md:table-cell">Encargado</TableHead>
-                        <TableHead className="hidden md:table-cell">Teléfono</TableHead>
-                        <TableHead className="hidden lg:table-cell">Categoría</TableHead>
+                        <TableHead className="hidden md:table-cell">Vendedor</TableHead>
+                        <TableHead className="hidden lg:table-cell">Venta</TableHead>
+                        <TableHead className="hidden lg:table-cell">Membresía</TableHead>
+                        <TableHead className="hidden xl:table-cell">Renueva</TableHead>
                         <TableHead>Estado</TableHead>
                         <TableHead className="text-right">Acciones</TableHead>
                       </TableRow>
