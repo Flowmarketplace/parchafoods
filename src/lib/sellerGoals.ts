@@ -26,3 +26,20 @@ export const amountThisMonth = (sales: SaleLike[]) =>
 
 export const goalProgress = (count: number, goal: number) =>
   Math.min(100, Math.round((count / goal) * 100));
+
+// Clientes (suscripciones) contados por fecha local de inicio
+const localDayKey = (value?: string | null) => {
+  if (!value) return '';
+  const d = new Date(value);
+  if (isNaN(d.getTime())) return '';
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+};
+
+export const localToday = () => localDayKey(new Date().toISOString());
+export const localMonth = () => localToday().slice(0, 7);
+
+export const clientsToday = (subs: any[]) =>
+  subs.filter((s) => localDayKey(s.start_date) === localToday());
+
+export const clientsThisMonth = (subs: any[]) =>
+  subs.filter((s) => localDayKey(s.start_date).startsWith(localMonth()));
