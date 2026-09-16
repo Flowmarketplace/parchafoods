@@ -56,6 +56,13 @@ import SponsorCampaigns from "./pages/sponsor/SponsorCampaigns";
 import SponsorPlans from "./pages/sponsor/SponsorPlans";
 import SponsorProfile from "./pages/sponsor/SponsorProfile";
 import SponsorBusinessStats from "./pages/sponsor/SponsorBusinessStats";
+import AdminSellers from "./pages/admin/AdminSellers";
+import SellerDashboard from "./pages/seller/SellerDashboard";
+import SellerClients from "./pages/seller/SellerClients";
+import SellerProspects from "./pages/seller/SellerProspects";
+import SellerVideos from "./pages/seller/SellerVideos";
+import SellerNotes from "./pages/seller/SellerNotes";
+import SellerProfile from "./pages/seller/SellerProfile";
 import Landing from "./pages/Landing";
 import AndinaProposal from "./pages/AndinaProposal";
 import QmenuProposal from "./pages/QmenuProposal";
@@ -116,6 +123,13 @@ function App() {
         <Route path="/sponsor/plans" element={<SponsorPlans />} />
         <Route path="/sponsor/profile" element={<SponsorProfile />} />
         <Route path="/sponsor/business/:id" element={<SponsorBusinessStats />} />
+        <Route path="/admin/sellers" element={<AdminSellers />} />
+        <Route path="/seller" element={<SellerDashboard />} />
+        <Route path="/seller/clients" element={<SellerClients />} />
+        <Route path="/seller/prospects" element={<SellerProspects />} />
+        <Route path="/seller/videos" element={<SellerVideos />} />
+        <Route path="/seller/notes" element={<SellerNotes />} />
+        <Route path="/seller/profile" element={<SellerProfile />} />
         <Route path="/admin/analytics" element={<AdminAnalytics />} />
         <Route path="/admin/notifications" element={<AdminNotifications />} />
         <Route path="/admin/customization" element={<AdminCustomization />} />

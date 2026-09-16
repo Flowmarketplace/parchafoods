@@ -17,7 +17,8 @@ import {
   UserCheck,
   ShieldCheck,
   Megaphone,
-  UserCog
+  UserCog,
+  Briefcase
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -45,6 +46,7 @@ const AdminSidebar = ({ className }: AdminSidebarWrapperProps = {}) => {
     { icon: UserCheck, label: 'Clientes', path: '/admin/clients' },
     { icon: Calendar, label: 'Calendario Citas', path: '/admin/appointments' },
     { icon: Megaphone, label: 'Patrocinadores', path: '/admin/sponsors' },
+    { icon: Briefcase, label: 'Vendedores', path: '/admin/sellers' },
     { icon: BarChart3, label: 'Estadísticas', path: '/admin/analytics' },
     { icon: Bell, label: 'Notificaciones', path: '/admin/notifications' },
     { icon: Palette, label: 'Personalización', path: '/admin/customization' },
