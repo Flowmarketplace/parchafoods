@@ -153,10 +153,29 @@ const AdminSellers = () => {
                     <div><p className="text-xs text-muted-foreground">Recaudado</p><p className="font-semibold text-green-600">{formatMoney(st.collected)}</p></div>
                     <div><p className="text-xs text-muted-foreground">Comisión</p><p className="font-semibold text-primary">{formatMoney(st.commission)}</p></div>
                   </div>
+                  <div className="space-y-3 rounded-lg border p-3">
+                    <div>
+                      <div className="flex items-center justify-between text-xs mb-1">
+                        <span className="font-medium">Hoy: {st.today} de {DAILY_CLIENT_GOAL} clientes</span>
+                        <Badge variant={st.today >= DAILY_CLIENT_GOAL ? 'default' : 'secondary'}>
+                          {st.today >= DAILY_CLIENT_GOAL ? 'Meta cumplida' : `Faltan ${DAILY_CLIENT_GOAL - st.today}`}
+                        </Badge>
+                      </div>
+                      <Progress value={goalProgress(st.today, DAILY_CLIENT_GOAL)} className="h-2" />
+                    </div>
+                    <div>
+                      <div className="flex items-center justify-between text-xs mb-1">
+                        <span className="font-medium">Este mes: {st.month} de {MONTHLY_CLIENT_GOAL} clientes</span>
+                        <span className="text-muted-foreground">{goalProgress(st.month, MONTHLY_CLIENT_GOAL)}%</span>
+                      </div>
+                      <Progress value={goalProgress(st.month, MONTHLY_CLIENT_GOAL)} className="h-2" />
+                    </div>
+                  </div>
                   <div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
                     <span className="flex items-center gap-1"><Video className="h-3.5 w-3.5" /> {st.videos} videos</span>
                     <span className="flex items-center gap-1"><StickyNote className="h-3.5 w-3.5" /> {st.notes} notas</span>
                   </div>
+
                   <div className="flex items-end gap-2 max-w-xs">
                     <div className="flex-1">
                       <Label className="text-xs">Comisión (%)</Label>
