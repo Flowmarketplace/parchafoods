@@ -13,10 +13,8 @@ import {
   Home,
   ArrowLeft,
   LogOut,
-  Calendar,
   UserCheck,
   ShieldCheck,
-  Megaphone,
   UserCog,
   Briefcase
 } from 'lucide-react';
@@ -33,25 +31,47 @@ interface AdminSidebarWrapperProps {
 const AdminSidebar = ({ className }: AdminSidebarWrapperProps = {}) => {
   const navigate = useNavigate();
 
-  const menuItems = [
-    { icon: LayoutDashboard, label: 'Dashboard', path: '/admin' },
-    { icon: Store, label: 'Negocios', path: '/admin/businesses' },
-    { icon: CreditCard, label: 'Suscripciones', path: '/admin/subscriptions' },
-    { icon: Package, label: 'Paquetes', path: '/admin/packages' },
-    { icon: Users, label: 'Usuarios', path: '/admin/users' },
-    { icon: ShieldCheck, label: 'Aprobaciones y Roles', path: '/admin/approvals' },
-    { icon: Shield, label: 'Eventos', path: '/admin/events' },
-    { icon: BarChart3, label: 'Categorías', path: '/admin/categories' },
-    { icon: Users, label: 'CRM Prospectos', path: '/admin/prospects' },
-    { icon: UserCheck, label: 'Clientes', path: '/admin/clients' },
-    { icon: Calendar, label: 'Calendario Citas', path: '/admin/appointments' },
-    { icon: Megaphone, label: 'Patrocinadores', path: '/admin/sponsors' },
-    { icon: Briefcase, label: 'Vendedores', path: '/admin/sellers' },
-    { icon: BarChart3, label: 'Estadísticas', path: '/admin/analytics' },
-    { icon: Bell, label: 'Notificaciones', path: '/admin/notifications' },
-    { icon: Palette, label: 'Personalización', path: '/admin/customization' },
-    { icon: Settings, label: 'Configuración', path: '/admin/settings' },
-    { icon: UserCog, label: 'Mi Perfil', path: '/admin/profile' },
+  const menuSections = [
+    {
+      title: 'Inicio',
+      items: [
+        { icon: LayoutDashboard, label: 'Dashboard', path: '/admin' },
+        { icon: BarChart3, label: 'Estadísticas', path: '/admin/analytics' },
+      ],
+    },
+    {
+      title: 'Comercial',
+      items: [
+        { icon: UserCheck, label: 'Clientes', path: '/admin/clients' },
+        { icon: Briefcase, label: 'Vendedores', path: '/admin/sellers' },
+        { icon: CreditCard, label: 'Suscripciones', path: '/admin/subscriptions' },
+        { icon: Package, label: 'Paquetes', path: '/admin/packages' },
+      ],
+    },
+    {
+      title: 'Directorio',
+      items: [
+        { icon: Store, label: 'Negocios', path: '/admin/businesses' },
+        { icon: BarChart3, label: 'Categorías', path: '/admin/categories' },
+        { icon: Shield, label: 'Eventos', path: '/admin/events' },
+      ],
+    },
+    {
+      title: 'Usuarios y acceso',
+      items: [
+        { icon: Users, label: 'Usuarios', path: '/admin/users' },
+        { icon: ShieldCheck, label: 'Aprobaciones y Roles', path: '/admin/approvals' },
+        { icon: Bell, label: 'Notificaciones', path: '/admin/notifications' },
+      ],
+    },
+    {
+      title: 'Configuración',
+      items: [
+        { icon: Palette, label: 'Personalización', path: '/admin/customization' },
+        { icon: Settings, label: 'Configuración', path: '/admin/settings' },
+        { icon: UserCog, label: 'Mi Perfil', path: '/admin/profile' },
+      ],
+    },
   ];
 
   const handleLogout = async () => {
@@ -65,7 +85,7 @@ const AdminSidebar = ({ className }: AdminSidebarWrapperProps = {}) => {
       <div className="p-6 flex-1">
         <div className="flex items-center gap-2 mb-8">
           <div className="bg-gradient-to-br from-primary to-secondary p-2 rounded-lg">
-            <Shield className="h-6 w-6 text-white" />
+            <Shield className="h-6 w-6 text-primary-foreground" />
           </div>
           <div>
             <h2 className="text-xl font-bold">Super Admin</h2>
@@ -89,27 +109,36 @@ const AdminSidebar = ({ className }: AdminSidebarWrapperProps = {}) => {
 
         <Separator className="mb-4" />
 
-        <nav className="space-y-1">
-          {menuItems.map((item) => {
-            const Icon = item.icon;
-            return (
-              <NavLink
-                key={item.path}
-                to={item.path}
-                className={({ isActive }) =>
-                  cn(
-                    "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
-                    isActive
-                      ? "bg-primary text-primary-foreground"
-                      : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                  )
-                }
-              >
-                <Icon className="h-5 w-5" />
-                <span>{item.label}</span>
-              </NavLink>
-            );
-          })}
+        <nav className="space-y-5">
+          {menuSections.map((section) => (
+            <div key={section.title} className="space-y-1.5">
+              <p className="px-3 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+                {section.title}
+              </p>
+              <div className="space-y-1">
+                {section.items.map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <NavLink
+                      key={item.path}
+                      to={item.path}
+                      className={({ isActive }) =>
+                        cn(
+                          "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
+                          isActive
+                            ? "bg-primary text-primary-foreground"
+                            : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                        )
+                      }
+                    >
+                      <Icon className="h-5 w-5 shrink-0" />
+                      <span>{item.label}</span>
+                    </NavLink>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
         </nav>
       </div>
 
