@@ -10,6 +10,9 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { useToast } from '@/hooks/use-toast';
 import { ArrowLeft, Plus, Pencil, Trash2 } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
+import { safeGetItem, safeSetItem, safeRemoveItem } from '@/lib/storage';
+
+const DRAFT_KEY = 'lcm_menu_draft';
 
 interface Variant {
   name: string;
@@ -43,8 +46,9 @@ const BusinessMenu = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<MenuItem | null>(null);
   const [uploading, setUploading] = useState(false);
-  
-  const [formData, setFormData] = useState({
+  const [draftRestored, setDraftRestored] = useState(false);
+
+  const emptyForm = {
     name: '',
     description: '',
     price: '',
@@ -52,7 +56,9 @@ const BusinessMenu = () => {
     image_url: '',
     available: true,
     variants: [] as Variant[]
-  });
+  };
+
+  const [formData, setFormData] = useState(emptyForm);
 
   const cleanVariants = (list: Variant[]) =>
     list
@@ -62,6 +68,35 @@ const BusinessMenu = () => {
   useEffect(() => {
     loadBusiness();
   }, []);
+
+  // Recupera el borrador guardado si el dueño se salió sin guardar
+  useEffect(() => {
+    const raw = safeGetItem(DRAFT_KEY);
+    if (!raw) return;
+    try {
+      const draft = JSON.parse(raw);
+      if (draft && (draft.name || draft.price || draft.image_url || draft.description)) {
+        setFormData({ ...emptyForm, ...draft });
+        setDraftRestored(true);
+      }
+    } catch {
+      safeRemoveItem(DRAFT_KEY);
+    }
+  }, []);
+
+  // Guarda el borrador mientras escribe (solo para productos nuevos)
+  useEffect(() => {
+    if (editingItem) return;
+    const hasContent =
+      formData.name || formData.price || formData.image_url || formData.description || formData.variants.length;
+    if (hasContent) safeSetItem(DRAFT_KEY, JSON.stringify(formData));
+  }, [formData, editingItem]);
+
+  const discardDraft = () => {
+    safeRemoveItem(DRAFT_KEY);
+    setDraftRestored(false);
+    setFormData(emptyForm);
+  };
 
   const loadBusiness = async () => {
     try {
@@ -105,22 +140,71 @@ const BusinessMenu = () => {
     }
   };
 
+  // Convierte cualquier foto (incluida la de iPhone) a JPG y la reduce de tamaño
+  const toJpeg = (file: File): Promise<Blob> =>
+    new Promise((resolve, reject) => {
+      const url = URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = () => {
+        try {
+          const maxSize = 1600;
+          const scale = Math.min(1, maxSize / Math.max(img.width, img.height));
+          const canvas = document.createElement('canvas');
+          canvas.width = Math.round(img.width * scale);
+          canvas.height = Math.round(img.height * scale);
+          const ctx = canvas.getContext('2d');
+          if (!ctx) throw new Error('no canvas');
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          canvas.toBlob(
+            (blob) => {
+              URL.revokeObjectURL(url);
+              blob ? resolve(blob) : reject(new Error('no blob'));
+            },
+            'image/jpeg',
+            0.85
+          );
+        } catch (err) {
+          URL.revokeObjectURL(url);
+          reject(err);
+        }
+      };
+      img.onerror = () => {
+        URL.revokeObjectURL(url);
+        reject(new Error('no image'));
+      };
+      img.src = url;
+    });
+
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
-    
+
     setUploading(true);
     const file = e.target.files[0];
 
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error('No user');
+      const { data: { session } } = await supabase.auth.getSession();
+      const user = session?.user;
+      if (!user) throw new Error('Tu sesión expiró. Vuelve a iniciar sesión e intenta de nuevo.');
 
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${user.id}/menu/${Date.now()}.${fileExt}`;
+      let body: Blob = file;
+      let ext = 'jpg';
+      let contentType = 'image/jpeg';
+
+      try {
+        body = await toJpeg(file);
+      } catch {
+        // Si el navegador no puede leer la foto, subimos el archivo original
+        body = file;
+        const rawExt = file.name.split('.').pop()?.toLowerCase().replace(/[^a-z0-9]/g, '');
+        ext = rawExt && rawExt.length <= 5 ? rawExt : 'jpg';
+        contentType = file.type || 'application/octet-stream';
+      }
+
+      const fileName = `${user.id}/menu/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
 
       const { error: uploadError } = await supabase.storage
         .from('business-content')
-        .upload(fileName, file);
+        .upload(fileName, body, { contentType, upsert: true, cacheControl: '3600' });
 
       if (uploadError) throw uploadError;
 
@@ -128,7 +212,7 @@ const BusinessMenu = () => {
         .from('business-content')
         .getPublicUrl(fileName);
 
-      setFormData({ ...formData, image_url: publicUrl });
+      setFormData((prev) => ({ ...prev, image_url: publicUrl }));
 
       toast({
         title: "¡Imagen subida!",
@@ -137,12 +221,13 @@ const BusinessMenu = () => {
     } catch (error: any) {
       console.error('Error:', error);
       toast({
-        title: "Error",
-        description: error.message || "No se pudo subir la imagen",
+        title: "No se pudo subir la imagen",
+        description: error.message || "Intenta con otra foto o revisa tu conexión",
         variant: "destructive",
       });
     } finally {
       setUploading(false);
+      e.target.value = '';
     }
   };
 
@@ -209,6 +294,8 @@ const BusinessMenu = () => {
         });
       }
 
+      safeRemoveItem(DRAFT_KEY);
+      setDraftRestored(false);
       setDialogOpen(false);
       resetForm();
       await loadMenu(businessId);
@@ -262,15 +349,7 @@ const BusinessMenu = () => {
   };
 
   const resetForm = () => {
-    setFormData({
-      name: '',
-      description: '',
-      price: '',
-      category: '',
-      image_url: '',
-      available: true,
-      variants: []
-    });
+    setFormData(emptyForm);
     setEditingItem(null);
   };
 
@@ -312,7 +391,8 @@ const BusinessMenu = () => {
           
           <Dialog open={dialogOpen} onOpenChange={(open) => {
             setDialogOpen(open);
-            if (!open) resetForm();
+            // Al cerrar un producto nuevo conservamos lo escrito como borrador
+            if (!open && editingItem) resetForm();
           }}>
             <DialogTrigger asChild>
               <Button>
@@ -320,14 +400,25 @@ const BusinessMenu = () => {
                 Agregar Producto
               </Button>
             </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
+            <DialogContent className="max-w-lg w-[95vw] max-h-[90dvh] p-0 flex flex-col overflow-hidden">
+              <DialogHeader className="px-5 pt-5 pb-3 border-b">
                 <DialogTitle>{editingItem ? 'Editar' : 'Nuevo'} Producto</DialogTitle>
                 <DialogDescription>
                   Completa la información del producto
                 </DialogDescription>
               </DialogHeader>
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form onSubmit={handleSubmit} className="flex-1 flex flex-col min-h-0">
+                <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4">
+                {!editingItem && draftRestored && (
+                  <div className="flex items-center justify-between gap-2 rounded-lg border border-primary/30 bg-primary/5 p-3">
+                    <p className="text-xs text-muted-foreground">
+                      Recuperamos el producto que habías empezado a llenar.
+                    </p>
+                    <Button type="button" size="sm" variant="ghost" onClick={discardDraft}>
+                      Empezar de nuevo
+                    </Button>
+                  </div>
+                )}
                 <div className="space-y-2">
                   <Label htmlFor="name">Nombre *</Label>
                   <Input
@@ -461,13 +552,14 @@ const BusinessMenu = () => {
                   />
                   <Label htmlFor="available">Disponible</Label>
                 </div>
+                </div>
 
-                <div className="flex justify-end space-x-2">
-                  <Button type="button" variant="outline" onClick={() => setDialogOpen(false)}>
+                <div className="flex gap-2 border-t bg-background px-5 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+                  <Button type="button" variant="outline" className="flex-1" onClick={() => setDialogOpen(false)}>
                     Cancelar
                   </Button>
-                  <Button type="submit">
-                    {editingItem ? 'Actualizar' : 'Crear'}
+                  <Button type="submit" className="flex-1" disabled={uploading}>
+                    {uploading ? 'Subiendo foto...' : editingItem ? 'Actualizar' : 'Guardar producto'}
                   </Button>
                 </div>
               </form>
