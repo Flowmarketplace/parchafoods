@@ -268,7 +268,8 @@ const BusinessMenu = () => {
       price: '',
       category: '',
       image_url: '',
-      available: true
+      available: true,
+      variants: []
     });
     setEditingItem(null);
   };
