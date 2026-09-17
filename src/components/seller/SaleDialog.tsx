@@ -106,7 +106,7 @@ const SaleDialog = ({
         const start = new Date(`${date}T12:00:00`);
         const end = new Date(start);
         end.setDate(end.getDate() + (plan.duration_days || 30));
-        const { data: sub } = await supabase
+        const { data: sub, error: subError } = await supabase
           .from('business_subscriptions')
           .insert({
             business_id: selectedBusiness.id,
@@ -122,6 +122,10 @@ const SaleDialog = ({
           })
           .select('id')
           .maybeSingle();
+        if (subError) {
+          setSaving(false);
+          return toast.error('No se pudo crear la membresía del cliente');
+        }
         newSubscriptionId = (sub as any)?.id || null;
       }
     }
