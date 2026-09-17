@@ -1,49 +1,39 @@
-import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
 import AdminSidebar, { AdminSidebarDesktop } from '@/components/admin/AdminSidebar';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { BarChart3, TrendingUp, Users, DollarSign, Store, Calendar , Menu } from 'lucide-react';
-import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { Progress } from '@/components/ui/progress';
+import { Users, Wallet, Percent, Store, TrendingUp, Menu } from 'lucide-react';
+import {
+  LineChart,
+  Line,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from 'recharts';
+import { formatMoney } from '@/lib/sellerMath';
+import { DAILY_CLIENT_GOAL, MONTHLY_CLIENT_GOAL, goalProgress } from '@/lib/sellerGoals';
+import { ACTIVE_CITIES, useAdminCommercialStats } from '@/hooks/useAdminCommercialStats';
 
 const AdminAnalytics = () => {
-  // Fetch analytics data
-  const { data: stats } = useQuery({
-    queryKey: ['admin-analytics'],
-    queryFn: async () => {
-      const [usersData, businessesData, subscriptionsData] = await Promise.all([
-        supabase.from('profiles').select('created_at', { count: 'exact' }),
-        supabase.from('businesses').select('created_at', { count: 'exact' }),
-        supabase.from('business_subscriptions').select('*'),
-      ]);
+  const stats = useAdminCommercialStats();
 
-      return {
-        totalUsers: usersData.count || 0,
-        totalBusinesses: businessesData.count || 0,
-        totalRevenue: subscriptionsData.data?.reduce((sum, sub) => sum + (sub as any).amount || 0, 0) || 0,
-        activeSubscriptions: subscriptionsData.data?.filter(s => s.status === 'active').length || 0,
-      };
-    },
-  });
+  const sellerChart = stats.sellers.map((s) => ({
+    name: s.name.split(' ')[0],
+    vendido: s.sold,
+    recaudado: s.collected,
+  }));
 
-  // Mock data for charts
-  const monthlyData = [
-    { month: 'Ene', usuarios: 120, negocios: 45, ingresos: 45000 },
-    { month: 'Feb', usuarios: 190, negocios: 67, ingresos: 67000 },
-    { month: 'Mar', usuarios: 280, negocios: 89, ingresos: 89000 },
-    { month: 'Abr', usuarios: 350, negocios: 112, ingresos: 112000 },
-    { month: 'May', usuarios: 440, negocios: 134, ingresos: 134000 },
-    { month: 'Jun', usuarios: 520, negocios: 156, ingresos: 156000 },
-  ];
-
-  const categoryData = [
-    { name: 'Restaurantes', value: 45 },
-    { name: 'Tiendas', value: 32 },
-    { name: 'Servicios', value: 28 },
-    { name: 'Entretenimiento', value: 18 },
-    { name: 'Otros', value: 12 },
-  ];
+  const cityChart = stats.cities.map((c) => ({
+    name: c.city,
+    negocios: c.businesses,
+    membresias: c.subscriptions,
+  }));
 
   return (
     <div className="flex min-h-screen w-full bg-background">
@@ -60,127 +50,182 @@ const AdminAnalytics = () => {
             <div>
               <h1 className="text-lg sm:text-3xl font-bold">Estadísticas y Analíticas</h1>
               <p className="text-xs sm:text-sm text-muted-foreground">
-                Vista general del rendimiento de la plataforma
+                Datos reales de {ACTIVE_CITIES.join(' y ')}
               </p>
             </div>
           </div>
         </header>
-        <div className="p-3 sm:p-6">
+        <div className="p-3 sm:p-6 space-y-4 sm:space-y-6">
+          {/* KPI Cards */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-medium">Ventas totales</CardTitle>
+                <TrendingUp className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-xl sm:text-2xl font-bold">{formatMoney(stats.totalSold)}</div>
+                <p className="text-xs text-muted-foreground">{stats.activeSubscriptions} membresías activas</p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-medium">Recaudo</CardTitle>
+                <Wallet className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-xl sm:text-2xl font-bold">{formatMoney(stats.totalCollected)}</div>
+                <p className="text-xs text-muted-foreground">Pendiente {formatMoney(stats.totalPending)}</p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-medium">Comisiones</CardTitle>
+                <Percent className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-xl sm:text-2xl font-bold">{formatMoney(stats.totalCommission)}</div>
+                <p className="text-xs text-muted-foreground">Sobre lo recaudado</p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-medium">Negocios</CardTitle>
+                <Store className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-xl sm:text-2xl font-bold">{stats.totalBusinesses}</div>
+                <p className="text-xs text-muted-foreground">{stats.totalClients} clientes activos</p>
+              </CardContent>
+            </Card>
+          </div>
 
-        {/* KPI Cards */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-4 sm:mb-8">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">Total Usuarios</CardTitle>
-              <Users className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stats?.totalUsers || 0}</div>
-              <p className="text-xs text-muted-foreground">
-                <span className="text-green-600">+12%</span> vs mes anterior
-              </p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">Negocios Activos</CardTitle>
-              <Store className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stats?.totalBusinesses || 0}</div>
-              <p className="text-xs text-muted-foreground">
-                <span className="text-green-600">+8%</span> vs mes anterior
-              </p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">Suscripciones Activas</CardTitle>
-              <Calendar className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stats?.activeSubscriptions || 0}</div>
-              <p className="text-xs text-muted-foreground">
-                <span className="text-green-600">+15%</span> vs mes anterior
-              </p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">Ingresos Totales</CardTitle>
-              <DollarSign className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">${stats?.totalRevenue.toLocaleString() || 0}</div>
-              <p className="text-xs text-muted-foreground">
-                <span className="text-green-600">+20%</span> vs mes anterior
-              </p>
-            </CardContent>
-          </Card>
-        </div>
+          {/* Charts */}
+          <div className="grid gap-4 sm:gap-6 md:grid-cols-2">
+            <Card>
+              <CardHeader>
+                <CardTitle>Membresías y negocios por mes</CardTitle>
+                <CardDescription>Últimos 6 meses</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={300}>
+                  <LineChart data={stats.monthly}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="month" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Line type="monotone" dataKey="membresias" stroke="hsl(var(--primary))" strokeWidth={2} />
+                    <Line type="monotone" dataKey="negocios" stroke="hsl(var(--accent))" strokeWidth={2} />
+                  </LineChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
 
-        {/* Charts */}
-        <div className="grid gap-6 md:grid-cols-2 mb-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Recaudo mensual</CardTitle>
+                <CardDescription>Dinero efectivamente cobrado</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={300}>
+                  <BarChart data={stats.monthly}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="month" />
+                    <YAxis />
+                    <Tooltip formatter={(v: any) => formatMoney(Number(v))} />
+                    <Bar dataKey="ingresos" fill="hsl(var(--primary))" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Ventas por asesor</CardTitle>
+                <CardDescription>Vendido vs. recaudado</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={300}>
+                  <BarChart data={sellerChart}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <Tooltip formatter={(v: any) => formatMoney(Number(v))} />
+                    <Legend />
+                    <Bar dataKey="vendido" fill="hsl(var(--primary))" />
+                    <Bar dataKey="recaudado" fill="hsl(var(--accent))" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Por ciudad</CardTitle>
+                <CardDescription>Negocios y membresías en {ACTIVE_CITIES.join(' y ')}</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={300}>
+                  <BarChart data={cityChart}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey="negocios" fill="hsl(var(--primary))" />
+                    <Bar dataKey="membresias" fill="hsl(var(--accent))" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Metas por asesor */}
           <Card>
             <CardHeader>
-              <CardTitle>Crecimiento Mensual</CardTitle>
-              <CardDescription>Usuarios y negocios registrados por mes</CardDescription>
+              <CardTitle>Metas de los asesores</CardTitle>
+              <CardDescription>
+                {DAILY_CLIENT_GOAL} clientes por día · {MONTHLY_CLIENT_GOAL} clientes al mes
+              </CardDescription>
             </CardHeader>
-            <CardContent>
-              <ResponsiveContainer width="100%" height={300}>
-                <LineChart data={monthlyData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="month" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Line type="monotone" dataKey="usuarios" stroke="#8884d8" strokeWidth={2} />
-                  <Line type="monotone" dataKey="negocios" stroke="#82ca9d" strokeWidth={2} />
-                </LineChart>
-              </ResponsiveContainer>
+            <CardContent className="space-y-4">
+              {stats.sellers.map((s) => (
+                <div key={s.id} className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span className="font-medium">{s.name}</span>
+                    <span className="text-muted-foreground">
+                      {s.month} / {MONTHLY_CLIENT_GOAL} este mes · hoy {s.today} / {DAILY_CLIENT_GOAL}
+                    </span>
+                  </div>
+                  <Progress value={goalProgress(s.month, MONTHLY_CLIENT_GOAL)} />
+                </div>
+              ))}
+              {stats.sellers.length === 0 && (
+                <p className="text-sm text-muted-foreground">Sin vendedores registrados.</p>
+              )}
             </CardContent>
           </Card>
 
+          {/* Categories Distribution */}
           <Card>
             <CardHeader>
-              <CardTitle>Ingresos Mensuales</CardTitle>
-              <CardDescription>Evolución de ingresos en los últimos 6 meses</CardDescription>
+              <CardTitle>Distribución por categorías</CardTitle>
+              <CardDescription>Negocios publicados por tipo</CardDescription>
             </CardHeader>
             <CardContent>
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={monthlyData}>
+              <ResponsiveContainer width="100%" height={320}>
+                <BarChart data={stats.categories} layout="vertical">
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="month" />
-                  <YAxis />
+                  <XAxis type="number" />
+                  <YAxis dataKey="name" type="category" width={110} />
                   <Tooltip />
-                  <Legend />
-                  <Bar dataKey="ingresos" fill="#8884d8" />
+                  <Bar dataKey="value" fill="hsl(var(--primary))" />
                 </BarChart>
               </ResponsiveContainer>
             </CardContent>
           </Card>
         </div>
-
-        {/* Categories Distribution */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Distribución por Categorías</CardTitle>
-            <CardDescription>Negocios registrados por categoría</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={categoryData} layout="horizontal">
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis type="number" />
-                <YAxis dataKey="name" type="category" width={120} />
-                <Tooltip />
-                <Bar dataKey="value" fill="#8884d8" />
-              </BarChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
-        </div>
-
       </div>
     </div>
   );
