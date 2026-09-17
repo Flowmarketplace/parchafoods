@@ -552,13 +552,14 @@ const BusinessMenu = () => {
                   />
                   <Label htmlFor="available">Disponible</Label>
                 </div>
+                </div>
 
-                <div className="flex justify-end space-x-2">
-                  <Button type="button" variant="outline" onClick={() => setDialogOpen(false)}>
+                <div className="flex gap-2 border-t bg-background px-5 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+                  <Button type="button" variant="outline" className="flex-1" onClick={() => setDialogOpen(false)}>
                     Cancelar
                   </Button>
-                  <Button type="submit">
-                    {editingItem ? 'Actualizar' : 'Crear'}
+                  <Button type="submit" className="flex-1" disabled={uploading}>
+                    {uploading ? 'Subiendo foto...' : editingItem ? 'Actualizar' : 'Guardar producto'}
                   </Button>
                 </div>
               </form>
