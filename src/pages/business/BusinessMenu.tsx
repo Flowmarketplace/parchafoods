@@ -149,6 +149,21 @@ const BusinessMenu = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    const variants = cleanVariants(formData.variants);
+    const variantPrices = variants.map((v) => v.price).filter((p) => p > 0);
+    const basePrice = variantPrices.length
+      ? Math.min(...variantPrices)
+      : parseFloat(formData.price) || 0;
+
+    if (!variants.length && !formData.price) {
+      toast({
+        title: 'Falta el precio',
+        description: 'Escribe un precio o agrega presentaciones con precio',
+        variant: 'destructive',
+      });
+      return;
+    }
+
     try {
       if (editingItem) {
         // Update existing item
