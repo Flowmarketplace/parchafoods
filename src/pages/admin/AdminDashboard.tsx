@@ -5,7 +5,7 @@ import {
   ArrowRight,
   Bell,
   Building2,
-  ChartNoAxesCombined,
+  BarChart3,
   CheckCircle2,
   CircleDollarSign,
   CreditCard,
@@ -144,7 +144,7 @@ const AdminDashboard = () => {
             </div>
             <Button asChild variant="outline" size="sm" className="hidden sm:flex">
               <Link to="/admin/analytics">
-                <ChartNoAxesCombined className="mr-2 h-4 w-4" />
+                <BarChart3 className="mr-2 h-4 w-4" />
                 Ver estadísticas
               </Link>
             </Button>
@@ -342,11 +342,12 @@ const AdminDashboard = () => {
                 { title: 'Notificaciones', description: 'Mensajes y avisos', icon: Bell, href: '/admin/notifications', tone: 'bg-destructive/10 text-destructive' },
                 { title: 'Personalización', description: 'Apariencia de la app', icon: Activity, href: '/admin/customization', tone: 'bg-secondary/10 text-secondary' },
               ].map((item) => (
-                <button
+                <Button
                   key={item.href}
                   type="button"
+                  variant="ghost"
                   onClick={() => navigate(item.href)}
-                  className="group flex min-h-28 flex-col items-start justify-between rounded-lg border border-border bg-card p-4 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-md"
+                  className="group h-auto min-h-28 w-full flex-col items-start justify-between whitespace-normal rounded-lg border border-border bg-card p-4 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/30 hover:bg-card hover:shadow-md"
                 >
                   <div className={`flex h-9 w-9 items-center justify-center rounded-lg ${item.tone}`}>
                     <item.icon className="h-4 w-4" />
@@ -355,7 +356,7 @@ const AdminDashboard = () => {
                     <p className="text-sm font-bold">{item.title}</p>
                     <p className="mt-0.5 text-[11px] text-muted-foreground">{item.description}</p>
                   </div>
-                </button>
+                </Button>
               ))}
             </div>
           </section>
