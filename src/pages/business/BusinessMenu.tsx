@@ -108,22 +108,71 @@ const BusinessMenu = () => {
     }
   };
 
+  // Convierte cualquier foto (incluida la de iPhone) a JPG y la reduce de tamaño
+  const toJpeg = (file: File): Promise<Blob> =>
+    new Promise((resolve, reject) => {
+      const url = URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = () => {
+        try {
+          const maxSize = 1600;
+          const scale = Math.min(1, maxSize / Math.max(img.width, img.height));
+          const canvas = document.createElement('canvas');
+          canvas.width = Math.round(img.width * scale);
+          canvas.height = Math.round(img.height * scale);
+          const ctx = canvas.getContext('2d');
+          if (!ctx) throw new Error('no canvas');
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          canvas.toBlob(
+            (blob) => {
+              URL.revokeObjectURL(url);
+              blob ? resolve(blob) : reject(new Error('no blob'));
+            },
+            'image/jpeg',
+            0.85
+          );
+        } catch (err) {
+          URL.revokeObjectURL(url);
+          reject(err);
+        }
+      };
+      img.onerror = () => {
+        URL.revokeObjectURL(url);
+        reject(new Error('no image'));
+      };
+      img.src = url;
+    });
+
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
-    
+
     setUploading(true);
     const file = e.target.files[0];
 
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error('No user');
+      const { data: { session } } = await supabase.auth.getSession();
+      const user = session?.user;
+      if (!user) throw new Error('Tu sesión expiró. Vuelve a iniciar sesión e intenta de nuevo.');
 
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${user.id}/menu/${Date.now()}.${fileExt}`;
+      let body: Blob = file;
+      let ext = 'jpg';
+      let contentType = 'image/jpeg';
+
+      try {
+        body = await toJpeg(file);
+      } catch {
+        // Si el navegador no puede leer la foto, subimos el archivo original
+        body = file;
+        const rawExt = file.name.split('.').pop()?.toLowerCase().replace(/[^a-z0-9]/g, '');
+        ext = rawExt && rawExt.length <= 5 ? rawExt : 'jpg';
+        contentType = file.type || 'application/octet-stream';
+      }
+
+      const fileName = `${user.id}/menu/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
 
       const { error: uploadError } = await supabase.storage
         .from('business-content')
-        .upload(fileName, file);
+        .upload(fileName, body, { contentType, upsert: true, cacheControl: '3600' });
 
       if (uploadError) throw uploadError;
 
@@ -131,7 +180,7 @@ const BusinessMenu = () => {
         .from('business-content')
         .getPublicUrl(fileName);
 
-      setFormData({ ...formData, image_url: publicUrl });
+      setFormData((prev) => ({ ...prev, image_url: publicUrl }));
 
       toast({
         title: "¡Imagen subida!",
@@ -140,12 +189,13 @@ const BusinessMenu = () => {
     } catch (error: any) {
       console.error('Error:', error);
       toast({
-        title: "Error",
-        description: error.message || "No se pudo subir la imagen",
+        title: "No se pudo subir la imagen",
+        description: error.message || "Intenta con otra foto o revisa tu conexión",
         variant: "destructive",
       });
     } finally {
       setUploading(false);
+      e.target.value = '';
     }
   };
 
