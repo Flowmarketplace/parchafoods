@@ -46,8 +46,9 @@ const BusinessMenu = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<MenuItem | null>(null);
   const [uploading, setUploading] = useState(false);
-  
-  const [formData, setFormData] = useState({
+  const [draftRestored, setDraftRestored] = useState(false);
+
+  const emptyForm = {
     name: '',
     description: '',
     price: '',
@@ -55,7 +56,9 @@ const BusinessMenu = () => {
     image_url: '',
     available: true,
     variants: [] as Variant[]
-  });
+  };
+
+  const [formData, setFormData] = useState(emptyForm);
 
   const cleanVariants = (list: Variant[]) =>
     list
@@ -65,6 +68,35 @@ const BusinessMenu = () => {
   useEffect(() => {
     loadBusiness();
   }, []);
+
+  // Recupera el borrador guardado si el dueño se salió sin guardar
+  useEffect(() => {
+    const raw = safeGetItem(DRAFT_KEY);
+    if (!raw) return;
+    try {
+      const draft = JSON.parse(raw);
+      if (draft && (draft.name || draft.price || draft.image_url || draft.description)) {
+        setFormData({ ...emptyForm, ...draft });
+        setDraftRestored(true);
+      }
+    } catch {
+      safeRemoveItem(DRAFT_KEY);
+    }
+  }, []);
+
+  // Guarda el borrador mientras escribe (solo para productos nuevos)
+  useEffect(() => {
+    if (editingItem) return;
+    const hasContent =
+      formData.name || formData.price || formData.image_url || formData.description || formData.variants.length;
+    if (hasContent) safeSetItem(DRAFT_KEY, JSON.stringify(formData));
+  }, [formData, editingItem]);
+
+  const discardDraft = () => {
+    safeRemoveItem(DRAFT_KEY);
+    setDraftRestored(false);
+    setFormData(emptyForm);
+  };
 
   const loadBusiness = async () => {
     try {
