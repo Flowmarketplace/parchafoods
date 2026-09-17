@@ -116,7 +116,7 @@ const Navbar = ({ onMenuClick, searchQuery, onSearchChange, selectedNeighborhood
         {/* Search Bar only - no neighborhood selector */}
         {showFilter && onSearchChange && (
           <div className="w-full pb-2.5 sm:pb-3" data-tour="navbar-search">
-            <div className="relative w-full max-w-full md:max-w-2xl">
+            <div className="relative w-full">
               {isSearching ? (
                 <Loader2 className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-primary animate-spin pointer-events-none" />
               ) : (
