@@ -50,8 +50,14 @@ const BusinessMenu = () => {
     price: '',
     category: '',
     image_url: '',
-    available: true
+    available: true,
+    variants: [] as Variant[]
   });
+
+  const cleanVariants = (list: Variant[]) =>
+    list
+      .filter((v) => v.name.trim() !== '')
+      .map((v) => ({ name: v.name.trim(), price: parseFloat(v.price) || 0 }));
 
   useEffect(() => {
     loadBusiness();
