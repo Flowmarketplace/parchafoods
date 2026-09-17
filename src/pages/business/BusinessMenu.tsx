@@ -206,7 +206,7 @@ const BusinessMenu = () => {
 
       const { error: uploadError } = await supabase.storage
         .from('business-content')
-        .upload(fileName, body, { contentType, upsert: true, cacheControl: '3600' });
+        .upload(fileName, body, { contentType, cacheControl: '3600' });
 
       if (uploadError) throw uploadError;
 
