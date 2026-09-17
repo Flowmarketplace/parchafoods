@@ -230,7 +230,8 @@ const BusinessMenu = () => {
       price: item.price.toString(),
       category: item.category || '',
       image_url: item.image_url || '',
-      available: item.available
+      available: item.available,
+      variants: parseVariants(item.variants)
     });
     setDialogOpen(true);
   };
