@@ -518,8 +518,18 @@ const BusinessMenu = () => {
                             <p className="text-sm text-muted-foreground mt-1">{item.description}</p>
                           )}
                           <p className="text-lg font-bold text-primary mt-2">
+                            {parseVariants(item.variants).length > 0 ? 'Desde ' : ''}
                             ${item.price.toLocaleString('es-CO')}
                           </p>
+                          {parseVariants(item.variants).length > 0 && (
+                            <div className="mt-1 flex flex-wrap gap-1">
+                              {parseVariants(item.variants).map((v, i) => (
+                                <span key={i} className="text-xs bg-muted px-2 py-0.5 rounded-full">
+                                  {v.name}: ${(parseFloat(v.price) || 0).toLocaleString('es-CO')}
+                                </span>
+                              ))}
+                            </div>
+                          )}
                         </div>
                         <div className="flex gap-2 flex-shrink-0">
                           <Button size="icon" variant="outline" onClick={() => handleEdit(item)}>
