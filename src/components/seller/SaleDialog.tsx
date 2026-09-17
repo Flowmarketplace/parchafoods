@@ -135,6 +135,50 @@ const SaleDialog = ({
               </SelectContent>
             </Select>
           </div>
+          {!businessId && (
+            <div>
+              <Label>Negocios sin vendedor asignado</Label>
+              {selectedBusiness ? (
+                <div className="flex items-center justify-between gap-2 rounded-lg border p-2 mt-1">
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium truncate">{selectedBusiness.name}</p>
+                    <p className="text-[11px] text-muted-foreground truncate">
+                      {selectedBusiness.city || '—'} · {selectedBusiness.business_type || selectedBusiness.category || '—'}
+                    </p>
+                  </div>
+                  <Button size="sm" variant="ghost" onClick={() => setSelectedBusiness(null)}>Cambiar</Button>
+                </div>
+              ) : (
+                <>
+                  <Input
+                    className="mt-1"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    placeholder="Buscar negocio disponible..."
+                  />
+                  <div className="mt-1 max-h-44 overflow-y-auto rounded-lg border divide-y">
+                    {filtered.length === 0 ? (
+                      <p className="p-3 text-xs text-muted-foreground">No hay negocios disponibles con ese nombre.</p>
+                    ) : (
+                      filtered.map((b) => (
+                        <button
+                          key={b.id}
+                          type="button"
+                          onClick={() => pickBusiness(b)}
+                          className="w-full text-left px-3 py-2 hover:bg-muted/60"
+                        >
+                          <p className="text-sm truncate">{b.name}</p>
+                          <p className="text-[11px] text-muted-foreground truncate">
+                            {b.city || '—'} · {b.business_type || b.category || '—'}
+                          </p>
+                        </button>
+                      ))
+                    )}
+                  </div>
+                </>
+              )}
+            </div>
+          )}
           <div>
             <Label>Cliente</Label>
             <Input value={clientName} onChange={(e) => setClientName(e.target.value)} placeholder="Nombre del negocio" />
