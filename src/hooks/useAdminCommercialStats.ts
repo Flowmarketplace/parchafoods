@@ -177,7 +177,13 @@ export const useAdminCommercialStats = (): AdminCommercialStats => {
       cities,
       monthly,
       categories,
-      recent: subs.slice(0, 8),
+      recent: [...subs]
+        .sort(
+          (a: any, b: any) =>
+            new Date(b.created_at || b.start_date).getTime() -
+            new Date(a.created_at || a.start_date).getTime(),
+        )
+        .slice(0, 8),
     });
     setLoading(false);
   }, []);
