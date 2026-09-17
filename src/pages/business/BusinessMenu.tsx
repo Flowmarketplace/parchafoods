@@ -294,6 +294,8 @@ const BusinessMenu = () => {
         });
       }
 
+      safeRemoveItem(DRAFT_KEY);
+      setDraftRestored(false);
       setDialogOpen(false);
       resetForm();
       await loadMenu(businessId);
