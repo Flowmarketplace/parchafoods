@@ -200,7 +200,9 @@ const BusinessMenu = () => {
         contentType = file.type || 'application/octet-stream';
       }
 
-      const fileName = `${user.id}/menu/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+      if (!businessId) throw new Error('No se encontró el negocio. Recarga la página e intenta de nuevo.');
+
+      const fileName = `${businessId}/menu/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
 
       const { error: uploadError } = await supabase.storage
         .from('business-content')
