@@ -11,6 +11,11 @@ import { useToast } from '@/hooks/use-toast';
 import { ArrowLeft, Plus, Pencil, Trash2 } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
 
+interface Variant {
+  name: string;
+  price: string;
+}
+
 interface MenuItem {
   id: string;
   name: string;
@@ -19,7 +24,15 @@ interface MenuItem {
   category: string | null;
   image_url: string | null;
   available: boolean;
+  variants?: any;
 }
+
+const parseVariants = (raw: any): Variant[] => {
+  if (!Array.isArray(raw)) return [];
+  return raw
+    .filter((v: any) => v && v.name)
+    .map((v: any) => ({ name: String(v.name), price: String(v.price ?? '') }));
+};
 
 const BusinessMenu = () => {
   const navigate = useNavigate();
