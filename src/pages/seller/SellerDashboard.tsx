@@ -52,6 +52,18 @@ const SellerDashboard = () => {
     load();
   }, [load]);
 
+  // Refrescar al volver a la pestaña/ventana para mostrar datos recién registrados
+  useEffect(() => {
+    const onFocus = () => load();
+    const onVisible = () => { if (document.visibilityState === 'visible') load(); };
+    window.addEventListener('focus', onFocus);
+    document.addEventListener('visibilitychange', onVisible);
+    return () => {
+      window.removeEventListener('focus', onFocus);
+      document.removeEventListener('visibilitychange', onVisible);
+    };
+  }, [load]);
+
   const totalSold = subs.reduce((sum, s) => sum + subscriptionValue(s), 0);
   const collected = subs.filter((s) => s.collected).reduce((sum, s) => sum + Number(s.collected_amount ?? subscriptionValue(s)), 0);
   const commission = subs.filter((s) => s.collected).reduce((sum, s) => sum + subscriptionCommission(s), 0);
