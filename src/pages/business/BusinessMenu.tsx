@@ -391,7 +391,8 @@ const BusinessMenu = () => {
           
           <Dialog open={dialogOpen} onOpenChange={(open) => {
             setDialogOpen(open);
-            if (!open) resetForm();
+            // Al cerrar un producto nuevo conservamos lo escrito como borrador
+            if (!open && editingItem) resetForm();
           }}>
             <DialogTrigger asChild>
               <Button>
@@ -399,14 +400,25 @@ const BusinessMenu = () => {
                 Agregar Producto
               </Button>
             </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
+            <DialogContent className="max-w-lg w-[95vw] max-h-[90dvh] p-0 flex flex-col overflow-hidden">
+              <DialogHeader className="px-5 pt-5 pb-3 border-b">
                 <DialogTitle>{editingItem ? 'Editar' : 'Nuevo'} Producto</DialogTitle>
                 <DialogDescription>
                   Completa la información del producto
                 </DialogDescription>
               </DialogHeader>
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form onSubmit={handleSubmit} className="flex-1 flex flex-col min-h-0">
+                <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4">
+                {!editingItem && draftRestored && (
+                  <div className="flex items-center justify-between gap-2 rounded-lg border border-primary/30 bg-primary/5 p-3">
+                    <p className="text-xs text-muted-foreground">
+                      Recuperamos el producto que habías empezado a llenar.
+                    </p>
+                    <Button type="button" size="sm" variant="ghost" onClick={discardDraft}>
+                      Empezar de nuevo
+                    </Button>
+                  </div>
+                )}
                 <div className="space-y-2">
                   <Label htmlFor="name">Nombre *</Label>
                   <Input
