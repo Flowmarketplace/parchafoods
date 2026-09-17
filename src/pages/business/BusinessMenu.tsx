@@ -349,15 +349,7 @@ const BusinessMenu = () => {
   };
 
   const resetForm = () => {
-    setFormData({
-      name: '',
-      description: '',
-      price: '',
-      category: '',
-      image_url: '',
-      available: true,
-      variants: []
-    });
+    setFormData(emptyForm);
     setEditingItem(null);
   };
 
