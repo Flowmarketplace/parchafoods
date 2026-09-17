@@ -10,6 +10,9 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { useToast } from '@/hooks/use-toast';
 import { ArrowLeft, Plus, Pencil, Trash2 } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
+import { safeGetItem, safeSetItem, safeRemoveItem } from '@/lib/storage';
+
+const DRAFT_KEY = 'lcm_menu_draft';
 
 interface Variant {
   name: string;
