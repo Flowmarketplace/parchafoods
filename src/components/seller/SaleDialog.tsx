@@ -88,13 +88,51 @@ const SaleDialog = ({
     if (amount === '' || Number(amount) <= 0) return toast.error('Escribe el valor');
     setSaving(true);
     const linkedBusinessId = businessId || selectedBusiness?.id || null;
+    const value = Number(amount);
+    let newSubscriptionId: string | null = null;
+
+    // Nueva venta de un negocio sin vendedor: crear su membresía
+    if (selectedBusiness && type === 'venta') {
+      const { data: plans } = await supabase
+        .from('subscription_plans')
+        .select('id, price, duration_days')
+        .order('price');
+      const plan =
+        (plans || []).find((p: any) => Number(p.price) === value) ||
+        [...(plans || [])].reverse().find((p: any) => Number(p.price) <= value) ||
+        (plans || [])[0];
+
+      if (plan) {
+        const start = new Date(`${date}T12:00:00`);
+        const end = new Date(start);
+        end.setDate(end.getDate() + (plan.duration_days || 30));
+        const { data: sub } = await supabase
+          .from('business_subscriptions')
+          .insert({
+            business_id: selectedBusiness.id,
+            plan_id: plan.id,
+            seller_id: sellerId,
+            status: 'active',
+            start_date: start.toISOString(),
+            end_date: end.toISOString(),
+            custom_price: value,
+            commission_percentage: 25,
+            collected: false,
+            auto_renew: true,
+          })
+          .select('id')
+          .maybeSingle();
+        newSubscriptionId = (sub as any)?.id || null;
+      }
+    }
+
     const { error } = await supabase.from('seller_sales').insert({
       seller_id: sellerId,
       business_id: linkedBusinessId,
-      subscription_id: subscriptionId || null,
+      subscription_id: subscriptionId || newSubscriptionId,
       client_name: clientName.trim(),
       sale_type: type,
-      amount: Number(amount),
+      amount: value,
       sale_date: date,
       notes: notes || null,
     });
@@ -109,6 +147,7 @@ const SaleDialog = ({
         notes: 'Cliente asignado al registrar la venta',
       });
     }
+
 
     setSaving(false);
     if (error) return toast.error('No se pudo registrar');
