@@ -172,10 +172,11 @@ const BusinessMenu = () => {
           .update({
             name: formData.name,
             description: formData.description || null,
-            price: parseFloat(formData.price),
+            price: basePrice,
             category: formData.category || null,
             image_url: formData.image_url || null,
-            available: formData.available
+            available: formData.available,
+            variants
           })
           .eq('id', editingItem.id);
 
