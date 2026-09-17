@@ -11,6 +11,11 @@ import { useToast } from '@/hooks/use-toast';
 import { ArrowLeft, Plus, Pencil, Trash2 } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
 
+interface Variant {
+  name: string;
+  price: string;
+}
+
 interface MenuItem {
   id: string;
   name: string;
@@ -19,7 +24,15 @@ interface MenuItem {
   category: string | null;
   image_url: string | null;
   available: boolean;
+  variants?: any;
 }
+
+const parseVariants = (raw: any): Variant[] => {
+  if (!Array.isArray(raw)) return [];
+  return raw
+    .filter((v: any) => v && v.name)
+    .map((v: any) => ({ name: String(v.name), price: String(v.price ?? '') }));
+};
 
 const BusinessMenu = () => {
   const navigate = useNavigate();
@@ -37,8 +50,14 @@ const BusinessMenu = () => {
     price: '',
     category: '',
     image_url: '',
-    available: true
+    available: true,
+    variants: [] as Variant[]
   });
+
+  const cleanVariants = (list: Variant[]) =>
+    list
+      .filter((v) => v.name.trim() !== '')
+      .map((v) => ({ name: v.name.trim(), price: parseFloat(v.price) || 0 }));
 
   useEffect(() => {
     loadBusiness();
@@ -130,6 +149,21 @@ const BusinessMenu = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    const variants = cleanVariants(formData.variants);
+    const variantPrices = variants.map((v) => v.price).filter((p) => p > 0);
+    const basePrice = variantPrices.length
+      ? Math.min(...variantPrices)
+      : parseFloat(formData.price) || 0;
+
+    if (!variants.length && !formData.price) {
+      toast({
+        title: 'Falta el precio',
+        description: 'Escribe un precio o agrega presentaciones con precio',
+        variant: 'destructive',
+      });
+      return;
+    }
+
     try {
       if (editingItem) {
         // Update existing item
@@ -138,10 +172,11 @@ const BusinessMenu = () => {
           .update({
             name: formData.name,
             description: formData.description || null,
-            price: parseFloat(formData.price),
+            price: basePrice,
             category: formData.category || null,
             image_url: formData.image_url || null,
-            available: formData.available
+            available: formData.available,
+            variants
           })
           .eq('id', editingItem.id);
 
@@ -159,10 +194,11 @@ const BusinessMenu = () => {
             business_id: businessId,
             name: formData.name,
             description: formData.description || null,
-            price: parseFloat(formData.price),
+            price: basePrice,
             category: formData.category || null,
             image_url: formData.image_url || null,
-            available: formData.available
+            available: formData.available,
+            variants
           });
 
         if (error) throw error;
@@ -194,7 +230,8 @@ const BusinessMenu = () => {
       price: item.price.toString(),
       category: item.category || '',
       image_url: item.image_url || '',
-      available: item.available
+      available: item.available,
+      variants: parseVariants(item.variants)
     });
     setDialogOpen(true);
   };
@@ -231,7 +268,8 @@ const BusinessMenu = () => {
       price: '',
       category: '',
       image_url: '',
-      available: true
+      available: true,
+      variants: []
     });
     setEditingItem(null);
   };
@@ -301,15 +339,71 @@ const BusinessMenu = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="price">Precio *</Label>
+                  <Label htmlFor="price">Precio {formData.variants.length === 0 && '*'}</Label>
                   <Input
                     id="price"
                     type="number"
                     step="0.01"
                     value={formData.price}
                     onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                    required
+                    disabled={formData.variants.length > 0}
+                    placeholder={formData.variants.length > 0 ? 'Se calcula con las presentaciones' : ''}
                   />
+                </div>
+
+                <div className="space-y-2 rounded-lg border p-3">
+                  <div className="flex items-center justify-between">
+                    <Label>Presentaciones con precio distinto</Label>
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="outline"
+                      onClick={() =>
+                        setFormData({ ...formData, variants: [...formData.variants, { name: '', price: '' }] })
+                      }
+                    >
+                      <Plus className="h-3.5 w-3.5 mr-1" />
+                      Agregar
+                    </Button>
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Ej: Personal, Mediana, Familiar — cada una con su precio.
+                  </p>
+                  {formData.variants.map((variant, index) => (
+                    <div key={index} className="flex gap-2 items-center">
+                      <Input
+                        placeholder="Tamaño / opción"
+                        value={variant.name}
+                        onChange={(e) => {
+                          const next = [...formData.variants];
+                          next[index] = { ...next[index], name: e.target.value };
+                          setFormData({ ...formData, variants: next });
+                        }}
+                      />
+                      <Input
+                        type="number"
+                        step="0.01"
+                        placeholder="Precio"
+                        className="w-32"
+                        value={variant.price}
+                        onChange={(e) => {
+                          const next = [...formData.variants];
+                          next[index] = { ...next[index], price: e.target.value };
+                          setFormData({ ...formData, variants: next });
+                        }}
+                      />
+                      <Button
+                        type="button"
+                        size="icon"
+                        variant="ghost"
+                        onClick={() =>
+                          setFormData({ ...formData, variants: formData.variants.filter((_, i) => i !== index) })
+                        }
+                      >
+                        <Trash2 className="h-4 w-4 text-destructive" />
+                      </Button>
+                    </div>
+                  ))}
                 </div>
 
                 <div className="space-y-2">
@@ -424,8 +518,18 @@ const BusinessMenu = () => {
                             <p className="text-sm text-muted-foreground mt-1">{item.description}</p>
                           )}
                           <p className="text-lg font-bold text-primary mt-2">
+                            {parseVariants(item.variants).length > 0 ? 'Desde ' : ''}
                             ${item.price.toLocaleString('es-CO')}
                           </p>
+                          {parseVariants(item.variants).length > 0 && (
+                            <div className="mt-1 flex flex-wrap gap-1">
+                              {parseVariants(item.variants).map((v, i) => (
+                                <span key={i} className="text-xs bg-muted px-2 py-0.5 rounded-full">
+                                  {v.name}: ${(parseFloat(v.price) || 0).toLocaleString('es-CO')}
+                                </span>
+                              ))}
+                            </div>
+                          )}
                         </div>
                         <div className="flex gap-2 flex-shrink-0">
                           <Button size="icon" variant="outline" onClick={() => handleEdit(item)}>

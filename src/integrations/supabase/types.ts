@@ -248,6 +248,7 @@ export type Database = {
           image_url: string | null
           name: string
           price: number
+          variants: Json
         }
         Insert: {
           available?: boolean | null
@@ -259,6 +260,7 @@ export type Database = {
           image_url?: string | null
           name: string
           price: number
+          variants?: Json
         }
         Update: {
           available?: boolean | null
@@ -270,6 +272,7 @@ export type Database = {
           image_url?: string | null
           name?: string
           price?: number
+          variants?: Json
         }
         Relationships: [
           {

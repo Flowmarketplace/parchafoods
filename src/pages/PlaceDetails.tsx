@@ -704,15 +704,34 @@ const PlaceDetails = () => {
                                     </div>
                                   )}
                                   <div className="p-3">
-                                    <div className="flex justify-between items-start mb-1">
-                                      <h4 className="font-semibold">{item.name}</h4>
-                                      <span className="font-bold text-primary whitespace-nowrap ml-2 text-sm">
-                                        ${item.price.toLocaleString('es-CO')}
-                                      </span>
-                                    </div>
-                                    {item.description && (
-                                      <p className="text-xs text-muted-foreground">{item.description}</p>
-                                    )}
+                                    {(() => {
+                                      const variants = Array.isArray(item.variants) ? item.variants.filter((v: any) => v && v.name) : [];
+                                      const prices = variants.map((v: any) => Number(v.price) || 0).filter((p: number) => p > 0);
+                                      const minPrice = prices.length ? Math.min(...prices) : Number(item.price) || 0;
+                                      return (
+                                        <>
+                                          <div className="flex justify-between items-start mb-1">
+                                            <h4 className="font-semibold">{item.name}</h4>
+                                            <span className="font-bold text-primary whitespace-nowrap ml-2 text-sm">
+                                              {variants.length > 0 ? 'Desde ' : ''}${minPrice.toLocaleString('es-CO')}
+                                            </span>
+                                          </div>
+                                          {item.description && (
+                                            <p className="text-xs text-muted-foreground">{item.description}</p>
+                                          )}
+                                          {variants.length > 0 && (
+                                            <div className="mt-2 space-y-1">
+                                              {variants.map((v: any, i: number) => (
+                                                <div key={i} className="flex items-center justify-between text-xs border-t border-border/60 pt-1">
+                                                  <span className="text-muted-foreground">{v.name}</span>
+                                                  <span className="font-semibold">${(Number(v.price) || 0).toLocaleString('es-CO')}</span>
+                                                </div>
+                                              ))}
+                                            </div>
+                                          )}
+                                        </>
+                                      );
+                                    })()}
                                   </div>
                                 </CardContent>
                               </Card>
