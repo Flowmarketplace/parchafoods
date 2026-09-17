@@ -1,37 +1,26 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Menu, Store, Users, CreditCard, TrendingUp, DollarSign, Bell, Activity } from 'lucide-react';
+import { Menu, Store, Users, CreditCard, TrendingUp, Wallet, Percent, Bell, Activity, Target } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Progress } from '@/components/ui/progress';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import AdminSidebar, { AdminSidebarDesktop } from '@/components/admin/AdminSidebar';
 import { toast } from 'sonner';
-
-interface DashboardStats {
-  totalBusinesses: number;
-  activeBusinesses: number;
-  totalUsers: number;
-  activeSubscriptions: number;
-  monthlyRevenue: number;
-  totalNotifications: number;
-}
+import { formatMoney, subscriptionValue } from '@/lib/sellerMath';
+import { DAILY_CLIENT_GOAL, MONTHLY_CLIENT_GOAL, goalProgress } from '@/lib/sellerGoals';
+import { ACTIVE_CITIES, useAdminCommercialStats } from '@/hooks/useAdminCommercialStats';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [stats, setStats] = useState<DashboardStats>({
-    totalBusinesses: 0,
-    activeBusinesses: 0,
-    totalUsers: 0,
-    activeSubscriptions: 0,
-    monthlyRevenue: 0,
-    totalNotifications: 0,
-  });
+  const [checking, setChecking] = useState(true);
+  const stats = useAdminCommercialStats();
 
   useEffect(() => {
     checkAdminAccess();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const checkAdminAccess = async () => {
@@ -42,71 +31,26 @@ const AdminDashboard = () => {
         return;
       }
 
-      // Check if user has admin role
       const { data: roleData } = await supabase
         .from('user_roles')
         .select('role')
         .eq('user_id', user.id)
         .eq('role', 'admin')
-        .single();
+        .maybeSingle();
 
       if (!roleData) {
         toast.error('No tienes permisos de administrador');
         navigate('/');
         return;
       }
-
-      await fetchStats();
-      setLoading(false);
+      setChecking(false);
     } catch (error) {
       console.error('Error checking admin access:', error);
       navigate('/');
     }
   };
 
-  const fetchStats = async () => {
-    try {
-      // Fetch total businesses
-      const { count: totalBusinesses } = await supabase
-        .from('businesses')
-        .select('*', { count: 'exact', head: true });
-
-      // Fetch total users
-      const { count: totalUsers } = await supabase
-        .from('profiles')
-        .select('*', { count: 'exact', head: true });
-
-      // Fetch active subscriptions
-      const { count: activeSubscriptions } = await supabase
-        .from('business_subscriptions')
-        .select('*', { count: 'exact', head: true })
-        .eq('status', 'active');
-
-      // Fetch notifications sent this month
-      const startOfMonth = new Date();
-      startOfMonth.setDate(1);
-      startOfMonth.setHours(0, 0, 0, 0);
-
-      const { count: totalNotifications } = await supabase
-        .from('notifications')
-        .select('*', { count: 'exact', head: true })
-        .gte('created_at', startOfMonth.toISOString());
-
-      setStats({
-        totalBusinesses: totalBusinesses || 0,
-        activeBusinesses: totalBusinesses || 0,
-        totalUsers: totalUsers || 0,
-        activeSubscriptions: activeSubscriptions || 0,
-        monthlyRevenue: 0,
-        totalNotifications: totalNotifications || 0,
-      });
-    } catch (error) {
-      console.error('Error fetching stats:', error);
-      toast.error('Error al cargar estadísticas');
-    }
-  };
-
-  if (loading) {
+  if (checking) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
@@ -137,157 +81,250 @@ const AdminDashboard = () => {
             <div>
               <h1 className="text-lg sm:text-2xl font-bold">Panel de Administración</h1>
               <p className="text-xs sm:text-sm text-muted-foreground">
-                Vista general del sistema
+                Operación en {ACTIVE_CITIES.join(' y ')}
               </p>
             </div>
           </div>
         </header>
 
-        <main className="p-3 sm:p-6">
-          {/* Stats Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-4 sm:mb-6">
+        <main className="p-3 sm:p-6 space-y-4 sm:space-y-6">
+          {/* Comercial */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium">Total Negocios</CardTitle>
-                <Store className="h-4 w-4 text-muted-foreground" />
+                <CardTitle className="text-sm font-medium">Ventas totales</CardTitle>
+                <TrendingUp className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{stats.totalBusinesses}</div>
-                <p className="text-xs text-muted-foreground">
-                  {stats.activeBusinesses} activos
-                </p>
+                <div className="text-xl sm:text-2xl font-bold">{formatMoney(stats.totalSold)}</div>
+                <p className="text-xs text-muted-foreground">{stats.activeSubscriptions} membresías activas</p>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium">Total Usuarios</CardTitle>
+                <CardTitle className="text-sm font-medium">Recaudo</CardTitle>
+                <Wallet className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-xl sm:text-2xl font-bold">{formatMoney(stats.totalCollected)}</div>
+                <p className="text-xs text-muted-foreground">Pendiente {formatMoney(stats.totalPending)}</p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-medium">Comisiones</CardTitle>
+                <Percent className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-xl sm:text-2xl font-bold">{formatMoney(stats.totalCommission)}</div>
+                <p className="text-xs text-muted-foreground">Pagadas sobre recaudo</p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-medium">Clientes</CardTitle>
                 <Users className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{stats.totalUsers}</div>
-                <p className="text-xs text-muted-foreground">
-                  Registrados en la plataforma
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium">Suscripciones Activas</CardTitle>
-                <CreditCard className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{stats.activeSubscriptions}</div>
-                <p className="text-xs text-muted-foreground">
-                  Negocios con plan activo
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium">Notificaciones</CardTitle>
-                <Bell className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{stats.totalNotifications}</div>
-                <p className="text-xs text-muted-foreground">
-                  Enviadas este mes
-                </p>
+                <div className="text-xl sm:text-2xl font-bold">{stats.totalClients}</div>
+                <p className="text-xs text-muted-foreground">{stats.monthSubscriptions} nuevos este mes</p>
               </CardContent>
             </Card>
           </div>
 
+          {/* Plataforma */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-medium">Negocios publicados</CardTitle>
+                <Store className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{stats.totalBusinesses}</div>
+                <p className="text-xs text-muted-foreground">{ACTIVE_CITIES.join(' + ')}</p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-medium">Usuarios</CardTitle>
+                <Users className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{stats.totalUsers}</div>
+                <p className="text-xs text-muted-foreground">Registrados en la app</p>
+              </CardContent>
+            </Card>
+            {stats.cities.map((c) => (
+              <Card key={c.city}>
+                <CardHeader className="flex flex-row items-center justify-between pb-2">
+                  <CardTitle className="text-sm font-medium">{c.city}</CardTitle>
+                  <Bell className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">{c.businesses}</div>
+                  <p className="text-xs text-muted-foreground">
+                    {c.subscriptions} membresías · {formatMoney(c.collected)} recaudado
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          {/* Ventas por asesor */}
+          <Card>
+            <CardHeader>
+              <div className="flex items-center gap-2">
+                <Target className="h-5 w-5 text-primary" />
+                <CardTitle>Ventas por asesor</CardTitle>
+              </div>
+              <CardDescription>Clientes, recaudo, comisión y avance de metas</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {stats.sellers.length === 0 && (
+                <p className="text-sm text-muted-foreground">Aún no hay vendedores con ventas registradas.</p>
+              )}
+              {stats.sellers.map((s) => (
+                <div key={s.id} className="rounded-xl border border-border p-3 sm:p-4 space-y-3">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <div>
+                      <p className="font-semibold">{s.name}</p>
+                      <p className="text-xs text-muted-foreground">{s.clients} clientes</p>
+                    </div>
+                    <Button asChild size="sm" variant="outline">
+                      <Link to={`/admin/seller/${s.id}`}>Entrar a su panel</Link>
+                    </Button>
+                  </div>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-sm">
+                    <div>
+                      <p className="text-xs text-muted-foreground">Vendido</p>
+                      <p className="font-semibold">{formatMoney(s.sold)}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-muted-foreground">Recaudado</p>
+                      <p className="font-semibold">{formatMoney(s.collected)}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-muted-foreground">Pendiente</p>
+                      <p className="font-semibold">{formatMoney(s.pending)}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-muted-foreground">Comisión</p>
+                      <p className="font-semibold">{formatMoney(s.commission)}</p>
+                    </div>
+                  </div>
+                  <div className="grid sm:grid-cols-2 gap-3">
+                    <div>
+                      <div className="flex justify-between text-xs mb-1">
+                        <span className="text-muted-foreground">Hoy</span>
+                        <span>{s.today} / {DAILY_CLIENT_GOAL}</span>
+                      </div>
+                      <Progress value={goalProgress(s.today, DAILY_CLIENT_GOAL)} />
+                    </div>
+                    <div>
+                      <div className="flex justify-between text-xs mb-1">
+                        <span className="text-muted-foreground">Este mes</span>
+                        <span>{s.month} / {MONTHLY_CLIENT_GOAL}</span>
+                      </div>
+                      <Progress value={goalProgress(s.month, MONTHLY_CLIENT_GOAL)} />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+
+          {/* Últimas membresías */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Últimas membresías</CardTitle>
+              <CardDescription>Ventas más recientes registradas por los asesores</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              {stats.recent.length === 0 && (
+                <p className="text-sm text-muted-foreground">Sin membresías registradas.</p>
+              )}
+              {stats.recent.map((s: any) => (
+                <div key={s.id} className="flex flex-wrap items-center justify-between gap-2 border-b border-border last:border-0 py-2">
+                  <div>
+                    <p className="font-medium text-sm">{s.businesses?.name || 'Negocio'}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {s.businesses?.city || '—'} · {s.sellers?.full_name || 'Sin vendedor'} ·{' '}
+                      {(s.start_date || '').slice(0, 10)}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-semibold">{formatMoney(subscriptionValue(s))}</span>
+                    <Badge variant={s.collected ? 'default' : 'secondary'}>
+                      {s.collected ? 'Pagado' : 'Pendiente'}
+                    </Badge>
+                  </div>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+
           {/* Quick Actions */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
-            <Card 
-              className="cursor-pointer hover:shadow-lg transition-shadow"
-              onClick={() => navigate('/admin/businesses')}
-            >
+            <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => navigate('/admin/businesses')}>
               <CardHeader>
                 <div className="flex items-center gap-2">
                   <Store className="h-5 w-5 text-primary" />
                   <CardTitle>Gestionar Negocios</CardTitle>
                 </div>
-                <CardDescription>
-                  Ver y administrar todos los negocios registrados
-                </CardDescription>
+                <CardDescription>Ver y administrar todos los negocios registrados</CardDescription>
               </CardHeader>
             </Card>
 
-            <Card 
-              className="cursor-pointer hover:shadow-lg transition-shadow"
-              onClick={() => navigate('/admin/packages')}
-            >
+            <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => navigate('/admin/subscriptions')}>
               <CardHeader>
                 <div className="flex items-center gap-2">
                   <CreditCard className="h-5 w-5 text-primary" />
-                  <CardTitle>Crear Paquetes</CardTitle>
+                  <CardTitle>Membresías</CardTitle>
                 </div>
-                <CardDescription>
-                  Administrar planes de suscripción
-                </CardDescription>
+                <CardDescription>Asignar vendedor, valor y recaudo</CardDescription>
               </CardHeader>
             </Card>
 
-            <Card 
-              className="cursor-pointer hover:shadow-lg transition-shadow"
-              onClick={() => navigate('/admin/notifications')}
-            >
+            <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => navigate('/admin/sellers')}>
               <CardHeader>
                 <div className="flex items-center gap-2">
-                  <Bell className="h-5 w-5 text-primary" />
-                  <CardTitle>Enviar Notificaciones</CardTitle>
+                  <Users className="h-5 w-5 text-primary" />
+                  <CardTitle>Vendedores</CardTitle>
                 </div>
-                <CardDescription>
-                  Comunicarse con negocios y usuarios
-                </CardDescription>
+                <CardDescription>Seguimiento de cada asesor comercial</CardDescription>
               </CardHeader>
             </Card>
 
-            <Card 
-              className="cursor-pointer hover:shadow-lg transition-shadow"
-              onClick={() => navigate('/admin/analytics')}
-            >
+            <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => navigate('/admin/analytics')}>
               <CardHeader>
                 <div className="flex items-center gap-2">
                   <TrendingUp className="h-5 w-5 text-primary" />
                   <CardTitle>Ver Estadísticas</CardTitle>
                 </div>
-                <CardDescription>
-                  Análisis detallado del sistema
-                </CardDescription>
+                <CardDescription>Análisis detallado del sistema</CardDescription>
               </CardHeader>
             </Card>
 
-            <Card 
-              className="cursor-pointer hover:shadow-lg transition-shadow"
-              onClick={() => navigate('/admin/approvals')}
-            >
+            <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => navigate('/admin/notifications')}>
               <CardHeader>
                 <div className="flex items-center gap-2">
-                  <Users className="h-5 w-5 text-primary" />
-                  <CardTitle>Gestionar Permisos</CardTitle>
+                  <Bell className="h-5 w-5 text-primary" />
+                  <CardTitle>Enviar Notificaciones</CardTitle>
                 </div>
-                <CardDescription>
-                  Asignar roles y permisos
-                </CardDescription>
+                <CardDescription>Comunicarse con negocios y usuarios</CardDescription>
               </CardHeader>
             </Card>
 
-            <Card 
-              className="cursor-pointer hover:shadow-lg transition-shadow"
-              onClick={() => navigate('/admin/customization')}
-            >
+            <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => navigate('/admin/customization')}>
               <CardHeader>
                 <div className="flex items-center gap-2">
                   <Activity className="h-5 w-5 text-primary" />
                   <CardTitle>Personalización</CardTitle>
                 </div>
-                <CardDescription>
-                  Editar diseño y apariencia
-                </CardDescription>
+                <CardDescription>Editar diseño y apariencia</CardDescription>
               </CardHeader>
             </Card>
           </div>
