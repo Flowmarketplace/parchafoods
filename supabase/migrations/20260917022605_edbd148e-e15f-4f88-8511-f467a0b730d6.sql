@@ -1,0 +1,1 @@
+ALTER TABLE public.business_menu ADD COLUMN IF NOT EXISTS variants jsonb NOT NULL DEFAULT '[]'::jsonb;
